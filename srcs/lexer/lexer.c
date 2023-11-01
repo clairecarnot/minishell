@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
+#include "../../include/lexer.h"
+# include "../libft/libft.h"
 
 t_lexer	*init_lexer(char *s)
 {
@@ -29,12 +30,12 @@ t_lexer	*init_lexer(char *s)
 	return (lexer);
 }
 
-t_token	*init_token(t_lexer *value, t_type type)
+t_token	*init_token(char *value, t_type type)
 {
 	t_token	*token;
 
 	token = ft_calloc(1, sizeof(t_token));
-	if (!token);
+	if (!token)
 		return (NULL);
 	token->type = type;
 	token->value = value;
@@ -53,27 +54,51 @@ t_token	*parse_word(t_lexer *lexer)
 	int	i;
 
 	i = 0;
-	while (lexer->src[cur_pos + i] && ft_isalpha(lexer->src[cur_pos + i]))
+	while (lexer->src[lexer->cur_pos + i] && ft_isalpha(lexer->src[lexer->cur_pos + i]))
 		i++;
 	value = ft_calloc(i + 1, sizeof(char));
 	if (!value)
 		return (NULL);
-	ft_strlcpy(value, &(lexer->src[cur_pos]), i);
+	ft_strlcpy(value, &(lexer->src[lexer->cur_pos]), i + 1);
 	advance(lexer, i);
 	return (init_token(value, T_WORD));
 }
 
-t_token	*lexer_next_token(t_lexer * lexer)
+int	is_wspace(char c)
 {
-	if (lexer->cur_c == '\0')
-		return (init_token("\0", T_EOF));
-	else if (ft_isalpha(lexer->cur_c))
-		return (parse_word(lexer));
+	if ((c >= 9 && c <= 13) || c == 32)
+		return (1);
+	return (0);
 }
 
-t_token	*lexer(char *s)
+t_token	*lexer_next_token(t_lexer * lexer)
 {
-	t_lexer	lexer;
+	while (is_wspace(lexer->src[lexer->cur_pos]) != 0)
+		advance(lexer, 1);
+	if (ft_isalpha(lexer->src[lexer->cur_pos]))
+		return (parse_word(lexer));
+	return (NULL);
+}
+
+void	token_add_back(t_token **lst, t_token *new)
+{
+	t_token	*ptr;
+
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		ptr = *lst;
+		while (ptr->next_token)
+			ptr = ptr->next_token;
+		ptr->next_token = new;
+	}
+}
+
+t_lexer	*lexer(char *s)
+{
+	t_lexer	*lexer;
+	t_token	*tmp_token;
 
 	lexer = init_lexer(s);
 	if (!lexer)
@@ -81,11 +106,13 @@ t_token	*lexer(char *s)
 	while (s[lexer->cur_pos])
 	{
 		lexer->cur_c = s[lexer->cur_pos];
-		lexer->token_lst = lexer_next_token(lexer);
+		token_add_back(&lexer->token_lst, lexer_next_token(lexer));
 		if (!lexer->token_lst)
 			return (NULL);
-		lexer->token_lst = lexer->token_lst->next_token;
-		lexer->cur_pos++; //WARNING
 	}
-	return (token_to_str(lexer->token_lst)); //?
+	tmp_token = init_token("\0", T_EOF);
+	if (!tmp_token)
+		return(NULL);
+	token_add_back(&lexer->token_lst, tmp_token);
+	return (lexer);
 }

@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/01 14:07:04 by ccarnot          ###   ########.fr       */
+/*   Created: 2023/05/15 08:37:31 by ccarnot           #+#    #+#             */
+/*   Updated: 2023/05/15 08:37:33 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/lexer.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "libft.h"
 
-void	print_token_lst(t_token **token_lst)
+t_list	*ft_lstnew(void *content)
 {
-	while (*token_lst)
-	{
-		printf("%s est de type %d\n", (*token_lst)->value, (*token_lst)->type);
-		*token_lst = (*token_lst)->next_token;
-	}
+	t_list	*d;
+
+	d = malloc(sizeof(t_list));
+	if (!d)
+		return (0x0);
+	d->content = content;
+	d->next = 0x0;
+	return (d);
 }
 
-int	main(int argc, char **argv)
+/*
+int	main(void)
 {
-	t_lexer	*lexer_res;
+	char	content[] = "et yohoho une bouteille de rhum";
+	t_list	*o1;
 
-	(void)argc;
-	(void)argv;
-	lexer_res = lexer("  ls   lss");
-	print_token_lst(&lexer_res->token_lst);
+	o1 = ft_lstnew(content);
+	printf("%s\n", (char *)o1->content);
+	printf("%p\n", o1->next);
+	free(o1);
 	return (0);
 }
+*/

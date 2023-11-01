@@ -1,33 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/01 14:07:04 by ccarnot          ###   ########.fr       */
+/*   Created: 2023/05/15 08:38:09 by ccarnot           #+#    #+#             */
+/*   Updated: 2023/05/15 08:38:11 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/lexer.h"
+#include <stdio.h>
+#include "libft.h"
 
-void	print_token_lst(t_token **token_lst)
+int	ft_lstsize(t_list *lst)
 {
-	while (*token_lst)
+	int	i;
+
+	i = 0;
+	while (lst)
 	{
-		printf("%s est de type %d\n", (*token_lst)->value, (*token_lst)->type);
-		*token_lst = (*token_lst)->next_token;
+		i++;
+		lst = lst->next;
 	}
+	return (i);
 }
 
-int	main(int argc, char **argv)
+/*
+int	main(void)
 {
-	t_lexer	*lexer_res;
+	t_list	q1;
+	t_list	q2;
+	t_list	q3;
+	t_list	*lst;
 
-	(void)argc;
-	(void)argv;
-	lexer_res = lexer("  ls   lss");
-	print_token_lst(&lexer_res->token_lst);
+	lst = &q1;
+	q1.content ="et un";
+	q2.content ="et deux";
+	q3.content ="et trois";
+	q1.next = &q2;
+	q2.next = &q3;
+	q3.next = 0x0;
+	printf("%d\n", ft_lstsize(lst));
 	return (0);
-}
+}*/

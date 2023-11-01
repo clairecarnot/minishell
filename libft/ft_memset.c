@@ -1,33 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/01 14:07:04 by ccarnot          ###   ########.fr       */
+/*   Created: 2023/05/03 11:14:24 by ccarnot           #+#    #+#             */
+/*   Updated: 2023/05/03 17:14:41 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/lexer.h"
+//#include <stdio.h>
+#include "libft.h"
 
-void	print_token_lst(t_token **token_lst)
+void	*ft_memset(void *s, int c, size_t n)
 {
-	while (*token_lst)
+	while (n > 0)
 	{
-		printf("%s est de type %d\n", (*token_lst)->value, (*token_lst)->type);
-		*token_lst = (*token_lst)->next_token;
+		((unsigned char *)s)[n - 1] = c;
+		n--;
 	}
+	return (s);
 }
 
-int	main(int argc, char **argv)
+/*
+int	main(void)
 {
-	t_lexer	*lexer_res;
+	char	s[] = "Bonjour les amis";
 
-	(void)argc;
-	(void)argv;
-	lexer_res = lexer("  ls   lss");
-	print_token_lst(&lexer_res->token_lst);
+	ft_memset(s, 42, 4);
+	printf("%s\n", s);
 	return (0);
+AUTRE METHODE :
+
+	size_t	i;
+
+	i = 0;
+	while (i < n && ((unsigned char *)s)[i])
+	{
+		((unsigned char *)s)[i] = c;
+		i++;
+	}
+	return (s);
 }
+*/

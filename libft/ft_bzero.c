@@ -1,33 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/01 14:07:04 by ccarnot          ###   ########.fr       */
+/*   Created: 2023/05/03 17:42:07 by ccarnot           #+#    #+#             */
+/*   Updated: 2023/05/04 10:34:59 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/lexer.h"
+//#include <stdio.h>
+//#include <strings.h>
+#include "libft.h"
 
-void	print_token_lst(t_token **token_lst)
+void	ft_bzero(void *s, size_t n)
 {
-	while (*token_lst)
+	while (n > 0)
 	{
-		printf("%s est de type %d\n", (*token_lst)->value, (*token_lst)->type);
-		*token_lst = (*token_lst)->next_token;
+		((unsigned char *)s)[n - 1] = '\0';
+		n--;
 	}
 }
 
-int	main(int argc, char **argv)
+/*
+int	main(void)
 {
-	t_lexer	*lexer_res;
+	char	s[] = "Bonjour les amigos";
+	int	i;
 
-	(void)argc;
-	(void)argv;
-	lexer_res = lexer("  ls   lss");
-	print_token_lst(&lexer_res->token_lst);
+	ft_bzero(s, 5);
+	//bzero(s, 1);
+	i = 0;
+	while (i < 18)
+	{
+		printf("%c", s[i]);
+		i++;
+	}
+	printf("\n");
 	return (0);
 }
+*/

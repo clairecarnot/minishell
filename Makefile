@@ -14,7 +14,7 @@ NAME = minishell
 
 CFLAGS = -g3 -Wall -Wextra -Werror
 
-INCL = -I -I./libft -I./include
+INCL = -I./libft -I./include
 
 SRCS = main.c srcs/lexer/lexer.c
 
