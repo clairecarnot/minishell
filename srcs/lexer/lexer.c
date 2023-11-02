@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/01 15:41:13 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/02 10:21:05 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
-# include "../libft/libft.h"
+#include "../libft/libft.h"
 
 t_lexer	*init_lexer(char *s)
 {

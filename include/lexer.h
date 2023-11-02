@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/01 14:19:51 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/02 10:10:17 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
-#define LEXER_H
+# define LEXER_H
 
 # include <stddef.h>
 # include <stdio.h>
