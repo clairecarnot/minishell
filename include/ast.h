@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 12:42:16 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 13:58:01 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ typedef struct s_ast	t_ast;
 
 typedef enum e_node_type
 {
-	PIPE,
-	COMMAND,
+	PIPE,//0
+	COMMAND,//1
 }			t_node_type;
 
 struct	s_ast

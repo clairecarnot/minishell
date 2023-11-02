@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 12:40:35 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:04:06 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ typedef struct s_lexer
 	size_t	cur_pos;
 	t_token	*token_lst;
 }		t_lexer;
+
+
 
 //----------------------- lexer.c ------------------------
 t_lexer	*init_lexer(char *s);

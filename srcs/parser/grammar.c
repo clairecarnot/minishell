@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:37:21 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 12:43:18 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:11:04 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,11 @@ t_ast *read_words(t_parser *parser)
 	new_ast = new_node(COMMAND);
 	if (!new_ast)
 		return (NULL);
-	args = ft_strdup(parser->cur_token->value);
-	if (!args)
-		return (free(new_ast), NULL); //verif protection
 	while (parser->cur_token->type == T_WORD)
 	{
-		
+		args = ft_strdup(parser->cur_token->value);
+		if (!args)
+			return (free(new_ast), NULL); //verif protection	
 		ft_lstadd_back(&new_ast->args, ft_lstnew(args));
 		eat_token(parser, T_WORD);
 	}
