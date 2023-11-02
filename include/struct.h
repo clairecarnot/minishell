@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.h                                              :+:      :+:    :+:   */
+/*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 13:58:01 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:51:55 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AST_H
-# define AST_H
+#ifndef STRUCT_H
+# define STRUCT_H
 
 # include "../libft/libft.h"
 # include "lexer.h"
@@ -32,6 +32,40 @@ struct	s_ast
 	t_list		*args;
 };
 
+typedef enum e_type
+{
+	T_WORD,
+	T_PIPE,
+	T_EOF,
+}		t_type;
 
+typedef struct s_token
+{
+	t_type	type;
+	char	*value;
+	struct s_token	*next_token;
+}		t_token;
+
+typedef struct s_lexer
+{
+	char	*src;
+	size_t	src_size;
+	char	cur_c;
+	size_t	cur_pos;
+	t_token	*token_lst;
+}		t_lexer;
+
+typedef struct	s_parser
+{
+	t_lexer	*lexer;
+	t_ast	*root;
+	t_token	*cur_token;
+}				t_parser;
+
+typedef struct	s_ms
+{
+	t_lexer		*lexer;
+	t_parser	*parser;
+}				t_ms;
 
 #endif

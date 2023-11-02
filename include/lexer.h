@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 14:04:06 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:12:04 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,42 +16,32 @@
 # include <stddef.h>
 # include <stdio.h>
 # include "../libft/libft.h"
-# include "ast.h"
+# include "struct.h"
 # include "parser.h"
 
-typedef enum e_type
-{
-	T_WORD,
-	T_PIPE,
-	T_EOF,
-}		t_type;
+//----------------------- main.c ------------------------
+char	*tok_to_str(t_token *token);
+char	*node_to_str(t_ast *node);
+void	print_token_lst(t_token *token);
+void	print_lst(t_list *args_enter);
+void	visit_node(t_ast *root);
+t_ms	*init_ms(void);
+int	main(int argc, char **argv);
 
-typedef struct s_token
-{
-	t_type	type;
-	char	*value;
-	struct s_token	*next_token;
-}		t_token;
-
-typedef struct s_lexer
-{
-	char	*src;
-	size_t	src_size;
-	char	cur_c;
-	size_t	cur_pos;
-	t_token	*token_lst;
-}		t_lexer;
-
-
+//----------------------- end.c ------------------------
+void	ft_lstfree(t_list **lst);
+void	token_lst_free(t_token **lst);
+void	free_root_ast(t_ast *root);
+void	free_minishell(t_ms *minishell, int exit_status);
 
 //----------------------- lexer.c ------------------------
 t_lexer	*init_lexer(char *s);
-t_token	*init_token(char *value, t_type type);
+t_token	*init_token(t_ms *minishell, char *value, t_type type);
 void	advance(t_lexer *lexer, int i);
-t_token	*parse_word(t_lexer *lexer);
+t_token	*parse_word(t_ms *minishell, t_lexer *lexer);
 int		is_wspace(char c);
-t_token	*lexer_next_token(t_lexer * lexer);
-t_lexer	*lexer(char *s);
+t_token	*lexer_next_token(t_ms *minishell, t_lexer * lexer);
+void	lexer(t_ms *minishell, char *s);
 void	token_add_back(t_token **lst, t_token *new);
 
 #endif

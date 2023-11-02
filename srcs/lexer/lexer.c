@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 10:40:36 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:26:26 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,18 @@ t_lexer	*init_lexer(char *s)
 	return (lexer);
 }
 
-t_token	*init_token(char *value, t_type type)
+t_token	*init_token(t_ms *minishell, char *value, t_type type)
 {
 	t_token	*token;
 
+
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
-		return (NULL);
+	{
+		if (value)
+			free(value);
+		free_minishell(minishell, 1);
+	}
 	token->type = type;
 	token->value = value;
 	token->next_token = NULL;
@@ -48,7 +53,7 @@ void	advance(t_lexer *lexer, int i)
 	lexer->cur_pos += i;
 }
 
-t_token	*parse_word(t_lexer *lexer)
+t_token	*parse_word(t_ms *minishell, t_lexer *lexer)
 {
 	char	*value;
 	int	i;
@@ -61,7 +66,7 @@ t_token	*parse_word(t_lexer *lexer)
 		return (NULL);
 	ft_strlcpy(value, &(lexer->src[lexer->cur_pos]), i + 1);
 	advance(lexer, i);
-	return (init_token(value, T_WORD));
+	return (init_token(minishell, value, T_WORD));
 }
 
 int	is_wspace(char c)
@@ -71,14 +76,14 @@ int	is_wspace(char c)
 	return (0);
 }
 
-t_token	*lexer_next_token(t_lexer * lexer)
+t_token	*lexer_next_token(t_ms *minishell, t_lexer * lexer)
 {
 	while (is_wspace(lexer->src[lexer->cur_pos]) != 0)
 		advance(lexer, 1);
 	if (lexer->src[lexer->cur_pos] == '|')
-		return (advance(lexer, 1), init_token("|", T_PIPE));
+		return (advance(lexer, 1), init_token(minishell, "|", T_PIPE));
 	else if (ft_isalpha(lexer->src[lexer->cur_pos]))
-		return (parse_word(lexer));
+		return (parse_word(minishell, lexer));
 	return (NULL);
 }
 
@@ -86,6 +91,8 @@ void	token_add_back(t_token **lst, t_token *new)
 {
 	t_token	*ptr;
 
+	if (!new)
+		return ;
 	if (*lst == NULL)
 		*lst = new;
 	else
@@ -97,24 +104,16 @@ void	token_add_back(t_token **lst, t_token *new)
 	}
 }
 
-t_lexer	*lexer(char *s)
+void	lexer(t_ms *minishell, char *s)
 {
-	t_lexer	*lexer;
-	t_token	*tmp_token;
 
-	lexer = init_lexer(s);
-	if (!lexer)
-		return (NULL);
-	while (s[lexer->cur_pos])
+	minishell->lexer = init_lexer(s);
+	if (!minishell->lexer)
+		free_minishell(minishell, 1);
+	while (s[minishell->lexer->cur_pos])
 	{
-		lexer->cur_c = s[lexer->cur_pos];
-		token_add_back(&lexer->token_lst, lexer_next_token(lexer));
-		if (!lexer->token_lst)
-			return (NULL);
+		minishell->lexer->cur_c = s[minishell->lexer->cur_pos];
+		token_add_back(&minishell->lexer->token_lst, lexer_next_token(minishell, minishell->lexer));
 	}
-	tmp_token = init_token("\0", T_EOF);
-	if (!tmp_token)
-		return(NULL);
-	token_add_back(&lexer->token_lst, tmp_token);
-	return (lexer);
+	token_add_back(&minishell->lexer->token_lst, init_token(minishell, "\0", T_EOF));
 }

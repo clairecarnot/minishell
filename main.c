@@ -6,13 +6,13 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 14:23:57 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 18:27:10 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/lexer.h"
 #include "./include/parser.h"
-#include "./include/ast.h"
+#include "./include/struct.h"
 
 char	*tok_to_str(t_token *token)
 {
@@ -48,12 +48,15 @@ void	print_token_lst(t_token *token)
 	}
 }
 
-void	print_lst(t_list **args)
+void	print_lst(t_list *args_enter)
 {
-	while (*args)
+	t_list	*args;
+	
+	args = args_enter;
+	while (args)
 	{
-		printf("args content = %s\n", (char *)(*args)->content);
-		*args = (*args)->next;
+		printf("args content = %s\n", (char *)args->content);
+		args = args->next;
 	}
 }
 
@@ -64,20 +67,40 @@ void	visit_node(t_ast *root)
 	visit_node(root->left);
 	printf("node type : %s\n", node_to_str(root));
 	if (root->type == COMMAND)
-		print_lst(&root->args);
+		print_lst(root->args);
 	visit_node(root->right);
+}
+
+t_ms	*init_ms(void)
+{
+	t_ms	*minishell;
+
+	minishell = ft_calloc(1, sizeof(t_ms));
+	if (!minishell)
+		return (NULL);
+	minishell->lexer = NULL;
+	minishell->parser = NULL;
+	return (minishell);
 }
 
 int	main(int argc, char **argv)
 {
-	t_lexer		*lexer_res;
-	t_parser	*parser_res;
+	t_ms	*minishell;
 
+	
 	(void)argc;
 	(void)argv;
-	lexer_res = lexer("  ls |   lss l a"); //a proteger
-	print_token_lst(lexer_res->token_lst);
-	parser_res = parser(lexer_res); //a proteger
-	visit_node(parser_res->root);
+	minishell = init_ms();
+	if (!minishell)
+		return (1);
+	lexer(minishell, "  ls l | wc l | ls l l l ");
+	if (!minishell->lexer)
+		return (free_minishell(minishell, 1), 1);
+	// print_token_lst(minishell->lexer->token_lst);
+	minishell->parser = parser(minishell->lexer);
+	if (!minishell->parser)
+		return (free_minishell(minishell, 1), 1);
+	visit_node(minishell->parser->root);
+	free_minishell(minishell, 0);
 	return (0);
 }

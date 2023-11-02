@@ -6,13 +6,13 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:37:21 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 14:11:04 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 17:23:25 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
-#include "../../include/ast.h"
+#include "../../include/struct.h"
 
 
 t_ast	*new_node(t_node_type type)
@@ -26,6 +26,9 @@ t_ast	*new_node(t_node_type type)
 	new_ast->right = NULL;
 	new_ast->left = NULL;
 	new_ast->args = NULL;
+	// new_ast->args = ft_calloc(1, sizeof(t_list));
+	// if (!new_ast->args)
+	// 	return (free(new_ast), NULL); //verif protec
 	return (new_ast);
 }
 
@@ -40,17 +43,17 @@ void	join_node(t_ast *root, t_ast *left, t_ast *right)
 t_ast *read_words(t_parser *parser)
 {
 	t_ast	*new_ast;
-	char	*args;
+	char	*cmd;
 	
 	new_ast = new_node(COMMAND);
 	if (!new_ast)
 		return (NULL);
 	while (parser->cur_token->type == T_WORD)
 	{
-		args = ft_strdup(parser->cur_token->value);
-		if (!args)
-			return (free(new_ast), NULL); //verif protection	
-		ft_lstadd_back(&new_ast->args, ft_lstnew(args));
+		cmd = ft_strdup(parser->cur_token->value);
+		if (!cmd)
+			return (NULL); // protection!!!	
+		ft_lstadd_back(&new_ast->args, ft_lstnew(cmd));
 		eat_token(parser, T_WORD);
 	}
 	return (new_ast);

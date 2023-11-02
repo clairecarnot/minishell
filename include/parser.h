@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:03:23 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 12:49:47 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:42:59 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,7 @@
 
 # include "lexer.h"
 # include "parser.h"
-# include "ast.h"
-
-typedef struct s_lexer	t_lexer;
-typedef struct s_token	t_token;
-typedef enum e_type	t_type;
-
-typedef struct	s_parser
-{
-	t_lexer	*lexer;
-	t_ast	*root;
-	t_token	*cur_token;
-}				t_parser;
+# include "struct.h"
 
 //----------------------- parser.c ------------------------
 t_parser	*init_parser(t_lexer *lexer);
