@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:03:23 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 10:10:32 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:49:47 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,32 @@
 # define PARSER_H
 
 # include "lexer.h"
+# include "parser.h"
+# include "ast.h"
+
+typedef struct s_lexer	t_lexer;
+typedef struct s_token	t_token;
+typedef enum e_type	t_type;
 
 typedef struct	s_parser
 {
 	t_lexer	*lexer;
+	t_ast	*root;
+	t_token	*cur_token;
 }				t_parser;
+
+//----------------------- parser.c ------------------------
+t_parser	*init_parser(t_lexer *lexer);
+t_parser	*parser(t_lexer *lexer);
+
+//----------------------- grammar.c ------------------------
+t_ast	*new_node(t_node_type type);
+void	join_node(t_ast *root, t_ast *left, t_ast *right);
+t_ast *read_words(t_parser *parser);
+t_ast	*pipeline(t_parser *parser);
+t_parser	*parse_grammar(t_parser *parser);
+
+//----------------------- utils.c ------------------------
+int	eat_token(t_parser *parser, t_type type);
 
 #endif

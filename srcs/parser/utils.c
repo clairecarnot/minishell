@@ -1,38 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 12:52:18 by mapoirie         ###   ########.fr       */
+/*   Created: 2023/11/02 11:52:28 by mapoirie          #+#    #+#             */
+/*   Updated: 2023/11/02 12:52:56 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
 
-t_parser	*init_parser(t_lexer *lexer)
+int	eat_token(t_parser *parser, t_type type)
 {
-	t_parser	*parser;
-
-	parser = ft_calloc(1, sizeof(t_parser));
-	if (!parser)
-		return (NULL);
-	parser->lexer = lexer;
-	parser->root = NULL;
-	parser->cur_token = lexer->token_lst;
-	return (parser);
-}
-
-t_parser	*parser(t_lexer *lexer)
-{
-	t_parser	*parser;
-
-	parser = init_parser(lexer);
-	if (!parser)
-		return (NULL);
-	parser = parse_grammar(parser);
-	return (parser);
+	if (parser->cur_token->type == type)
+	{
+		parser->cur_token = parser->cur_token->next_token;
+		return (1);
+	}
+	return (0);
 }

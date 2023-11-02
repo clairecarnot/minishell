@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 10:10:17 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:40:35 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 
 # include <stddef.h>
 # include <stdio.h>
+# include "../libft/libft.h"
+# include "ast.h"
+# include "parser.h"
 
 typedef enum e_type
 {
 	T_WORD,
+	T_PIPE,
 	T_EOF,
 }		t_type;
 
@@ -38,6 +42,7 @@ typedef struct s_lexer
 	t_token	*token_lst;
 }		t_lexer;
 
+//----------------------- lexer.c ------------------------
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(char *value, t_type type);
 void	advance(t_lexer *lexer, int i);

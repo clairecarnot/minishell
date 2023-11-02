@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 10:21:05 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 10:40:36 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ t_token	*lexer_next_token(t_lexer * lexer)
 {
 	while (is_wspace(lexer->src[lexer->cur_pos]) != 0)
 		advance(lexer, 1);
-	if (ft_isalpha(lexer->src[lexer->cur_pos]))
+	if (lexer->src[lexer->cur_pos] == '|')
+		return (advance(lexer, 1), init_token("|", T_PIPE));
+	else if (ft_isalpha(lexer->src[lexer->cur_pos]))
 		return (parse_word(lexer));
 	return (NULL);
 }

@@ -6,13 +6,13 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 10:27:23 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/02 12:47:41 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/lexer.h"
 #include "./include/parser.h"
-
+#include "./include/ast.h"
 
 void	print_token_lst(t_token **token_lst)
 {
@@ -30,8 +30,8 @@ int	main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-	lexer_res = lexer("  ls   lss");
+	lexer_res = lexer("  ls |   lss"); //a proteger
 	print_token_lst(&lexer_res->token_lst);
-	parser_res = parser(lexer);
+	parser_res = parser(lexer_res); //a proteger
 	return (0);
 }
