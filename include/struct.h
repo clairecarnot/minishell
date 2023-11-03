@@ -44,6 +44,7 @@ typedef struct s_token
 	t_type	type;
 	char	*value;
 	struct s_token	*next_token;
+	size_t	tok_nb;
 }		t_token;
 
 typedef struct s_lexer
@@ -53,6 +54,7 @@ typedef struct s_lexer
 	char	cur_c;
 	size_t	cur_pos;
 	t_token	*token_lst;
+	size_t	tok_count;
 }		t_lexer;
 
 typedef struct	s_parser

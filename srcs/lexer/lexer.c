@@ -27,13 +27,13 @@ t_lexer	*init_lexer(char *s)
 	lexer->cur_c = s[0];
 	lexer->cur_pos = 0;
 	lexer->token_lst = NULL;
+	lexer->tok_count = 0;
 	return (lexer);
 }
 
 t_token	*init_token(t_ms *minishell, char *value, t_type type)
 {
 	t_token	*token;
-
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
@@ -45,6 +45,8 @@ t_token	*init_token(t_ms *minishell, char *value, t_type type)
 	token->type = type;
 	token->value = value;
 	token->next_token = NULL;
+	token->tok_nb = minishell->lexer->tok_count;
+	minishell->lexer->tok_count++;
 	return (token);
 }
 
@@ -106,7 +108,6 @@ void	token_add_back(t_token **lst, t_token *new)
 
 void	lexer(t_ms *minishell, char *s)
 {
-
 	minishell->lexer = init_lexer(s);
 	if (!minishell->lexer)
 		free_minishell(minishell, 1);

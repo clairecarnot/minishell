@@ -93,11 +93,11 @@ int	main(int argc, char **argv)
 	minishell = init_ms();
 	if (!minishell)
 		return (1);
-	lexer(minishell, "  ls l | wc l | ls l l l ");
+	lexer(minishell, "  ls l | wc l | ls l ");
 	if (!minishell->lexer)
 		return (free_minishell(minishell, 1), 1);
 	// print_token_lst(minishell->lexer->token_lst);
-	minishell->parser = parser(minishell->lexer);
+	parser(minishell, minishell->lexer);
 	if (!minishell->parser)
 		return (free_minishell(minishell, 1), 1);
 	visit_node(minishell->parser->root);

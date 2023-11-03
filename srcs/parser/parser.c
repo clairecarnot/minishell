@@ -26,13 +26,10 @@ t_parser	*init_parser(t_lexer *lexer)
 	return (parser);
 }
 
-t_parser	*parser(t_lexer *lexer)
+void	parser(t_ms *minishell, t_lexer *lexer)
 {
-	t_parser	*parser;
-
-	parser = init_parser(lexer);
-	if (!parser)
-		return (NULL);
-	parser = parse_grammar(parser);
-	return (parser);
+	minishell->parser = init_parser(lexer);
+	if (!minishell->parser)
+		free_minishell(minishell, 1);
+	parse_grammar(minishell, minishell->parser);
 }

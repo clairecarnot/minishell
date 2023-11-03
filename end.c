@@ -55,6 +55,7 @@ void	token_lst_free(t_token **lst)
 
 void	free_root_ast(t_ast *root)
 {
+	printf("hello2\n");
 	if (!root)
 		return ;
 	free_root_ast(root->left);
@@ -68,6 +69,7 @@ void	free_minishell(t_ms *minishell, int exit_status)
 {
 	if (minishell->parser)
 	{	
+		printf("hello1\n");
 		if (minishell->parser->root)
 			free_root_ast(minishell->parser->root);
 		free(minishell->parser);
