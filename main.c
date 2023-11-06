@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/02 18:27:10 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/06 17:24:27 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,22 @@ char	*tok_to_str(t_token *token)
 		return ("T_WORD");
 	if (token->type == T_PIPE)
 		return ("T_PIPE");
+	if (token->type == T_AND_IF)
+		return ("T_AND_IF");
+	if (token->type == T_OR_IF)
+		return ("T_OR_IF");
+	if (token->type == T_LPAR)
+		return ("T_LPAR");
+	if (token->type == T_RPAR)
+		return ("T_RPAR");
+	if (token->type == T_LESS)
+		return ("T_LESS");
+	if (token->type == T_GREAT)
+		return ("T_GREAT");
+	if (token->type == T_DLESS)
+		return ("T_DLESS");
+	if (token->type == T_DGREAT)
+		return ("T_DGREAT");	
 	if (token->type == T_EOF)
 		return ("T_EOF");
 	else
@@ -93,14 +109,14 @@ int	main(int argc, char **argv)
 	minishell = init_ms();
 	if (!minishell)
 		return (1);
-	lexer(minishell, "  ls l | wc l | ls l ");
+	lexer(minishell, "bla <,< bla  | ,  || ls -l (nom_de_commande && command) hey  >>  hey ");
 	if (!minishell->lexer)
 		return (free_minishell(minishell, 1), 1);
-	// print_token_lst(minishell->lexer->token_lst);
-	parser(minishell, minishell->lexer);
-	if (!minishell->parser)
-		return (free_minishell(minishell, 1), 1);
-	visit_node(minishell->parser->root);
+	print_token_lst(minishell->lexer->token_lst);
+	// parser(minishell, minishell->lexer);
+	// if (!minishell->parser)
+	// 	return (free_minishell(minishell, 1), 1);
+	// visit_node(minishell->parser->root);
 	free_minishell(minishell, 0);
 	return (0);
 }

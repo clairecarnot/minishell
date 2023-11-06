@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 17:51:55 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/03 16:57:48 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@ typedef enum e_type
 {
 	T_WORD,
 	T_PIPE,
+	T_AND_IF,
+	T_OR_IF,
+	T_LPAR,
+	T_RPAR,
+	T_LESS,
+	T_GREAT,
+	T_DLESS,
+	T_DGREAT,
 	T_EOF,
 }		t_type;
 
@@ -53,6 +61,7 @@ typedef struct s_lexer
 	size_t	src_size;
 	char	cur_c;
 	size_t	cur_pos;
+	size_t	next_pos;
 	t_token	*token_lst;
 	size_t	tok_count;
 }		t_lexer;
