@@ -55,7 +55,6 @@ void	token_lst_free(t_token **lst)
 
 void	free_root_ast(t_ast *root)
 {
-	printf("hello2\n");
 	if (!root)
 		return ;
 	free_root_ast(root->left);

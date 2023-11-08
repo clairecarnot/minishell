@@ -46,10 +46,30 @@ char	*tok_to_str(t_token *token)
 
 char*node_to_str(t_ast *node)
 {
+	if (node->type == CMD)
+		return ("CMD");
 	if (node->type == PIPE)
 		return ("PIPE");
-	if (node->type == CMD)
-		return ("COMMAND");
+	if (node->type == AND_IF)
+		return ("AND_IF");
+	if (node->type == OR_IF)
+		return ("OR_IF");
+	if (node->type == LPAR)
+		return ("LPAR");
+	if (node->type == RPAR)
+		return ("RPAR");
+	if (node->type == LESS)
+		return ("LESS");
+	if (node->type == GREAT)
+		return ("GREAT");
+	if (node->type == DLESS)
+		return ("DLESS");
+	if (node->type == DGREAT)
+		return ("DGREAT");
+	if (node->type == NEWLINE)
+		return ("NEWLINE");
+	if (node->type == END)
+		return ("END");
 	else
 		return ("UNKNOWN");
 }
@@ -76,6 +96,7 @@ void	print_lst(t_list *args_enter)
 		printf("args content = %s\n", (char *)args->content);
 		args = args->next;
 	}
+	printf("\n");
 }
 
 void	visit_node(t_ast *root)
@@ -83,7 +104,7 @@ void	visit_node(t_ast *root)
 	if (!root)
 		return ;
 	visit_node(root->left);
-	printf("node type : %s\n", node_to_str(root));
+	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
 	if (root->type == CMD)
 		print_lst(root->args);
 	visit_node(root->right);
@@ -111,6 +132,8 @@ char	*display_prompt()
 	return (line);
 }
 
+void		btree_apply_by_level(t_ast *root);
+
 int	main(int argc, char **argv)
 {
 	t_ms	*minishell;
@@ -131,7 +154,8 @@ int	main(int argc, char **argv)
 	// parser(minishell, minishell->lexer);
 	// if (!minishell->parser)
 	// 	return (free_minishell(minishell, 1), 1);
-	// visit_node(minishell->parser->root);
+	visit_node(minishell->root);
+	// btree_apply_by_level(minishell->root);
 	free_minishell(minishell, 0);
 	return (0);
 }

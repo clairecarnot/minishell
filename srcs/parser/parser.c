@@ -13,19 +13,6 @@
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
 
-// t_parser	*init_parser(t_lexer *lexer)
-// {
-// 	t_parser	*parser;
-
-// 	parser = ft_calloc(1, sizeof(t_parser));
-// 	if (!parser)
-// 		return (NULL);
-// 	parser->lexer = lexer;
-// 	parser->root = NULL;
-// 	parser->cur_token = lexer->token_lst;
-// 	return (parser);
-// }
-
 t_ast	*new_node(t_ms *minishell, t_node_type type)
 {
 	t_ast	*new_ast;
@@ -46,6 +33,7 @@ t_ast	*handle_par(t_ms *ms)
 {
 	t_ast	*new_ast;
 
+	eat_token(ms, T_LPAR);
 	while (ms->cur_tok && ms->cur_tok->type != T_RPAR)
 	{
 		if (ms->cur_tok->type == T_WORD || ms->cur_tok->type == T_LPAR)
@@ -80,9 +68,8 @@ t_ast	*handle_cmd(t_ms *ms)
 	if (!new_ast)
 		return (NULL); //protect?
 	while (ms->cur_tok && ms->cur_tok->type != T_PIPE && ms->cur_tok->type != T_AND_IF
-			&& ms->cur_tok->type != T_OR_IF && ms->cur_tok->type != T_EOF)
+			&& ms->cur_tok->type != T_OR_IF && ms->cur_tok->type != T_EOF && ms->cur_tok->type != T_RPAR)
 	{
-		printf("ms->cur_tok->type = %s\n", tok_to_str(ms->cur_tok));
 		if (is_redir(ms->cur_tok->type))
 		{
 			// printf("REDIR\n");
