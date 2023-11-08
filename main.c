@@ -48,7 +48,7 @@ char*node_to_str(t_ast *node)
 {
 	if (node->type == PIPE)
 		return ("PIPE");
-	if (node->type == COMMAND)
+	if (node->type == CMD)
 		return ("COMMAND");
 	else
 		return ("UNKNOWN");
@@ -84,7 +84,7 @@ void	visit_node(t_ast *root)
 		return ;
 	visit_node(root->left);
 	printf("node type : %s\n", node_to_str(root));
-	if (root->type == COMMAND)
+	if (root->type == CMD)
 		print_lst(root->args);
 	visit_node(root->right);
 }
@@ -97,7 +97,8 @@ t_ms	*init_ms(void)
 	if (!minishell)
 		return (NULL);
 	minishell->lexer = NULL;
-	minishell->parser = NULL;
+	// minishell->parser = NULL;
+	minishell->cur_tok = NULL;
 	return (minishell);
 }
 
@@ -124,7 +125,9 @@ int	main(int argc, char **argv)
 	// lexer(minishell, "bla <,< bla  | ,  || ls -l (nom_de_commande && command) hey  >>  hey ");
 	if (!minishell->lexer)
 		return (free_minishell(minishell, 1), 1);
-	print_token_lst(minishell->lexer->token_lst);
+	// print_token_lst(minishell->lexer->token_lst);
+	minishell->cur_tok = minishell->lexer->token_lst;
+	parse(minishell);
 	// parser(minishell, minishell->lexer);
 	// if (!minishell->parser)
 	// 	return (free_minishell(minishell, 1), 1);

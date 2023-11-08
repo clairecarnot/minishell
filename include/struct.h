@@ -18,11 +18,43 @@
 
 typedef struct s_ast	t_ast;
 
+/*
+	0 WORD,
+	1 LPAR,
+	2 RPAR,
+	3 PIPE,
+	4 AND_IF,
+	5 OR_IF,
+	6 LESS,
+	7 GREAT,
+	8 DLESS,
+	9 DGREAT,
+	10 NEWLINE,
+	11 EOF,
+*/
+
 typedef enum e_node_type
 {
-	PIPE,//0
-	COMMAND,//1
+	CMD,
+	LPAR,
+	RPAR,
+	PIPE,
+	AND_IF,
+	OR_IF,
+	LESS,
+	GREAT,
+	DLESS,
+	DGREAT,
+	NEWLINE,
+	END,
 }			t_node_type;
+
+typedef struct s_redirs
+{
+	t_node_type		type;
+	char	*filename;
+	struct s_redirs	*next_redir;
+}		t_redirs;
 
 struct	s_ast
 {
@@ -30,6 +62,8 @@ struct	s_ast
 	t_ast		*right;
 	t_ast		*left;
 	t_list		*args;
+	int			subsh;
+	t_redirs	*redirs;
 };
 
 typedef enum e_type
@@ -44,7 +78,7 @@ typedef enum e_type
 	T_GREAT,
 	T_DLESS,
 	T_DGREAT,
-	T_NEWLINE;
+	T_NEWLINE,
 	T_EOF,
 }		t_type;
 
@@ -67,18 +101,20 @@ typedef struct s_lexer
 	size_t	tok_count;
 }		t_lexer;
 
-typedef struct	s_parser
-{
-	t_lexer	*lexer;
-	t_ast	*root;
-	t_token	*cur_token;
-}				t_parser;
+// typedef struct	s_parser
+// {
+// 	t_lexer	*lexer;
+// 	t_ast	*root;
+// 	t_token	*cur_token;
+// }				t_parser;
 
 typedef struct	s_ms
 {
 	t_lexer		*lexer;
-	t_parser	*parser;
+	// t_parser	*parser;
 	char		*line;
+	t_token		*cur_tok;
+	t_ast		*root;
 }				t_ms;
 
 #endif 

@@ -60,20 +60,20 @@ void	free_root_ast(t_ast *root)
 		return ;
 	free_root_ast(root->left);
 	free_root_ast(root->right);
-	if (root->type == COMMAND)
+	if (root->type == CMD)
 		ft_lstfree(&root->args);
 	free(root);
 }
 
 void	free_minishell(t_ms *minishell, int exit_status)
 {
-	if (minishell->parser)
-	{	
-		printf("hello1\n");
-		if (minishell->parser->root)
-			free_root_ast(minishell->parser->root);
-		free(minishell->parser);
-	}
+	// if (minishell->parser)
+	// {	
+	// 	printf("hello1\n");
+		if (minishell->root)
+			free_root_ast(minishell->root);
+	// 	free(minishell->parser);
+	// }
 	if (minishell->lexer)
 	{
 		token_lst_free(&minishell->lexer->token_lst);

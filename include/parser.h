@@ -18,17 +18,27 @@
 # include "struct.h"
 
 //----------------------- parser.c ------------------------
-t_parser	*init_parser(t_lexer *lexer);
-void    parser(t_ms *minishell, t_lexer *lexer);
+void	parse(t_ms *ms);
+void	add_subtree(t_ast *node, t_ast	**root);
+t_ast	*handle_op(t_ms *ms);
+t_ast	*handle_cmd(t_ms *ms);
+t_ast	*handle_par(t_ms *ms);
+int	is_redir(int type);
+t_ast	*new_node(t_ms *minishell, t_node_type type);
+
 
 //----------------------- grammar.c ------------------------
-t_ast	*new_node(t_ms *minishell, t_node_type type);
-void	join_node(t_ast *root, t_ast *left, t_ast *right);
-t_ast *read_words(t_ms *minishell, t_parser *parser);
-t_ast	*pipeline(t_ms *minishell, t_parser *parser);
-void    parse_grammar(t_ms *minishell, t_parser *parser);
+// t_ast	*new_node(t_ms *minishell, t_node_type type);
+// void	join_node(t_ast *root, t_ast *left, t_ast *right);
+// t_ast *read_words(t_ms *minishell, t_parser *parser);
+// t_ast	*pipeline(t_ms *minishell, t_parser *parser);
+// void    parse_grammar(t_ms *minishell, t_parser *parser);
 
 //----------------------- utils.c ------------------------
-int	eat_token(t_parser *parser, t_type type);
+int	token_to_node(int type);
+int	eat_token(t_ms *ms, t_type type);
+void	redirs_add_back(t_redirs **lst, t_redirs *new);
+t_redirs	*redirs_new(t_token *token);
+
 
 #endif
