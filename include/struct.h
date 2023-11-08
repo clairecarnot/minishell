@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/03 16:57:48 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/08 09:52:57 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef enum e_type
 	T_GREAT,
 	T_DLESS,
 	T_DGREAT,
+	T_NEWLINE;
 	T_EOF,
 }		t_type;
 
@@ -77,6 +78,7 @@ typedef struct	s_ms
 {
 	t_lexer		*lexer;
 	t_parser	*parser;
+	char		*line;
 }				t_ms;
 
-#endif
+#endif 

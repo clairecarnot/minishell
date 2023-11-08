@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 18:26:36 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:29:20 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ void	free_minishell(t_ms *minishell, int exit_status)
 		token_lst_free(&minishell->lexer->token_lst);
 		free(minishell->lexer);
 	}
+	free(minishell->line);
 	if (minishell)
 		free(minishell);
 	exit(exit_status);

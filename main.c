@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/06 17:24:27 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/07 12:22:17 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,9 @@ char	*tok_to_str(t_token *token)
 	if (token->type == T_DLESS)
 		return ("T_DLESS");
 	if (token->type == T_DGREAT)
-		return ("T_DGREAT");	
+		return ("T_DGREAT");
+	if (token->type == T_NEWLINE)
+		return ("T_NEWLINE");
 	if (token->type == T_EOF)
 		return ("T_EOF");
 	else
@@ -99,17 +101,27 @@ t_ms	*init_ms(void)
 	return (minishell);
 }
 
+char	*display_prompt()
+{
+	char	*line;
+
+	line = readline("Minishell$ ");
+	//add_history
+	return (line);
+}
+
 int	main(int argc, char **argv)
 {
 	t_ms	*minishell;
-
 	
 	(void)argc;
 	(void)argv;
 	minishell = init_ms();
 	if (!minishell)
 		return (1);
-	lexer(minishell, "bla <,< bla  | ,  || ls -l (nom_de_commande && command) hey  >>  hey ");
+	minishell->line = display_prompt();
+	lexer (minishell, minishell->line);
+	// lexer(minishell, "bla <,< bla  | ,  || ls -l (nom_de_commande && command) hey  >>  hey ");
 	if (!minishell->lexer)
 		return (free_minishell(minishell, 1), 1);
 	print_token_lst(minishell->lexer->token_lst);

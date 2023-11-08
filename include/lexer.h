@@ -6,18 +6,27 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/06 17:32:39 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/07 11:18:34 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LEXER_H
 # define LEXER_H
 
-# include <stddef.h>
-# include <stdio.h>
+
 # include "../libft/libft.h"
 # include "struct.h"
 # include "parser.h"
+# include <stddef.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <sys/ioctl.h>
+# include <errno.h>
 
 //----------------------- main.c ------------------------
 char	*tok_to_str(t_token *token);
@@ -26,6 +35,7 @@ void	print_token_lst(t_token *token);
 void	print_lst(t_list *args_enter);
 void	visit_node(t_ast *root);
 t_ms	*init_ms(void);
+char	*display_prompt();
 int	main(int argc, char **argv);
 
 //----------------------- end.c ------------------------

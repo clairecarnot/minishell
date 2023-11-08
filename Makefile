@@ -6,7 +6,7 @@
 #    By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/29 16:45:43 by ccarnot           #+#    #+#              #
-#    Updated: 2023/11/06 17:34:19 by mapoirie         ###   ########.fr        #
+#    Updated: 2023/11/07 11:23:14 by mapoirie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ LIBFT = ./libft/libft.a
 
 $(NAME): $(OBJS)
 	make lib
-	cc -o $(NAME) $(OBJS) $(LIBFT)
+	cc -o $(NAME) $(OBJS) $(LIBFT) -lreadline
 
 all: $(NAME)
 
