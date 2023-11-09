@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:28 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 12:52:56 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 14:13:53 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	token_to_node(int type)
 	if (type == T_NEWLINE)
 		return (NEWLINE);
 	if (type == T_EOF)
-		return (END);
+		return (printf("error, should not be here\n"), END);
 	return (-1); //protec
 }
 
@@ -67,14 +67,14 @@ void	redirs_add_back(t_redirs **lst, t_redirs *new)
 	}
 }
 
-t_redirs	*redirs_new(t_token *token)
+t_redirs	*redirs_new(t_token *token, int type)
 {
 	t_redirs	*d;
 
 	d = malloc(sizeof(t_redirs));
 	if (!d)
 		return (NULL);
-	d->type = token_to_node(token->type);
+	d->type = token_to_node(type);
 	d->filename = ft_strdup(token->value);
 	if (!d->filename)
 		return (free(d), NULL);

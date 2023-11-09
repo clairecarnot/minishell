@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:03:23 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 14:42:59 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 14:14:40 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@ void	add_subtree(t_ast *node, t_ast	**root);
 t_ast	*handle_op(t_ms *ms);
 t_ast	*handle_cmd(t_ms *ms);
 t_ast	*handle_par(t_ms *ms);
+t_ast	*handle_pipe(t_ms *ms);
 int	is_redir(int type);
+t_redirs	*handle_red(t_ms *ms, t_ast *new_ast);
 t_ast	*new_node(t_ms *minishell, t_node_type type);
 
 
@@ -38,7 +40,7 @@ t_ast	*new_node(t_ms *minishell, t_node_type type);
 int	token_to_node(int type);
 int	eat_token(t_ms *ms, t_type type);
 void	redirs_add_back(t_redirs **lst, t_redirs *new);
-t_redirs	*redirs_new(t_token *token);
+t_redirs	*redirs_new(t_token *token, int type);
 
 
 #endif

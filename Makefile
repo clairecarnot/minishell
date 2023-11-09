@@ -16,7 +16,8 @@ CFLAGS = -g3 -Wall -Wextra -Werror
 
 INCL = -I./libft -I./include
 
-SRCS = main.c end.c srcs/lexer/lexer.c srcs/lexer/lexer_init.c srcs/lexer/lexer_utils.c srcs/parser/parser.c srcs/parser/grammar.c srcs/parser/utils.c
+SRCS = main.c end.c print_level.c srcs/lexer/lexer.c srcs/lexer/lexer_init.c srcs/lexer/lexer_utils.c \
+	srcs/parser/parser.c srcs/parser/utils.c 
 
 OBJS = $(SRCS:.c=.o)
 

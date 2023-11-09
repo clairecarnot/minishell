@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/02 17:30:54 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 14:13:18 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ t_ast	*handle_par(t_ms *ms)
 	eat_token(ms, T_LPAR);
 	while (ms->cur_tok && ms->cur_tok->type != T_RPAR)
 	{
+//		printf("handle par\n");
+//		printf("ms->cur_tok->type = %s\n", tok_to_str(ms->cur_tok));
 		if (ms->cur_tok->type == T_WORD || ms->cur_tok->type == T_LPAR)
 			add_subtree(handle_cmd(ms), &new_ast);
 		else if (ms->cur_tok->type >= T_PIPE && ms->cur_tok->type <= T_OR_IF)
@@ -55,31 +57,42 @@ int	is_redir(int type)
 	return (0);
 }
 
+t_redirs	*handle_red(t_ms *ms, t_ast *new_ast)
+{
+	t_redirs	*new_redir;
+
+	if (ms->cur_tok->next_token->type != T_WORD)
+		return (printf("error1\n"), NULL); //a modif
+	new_redir = redirs_new(ms->cur_tok->next_token, ms->cur_tok->type);
+	if (!new_redir)
+		return (NULL); //protec
+	redirs_add_back(&new_ast->redirs, new_redir);
+	eat_token(ms, ms->cur_tok->type);
+	eat_token(ms, ms->cur_tok->type);
+	return (new_ast->redirs);
+}
+
 t_ast	*handle_cmd(t_ms *ms)
 {
 	t_ast	*new_ast;
 	char	*cmd;
 	t_list	*new_arg;
-	t_redirs	*new_redir;
 
 	if (ms->cur_tok->type == T_LPAR)
 		return (handle_par(ms));
 	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
 	if (!new_ast)
 		return (NULL); //protect?
-	while (ms->cur_tok && ms->cur_tok->type != T_PIPE && ms->cur_tok->type != T_AND_IF
-			&& ms->cur_tok->type != T_OR_IF && ms->cur_tok->type != T_EOF && ms->cur_tok->type != T_RPAR)
+	while (ms->cur_tok && ms->cur_tok->type != T_PIPE
+		&& ms->cur_tok->type != T_AND_IF && ms->cur_tok->type != T_OR_IF
+		&& ms->cur_tok->type != T_EOF && ms->cur_tok->type != T_RPAR)
 	{
+//		printf("handle cmd\n");
+//		printf("ms->cur_tok->type = %s\n", tok_to_str(ms->cur_tok));
 		if (is_redir(ms->cur_tok->type))
 		{
-			// printf("REDIR\n");
-			if (ms->cur_tok->next_token != T_WORD)
-				return (printf("error\n"), NULL); //a modif
-			new_redir = redirs_new(ms->cur_tok);
-			if (!new_ast->redirs)
+			if (!handle_red(ms, new_ast))
 				return (NULL); //protec
-			redirs_add_back(&new_ast->redirs, new_redir);
-			eat_token(ms, ms->cur_tok->type);
 		}
 		else
 		{
@@ -101,12 +114,37 @@ t_ast	*handle_op(t_ms *ms)
 {
 	t_ast	*new_ast;
 
+//	printf("handle op\n");
+//	printf("ms->cur_tok->type = %s\n", tok_to_str(ms->cur_tok));
 	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
 	if (!new_ast)
 		return (NULL); //protect
 	eat_token(ms, ms->cur_tok->type);
 	//protection sur le next token?
+//	printf("handle op right\n");
+//	printf("ms->cur_tok->type = %s\n", tok_to_str(ms->cur_tok));
 	new_ast->right = handle_cmd(ms);
+	return (new_ast);
+}
+
+t_ast	*handle_pipe(t_ms *ms)
+{
+	t_ast	*new_ast;
+
+	new_ast = new_node(ms, token_to_node(T_PIPE));
+	if (!new_ast)
+		return (NULL); //protect
+	eat_token(ms, T_PIPE);
+	while (ms->cur_tok && ms->cur_tok->type != T_PIPE
+			&& ms->cur_tok->type != T_EOF)
+	{
+//		printf("handle pipe\n");
+//		printf("ms->cur_tok->type = %s\n", tok_to_str(ms->cur_tok));
+		if (ms->cur_tok->type == T_WORD || ms->cur_tok->type == T_LPAR)
+			add_subtree(handle_cmd(ms), &new_ast->right);
+		else if (ms->cur_tok->type >= T_PIPE && ms->cur_tok->type <= T_OR_IF)
+			add_subtree(handle_op(ms), &new_ast->right);
+	}
 	return (new_ast);
 }
 
@@ -124,7 +162,10 @@ void	parse(t_ms *ms)
 	{
 		if (ms->cur_tok->type == T_WORD || ms->cur_tok->type == T_LPAR)
 			add_subtree(handle_cmd(ms), &ms->root);
-		else if (ms->cur_tok->type >= T_PIPE && ms->cur_tok->type <= T_OR_IF)
+		else if (ms->cur_tok->type == T_PIPE)
+			add_subtree(handle_pipe(ms), &ms->root);
+		else if (ms->cur_tok->type == T_AND_IF || ms->cur_tok->type == T_OR_IF)
 			add_subtree(handle_op(ms), &ms->root);
 	}
+//	printf("SORTIE BOUCLE\n");
 }

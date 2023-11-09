@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/07 11:18:34 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 14:10:35 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*tok_to_str(t_token *token);
 char	*node_to_str(t_ast *node);
 void	print_token_lst(t_token *token);
 void	print_lst(t_list *args_enter);
+void	print_redirs(t_redirs *args_enter);
 void	visit_node(t_ast *root);
 t_ms	*init_ms(void);
 char	*display_prompt();
