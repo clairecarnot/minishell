@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/07 11:29:20 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:32:14 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,27 @@ void	token_lst_free(t_token **lst)
 		}
 		*lst = NULL;
 	}
-	
 }
 
+void	redirs_free(t_redirs **lst)
+{
+	t_redirs	*ptr;
+	t_redirs	*tmp;
+
+	if (lst)
+	{
+		ptr = *lst;
+		while (ptr)
+		{
+			tmp = ptr->next_redir;
+			if (ptr->filename)
+				free(ptr->filename);
+			free(ptr);
+			ptr = tmp;
+		}
+		*lst = NULL;
+	}
+}
 void	free_root_ast(t_ast *root)
 {
 	if (!root)
@@ -61,6 +79,8 @@ void	free_root_ast(t_ast *root)
 	free_root_ast(root->right);
 	if (root->type == CMD)
 		ft_lstfree(&root->args);
+	if (root->redirs)
+		redirs_free(&root->redirs);
 	free(root);
 }
 

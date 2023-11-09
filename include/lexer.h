@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/09 14:10:35 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/09 17:33:03 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	main(int argc, char **argv);
 //----------------------- end.c ------------------------
 void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);
+void	redirs_free(t_redirs **lst);
 void	free_root_ast(t_ast *root);
 void	free_minishell(t_ms *minishell, int exit_status);
 
