@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/07 12:20:54 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 14:12:00 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	token_add_back(t_token **lst, t_token *new)
 	}
 }
 
-void	lexer(t_ms *minishell, char *s)
+int	lexer(t_ms *minishell, char *s)
 {
 	minishell->lexer = init_lexer(s);
 	if (!minishell->lexer)
@@ -87,4 +87,7 @@ void	lexer(t_ms *minishell, char *s)
 		token_add_back(&minishell->lexer->token_lst, lexer_next_token(minishell, minishell->lexer));
 	}
 	token_add_back(&minishell->lexer->token_lst, init_token(minishell, "\0", T_EOF));
+	if (!error_in_lexer(minishell))
+		return(0);
+	return(1);
 }

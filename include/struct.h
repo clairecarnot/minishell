@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/08 09:52:57 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 11:24:00 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct s_lexer
 	size_t	cur_pos;
 	size_t	next_pos;
 	t_token	*token_lst;
-	size_t	tok_count;
+	size_t	tok_count;//nb de token final
 }		t_lexer;
 
 // typedef struct	s_parser

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/07 11:18:34 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/09 14:08:29 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	free_minishell(t_ms *minishell, int exit_status);
 t_token	*parse_word(t_ms *minishell, t_lexer *lexer);
 t_token	*lexer_next_token(t_ms *minishell, t_lexer * lexer);
 void	token_add_back(t_token **lst, t_token *new);
-void	lexer(t_ms *minishell, char *s);
+int		lexer(t_ms *minishell, char *s);
 
 //--------------------- lexer_utils.c ----------------------
 void	advance(t_lexer *lexer);
@@ -60,5 +60,9 @@ int		ft_ischar(int c);
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
+
+//--------------------- lexer_error.c ----------------------
+int		error_in_lexer(t_ms *ms);
+
 
 #endif
