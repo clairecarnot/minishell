@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/09 17:26:41 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/10 15:32:42 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,23 @@ t_ast	*handle_par(t_ms *ms)
 	{
 		if (ms->cur_tok->type == T_WORD || ms->cur_tok->type >= T_LPAR)
 			tmp_tree = handle_cmd(ms);
-		else if (ms->cur_tok->type >= T_PIPE && ms->cur_tok->type <= T_OR_IF)
+		else if (ms->cur_tok->type == T_PIPE)
+			tmp_tree = handle_pipe(ms);
+		else if (ms->cur_tok->type == T_AND_IF || ms->cur_tok->type == T_OR_IF)
 			tmp_tree = handle_op(ms);
+//		else if (ms->cur_tok->type >= T_PIPE && ms->cur_tok->type <= T_OR_IF)
+//			tmp_tree = handle_op(ms);
 		if (!tmp_tree)
 			return (NULL);
+//		if (!new_ast)
+//			new_ast = tmp_tree;
+//		else
 		add_subtree(tmp_tree, &new_ast);
+//		visit_node(new_ast);
 	}
 	eat_token(ms, T_RPAR);
 	new_ast->subsh = 1;
+//		visit_node(new_ast);
 	return (new_ast);
 }
 
@@ -126,6 +135,7 @@ t_ast	*handle_op(t_ms *ms)
 		if (!new_ast->right)
 			return (free_root_ast(new_ast), NULL);
 	}
+//	printf("return OP\n");
 	return (new_ast);
 }
 
@@ -140,6 +150,7 @@ t_ast	*handle_pipe(t_ms *ms)
 		return (NULL);
 	eat_token(ms, T_PIPE);
 	while (ms->cur_tok && ms->cur_tok->type != T_PIPE
+			&& ms->cur_tok->type != T_RPAR
 			&& ms->cur_tok->type != T_EOF)
 	{
 		if (ms->cur_tok->type == T_WORD || ms->cur_tok->type >= T_LPAR)
@@ -157,8 +168,24 @@ void	add_subtree(t_ast *node, t_ast	**root)
 {
 	if (!node)
 		return ;
+//	if (!*root)
+//		*root = node;
 	node->left = *root;
 	*root = node;
+	/*
+	printf("*root = %s\n", node_to_str(*root));
+	if ((*root)->type == OR_IF)
+	{	
+		if ((*root)->left)
+			printf("root left type = %s\n", node_to_str((*root)->left));
+		if ((*root)->left->args)
+			print_lst((*root)->left->args);
+		if ((*root)->right)
+			printf("root right type = %s\n", node_to_str((*root)->right));
+		if ((*root)->right->args)
+			print_lst((*root)->right->args);
+	}
+	*/
 }
 
 void	parse(t_ms *ms)

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/09 14:15:42 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/10 14:31:38 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ void	visit_node(t_ast *root)
 		print_redirs(root->redirs);
 	visit_node(root->right);
 //	printf("exiting node %s\n", node_to_str(root));
-	printf("\n");
 }
 
 t_ms	*init_ms(void)
