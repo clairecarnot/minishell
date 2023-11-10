@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/10 16:07:24 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/10 17:33:55 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,16 @@ t_ast	*new_node(t_node_type type)
 {
 	t_ast	*new_ast;
 
-		new_ast = ft_calloc(1, sizeof(t_ast));
-		if (!new_ast)
-			return (NULL);
-		new_ast->type = type;
-		new_ast->right = NULL;
-		new_ast->left = NULL;
-		new_ast->args = NULL;
-		new_ast->subsh = 0;
-		new_ast->redirs = NULL;
-		return (new_ast);
+	new_ast = ft_calloc(1, sizeof(t_ast));
+	if (!new_ast)
+		return (NULL);
+	new_ast->type = type;
+	new_ast->right = NULL;
+	new_ast->left = NULL;
+	new_ast->args = NULL;
+	new_ast->subsh = 0;
+	new_ast->redirs = NULL;
+	return (new_ast);
 }
 
 t_ast	*handle_par(t_ms *ms)
@@ -44,25 +44,22 @@ t_ast	*handle_par(t_ms *ms)
 			tmp_tree = handle_pipe(ms);
 		else if (ms->cur_tok->type == T_AND_IF || ms->cur_tok->type == T_OR_IF)
 			tmp_tree = handle_op(ms);
-//		else if (ms->cur_tok->type >= T_PIPE && ms->cur_tok->type <= T_OR_IF)
-//			tmp_tree = handle_op(ms);
 		if (!tmp_tree)
 			return (NULL);
 		if (!new_ast)
 			new_ast = tmp_tree;
 		else
 			add_subtree(tmp_tree, &new_ast);
-//		visit_node(new_ast);
 	}
 	eat_token(ms, T_RPAR);
 	new_ast->subsh = 1;
-//	visit_node(new_ast);
 	return (new_ast);
 }
 
 int	is_redir(int type)
 {
-	if (type == T_LESS || type == T_GREAT || type == T_DLESS || type == T_DGREAT)
+	if (type == T_LESS || type == T_GREAT
+		|| type == T_DLESS || type == T_DGREAT)
 		return (1);
 	return (0);
 }
@@ -114,7 +111,7 @@ t_ast	*handle_cmd(t_ms *ms)
 			eat_token(ms, T_WORD);
 		}
 	}
-	return (new_ast);	
+	return (new_ast);
 }
 
 t_ast	*handle_op(t_ms *ms)
@@ -128,14 +125,13 @@ t_ast	*handle_op(t_ms *ms)
 		return (NULL);
 	eat_token(ms, ms->cur_tok->type);
 	if (ms->cur_tok && ms->cur_tok->type != T_EOF
-			&& (ms->cur_tok->type == T_WORD
-				|| ms->cur_tok->type >= T_LPAR))
+		&& (ms->cur_tok->type == T_WORD
+			|| ms->cur_tok->type >= T_LPAR))
 	{
 		new_ast->right = handle_cmd(ms);
 		if (!new_ast->right)
 			return (free_root_ast(new_ast), NULL);
 	}
-//	printf("return OP\n");
 	return (new_ast);
 }
 
@@ -150,8 +146,8 @@ t_ast	*handle_pipe(t_ms *ms)
 		return (NULL);
 	eat_token(ms, T_PIPE);
 	while (ms->cur_tok && ms->cur_tok->type != T_PIPE
-			&& ms->cur_tok->type != T_RPAR
-			&& ms->cur_tok->type != T_EOF)
+		&& ms->cur_tok->type != T_RPAR
+		&& ms->cur_tok->type != T_EOF)
 	{
 		if (ms->cur_tok->type == T_WORD || ms->cur_tok->type >= T_LPAR)
 			tmp_tree = handle_cmd(ms);
@@ -161,7 +157,6 @@ t_ast	*handle_pipe(t_ms *ms)
 			return (free_root_ast(new_ast), NULL);
 		add_subtree(tmp_tree, &new_ast->right);
 	}
-//	visit_node(new_ast);
 	return (new_ast);
 }
 
@@ -169,24 +164,13 @@ void	add_subtree(t_ast *node, t_ast	**root)
 {
 	if (!node)
 		return ;
-//	if (!*root)
-//		*root = node;
-	node->left = *root;
-	*root = node;
-	/*
-	printf("*root = %s\n", node_to_str(*root));
-	if ((*root)->type == OR_IF)
-	{	
-		if ((*root)->left)
-			printf("root left type = %s\n", node_to_str((*root)->left));
-		if ((*root)->left->args)
-			print_lst((*root)->left->args);
-		if ((*root)->right)
-			printf("root right type = %s\n", node_to_str((*root)->right));
-		if ((*root)->right->args)
-			print_lst((*root)->right->args);
+	if (!*root)
+		*root = node;
+	else
+	{
+		node->left = *root;
+		*root = node;
 	}
-	*/
 }
 
 void	parse(t_ms *ms)
@@ -205,6 +189,5 @@ void	parse(t_ms *ms)
 		if (!tmp_tree)
 			free_minishell(ms, 1);
 		add_subtree(tmp_tree, &ms->root);
-//		visit_node(ms->root);
 	}
 }

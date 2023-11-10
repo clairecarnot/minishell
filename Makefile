@@ -6,13 +6,13 @@
 #    By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/29 16:45:43 by ccarnot           #+#    #+#              #
-#    Updated: 2023/11/07 11:23:14 by mapoirie         ###   ########.fr        #
+#    Updated: 2023/11/10 16:51:07 by ccarnot          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CFLAGS = -g3 -Wall -Wextra -Werror
+CFLAGS = -g3 -Wall -Wextra -Werror -fsanitize=address
 
 INCL = -I./libft -I./include
 
@@ -25,7 +25,7 @@ LIBFT = ./libft/libft.a
 
 $(NAME): $(OBJS)
 	make lib
-	cc -o $(NAME) $(OBJS) $(LIBFT) -lreadline
+	cc -o $(NAME) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline
 
 all: $(NAME)
 

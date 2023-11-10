@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/10 16:07:53 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/10 16:52:57 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void	visit_node(t_ast *root)
 		return ;
 	visit_node(root->left);
 	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
+	fflush(stdout);
 	if (root->args)
 		print_lst(root->args);
 	if (root->redirs)
