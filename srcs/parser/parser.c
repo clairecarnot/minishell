@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/10 15:32:42 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/10 16:07:24 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ t_ast	*handle_par(t_ms *ms)
 //			tmp_tree = handle_op(ms);
 		if (!tmp_tree)
 			return (NULL);
-//		if (!new_ast)
-//			new_ast = tmp_tree;
-//		else
-		add_subtree(tmp_tree, &new_ast);
+		if (!new_ast)
+			new_ast = tmp_tree;
+		else
+			add_subtree(tmp_tree, &new_ast);
 //		visit_node(new_ast);
 	}
 	eat_token(ms, T_RPAR);
 	new_ast->subsh = 1;
-//		visit_node(new_ast);
+//	visit_node(new_ast);
 	return (new_ast);
 }
 
@@ -161,6 +161,7 @@ t_ast	*handle_pipe(t_ms *ms)
 			return (free_root_ast(new_ast), NULL);
 		add_subtree(tmp_tree, &new_ast->right);
 	}
+//	visit_node(new_ast);
 	return (new_ast);
 }
 
@@ -204,5 +205,6 @@ void	parse(t_ms *ms)
 		if (!tmp_tree)
 			free_minishell(ms, 1);
 		add_subtree(tmp_tree, &ms->root);
+//		visit_node(ms->root);
 	}
 }
