@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/13 10:02:19 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/13 16:54:03 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void	visit_node(t_ast *root)
 		return ;
 	visit_node(root->left);
 	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
-	fflush(stdout);
+//	fflush(stdout);
 	if (root->args)
 		print_lst(root->args);
 	if (root->redirs)
@@ -143,6 +143,8 @@ char	*display_prompt()
 	char	*line;
 
 	line = readline("minishell$ ");
+	if (!line)
+		return (NULL);
 	add_history(line);
 	return (line);
 }
@@ -162,6 +164,8 @@ int	main(int argc, char **argv)
 	while (1)
 	{
 		minishell->line = display_prompt();
+		if (!minishell->line)
+			free_minishell(minishell, 1);
 		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
 		{	
 			if (!minishell->lexer)
