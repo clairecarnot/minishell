@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/08 09:52:57 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/13 10:09:32 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,18 @@
 typedef struct s_ast	t_ast;
 
 /*
-	0 WORD,
-	1 LPAR,
-	2 RPAR,
-	3 PIPE,
-	4 AND_IF,
-	5 OR_IF,
-	6 LESS,
-	7 GREAT,
-	8 DLESS,
-	9 DGREAT,
-	10 NEWLINE,
-	11 EOF,
+	0 WORD
+	1 LPAR (
+	2 RPAR )
+	3 PIPE |
+	4 AND_IF &&
+	5 OR_IF ||
+	6 LESS <
+	7 GREAT >
+	8 DLESS <<
+	9 DGREAT >>
+	10 NEWLINE \n
+	11 EOF \0
 */
 
 typedef enum e_node_type
