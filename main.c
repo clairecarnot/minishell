@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/09 17:01:47 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/13 10:02:19 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,8 +147,8 @@ int	main(int argc, char **argv)
 	while (1)
 	{
 		minishell->line = display_prompt();
-		if (lexer(minishell, minishell->line))
-		{		
+		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
+		{	
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
 			print_token_lst(minishell->lexer->token_lst);

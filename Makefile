@@ -6,7 +6,7 @@
 #    By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/08/29 16:45:43 by ccarnot           #+#    #+#              #
-#    Updated: 2023/11/09 10:47:01 by mapoirie         ###   ########.fr        #
+#    Updated: 2023/11/10 12:42:53 by mapoirie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,9 @@ CFLAGS = -g3 -Wall -Wextra -Werror
 
 INCL = -I./libft -I./include
 
-SRCS = main.c end.c srcs/lexer/lexer.c srcs/lexer/lexer_init.c srcs/lexer/lexer_utils.c srcs/lexer/lexer_error.c \
+SRCS = main.c end.c \
+srcs/lexer/lexer.c srcs/lexer/lexer_init.c srcs/lexer/lexer_utils.c\
+srcs/lexer/lexer_error.c srcs/lexer/prelexer_error.c\
 srcs/parser/parser.c srcs/parser/utils.c
 
 OBJS = $(SRCS:.c=.o)

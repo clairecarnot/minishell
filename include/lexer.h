@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/09 14:08:29 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/13 10:54:43 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,14 +55,19 @@ void	advance(t_lexer *lexer);
 void	advance_ntimes(t_lexer *lexer, int i);
 int		is_wspace(char c);
 char	peek_next(t_lexer *lexer);
-int		ft_ischar(int c);
+int		ft_ischar(int c, int quotes);
 
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
 
 //--------------------- lexer_error.c ----------------------
+int		check_par(t_ms *ms);
+
 int		error_in_lexer(t_ms *ms);
 
+//--------------------- prelexer_error.c ----------------------
+int		count_quotes(char *line);
+int		check_error_prelexer(char *line);
 
 #endif
