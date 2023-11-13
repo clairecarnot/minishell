@@ -44,7 +44,7 @@ char	*tok_to_str(t_token *token)
 		return ("UNKNOWN");
 }
 
-char*node_to_str(t_ast *node)
+char	*node_to_str(t_ast *node)
 {
 	if (node->type == CMD)
 		return ("CMD");
@@ -86,6 +86,18 @@ void	print_token_lst(t_token *token)
 	}
 }
 
+void	print_redirs(t_redirs *args_enter)
+{
+	t_redirs	*args;
+	
+	args = args_enter;
+	while (args)
+	{
+		printf("redirs = %s\n", (char *)args->filename);
+		args = args->next_redir;
+	}
+}
+
 void	print_lst(t_list *args_enter)
 {
 	t_list	*args;
@@ -96,7 +108,6 @@ void	print_lst(t_list *args_enter)
 		printf("args content = %s\n", (char *)args->content);
 		args = args->next;
 	}
-	printf("\n");
 }
 
 void	visit_node(t_ast *root)
@@ -105,9 +116,13 @@ void	visit_node(t_ast *root)
 		return ;
 	visit_node(root->left);
 	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
-	if (root->type == CMD)
+	fflush(stdout);
+	if (root->args)
 		print_lst(root->args);
+	if (root->redirs)
+		print_redirs(root->redirs);
 	visit_node(root->right);
+//	printf("exiting node %s\n", node_to_str(root));
 }
 
 t_ms	*init_ms(void)
@@ -160,7 +175,7 @@ int	main(int argc, char **argv)
 	// parser(minishell, minishell->lexer);
 	// if (!minishell->parser)
 	// 	return (free_minishell(minishell, 1), 1);
-
+	visit_node(minishell->root);
 	// btree_apply_by_level(minishell->root);
 	free_minishell(minishell, 0);
 	return (0);

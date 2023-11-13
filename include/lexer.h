@@ -33,6 +33,7 @@ char	*tok_to_str(t_token *token);
 char	*node_to_str(t_ast *node);
 void	print_token_lst(t_token *token);
 void	print_lst(t_list *args_enter);
+void	print_redirs(t_redirs *args_enter);
 void	visit_node(t_ast *root);
 t_ms	*init_ms(void);
 char	*display_prompt();
@@ -41,6 +42,7 @@ int	main(int argc, char **argv);
 //----------------------- end.c ------------------------
 void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);
+void	redirs_free(t_redirs **lst);
 void	free_root_ast(t_ast *root);
 void	free_minishell(t_ms *minishell, int exit_status);
 
