@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/13 10:41:19 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/14 16:59:28 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_token	*parse_quotes_word(t_ms *ms, t_lexer *lexer, int qtype)//qtype = quote t
 	if (!value)//verifier protec
 		return (NULL);
 	ft_strlcpy(value, &(lexer->src[lexer->cur_pos]), i + 2);
-	printf("word = %s\n", value);
 	advance_ntimes(lexer, i + 1);
 	return (init_token(ms, value, T_WORD));
 }
@@ -51,31 +50,31 @@ t_token	*lexer_next_token(t_ms *minishell, t_lexer * lexer)
 {
 	while (is_wspace(lexer->src[lexer->cur_pos]) != 0)
 		advance(lexer);
-	if (lexer->src[lexer->cur_pos] == '|' && peek_next(lexer) == '|')
+	if (lexer->src[lexer->cur_pos] == '|' && peek_next(lexer) == '|')//init T_OR_IF
 		return (advance_ntimes(lexer, 2), init_token(minishell, "||", T_OR_IF));
-	else if (lexer->src[lexer->cur_pos] == '&' && peek_next(lexer) == '&')
+	else if (lexer->src[lexer->cur_pos] == '&' && peek_next(lexer) == '&')//init T_AND_IF
 		return (advance_ntimes(lexer, 2), init_token(minishell, "&&", T_AND_IF));
-	else if (lexer->src[lexer->cur_pos] == '<' && peek_next(lexer) == '<')
+	else if (lexer->src[lexer->cur_pos] == '<' && peek_next(lexer) == '<')//init T_DLESS
 		return (advance_ntimes(lexer, 2), init_token(minishell, "<<", T_DLESS));
-	else if (lexer->src[lexer->cur_pos] == '>' && peek_next(lexer) == '>')
+	else if (lexer->src[lexer->cur_pos] == '>' && peek_next(lexer) == '>')//init T_DGREAT
 		return (advance_ntimes(lexer, 2), init_token(minishell, ">>", T_DGREAT));
-	else if (lexer->src[lexer->cur_pos] == '\n')
-		return (advance(lexer), init_token(minishell, "\n", T_NEWLINE));//a verifier car ne marche pas
-	else if (lexer->src[lexer->cur_pos] == '|')
+	else if (lexer->src[lexer->cur_pos] == '\n')//a verifier car ne marche pas
+		return (advance(lexer), init_token(minishell, "\n", T_NEWLINE));
+	else if (lexer->src[lexer->cur_pos] == '|')//init T_PIPE
 		return (advance(lexer), init_token(minishell, "|", T_PIPE));
-	else if (lexer->src[lexer->cur_pos] == '(')
+	else if (lexer->src[lexer->cur_pos] == '(')//init T_LPAR
 		return (advance(lexer), init_token(minishell, "(", T_LPAR));
-	else if (lexer->src[lexer->cur_pos] == ')')
+	else if (lexer->src[lexer->cur_pos] == ')')//init T_RPAR
 		return (advance(lexer), init_token(minishell, ")", T_RPAR));
-	else if (lexer->src[lexer->cur_pos] == '<')
-		return (advance(lexer), init_token(minishell, "<", T_LESS));	
-	else if (lexer->src[lexer->cur_pos] == '>')
+	else if (lexer->src[lexer->cur_pos] == '<')//init T_LESS
+		return (advance(lexer), init_token(minishell, "<", T_LESS));
+	else if (lexer->src[lexer->cur_pos] == '>')//init T_GREAT
 		return (advance(lexer), init_token(minishell, ">", T_GREAT));
-	else if (lexer->src[lexer->cur_pos] == 39)// single quote
+	else if (lexer->src[lexer->cur_pos] == 39)//init T_WORD single quote
 		return (parse_quotes_word(minishell, lexer, 39));
-	else if (lexer->src[lexer->cur_pos] == 34)// double quotes
+	else if (lexer->src[lexer->cur_pos] == 34)//init T_WORD double quotes
 		return (parse_quotes_word(minishell, lexer, 34));
-	else if (ft_ischar(lexer->src[lexer->cur_pos], 0))
+	else if (ft_ischar(lexer->src[lexer->cur_pos], 0))//init T_WORD
 		return (parse_word(minishell, lexer));
 	return (NULL);
 }
