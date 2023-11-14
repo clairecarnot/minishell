@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/13 10:02:19 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/14 16:50:26 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,24 @@ char	*display_prompt()
 	return (line);
 }
 
+void	print_tree(t_ast *root, int space)
+{
+	if (!root)
+		return ;
+	space += 10;
+	print_tree(root->right, space);
+	
+	printf("\n");
+	int i;
+	for (i = 10; i < space; i++)
+		printf(" ");
+	printf("%s ", node_to_str(root));
+	if (root->type == CMD)
+		printf("%s ss:%d\n", (char *)root->args->content, root->subsh);
+
+	print_tree(root->left, space);
+}
+
 void		btree_apply_by_level(t_ast *root);
 
 int	main(int argc, char **argv)
@@ -166,16 +184,17 @@ int	main(int argc, char **argv)
 		{	
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
-			print_token_lst(minishell->lexer->token_lst);
-			// minishell->cur_tok = minishell->lexer->token_lst;
-			// parse(minishell);
+			// print_token_lst(minishell->lexer->token_lst);
+			minishell->cur_tok = minishell->lexer->token_lst;
+			parse(minishell);
 			// visit_node(minishell->root);	
+			print_tree(minishell->root, 0);
 		}
 	}
 	// parser(minishell, minishell->lexer);
 	// if (!minishell->parser)
 	// 	return (free_minishell(minishell, 1), 1);
-	visit_node(minishell->root);
+	// visit_node(minishell->root);
 	// btree_apply_by_level(minishell->root);
 	free_minishell(minishell, 0);
 	return (0);
