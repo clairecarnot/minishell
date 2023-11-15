@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 17:05:30 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/15 17:14:03 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/15 17:22:03 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	check_quotes(char *str)
 		{
 			qflag = 1;
 			c = str[i];
+			i++;
 			while (str[i] && str[i] != c)
 				i++;
 			if (str[i] && str[i] == c)
