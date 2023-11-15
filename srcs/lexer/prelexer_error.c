@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:19:15 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/14 17:01:23 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/15 12:03:48 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	check_after_lessgreat(char *line, size_t i)
 	{
 		if (line[i] == '<' && line[i + 1] == '>')// case : <>      <>  eof 
 			return(printf("minishell: syntax error near unexpected token `<>'\n"), 1);
-		else if (line[i] == '>')// case: <>    >  eof
+		/*else if (line[i] == '>')// case: <>    >  eof
 			return(printf("minishell: syntax error near unexpected token `>'\n"), 1);
 		else if (line[i] == '<')// case: <>    <  eof
-			return(printf("minishell: syntax error near unexpected token `<'\n"), 1);
+			return(printf("minishell: syntax error near unexpected token `<'\n"), 1);*/
 		i++;
 	}
 	return (0);
