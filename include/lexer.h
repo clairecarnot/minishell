@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/15 16:29:29 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:20:20 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <errno.h>
+# include <limits.h>
 
 //----------------------- main.c ------------------------
 char	*tok_to_str(t_token *token);
@@ -35,9 +36,8 @@ void	print_token_lst(t_token *token);
 void	print_lst(t_list *args_enter);
 void	print_redirs(t_redirs *args_enter);
 void	visit_node(t_ast *root);
-t_ms	*init_ms(void);
+t_ms	*init_ms(char **env);
 char	*display_prompt();
-int	main(int argc, char **argv);
 
 //----------------------- end.c ------------------------
 void	ft_lstfree(t_list **lst);

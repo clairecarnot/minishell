@@ -6,13 +6,14 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 11:56:49 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/16 18:31:27 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/lexer.h"
 #include "./include/parser.h"
 #include "./include/struct.h"
+#include "./include/env.h"
 
 char	*tok_to_str(t_token *token)//temporaire
 {
@@ -105,7 +106,8 @@ void	print_lst(t_list *args_enter)//temporaire
 	args = args_enter;
 	while (args)
 	{
-		printf("args content = %s\n", (char *)args->content);
+//		printf("args content = %s\n", (char *)args->content);
+		printf("%s\n", (char *)args->content);
 		args = args->next;
 	}
 }
@@ -125,7 +127,7 @@ void	visit_node(t_ast *root)//temporaire
 //	printf("exiting node %s\n", node_to_str(root));
 }
 
-t_ms	*init_ms(void)
+t_ms	*init_ms(char **env)
 {
 	t_ms	*minishell;
 
@@ -133,8 +135,18 @@ t_ms	*init_ms(void)
 	if (!minishell)
 		return (NULL);
 	minishell->lexer = NULL;
-	// minishell->parser = NULL;
 	minishell->cur_tok = NULL;
+	minishell->root = NULL;
+	minishell->env = NULL;
+	minishell->exp = NULL;
+	minishell->wkdir = NULL;
+	minishell->old_wkdir = NULL;
+	if (init_env(minishell, env))
+		free_minishell(minishell, 1);
+	if (init_workdir(minishell))
+		free_minishell(minishell, 1);
+	if (init_exp(minishell))
+		free_minishell(minishell, 1);
 	return (minishell);
 }
 
@@ -167,16 +179,23 @@ void	print_tree(t_ast *root, int space)
 	print_tree(root->left, space);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	t_ms	*minishell;
 	
 	(void)argc;
 	(void)argv;
-	minishell = init_ms();
+	minishell = init_ms(env);
 	if (!minishell)
 		return (1);
-
+	print_lst(minishell->env);
+//	printf("\n\n");
+//	print_lst(minishell->exp);
+//	printf("\n\n");
+//	printf("ms wkdir = %s\n", minishell->wkdir);
+//	printf("\n\n");
+//	printf("ms old_wkdir = %s\n", minishell->old_wkdir);
+/*
 	while (1)
 	{
 		minishell->line = display_prompt();
@@ -196,5 +215,6 @@ int	main(int argc, char **argv)
 	}
 	visit_node(minishell->root);
 	free_minishell(minishell, 0);
+*/
 	return (0);
 }
