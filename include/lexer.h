@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/15 16:29:29 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:42:21 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "../libft/libft.h"
 # include "struct.h"
 # include "parser.h"
+# include "export.h"
 # include <stddef.h>
 # include <readline/history.h>
 # include <readline/readline.h>

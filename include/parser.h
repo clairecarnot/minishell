@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:03:23 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/13 15:21:23 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/16 16:42:28 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "lexer.h"
 # include "parser.h"
 # include "struct.h"
+# include "export.h"
 
 //----------------------- parser.c -----------------------
 void	parse(t_ms *ms);

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/13 10:09:32 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/16 16:48:59 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ struct	s_ast
 	t_node_type	type;
 	t_ast		*right;
 	t_ast		*left;
-	t_list		*args;
+	t_list		*args;//
 	int			subsh;
 	t_redirs	*redirs;
 };
@@ -115,6 +115,8 @@ typedef struct	s_ms
 	char		*line;
 	t_token		*cur_tok;
 	t_ast		*root;
+	t_list		*env;
+	t_list		*exp;
 }				t_ms;
 
 #endif 
