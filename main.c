@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/15 16:20:30 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/16 11:44:22 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,8 @@ char	*display_prompt()
 	char	*line;
 
 	line = readline("minishell$ ");
+	if (!line)
+		return (NULL);
 	add_history(line);
 	return (line);
 }
@@ -160,6 +162,8 @@ int	main(int argc, char **argv)
 	while (1)
 	{
 		minishell->line = display_prompt();
+		if (!minishell->line)
+			return (NULL);
 		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
 		{	
 			if (!minishell->lexer)
