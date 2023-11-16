@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/15 11:14:03 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/15 16:20:30 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "./include/parser.h"
 #include "./include/struct.h"
 
-char	*tok_to_str(t_token *token)
+char	*tok_to_str(t_token *token)//temporaire
 {
 	if (token->type == T_WORD)
 		return ("T_WORD");
@@ -44,7 +44,7 @@ char	*tok_to_str(t_token *token)
 		return ("UNKNOWN");
 }
 
-char	*node_to_str(t_ast *node)
+char	*node_to_str(t_ast *node)//temporaire
 {
 	if (node->type == CMD)
 		return ("CMD");
@@ -74,7 +74,7 @@ char	*node_to_str(t_ast *node)
 		return ("UNKNOWN");
 }
 
-void	print_token_lst(t_token *token)
+void	print_token_lst(t_token *token)//temporaire
 {
 	t_token	*token_lst;
 	
@@ -86,7 +86,7 @@ void	print_token_lst(t_token *token)
 	}
 }
 
-void	print_redirs(t_redirs *args_enter)
+void	print_redirs(t_redirs *args_enter)//temporaire
 {
 	t_redirs	*args;
 	
@@ -98,7 +98,7 @@ void	print_redirs(t_redirs *args_enter)
 	}
 }
 
-void	print_lst(t_list *args_enter)
+void	print_lst(t_list *args_enter)//temporaire
 {
 	t_list	*args;
 	
@@ -110,7 +110,7 @@ void	print_lst(t_list *args_enter)
 	}
 }
 
-void	visit_node(t_ast *root)
+void	visit_node(t_ast *root)//temporaire
 {
 	if (!root)
 		return ;
@@ -147,8 +147,6 @@ char	*display_prompt()
 	return (line);
 }
 
-void		btree_apply_by_level(t_ast *root);
-
 int	main(int argc, char **argv)
 {
 	t_ms	*minishell;
@@ -167,16 +165,13 @@ int	main(int argc, char **argv)
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
 			print_token_lst(minishell->lexer->token_lst);
-			// minishell->cur_tok = minishell->lexer->token_lst;
-			// parse(minishell);
-			// visit_node(minishell->root);	
+			minishell->cur_tok = minishell->lexer->token_lst;
+			parse(minishell);
+			//faire une fonction qui clean le parser pour la prochaine ligne
+			visit_node(minishell->root);	
 		}
 	}
-	// parser(minishell, minishell->lexer);
-	// if (!minishell->parser)
-	// 	return (free_minishell(minishell, 1), 1);
 	visit_node(minishell->root);
-	// btree_apply_by_level(minishell->root);
 	free_minishell(minishell, 0);
 	return (0);
 }

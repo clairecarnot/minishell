@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/15 13:54:10 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/15 16:29:29 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,32 @@ int		is_wspace(char c);
 char	peek_next(t_lexer *lexer);
 int		ft_ischar(int c, int quotes);
 
+//--------------------- lexer_parse_word.c ----------------------
+t_token	*parse_quotes_word(t_ms *ms, t_lexer *lexer, int qtype);
+t_token	*parse_word(t_ms *minishell, t_lexer *lexer);
+
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
 
 //--------------------- lexer_error.c ----------------------
 int		check_par(t_ms *ms);
-
+int		alone_and_after_op(t_ms *ms);
+int		consecutive_op(t_ms *ms);
 int		error_in_lexer(t_ms *ms);
 
+//--------------------- lexer_error_redir.c ----------------------
+int		check_redir3(t_token *tok_lst);
+int		check_redir2(t_token *tok_lst);
+int		check_redir1(t_token *tok_lst);
+int		check_redir(t_ms *ms);
+
 //--------------------- prelexer_error.c ----------------------
-int		count_quotes(char *line);
+// int		count_quotes(char *line);
+int		count_squotes(char *line);
+int		count_dquotes(char *line);
 int		check_error_prelexer(char *line);
+
+
 
 #endif

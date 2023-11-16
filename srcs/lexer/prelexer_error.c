@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:19:15 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/15 12:03:48 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/15 17:22:25 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,67 +39,49 @@ int	check_redir_beforelex(char *line)
 		{
 			while (line[i] == ' ')
 				i++;
-			if (!line[i + 2])//case : <>eof
+			if (!line[i + 2])//case : <>         eof
 				return (printf("minishell: syntax error near unexpected token `newline'\n"), 1);
 			else if (check_after_lessgreat(line, i + 2))
 				return (1);
-			else
-				return (0);
 		}
+		if (line[i] == '<' && line[i + 1] && line[i + 1] == '|')
+			return (printf("minishell: syntax error near unexpected token `|'\n"), 1);
+		if (line[i] == '<' && line[i + 1] && line[i + 1] == '&')
+			return (printf("minishell: syntax error near unexpected token `|'\n"), 1);
 		i++;
 	}
 	return (0);
 }
 
-int	count_quotes(char *line)
+int	check_quotes(char *str)
 {
+	int	qflag;
 	int	i;
-	int	flag_single;// 39 = '
-	int	flag_double;// 34 = "
+	char	c;
 
-	i = 0;
-	flag_single = 0;
-	flag_double = 0;
-	while (line[i])
+	qflag = 0;
+	i = -1;
+	while (str[++i])
 	{
-		if (line[i] && line[i] == '\'')
+		if (str[i] == '\'' || str[i] == '\"')
 		{
-			flag_single += 1;
+			qflag = 1;
+			c = str[i];
 			i++;
-			while (line[i] && flag_single == 1)
-			{
-				if (line[i] == '\'')
-					flag_single -= 1;
-				else
-					i++;
-			}
+			while (str[i] && str[i] != c)
+				i++;
+			if (str[i] && str[i] == c)
+				qflag = 0;
 		}
-		if (line[i] && line[i] == '\"')
-		{
-			flag_double += 1;
-			i++;
-			while (line[i] && flag_double == 1)
-			{
-				if (line[i] == '\"')
-					flag_double -= 1;
-				else
-					i++;
-			}
-		}
-		i++;
 	}
-	if (flag_single != 0 || flag_double != 0)
-		return (printf("minishell: quotes error\n"), 1);//error
-	return (0);
+	return (qflag);
 }
 
 int	check_error_prelexer(char *line)
 {
-	if (count_quotes(line))
-		return (1);
+	if (check_quotes(line) != 0)
+		return (printf("quotes error\n"), 1);
 	if (check_redir_beforelex(line))
 		return (1);
-	// if (check_par(line))// a checker apres init lexer
-	// 	return (1);
 	return (0);
 }
