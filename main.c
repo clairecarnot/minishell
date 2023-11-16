@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 11:44:22 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/16 11:56:49 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,24 @@ char	*display_prompt()
 	return (line);
 }
 
+void	print_tree(t_ast *root, int space)
+{
+	if (!root)
+		return ;
+	space += 10;
+	print_tree(root->right, space);
+	
+	printf("\n");
+	int i;
+	for (i = 10; i < space; i++)
+		printf(" ");
+	printf("%s ", node_to_str(root));
+	if (root->type == CMD)
+		printf("%s ss:%d\n", (char *)root->args->content, root->subsh);
+
+	print_tree(root->left, space);
+}
+
 int	main(int argc, char **argv)
 {
 	t_ms	*minishell;
@@ -163,7 +181,7 @@ int	main(int argc, char **argv)
 	{
 		minishell->line = display_prompt();
 		if (!minishell->line)
-			return (NULL);
+			return (free_minishell(minishell, 0), 0);//verifier protec
 		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
 		{	
 			if (!minishell->lexer)
@@ -171,8 +189,9 @@ int	main(int argc, char **argv)
 			print_token_lst(minishell->lexer->token_lst);
 			minishell->cur_tok = minishell->lexer->token_lst;
 			parse(minishell);
+			print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
-			visit_node(minishell->root);	
+			//visit_node(minishell->root);	
 		}
 	}
 	visit_node(minishell->root);

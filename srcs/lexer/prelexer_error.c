@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:19:15 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 11:27:23 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/16 11:59:56 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	check_after_lessgreat(char *line, size_t i)
 	{
 		if (line[i] == '<' && line[i + 1] == '>')
 			return (printf("minishell: \
-		syntax error near unexpected token `<>'\n"), 1);
+syntax error near unexpected token `<>'\n"), 1);
 		i++;
 	}
 	return (0);
@@ -41,16 +41,16 @@ int	check_redir_beforelex(char *line)
 				i++;
 			if (!line[i + 2])
 				return (printf("minishell: \
-			syntax error near unexpected token `newline'\n"), 1);
+syntax error near unexpected token `newline'\n"), 1);
 			else if (check_after_lessgreat(line, i + 2))
 				return (1);
 		}
 		if (line[i] == '<' && line[i + 1] && line[i + 1] == '|')
 			return (printf("minishell: \
-		syntax error near unexpected token `|'\n"), 1);
+syntax error near unexpected token `|'\n"), 1);
 		if (line[i] == '<' && line[i + 1] && line[i + 1] == '&')
 			return (printf("minishell: \
-		syntax error near unexpected token `|'\n"), 1);
+syntax error near unexpected token `|'\n"), 1);
 		i++;
 	}
 	return (0);

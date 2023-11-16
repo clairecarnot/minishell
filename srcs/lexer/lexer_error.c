@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:46:00 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 11:37:07 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/16 12:00:14 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	alone_and_after_op(t_ms *ms)
 		{
 			if (!ft_strncmp(tok_lst->next_token->value, "&", 1))
 				return (printf("minishell: \
-				syntax error near unexpected token `&'\n"), 1);
+syntax error near unexpected token `&'\n"), 1);
 		}
 		tok_lst = tok_lst->next_token;
 	}
@@ -67,17 +67,17 @@ int	consecutive_op(t_ms *ms)
 		tok_lst->next_token->type == T_AND_IF || tok_lst->next_token->type \
 		== T_OR_IF))
 			return (printf("minishell: syntax error near \
-		unexpected token `%s'\n", tok_lst->next_token->value), 1);
+unexpected token `%s'\n", tok_lst->next_token->value), 1);
 		else if (tok_lst->type == T_AND_IF && (tok_lst->next_token->type \
 		== T_PIPE || tok_lst->next_token->type == T_AND_IF || tok_lst-> \
 		next_token->type == T_OR_IF))
 			return (printf("minishell: syntax error near \
-		unexpected token `%s'\n", tok_lst->next_token->value), 1);
+unexpected token `%s'\n", tok_lst->next_token->value), 1);
 		else if (tok_lst->type == T_OR_IF && (tok_lst->next_token->type \
 		== T_PIPE || tok_lst->next_token->type == T_AND_IF || tok_lst-> \
 		next_token->type == T_OR_IF))
 			return (printf("minishell: syntax error near \
-		unexpected token `%s'\n", tok_lst->next_token->value), 1);
+unexpected token `%s'\n", tok_lst->next_token->value), 1);
 		tok_lst = tok_lst->next_token;
 	}
 	return (0);
@@ -94,7 +94,7 @@ int	error_in_lexer(t_ms *ms)
 	if (tok_lst->type == T_PIPE || tok_lst->type == T_AND_IF || \
 	tok_lst->type == T_OR_IF || tok_lst->type == T_RPAR)
 		return (printf("minishell: syntax error near \
-	unexpected token `%s'\n", ms->lexer->token_lst->value), 1);
+unexpected token `%s'\n", ms->lexer->token_lst->value), 1);
 	if (check_par(ms) != 0)
 		return (1);
 	if (consecutive_op(ms) != 0)
