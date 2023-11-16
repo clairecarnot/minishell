@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 18:28:07 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/16 18:40:49 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,11 @@ int	min_len(char *s1, char *s2)
 
 void	swap_lst(t_list **l1, t_list **l2)
 {
-	t_list	*tmp;
+	char	*tmp;
 
-	tmp = *l1;
-	*l1 = *l2;
-	*l2 = tmp;
+	tmp = (*l1)->content;
+	(*l1)->content = (*l2)->content;
+	(*l2)->content = tmp;
 }
 
 /*
