@@ -24,9 +24,7 @@
 t_ast	*handle_op(t_ms *ms)
 {
 	t_ast	*new_ast;
-	t_ast	*tmp_tree;
 
-	tmp_tree = NULL;
 	new_ast = new_node(token_to_node(ms->cur_tok->type));
 	if (!new_ast)
 		return (NULL);

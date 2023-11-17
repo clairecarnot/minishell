@@ -15,12 +15,10 @@
 
 int	check_par(t_ms *ms)
 {
-	int		i;
 	int		lpar;
 	int		rpar;
 	t_token	*tok_lst;
 
-	i = 0;
 	lpar = 0;
 	rpar = 0;
 	tok_lst = ms->lexer->token_lst;
