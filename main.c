@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 18:37:52 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 10:52:15 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,7 +190,7 @@ int	main(int argc, char **argv, char **env)
 		return (1);
 //	print_lst(minishell->env);
 //	printf("\n\n");
-	print_lst(minishell->exp);
+//	print_lst(minishell->exp);
 //	printf("\n\n");
 //	printf("ms wkdir = %s\n", minishell->wkdir);
 //	printf("\n\n");

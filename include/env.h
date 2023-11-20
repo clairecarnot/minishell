@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:37:07 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 18:24:37 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 10:30:27 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ int	init_env(t_ms *ms, char **env);
 int	is_var_in_env(t_list *env, char *var);
 int	init_workdir(t_ms *ms);
 int	min_len(char *s1, char *s2);
-void	swap_lst(t_list **l1, t_list **l2);
 int	init_exp(t_ms *ms);
+void	swap_lst(void **l1, void **l2);
+t_list	*lst_dup(t_list *lst_tocpy);
 
 #endif

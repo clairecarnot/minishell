@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 18:40:49 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 10:51:15 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	is_var_in_env(t_list *env, char *var)
 	tmp = env;
 	while (tmp)
 	{
-		if (ft_strncmp(var, env->content, ft_strlen(var) == 0))
+		if (ft_strncmp(var, tmp->content, ft_strlen(var)) == 0)
 			return (1);
 		tmp = tmp->next;
 	}
@@ -81,16 +81,26 @@ int	init_workdir(t_ms *ms)
 		{
 			if (ft_strncmp("OLDPWD", tmp->content, 6) == 0)
 			{
-				ms->old_wkdir = ft_strdup(tmp->content);
+				ms->old_wkdir = ft_strdup(tmp->content + 7);
 				if (!ms->old_wkdir)
 					return (free(ms->wkdir), 1);
-				return (1);
 			}
 			tmp = tmp->next;
 		}
 	}
+	else
+	{
+		ms->old_wkdir = ft_strdup(ms->wkdir);
+			if (!ms->old_wkdir)
+				return (free(ms->wkdir), 1);
+	}
 	return (0);
 }
+
+/*
+ * min_len
+ * Calculates and sends the mininum size between 2 chars*
+ */
 
 int	min_len(char *s1, char *s2)
 {
@@ -104,13 +114,44 @@ int	min_len(char *s1, char *s2)
 	return (l1);
 }
 
-void	swap_lst(t_list **l1, t_list **l2)
-{
-	char	*tmp;
+/*
+ * Swaps 2 void*
+ */
 
-	tmp = (*l1)->content;
-	(*l1)->content = (*l2)->content;
-	(*l2)->content = tmp;
+void	swap_lst(void **l1, void **l2)
+{
+	void	*tmp;
+
+	tmp = *l1;
+	*l1 = *l2;
+	*l2 = tmp;
+}
+
+/*
+ *lst_dup
+ * Duplicates the given t_list
+ */
+
+t_list	*lst_dup(t_list *lst_tocpy)
+{
+	t_list	*new;
+	t_list	*tmp;
+	t_list	*lst;
+
+	new = NULL;
+	tmp = NULL;
+	if (!lst_tocpy)
+		return (NULL);
+	lst = lst_tocpy;
+	while (lst)
+	{
+		tmp = ft_lstnew(lst->content);
+		if (!tmp)
+			return (ft_lstfree(&new), NULL);
+		ft_lstadd_back(&new, tmp);
+		lst = lst->next;
+	}
+	return (new);
 }
 
 /*
@@ -123,14 +164,18 @@ int	init_exp(t_ms *ms)
 	t_list	*lst;
 	t_list	*suiv;
 
-	lst = ms->env;
+	ms->exp = lst_dup(ms->env);
+	if (!ms->exp)
+		return (1);
+	lst = ms->exp;
 	while (lst)
 	{
 		suiv = lst->next;
-		if (suiv)
+		while (suiv)
 		{
 			if (ft_strncmp(lst->content, suiv->content, min_len(lst->content, suiv->content)) > 0)
-				swap_lst(&lst, &suiv);
+				swap_lst(&lst->content, &suiv->content);
+			suiv = suiv->next;
 		}
 		lst = lst->next;
 	}
