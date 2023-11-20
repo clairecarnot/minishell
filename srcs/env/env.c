@@ -6,11 +6,16 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 15:19:59 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:27:32 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/env.h"
+
+/*
+ * replace_shlvl
+ * Updates the char* corresponding to SHLVL by concatenating its new level number
+ */
 
 char	*replace_shlvl(char *old, char *new)
 {
@@ -38,6 +43,11 @@ char	*replace_shlvl(char *old, char *new)
 	free(new);
 	return (concat);
 }
+
+/*
+ * update_shlvl
+ * Updates the shell level (+1) by calling replace_shlvl
+ */
 
 int	update_shlvl(t_ms *ms)
 {
@@ -67,6 +77,7 @@ int	update_shlvl(t_ms *ms)
 /*
  * init_env
  * Initializes and saves the env variables in a t_list
+ * Updates the level of shell
  */
 
 int	init_env(t_ms *ms, char **env)
