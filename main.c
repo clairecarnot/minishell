@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 11:56:49 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/20 16:34:57 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	print_token_lst(t_token *token)//temporaire
 	token_lst = token;
 	while (token_lst)
 	{
-		printf("%s est de type %s\n", (token_lst)->value, tok_to_str(token_lst));
+		dprintf(1, "%s est de type %s\n", (token_lst)->value, tok_to_str(token_lst));
 		token_lst = (token_lst)->next_token;
 	}
 }
@@ -189,9 +189,10 @@ int	main(int argc, char **argv)
 			print_token_lst(minishell->lexer->token_lst);
 			minishell->cur_tok = minishell->lexer->token_lst;
 			parse(minishell);
-			print_tree(minishell->root, 0);
+			// print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
-			//visit_node(minishell->root);	
+			//visit_node(minishell->root);
+			exec_export(minishell);
 		}
 	}
 	visit_node(minishell->root);

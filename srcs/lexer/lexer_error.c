@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:46:00 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 12:00:14 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/20 09:32:57 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,10 @@
 
 int	check_par(t_ms *ms)
 {
-	int		i;
 	int		lpar;
 	int		rpar;
 	t_token	*tok_lst;
 
-	i = 0;
 	lpar = 0;
 	rpar = 0;
 	tok_lst = ms->lexer->token_lst;

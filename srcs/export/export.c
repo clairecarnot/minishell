@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:43:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 17:32:48 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/20 17:18:36 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,36 @@
 
 // check that first character of the variable name is a letter (upper or lower case)
 // check that there's not a special character in the entire name (before the egal)
-int	check_error_exp(char *content)
+int	error_exp(char *content)
 {
 	//the message error = bash: export: `8hey=hey': not a valid identifier
-	
+	int	i;
+
+	i = -1;
+	if (!content[0])
+		return (printf("ominishell: export: `': not a valid identifier\n"), 1);
+	if (content[0] && content[0] == '-' && content[1])
+		return (printf("ominishell: export: %c%c: invalid option\n", content[0], content[1]), 1);
+	if (content[0] && (content[0] < 'A' || (content[0] > 'Z' && content[0] < 'a') || \
+	content[0] > 'z') && content[0] != '_')
+		return (printf("oominishell: export: `%s': not a valid identifier\n", content), 1);
+	while (content[++i] != '=' && content[i])
+	{
+		if ((content[i] < '0' || (content[i] > '9' && content[i] < 'A') || \
+		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_')
+			return (printf("ooominishell: export: `%s': not a valid identifier\n", content), 1);
+	}
+	return (0);
+}
+
+int	error_exp_spaces(char *content)
+{
+	int	i;
+
+	i = 0;
+	while (content[i++] != '=' && content[i])
+	if (content[i - 1] == ' ')
+		return (printf("oooominishell: export: `=': not a valid identifier\n"), 1);
 	return (0);
 }
 
@@ -65,19 +91,24 @@ int	exec_export(t_ms *ms)
 {
 	t_list	*exp_arg;
 	
-	exp_arg = ms->root->args->content;
-	if (ft_strncmp(exp_arg, "export", 6) == 0)//si content est bien la cmd export
+	exp_arg = ms->root->args;
+	
+	int i = 0;
+	if (ft_strncmp(exp_arg->content, "export", 6) == 0)//si content est bien la cmd export
 	{
 		if (!exp_arg->next)//si export n'a pas d'arg qui le succede, alors print la lst exp
 			print_lst_exp(ms->exp);
 		else
 		{
 			exp_arg = exp_arg->next;
+
 			while (exp_arg)
 			{
-				if (!check_error_exp(exp_arg->content))//s'il n'y a pas d'erreur on va ajouter la variable
-					add_variable(ms, exp_arg);
+				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))//s'il n'y a pas d'erreur on va ajouter la variable
+					printf("no error\n");
+					//add_variable(ms, exp_arg);
 				exp_arg = exp_arg->next;//on passe a l'arg suivant
+				i++;
 			}
 		}
 	}
