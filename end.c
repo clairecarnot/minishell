@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/20 15:12:25 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:29:30 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	ft_lstfree(t_list **lst)
 		*lst = NULL;
 	}
 }
+
 void	token_lst_free(t_token **lst)
 {
 	t_token	*ptr;
@@ -72,6 +73,7 @@ void	redirs_free(t_redirs **lst)
 		*lst = NULL;
 	}
 }
+
 void	free_root_ast(t_ast *root)
 {
 	if (!root)

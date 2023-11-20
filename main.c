@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 15:18:33 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:32:40 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*node_to_str(t_ast *node)//temporaire
 void	print_token_lst(t_token *token)//temporaire
 {
 	t_token	*token_lst;
-	
+
 	token_lst = token;
 	while (token_lst)
 	{
@@ -90,7 +90,7 @@ void	print_token_lst(t_token *token)//temporaire
 void	print_redirs(t_redirs *args_enter)//temporaire
 {
 	t_redirs	*args;
-	
+
 	args = args_enter;
 	while (args)
 	{
@@ -102,7 +102,7 @@ void	print_redirs(t_redirs *args_enter)//temporaire
 void	print_lst(t_list *args_enter)//temporaire
 {
 	t_list	*args;
-	
+
 	args = args_enter;
 	while (args)
 	{
@@ -163,13 +163,13 @@ char	*display_prompt()
 
 void	print_tree(t_ast *root, int space)
 {
+	int i;
+
 	if (!root)
 		return ;
 	space += 10;
 	print_tree(root->right, space);
-	
 	printf("\n");
-	int i;
 	for (i = 10; i < space; i++)
 		printf(" ");
 	printf("%s ", node_to_str(root));
@@ -182,7 +182,7 @@ void	print_tree(t_ast *root, int space)
 int	main(int argc, char **argv, char **env)
 {
 	t_ms	*minishell;
-	
+
 	(void)argc;
 	(void)argv;
 	minishell = init_ms(env);
