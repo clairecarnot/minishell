@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 17:04:28 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 17:18:09 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef enum e_node_type
 typedef struct s_redirs
 {
 	t_node_type		type;
-	char	*filename;
+	char			*filename;
 	struct s_redirs	*next_redir;
 }		t_redirs;
 
@@ -84,10 +84,10 @@ typedef enum e_type
 
 typedef struct s_token
 {
-	t_type	type;
-	char	*value;
+	t_type			type;
+	char			*value;
 	struct s_token	*next_token;
-	size_t	tok_nb;
+	size_t			tok_nb;
 }		t_token;
 
 typedef struct s_lexer
@@ -101,7 +101,7 @@ typedef struct s_lexer
 	size_t	tok_count;//nb de token final
 }		t_lexer;
 
-typedef struct	s_ms
+typedef struct s_ms
 {
 	t_lexer		*lexer;
 	char		*line;
