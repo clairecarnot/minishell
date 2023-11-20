@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/13 15:12:23 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 09:34:13 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@
 t_ast	*handle_op(t_ms *ms)
 {
 	t_ast	*new_ast;
-	t_ast	*tmp_tree;
 
-	tmp_tree = NULL;
 	new_ast = new_node(token_to_node(ms->cur_tok->type));
 	if (!new_ast)
 		return (NULL);
