@@ -6,11 +6,63 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 10:51:15 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:19:59 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/env.h"
+
+char	*replace_shlvl(char *old, char *new)
+{
+	char	*concat;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	concat = ft_calloc(ft_strlen(new) + 6 + 1, sizeof(char));
+	if (!concat)
+		return (NULL);
+	while (old[i] && old[i] != '=')
+	{
+		concat[i] = old[i];
+		i++;
+	}
+	concat[i++] = '=';
+	while (new[j])
+	{
+		concat[i+j] = new[j];
+		j++;
+	}
+	free(old);
+	free(new);
+	return (concat);
+}
+
+int	update_shlvl(t_ms *ms)
+{
+	t_list	*tmp;
+	int	lvl;
+	char	*newlvl;
+
+	tmp = ms->env;
+	while (tmp)
+	{
+		if (ft_strncmp("SHLVL", tmp->content, 5) == 0)
+		{
+			lvl = ft_atoi(tmp->content + 6) + 1;
+			newlvl = ft_itoa(lvl);
+			if (!newlvl)
+				return (1);
+			tmp->content = replace_shlvl(tmp->content, newlvl);
+			if (!tmp->content)
+				return (1);
+			return (0);
+		}
+		tmp = tmp->next;
+		}
+	return (1);
+}
 
 /*
  * init_env
@@ -35,10 +87,12 @@ int	init_env(t_ms *ms, char **env)
 			return (ft_lstfree(&ms->env), 1);
 		new_var = ft_lstnew(content);
 		if (!new_var)
-			return (ft_lstfree(&ms->env), 1);
+			return (free(content), ft_lstfree(&ms->env), 1);
 		ft_lstadd_back(&ms->env, new_var);
 		i++;
 	}
+	if (update_shlvl(ms))
+		return (ft_lstfree(&ms->env), 1);
 	return (0);
 }
 
@@ -69,10 +123,12 @@ int	is_var_in_env(t_list *env, char *var)
 int	init_workdir(t_ms *ms)
 {
 	char	buffer[PATH_MAX];
+	char	*wd;
 	t_list	*tmp;
 
 	tmp = ms->env;
-	ms->wkdir = getcwd(buffer, PATH_MAX);
+	wd = getcwd(buffer, PATH_MAX);
+	ms->wkdir = ft_strdup(wd);
 	if (!ms->wkdir)
 		return (1);
 	if (is_var_in_env(ms->env, "OLDPWD"))
@@ -134,6 +190,7 @@ void	swap_lst(void **l1, void **l2)
 
 t_list	*lst_dup(t_list *lst_tocpy)
 {
+	char	*newchar;
 	t_list	*new;
 	t_list	*tmp;
 	t_list	*lst;
@@ -145,9 +202,12 @@ t_list	*lst_dup(t_list *lst_tocpy)
 	lst = lst_tocpy;
 	while (lst)
 	{
-		tmp = ft_lstnew(lst->content);
-		if (!tmp)
+		newchar = ft_strdup(lst->content);
+		if (!newchar)
 			return (ft_lstfree(&new), NULL);
+		tmp = ft_lstnew(newchar);
+		if (!tmp)
+			return (free(newchar), ft_lstfree(&new), NULL);
 		ft_lstadd_back(&new, tmp);
 		lst = lst->next;
 	}
