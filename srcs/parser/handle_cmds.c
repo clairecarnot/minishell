@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/13 15:12:06 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/21 11:01:16 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,14 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 	char	*cmd;
 	t_list	*new_arg;
 
-	cmd = ft_strdup(ms->cur_tok->value);
-	if (!cmd)
-		return (NULL);
+	if (!ms->cur_tok->value)// une commande peut avoir comme valeur NULL dans ce cas: """"""
+		cmd = ft_calloc(1, sizeof(char));
+	else
+	{
+		cmd = ft_strdup(ms->cur_tok->value);
+		if (!cmd)
+			return (NULL);
+	}
 	new_arg = ft_lstnew(cmd);
 	if (!new_arg)
 		return (free(cmd), NULL);

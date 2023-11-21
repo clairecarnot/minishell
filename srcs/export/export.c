@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:43:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/20 17:18:36 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:01:37 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	error_exp_spaces(char *content)
 	int	i;
 
 	i = 0;
-	while (content[i++] != '=' && content[i])
+	while (content[i] && content[i++] != '=')
 	if (content[i - 1] == ' ')
 		return (printf("oooominishell: export: `=': not a valid identifier\n"), 1);
 	return (0);
@@ -96,12 +96,13 @@ int	exec_export(t_ms *ms)
 	int i = 0;
 	if (ft_strncmp(exp_arg->content, "export", 6) == 0)//si content est bien la cmd export
 	{
+
 		if (!exp_arg->next)//si export n'a pas d'arg qui le succede, alors print la lst exp
 			print_lst_exp(ms->exp);
 		else
 		{
 			exp_arg = exp_arg->next;
-
+		
 			while (exp_arg)
 			{
 				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))//s'il n'y a pas d'erreur on va ajouter la variable

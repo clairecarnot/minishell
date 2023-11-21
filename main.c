@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 13:51:58 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 16:34:57 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/21 14:43:45 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,10 +189,10 @@ int	main(int argc, char **argv)
 			print_token_lst(minishell->lexer->token_lst);
 			minishell->cur_tok = minishell->lexer->token_lst;
 			parse(minishell);
-			// print_tree(minishell->root, 0);
+			//print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
 			//visit_node(minishell->root);
-			exec_export(minishell);
+			// exec_export(minishell);
 		}
 	}
 	visit_node(minishell->root);

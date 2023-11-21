@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/16 16:42:21 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:15:59 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	free_root_ast(t_ast *root);
 void	free_minishell(t_ms *minishell, int exit_status);
 
 //----------------------- lexer.c ------------------------
-t_token	*parse_word(t_ms *minishell, t_lexer *lexer);
+t_token	*lexer_next_token_2(t_ms *minishell, t_lexer *lexer);
 t_token	*lexer_next_token(t_ms *minishell, t_lexer * lexer);
 void	token_add_back(t_token **lst, t_token *new);
 int		lexer(t_ms *minishell, char *s);
@@ -61,8 +61,9 @@ char	peek_next(t_lexer *lexer);
 int		ft_ischar(int c, int quotes);
 
 //--------------------- lexer_parse_word.c ----------------------
+t_token	*parse_following_quotes(t_ms *ms, t_lexer *lexer, int qtype);
 t_token	*parse_quotes_word(t_ms *ms, t_lexer *lexer, int qtype);
-t_token	*parse_word(t_ms *minishell, t_lexer *lexer);
+t_token	*parse_word(t_ms *minishell, t_lexer *lexer, int i);
 
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);
