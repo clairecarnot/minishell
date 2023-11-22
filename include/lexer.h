@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/01 14:08:42 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/21 15:15:59 by mapoirie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef LEXER_H
 # define LEXER_H
 
@@ -28,6 +16,7 @@
 # include <signal.h>
 # include <sys/ioctl.h>
 # include <errno.h>
+# include <limits.h>
 
 //----------------------- main.c ------------------------
 char	*tok_to_str(t_token *token);
@@ -36,9 +25,8 @@ void	print_token_lst(t_token *token);
 void	print_lst(t_list *args_enter);
 void	print_redirs(t_redirs *args_enter);
 void	visit_node(t_ast *root);
-t_ms	*init_ms(void);
+t_ms	*init_ms(char **env);
 char	*display_prompt();
-int	main(int argc, char **argv);
 
 //----------------------- end.c ------------------------
 void	ft_lstfree(t_list **lst);
@@ -66,7 +54,7 @@ t_token	*parse_quotes_word(t_ms *ms, t_lexer *lexer, int qtype);
 t_token	*parse_word(t_ms *minishell, t_lexer *lexer, int i);
 
 //--------------------- lexer_init.c ----------------------
-t_lexer	*init_lexer(char *s);
+t_lexer	*init_lexer(char *s);>>>>>>> env-claire2
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
 
 //--------------------- lexer_error.c ----------------------

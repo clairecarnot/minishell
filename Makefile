@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/08/29 16:45:43 by ccarnot           #+#    #+#              #
-#    Updated: 2023/11/16 16:40:47 by mapoirie         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME = minishell
 
 CFLAGS = -g3 -Wall -Wextra -Werror
@@ -24,7 +12,8 @@ srcs/lexer/lexer_parse_word.c srcs/lexer/lexer_error_redir.c \
 srcs/parser/parser.c srcs/parser/parser_utils.c \
 srcs/parser/handle_cmds.c srcs/parser/handle_ops.c srcs/parser/handle_par.c \
 srcs/parser/handle_pipes.c srcs/parser/handle_redirs.c \
-srcs/export/export.c
+srcs/export/export.c \
+srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c
 
 OBJS = $(SRCS:.c=.o)
 

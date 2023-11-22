@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 10:09:54 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 16:48:59 by mapoirie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef STRUCT_H
 # define STRUCT_H
 
@@ -52,7 +40,7 @@ typedef enum e_node_type
 typedef struct s_redirs
 {
 	t_node_type		type;
-	char	*filename;
+	char			*filename;
 	struct s_redirs	*next_redir;
 }		t_redirs;
 
@@ -84,10 +72,10 @@ typedef enum e_type
 
 typedef struct s_token
 {
-	t_type	type;
-	char	*value;
+	t_type			type;
+	char			*value;
 	struct s_token	*next_token;
-	size_t	tok_nb;
+	size_t			tok_nb;
 }		t_token;
 
 typedef struct s_lexer
@@ -101,22 +89,16 @@ typedef struct s_lexer
 	size_t	tok_count;//nb de token final
 }		t_lexer;
 
-// typedef struct	s_parser
-// {
-// 	t_lexer	*lexer;
-// 	t_ast	*root;
-// 	t_token	*cur_token;
-// }				t_parser;
-
-typedef struct	s_ms
+typedef struct s_ms
 {
 	t_lexer		*lexer;
-	// t_parser	*parser;
 	char		*line;
 	t_token		*cur_tok;
 	t_ast		*root;
 	t_list		*env;
 	t_list		*exp;
+	char		*wkdir;
+	char		*old_wkdir;
 }				t_ms;
 
 #endif 

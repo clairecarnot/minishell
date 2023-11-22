@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/09 17:32:14 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/20 15:29:30 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,15 @@ void	ft_lstfree(t_list **lst)
 		while (ptr)
 		{
 			tmp = ptr->next;
-			free(ptr->content);
+			if (ptr->content)
+				free(ptr->content);
 			free(ptr);
 			ptr = tmp;
 		}
 		*lst = NULL;
 	}
 }
+
 void	token_lst_free(t_token **lst)
 {
 	t_token	*ptr;
@@ -71,6 +73,7 @@ void	redirs_free(t_redirs **lst)
 		*lst = NULL;
 	}
 }
+
 void	free_root_ast(t_ast *root)
 {
 	if (!root)
@@ -84,22 +87,26 @@ void	free_root_ast(t_ast *root)
 	free(root);
 }
 
-void	free_minishell(t_ms *minishell, int exit_status)
+void	free_minishell(t_ms *ms, int exit_status)
 {
-	// if (minishell->parser)
-	// {	
-	// 	printf("hello1\n");
-		if (minishell->root)
-			free_root_ast(minishell->root);
-	// 	free(minishell->parser);
-	// }
-	if (minishell->lexer)
+	if (ms->root)
+		free_root_ast(ms->root);
+	if (ms->lexer)
 	{
-		token_lst_free(&minishell->lexer->token_lst);
-		free(minishell->lexer);
+		token_lst_free(&ms->lexer->token_lst);
+		free(ms->lexer);
 	}
-	free(minishell->line);
-	if (minishell)
-		free(minishell);
+	if (ms->env)
+		ft_lstfree(&ms->env);
+	if (ms->exp)
+		ft_lstfree(&ms->exp);
+	if (ms->wkdir)
+		free(ms->wkdir);
+	if (ms->old_wkdir)
+		free(ms->old_wkdir);
+	if (ms->line)
+		free(ms->line);
+	if (ms)
+		free(ms);
 	exit(exit_status);
 }
