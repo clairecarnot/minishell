@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:30:04 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/21 16:30:07 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/21 17:44:57 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ t_token	*parse_quotes_word(t_ms *ms, t_lexer *lexer, int qtype)
 
 	i = 0;
 	q_nb = 0;
-	while (lexer->src[lexer->cur_pos + i] && (lexer->src[lexer->cur_pos + i] == '\"' || \
-	lexer->src[lexer->cur_pos + i] == '\''))
+	while (lexer->src[lexer->cur_pos + i] && lexer->src[lexer->cur_pos + i] == qtype)
 	{
 		i++;
 		q_nb++;
@@ -56,7 +55,6 @@ t_token	*parse_quotes_word(t_ms *ms, t_lexer *lexer, int qtype)
 	value = ft_calloc(i, sizeof(char));
 	if (!value)//verifier protec
 		return (NULL);
-	// printf("i ici = %d\n", i);
 	ft_strlcpy(value, &(lexer->src[lexer->cur_pos + q_nb]), i - q_nb + 1);//peut-etre a proteger
 	while(lexer->src[lexer->cur_pos + i] && \
 	(lexer->src[lexer->cur_pos + i] == '\'' || lexer->src[lexer->cur_pos + i] == '\"'))
