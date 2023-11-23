@@ -49,12 +49,12 @@ char	peek_next(t_lexer *lexer);
 int		ft_ischar(int c, int quotes);
 
 //--------------------- lexer_parse_word.c ----------------------
-t_token	*parse_following_quotes(t_ms *ms, t_lexer *lexer, int qtype);
+// t_token	*parse_following_quotes(t_ms *ms, t_lexer *lexer, int qtype);
 t_token	*parse_quotes_word(t_ms *ms, t_lexer *lexer, int qtype);
 t_token	*parse_word(t_ms *minishell, t_lexer *lexer, int i);
 
 //--------------------- lexer_init.c ----------------------
-t_lexer	*init_lexer(char *s);>>>>>>> env-claire2
+t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
 
 //--------------------- lexer_error.c ----------------------

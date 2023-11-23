@@ -106,7 +106,6 @@ void	visit_node(t_ast *root)//temporaire
 		return ;
 	visit_node(root->left);
 	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
-	fflush(stdout);
 	if (root->args)
 		print_lst(root->args);
 	if (root->redirs)
@@ -138,7 +137,7 @@ t_ms	*init_ms(char **env)
 	return (minishell);
 }
 
-char	*display_prompt()>>>>>>> env-claire2
+char	*display_prompt()
 {
 	char	*line;
 
@@ -148,7 +147,7 @@ char	*display_prompt()>>>>>>> env-claire2
 	add_history(line);
 	return (line);
 }
->>>>>>> env-claire2
+
 void	print_tree(t_ast *root, int space)
 {
 	int i;
@@ -158,7 +157,7 @@ void	print_tree(t_ast *root, int space)
 	space += 10;
 	print_tree(root->right, space);
 	printf("\n");
-	for (i = 10; i < space; i++)>>>>>>> env-claire2
+	for (i = 10; i < space; i++)
 		printf(" ");
 	printf("%s ", node_to_str(root));
 	if (root->type == CMD)
@@ -169,6 +168,7 @@ void	print_tree(t_ast *root, int space)
 
 int	main(int argc, char **argv, char **env)
 {
+
 	t_ms	*minishell;
 
 	(void)argc;
@@ -183,7 +183,7 @@ int	main(int argc, char **argv, char **env)
 //	printf("ms wkdir = %s\n", minishell->wkdir);
 //	printf("\n\n");
 //	printf("ms old_wkdir = %s\n", minishell->old_wkdir);
-/*
+
 	while (1)
 	{
 		minishell->line = display_prompt();
@@ -195,15 +195,15 @@ int	main(int argc, char **argv, char **env)
 				return (free_minishell(minishell, 1), 1);
 			print_token_lst(minishell->lexer->token_lst);
 			minishell->cur_tok = minishell->lexer->token_lst;
-			parse(minishell);
+			//parse(minishell);
 			//print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
 			//visit_node(minishell->root);
 			// exec_export(minishell);
 		}
 	}
-	visit_node(minishell->root);
-*/
+	//visit_node(minishell->root);
+
 	free_minishell(minishell, 0);
 	return (0);
 }
