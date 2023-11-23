@@ -7,7 +7,7 @@ INCL = -I./libft -I./include
 
 SRCS = main.c end.c \
 srcs/lexer/lexer.c srcs/lexer/lexer_init.c srcs/lexer/lexer_utils.c \
-srcs/lexer/lexer_error.c srcs/lexer/prelexer_error.c \
+srcs/lexer/lexer_utils2.c srcs/lexer/lexer_error.c srcs/lexer/prelexer_error.c \
 srcs/lexer/lexer_parse_word.c srcs/lexer/lexer_error_redir.c \
 srcs/parser/parser.c srcs/parser/parser_utils.c \
 srcs/parser/handle_cmds.c srcs/parser/handle_ops.c srcs/parser/handle_par.c \

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/20 15:29:30 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/23 17:54:50 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,11 @@ void	free_root_ast(t_ast *root)
 		redirs_free(&root->redirs);
 	free(root);
 }
-
+/*
+peut-etre a changer: dans les conditions if exit_status != 0 
+(en cas d'erreur free certaines choses si non erreur(= passage
+a la ligne suivante) ne pas les free)
+*/
 void	free_minishell(t_ms *ms, int exit_status)
 {
 	if (ms->root)
@@ -100,13 +104,14 @@ void	free_minishell(t_ms *ms, int exit_status)
 		ft_lstfree(&ms->env);
 	if (ms->exp)
 		ft_lstfree(&ms->exp);
-	if (ms->wkdir)
+	if (ms->wkdir && exit_status != 0)
 		free(ms->wkdir);
-	if (ms->old_wkdir)
+	if (ms->old_wkdir && exit_status != 0)
 		free(ms->old_wkdir);
 	if (ms->line)
 		free(ms->line);
-	if (ms)
+	if (ms && exit_status != 0)
 		free(ms);
-	exit(exit_status);
+	if (exit_status != 0)
+		exit(exit_status);
 }
