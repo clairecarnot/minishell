@@ -138,7 +138,7 @@ t_ms	*init_ms(char **env)
 	return (minishell);
 }
 
-char	*display_prompt()>>>>>>> env-claire2
+char	*display_prompt()
 {
 	char	*line;
 
@@ -148,7 +148,7 @@ char	*display_prompt()>>>>>>> env-claire2
 	add_history(line);
 	return (line);
 }
->>>>>>> env-claire2
+
 void	print_tree(t_ast *root, int space)
 {
 	int i;
@@ -158,7 +158,7 @@ void	print_tree(t_ast *root, int space)
 	space += 10;
 	print_tree(root->right, space);
 	printf("\n");
-	for (i = 10; i < space; i++)>>>>>>> env-claire2
+	for (i = 10; i < space; i++)
 		printf(" ");
 	printf("%s ", node_to_str(root));
 	if (root->type == CMD)
