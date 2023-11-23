@@ -31,9 +31,9 @@ void	signal_newprompt(int signal)
 	if (signal == SIGINT)
 	{
 		printf("\n");
-		rl_on_newline();
+		rl_on_new_line();
 		rl_replace_line("", 0);
-		re_redisplay();
+		rl_redisplay();
 	}
 }
 

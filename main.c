@@ -2,6 +2,7 @@
 #include "./include/parser.h"
 #include "./include/struct.h"
 #include "./include/env.h"
+#include "./include/signals.h"
 
 char	*tok_to_str(t_token *token)//temporaire
 {
@@ -129,6 +130,7 @@ t_ms	*init_ms(char **env)
 	minishell->exp = NULL;
 	minishell->wkdir = NULL;
 	minishell->old_wkdir = NULL;
+	minishell->cur_node = NULL;
 	if (init_env(minishell, env))
 		free_minishell(minishell, 1);
 	if (init_workdir(minishell))
@@ -176,19 +178,13 @@ int	main(int argc, char **argv, char **env)
 	minishell = init_ms(env);
 	if (!minishell)
 		return (1);
-//	print_lst(minishell->env);
-//	printf("\n\n");
-//	print_lst(minishell->exp);
-//	printf("\n\n");
-//	printf("ms wkdir = %s\n", minishell->wkdir);
-//	printf("\n\n");
-//	printf("ms old_wkdir = %s\n", minishell->old_wkdir);
-/*
-	while (1)
-	{
+//	while (1)
+//	{
+//		preprompt_signals();
 		minishell->line = display_prompt();
 		if (!minishell->line)
 			return (free_minishell(minishell, 0), 0);//verifier protec
+//		postprompt_signals();
 		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
 		{	
 			if (!minishell->lexer)
@@ -200,10 +196,10 @@ int	main(int argc, char **argv, char **env)
 			//faire une fonction qui clean le parser pour la prochaine ligne
 			//visit_node(minishell->root);
 			// exec_export(minishell);
+			g_exit_code = execute(ms);
 		}
-	}
+//	}
 	visit_node(minishell->root);
-*/
 	free_minishell(minishell, 0);
 	return (0);
 }

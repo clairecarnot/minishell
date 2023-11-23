@@ -13,7 +13,8 @@ srcs/parser/parser.c srcs/parser/parser_utils.c \
 srcs/parser/handle_cmds.c srcs/parser/handle_ops.c srcs/parser/handle_par.c \
 srcs/parser/handle_pipes.c srcs/parser/handle_redirs.c \
 srcs/export/export.c \
-srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c
+srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c \
+srcs/signals/signals.c
 
 OBJS = $(SRCS:.c=.o)
 

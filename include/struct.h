@@ -4,6 +4,8 @@
 # include "../libft/libft.h"
 # include "lexer.h"
 
+extern int	g_exit_code;
+
 typedef struct s_ast	t_ast;
 
 /*
@@ -99,6 +101,7 @@ typedef struct s_ms
 	t_list		*exp;
 	char		*wkdir;
 	char		*old_wkdir;
+	t_ast		*cur_node;
 }				t_ms;
 
 #endif 
