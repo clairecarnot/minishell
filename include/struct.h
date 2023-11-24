@@ -6,28 +6,29 @@
 
 extern int	g_exit_code;
 
-typedef struct s_ast	t_ast;
+typedef enum e_builtin_type
+{
+	NOBUILT,
+	ECHO,
+	CD,
+	PWD,
+	EXPORT,
+	UNSET,
+	ENV,
+	EXIT,
+}		t_builtin_type;
 
-/*
-	0 WORD
-	1 LPAR (
-	2 RPAR )
-	3 PIPE |
-	4 AND_IF &&
-	5 OR_IF ||
-	6 LESS <
-	7 GREAT >
-	8 DLESS <<
-	9 DGREAT >>
-	10 NEWLINE \n
-	11 EOF \0
-*/
+typedef struct s_cmd
+{
+	char	**args;
+	t_builtin_type	builtin;
+}		t_command;
+
+typedef struct s_ast	t_ast;
 
 typedef enum e_node_type
 {
 	CMD,
-	LPAR,
-	RPAR,
 	PIPE,
 	AND_IF,
 	OR_IF,
@@ -35,8 +36,6 @@ typedef enum e_node_type
 	GREAT,
 	DLESS,
 	DGREAT,
-	NEWLINE,
-	END,
 }			t_node_type;
 
 typedef struct s_redirs
@@ -51,7 +50,7 @@ struct	s_ast
 	t_node_type	type;
 	t_ast		*right;
 	t_ast		*left;
-	t_list		*args;//
+	t_list		*args;
 	int			subsh;
 	t_redirs	*redirs;
 };
@@ -102,6 +101,7 @@ typedef struct s_ms
 	char		*wkdir;
 	char		*old_wkdir;
 	t_ast		*cur_node;
+	t_list		*pidlst;
 }				t_ms;
 
 #endif 

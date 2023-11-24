@@ -131,6 +131,7 @@ t_ms	*init_ms(char **env)
 	minishell->wkdir = NULL;
 	minishell->old_wkdir = NULL;
 	minishell->cur_node = NULL;
+	minishell->pidlst = NULL;
 	if (init_env(minishell, env))
 		free_minishell(minishell, 1);
 	if (init_workdir(minishell))
