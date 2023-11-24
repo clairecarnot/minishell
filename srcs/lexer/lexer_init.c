@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:30:06 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/23 16:01:02 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/24 12:41:21 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ t_lexer	*init_lexer(char *s)
 	lexer->next_pos = 1;
 	lexer->token_lst = NULL;
 	lexer->tok_count = 0;
+	lexer->dol = 0;
 	return (lexer);
 }
 
@@ -48,5 +49,6 @@ t_token	*init_token(t_ms *minishell, char *value, t_type type)
 	token->next_token = NULL;
 	token->tok_nb = minishell->lexer->tok_count;
 	minishell->lexer->tok_count++;
+	token->dol = minishell->lexer->dol;
 	return (token);
 }

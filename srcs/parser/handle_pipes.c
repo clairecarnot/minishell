@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/13 15:04:46 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/24 14:02:13 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_ast	*handle_pipe(t_ms *ms)
 	t_ast	*tmp_tree;
 
 	tmp_tree = NULL;
-	new_ast = new_node(token_to_node(T_PIPE));
+	new_ast = new_node(ms, token_to_node(T_PIPE));
 	if (!new_ast)
 		return (NULL);
 	eat_token(ms, T_PIPE);

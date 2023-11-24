@@ -6,13 +6,16 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/23 15:26:29 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/24 14:16:22 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
 #include "../libft/libft.h"
 
+/*
+Renseigne sur le type de quote rencontree en 1er dans le mot
+*/
 int	first_quote(t_lexer *lexer)
 {
 	int	i;
@@ -101,6 +104,7 @@ int	lexer(t_ms *minishell, char *s)
 		free_minishell(minishell, 1);
 	while (s[minishell->lexer->cur_pos])
 	{
+		minishell->lexer->dol = 0;
 		minishell->lexer->cur_c = s[minishell->lexer->cur_pos];
 		token_add_back(&minishell->lexer->token_lst, \
 		lexer_next_token(minishell, minishell->lexer));

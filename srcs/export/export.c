@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:43:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/21 11:01:37 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/24 15:33:13 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,18 @@ void	print_lst_exp(t_list *exp)
 	}
 }
 
+void	print_lst_env(t_list *env)
+{
+	t_list	*lst;
+
+	lst = env;
+	while (lst)
+	{
+		printf("%s\n", (char *)lst->content);
+		lst = lst->next;
+	}
+}
+
 // la fonction export recupere les t_list *env et t_list *exp
 int	exec_export(t_ms *ms)
 {
@@ -112,6 +124,10 @@ int	exec_export(t_ms *ms)
 				i++;
 			}
 		}
+	}
+	if (ft_strncmp(exp_arg->content, "env", 5) == 0)
+	{
+		print_lst_env(ms->env);
 	}
 	return (0);
 }

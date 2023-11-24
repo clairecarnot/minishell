@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/23 09:55:24 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/24 12:35:02 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_ast	*handle_cmd(t_ms *ms)
 
 	if (ms->cur_tok->type == T_LPAR)
 		return (handle_par(ms));
-	new_ast = new_node(token_to_node(ms->cur_tok->type));
+	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
 	if (!new_ast)
 		return (NULL);
 	while (ms->cur_tok && ms->cur_tok->type != T_PIPE

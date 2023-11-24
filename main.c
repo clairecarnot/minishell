@@ -70,7 +70,7 @@ void	print_token_lst(t_token *token)//temporaire
 	token_lst = token;
 	while (token_lst)
 	{
-		dprintf(1, "%s est de type %s\n", (token_lst)->value, tok_to_str(token_lst));
+		dprintf(1, "%s est de type %s dol =%d\n", (token_lst)->value, tok_to_str(token_lst), token_lst->dol);
 		token_lst = (token_lst)->next_token;
 	}
 }
@@ -161,7 +161,7 @@ void	print_tree(t_ast *root, int space)
 		printf(" ");
 	printf("%s ", node_to_str(root));
 	if (root->type == CMD)
-		printf("%s ss:%d\n", (char *)root->args->content, root->subsh);
+		printf("%s ss:%d dol:%d\n", (char *)root->args->content, root->subsh, root->dol);
 
 	print_tree(root->left, space);
 }
@@ -194,12 +194,12 @@ int	main(int argc, char **argv, char **env)
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
 			print_token_lst(minishell->lexer->token_lst);
-			// minishell->cur_tok = minishell->lexer->token_lst;
-			// parse(minishell);
-			//print_tree(minishell->root, 0);
+			minishell->cur_tok = minishell->lexer->token_lst;
+			parse(minishell);
+			print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
 			//visit_node(minishell->root);
-			// exec_export(minishell);
+			exec_export(minishell);
 			free_minishell(minishell, 0);
 		}
 	}

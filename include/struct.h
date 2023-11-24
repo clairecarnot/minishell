@@ -49,9 +49,10 @@ struct	s_ast
 	t_node_type	type;
 	t_ast		*right;
 	t_ast		*left;
-	t_list		*args;//
+	t_list		*args;
 	int			subsh;
 	t_redirs	*redirs;
+	int			dol;
 };
 
 typedef enum e_type
@@ -76,6 +77,7 @@ typedef struct s_token
 	char			*value;
 	struct s_token	*next_token;
 	size_t			tok_nb;
+	int				dol;
 }		t_token;
 
 typedef struct s_lexer
@@ -83,10 +85,13 @@ typedef struct s_lexer
 	char	*src;
 	size_t	src_size;
 	char	cur_c;
+	
 	size_t	cur_pos;
 	size_t	next_pos;
 	t_token	*token_lst;
 	size_t	tok_count;//nb de token final
+	int		dol;//indicateur de dollar dans quotes
+	//si $ est dans ' ' alors dol = 1 et ne pas expand 
 }		t_lexer;
 
 typedef struct s_ms
