@@ -22,7 +22,10 @@ typedef struct s_cmd
 {
 	char	**args;
 	t_builtin_type	builtin;
-}		t_command;
+	char	**bin_paths;
+	int	abs_or_rel;
+	int	valid_path;
+}		t_cmd;
 
 typedef struct s_ast	t_ast;
 

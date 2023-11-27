@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:28 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/13 15:10:57 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/27 10:47:16 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ int	token_to_node(int type)
 		return (AND_IF);
 	else if (type == T_OR_IF)
 		return (OR_IF);
-	else if (type == T_LPAR)
-		return (LPAR);
-	else if (type == T_RPAR)
-		return (RPAR);
 	else if (type == T_LESS)
 		return (LESS);
 	else if (type == T_GREAT)
@@ -39,10 +35,8 @@ int	token_to_node(int type)
 		return (DLESS);
 	else if (type == T_DGREAT)
 		return (DGREAT);
-	else if (type == T_NEWLINE)
-		return (NEWLINE);
 	else
-		return (END);
+		return (-1);
 }
 
 /*

@@ -3,6 +3,7 @@
 #include "./include/struct.h"
 #include "./include/env.h"
 #include "./include/signals.h"
+#include "./include/exec.h"
 
 char	*tok_to_str(t_token *token)//temporaire
 {
@@ -44,10 +45,6 @@ char	*node_to_str(t_ast *node)//temporaire
 		return ("AND_IF");
 	if (node->type == OR_IF)
 		return ("OR_IF");
-	if (node->type == LPAR)
-		return ("LPAR");
-	if (node->type == RPAR)
-		return ("RPAR");
 	if (node->type == LESS)
 		return ("LESS");
 	if (node->type == GREAT)
@@ -58,8 +55,6 @@ char	*node_to_str(t_ast *node)//temporaire
 		return ("DGREAT");
 	if (node->type == NEWLINE)
 		return ("NEWLINE");
-	if (node->type == END)
-		return ("END");
 	else
 		return ("UNKNOWN");
 }
@@ -179,8 +174,8 @@ int	main(int argc, char **argv, char **env)
 	minishell = init_ms(env);
 	if (!minishell)
 		return (1);
-//	while (1)
-//	{
+	while (1)
+	{
 //		preprompt_signals();
 		minishell->line = display_prompt();
 		if (!minishell->line)
@@ -191,15 +186,18 @@ int	main(int argc, char **argv, char **env)
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
 			print_token_lst(minishell->lexer->token_lst);
+			dprintf(2, "OK1\n");
 			minishell->cur_tok = minishell->lexer->token_lst;
 			parse(minishell);
+			dprintf(2, "OK2\n");
 			//print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
 			//visit_node(minishell->root);
 			// exec_export(minishell);
-			g_exit_code = execute(ms);
+			g_exit_code = pre_exec(minishell);
+//			dprintf(2, "OK3\n");
 		}
-//	}
+	}
 	visit_node(minishell->root);
 	free_minishell(minishell, 0);
 	return (0);
