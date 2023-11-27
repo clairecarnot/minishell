@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 17:04:43 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/27 09:47:18 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,8 @@ int	init_env(t_ms *ms, char **env)
 		ft_lstadd_back(&ms->env, new_var);
 		i++;
 	}
+	if (isatty(0))
+		return (0);
 	if (update_shlvl(ms))
 		return (ft_lstfree(&ms->env), 1);
 	return (0);
