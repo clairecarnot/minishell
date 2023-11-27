@@ -96,7 +96,6 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exec_builtin(cmd);
 	else
 		do_cmd(cmd, ms, env);
-	//parent waitpid?
 	free_cmd(cmd);
 	free_tab(env);
 	return (0);

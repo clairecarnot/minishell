@@ -17,5 +17,7 @@ void	free_cmd(t_cmd *cmd)
 {
 	if (cmd->args)
 		free_tab(cmd->args);
+	if (cmd->bin_paths)
+		free_tab(cmd->bin_paths);
 	free(cmd);
 }
