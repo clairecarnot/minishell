@@ -89,10 +89,6 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	env = lst_to_tab(ms->env);
 	if (!env)
 		return (1);
-//	int i;
-//	i = 0;
-//	while (env[i])
-//		dprintf(2, "%s\n", env[i++]);
 	cmd = node_to_cmd(node, env);
 	if (!cmd)
 		return (free_tab(env), 1);
