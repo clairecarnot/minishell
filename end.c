@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/23 17:54:50 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/27 18:24:05 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,16 @@ a la ligne suivante) ne pas les free)
 */
 void	free_minishell(t_ms *ms, int exit_status)
 {
-	if (ms->root)
-		free_root_ast(ms->root);
+	// if (ms->root)
+	// 	free_root_ast(ms->root);// fait un segfault apres avoir entrer la deuxieme ligne sur le prompt
 	if (ms->lexer)
 	{
 		token_lst_free(&ms->lexer->token_lst);
 		free(ms->lexer);
 	}
-	if (ms->env)
+	if (ms->env && exit_status != 0)
 		ft_lstfree(&ms->env);
-	if (ms->exp)
+	if (ms->exp && exit_status != 0)
 		ft_lstfree(&ms->exp);
 	if (ms->wkdir && exit_status != 0)
 		free(ms->wkdir);

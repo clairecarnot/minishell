@@ -12,7 +12,7 @@ srcs/lexer/lexer_parse_word.c srcs/lexer/lexer_error_redir.c \
 srcs/parser/parser.c srcs/parser/parser_utils.c \
 srcs/parser/handle_cmds.c srcs/parser/handle_ops.c srcs/parser/handle_par.c \
 srcs/parser/handle_pipes.c srcs/parser/handle_redirs.c \
-srcs/export/export.c \
+srcs/builtins/cmd_export.c srcs/builtins/cmd_export_utils.c srcs/builtins/cmd_env.c \
 srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c
 
 OBJS = $(SRCS:.c=.o)
