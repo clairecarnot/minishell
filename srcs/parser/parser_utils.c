@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:28 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/27 10:47:16 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/29 17:41:14 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * Convertit un type de token en un type d'ast
  */
 
-int	token_to_node(int type)
+int	token_to_node(int type)// a garder
 {
 	if (type == T_WORD)
 		return (CMD);
@@ -44,7 +44,7 @@ int	token_to_node(int type)
  * "Mange" un token du type indique => fait avancer une liste de token au token suivant
  */
 
-int	eat_token(t_ms *ms, t_type type)
+int	eat_token(t_ms *ms, t_type type)// a garder
 {
 	if (ms->cur_tok->type == type)
 	{

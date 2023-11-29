@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/24 12:40:13 by mapoirie         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
 
@@ -35,47 +23,98 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 	return (new_ast);
 }
 
-/*
- * add_subtree:
- * Si la structure AST "root" n'existe pas, elle devient la nouvelle structure AST "node"
- * Sinon, node est ajoute "au-dessus" de l'ancienne structure root: sa branche gauche devient l'ancien root, et root pointe maintenant sur node
- */
-
-void	add_subtree(t_ast *node, t_ast	**root)
+t_ast	*factor(t_ms *ms, t_token *cur_tok)
 {
+	t_ast	*node;
+
+	if (!cur_tok || (cur_tok->type != T_WORD && (cur_tok->type < T_LESS && cur_tok->type > T_DGREAT)))
+		return (NULL);
+	node = new_node(ms, token_to_node(cur_tok->type));
 	if (!node)
-		return ;
-	if (!*root)
-		*root = node;
-	else
+		return (NULL);
+	while (cur_tok && (cur_tok->type == T_WORD || (cur_tok->type >= T_LESS && cur_tok->type <= T_DGREAT)))
 	{
-		node->left = *root;
-		*root = node;
+		if (is_redir(cur_tok->type))
+		{
+			if (!handle_red(ms, node))
+				return (free_root_ast(node), NULL);// a verifier
+		}
+		else
+		{
+			if (!add_cmd_args(ms, node))
+				return (free_root_ast(node), NULL);// a verifier
+		}
 	}
 }
 
-/*
- * parse:
- * Boucle sur la liste de tokens jusqu'a EOF
- * en fonction du type de token, la boucle renvoie vers les fonctions qui gerent respectivement: les pipes, les and/or, les commandes (words, parentheses et redirections)
- * ces fonctions renvoient un tmp_tree soit une structure AST (types: pipe/and or/cmd)
- * chaque nouveau tmp_tree est ajoute "au-dessus" de l'ancien noeud root
- */
+t_ast	*handle_par(t_ms *ms, t_token *cur_tok)
+{
+	t_ast	*node;
+
+	node = NULL;
+	eat_token(ms, T_LPAR);
+	node = expr(ms, cur_tok);
+	// if (!node) //protec
+	eat_token(ms, T_RPAR);
+	return (node);
+}
+
+t_ast	*term(t_ms *ms, t_token *cur_tok)
+{
+	t_ast	*node;
+	t_ast	*middle_node;
+
+	node = NULL;
+	middle_node = NULL;
+	if (cur_tok->type == T_LPAR)
+	{
+		node = handle_par(ms, cur_tok);
+		// if (!node) //protec
+	}
+	else
+	{
+		node = factor(ms, cur_tok);
+		// if (!node) //protec
+		while (cur_tok->type == T_PIPE)
+		{
+			middle_node = new_node(ms, token_to_node(cur_tok->type));
+			// if (!middle_node) //protec
+			eat_token(ms, T_PIPE);
+			middle_node->left = node;
+			middle_node->right = factor(ms, cur_tok);
+			// if (!middle_node->right) //protec
+			node = middle_node;
+		}
+	}
+	return (node);
+}
+
+t_ast	*expr(t_ms *ms, t_token *cur_tok)
+{
+	t_ast	*node;
+	t_ast	*middle_node;
+
+	middle_node = NULL;
+	node = term(ms, cur_tok);
+	// if (!node) //a proteger
+	while (cur_tok->type == T_AND_IF || cur_tok->type == T_OR_IF)
+	{
+		middle_node = new_node(ms, token_to_node(cur_tok->type));
+		// if (!middle_node)//protec
+		eat_token(ms, cur_tok->type);
+		middle_node->left = node;
+		middle_node->right = term(ms, cur_tok);
+		// if(!middle_node->right) //protec
+		node = middle_node;
+	}
+	return (node);
+}
+
 void	parse(t_ms *ms)
 {
-	t_ast	*tmp_tree;
-
-	tmp_tree = NULL;
-	while (ms->cur_tok && ms->cur_tok->type != T_EOF)
-	{
-		if (ms->cur_tok->type == T_PIPE)
-			tmp_tree = handle_pipe(ms);
-		else if (ms->cur_tok->type == T_AND_IF || ms->cur_tok->type == T_OR_IF)
-			tmp_tree = handle_op(ms);
-		else
-			tmp_tree = handle_cmd(ms);
-		if (!tmp_tree)
-			free_minishell(ms, 1);
-		add_subtree(tmp_tree, &ms->root);
-	}
+	if (ms->cur_tok == T_EOF || !ms->cur_tok)
+		return ;
+	ms->root = expr(ms->cur_tok);
+	if (ms->cur_tok->type != T_EOF)
+		printf("syntax error\n");// a completer
 }
