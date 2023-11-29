@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:43:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/27 17:24:02 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/28 09:42:32 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,11 @@ void	replace_in_exp(t_ms *ms, char *content)
 		// printf("hello1\n");
 		if (ft_strncmp(exp_tmp->content, content, ft_strlen_equal(content)) == 0)
 		{
-			exp_tmp2 = new;
-			
+			dprintf(1, "hey1\n");
+			new->next = exp_tmp->next;
+			free(exp_tmp->content);
+			free(exp_tmp);
+			exp_tmp2->next = new;
 			return ;
 		}
 		exp_tmp2 = exp_tmp;
