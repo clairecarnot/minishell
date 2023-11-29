@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/20 15:29:30 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/28 14:51:49 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,37 +76,55 @@ void	redirs_free(t_redirs **lst)
 
 void	free_root_ast(t_ast *root)
 {
+	// dprintf(1, "seg1\n");
 	if (!root)
 		return ;
+	// dprintf(1, "seg2\n");
 	free_root_ast(root->left);
+	// dprintf(1, "seg3\n");
 	free_root_ast(root->right);
+	// dprintf(1, "seg4\n");
 	if (root->type == CMD)
 		ft_lstfree(&root->args);
+	// dprintf(1, "seg5\n");
+	root->args = NULL;
 	if (root->redirs)
 		redirs_free(&root->redirs);
+	// dprintf(1, "seg6\n");
+	root->redirs = NULL;
 	free(root);
+	// dprintf(1, "seg7\n");
+	root = NULL;
 }
-
+/*
+peut-etre a changer: dans les conditions if exit_status != 0 
+(en cas d'erreur free certaines choses si non erreur(= passage
+a la ligne suivante) ne pas les free)
+*/
 void	free_minishell(t_ms *ms, int exit_status)
 {
 	if (ms->root)
-		free_root_ast(ms->root);
+	{
+		printf("inside if\n");
+		free_root_ast(ms->root);// fait un segfault apres avoir entrer la deuxieme ligne sur le prompt
+	}
 	if (ms->lexer)
 	{
 		token_lst_free(&ms->lexer->token_lst);
 		free(ms->lexer);
 	}
-	if (ms->env)
+	if (ms->env && exit_status != 0)
 		ft_lstfree(&ms->env);
-	if (ms->exp)
+	if (ms->exp && exit_status != 0)
 		ft_lstfree(&ms->exp);
-	if (ms->wkdir)
+	if (ms->wkdir && exit_status != 0)
 		free(ms->wkdir);
-	if (ms->old_wkdir)
+	if (ms->old_wkdir && exit_status != 0)
 		free(ms->old_wkdir);
 	if (ms->line)
 		free(ms->line);
-	if (ms)
+	if (ms && exit_status != 0)
 		free(ms);
-	exit(exit_status);
+	if (exit_status != 0)
+		exit(exit_status);
 }

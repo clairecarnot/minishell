@@ -9,7 +9,7 @@
 //----------------------- parser.c -----------------------
 void		parse(t_ms *ms);
 void		add_subtree(t_ast *node, t_ast	**root);
-t_ast		*new_node(t_node_type type);
+t_ast		*new_node(t_ms *ms, t_node_type type);
 
 //----------------------- handle_cmds.c ------------------
 t_ast		*handle_cmd(t_ms *ms);

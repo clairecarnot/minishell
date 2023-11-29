@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:19:15 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 11:59:56 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/23 16:52:07 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	check_quotes(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (str[i] == '\'' || str[i] == '\"')
+		if (str[i] && (str[i] == '\'' || str[i] == '\"'))
 		{
 			qflag = 1;
 			c = str[i];
@@ -75,6 +75,8 @@ int	check_quotes(char *str)
 				i++;
 			if (str[i] && str[i] == c)
 				qflag = 0;
+			else if (!str[i])
+				break ;
 		}
 	}
 	return (qflag);

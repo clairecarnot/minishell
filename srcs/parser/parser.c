@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/13 15:06:18 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/11/24 12:40:13 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * Cree et initialise une structure AST du type indique
  */
 
-t_ast	*new_node(t_node_type type)
+t_ast	*new_node(t_ms *ms, t_node_type type)
 {
 	t_ast	*new_ast;
 
@@ -31,6 +31,7 @@ t_ast	*new_node(t_node_type type)
 	new_ast->args = NULL;
 	new_ast->subsh = 0;
 	new_ast->redirs = NULL;
+	new_ast->dol = ms->cur_tok->dol;
 	return (new_ast);
 }
 
