@@ -1,0 +1,11 @@
+end.c
+end.o
+file
+include
+libft
+main.c
+main.o
+Makefile
+minishell
+readline.supp
+srcs

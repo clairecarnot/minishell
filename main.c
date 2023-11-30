@@ -194,8 +194,9 @@ int	main(int argc, char **argv, char **env)
 			// exec_export(minishell);
 			// pre_exec(minishell);
 			// exec_env(minishell);
-			// free_minishell(minishell, 0);
+			free_minishell(minishell, 0);
 		}
 	}
+	// free_minishell(minishell, 1);
 	return (0);
 }

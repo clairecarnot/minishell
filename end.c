@@ -105,7 +105,7 @@ void	free_minishell(t_ms *ms, int exit_status)
 {
 	if (ms->root)
 	{
-		printf("inside if\n");
+		// printf("inside if\n");
 		free_root_ast(ms->root);// fait un segfault apres avoir entrer la deuxieme ligne sur le prompt
 	}
 	if (ms->lexer)
@@ -122,7 +122,10 @@ void	free_minishell(t_ms *ms, int exit_status)
 	if (ms->old_wkdir && exit_status != 0)
 		free(ms->old_wkdir);
 	if (ms->line)
+	{
 		free(ms->line);
+		ms->line = NULL;
+	}
 	if (ms && exit_status != 0)
 		free(ms);
 	if (exit_status != 0)

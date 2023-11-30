@@ -43,14 +43,16 @@ t_ast	*factor(t_ms *ms)
 	// dprintf(2, "factor2\n");
 	if (!node)
 		return (NULL);
-	// while (cur_tok && cur_tok->type != T_EOF && (cur_tok->type == T_WORD || is_redirect(cur_tok)))
-	while (ms->cur_tok && ms->cur_tok->type != T_EOF && ms->cur_tok->type == T_WORD)
+	while (ms->cur_tok && ms->cur_tok->type != T_EOF && (ms->cur_tok->type == T_WORD || is_redirect(ms->cur_tok)))
 	{
 		// dprintf(2, "%s\n", tok_to_str(cur_tok));
 		// if (!add_cmd_args(ms, node))
-		if (!add_cmd_args(ms, node))
-			return (free_root_ast(node), NULL);// a verifier
-		// dprintf(2, "factor3\n");
+		if (ms->cur_tok && ms->cur_tok->type == T_WORD)
+		{
+			if (!add_cmd_args(ms, node))
+				return (free_root_ast(node), NULL);// a verifier
+			// dprintf(2, "factor3\n");
+		}
 		if (is_redirect(ms->cur_tok))
 		{
 			if (!handle_red(ms, node))
