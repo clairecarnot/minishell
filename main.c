@@ -188,7 +188,9 @@ int	main(int argc, char **argv, char **env)
 			print_token_lst(minishell->lexer->token_lst);
 			minishell->cur_tok = minishell->lexer->token_lst;
 			parse(minishell);
-			// print_tree(minishell->root, 0);
+			if (!minishell->root)
+				return (free_minishell(minishell, 1), 1);
+			print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
 			// visit_node(minishell->root);
 			// exec_export(minishell);
@@ -197,6 +199,6 @@ int	main(int argc, char **argv, char **env)
 			free_minishell(minishell, 0);
 		}
 	}
-	// free_minishell(minishell, 1);
+	free_minishell(minishell, 1);
 	return (0);
 }

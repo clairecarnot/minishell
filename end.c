@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/28 14:51:49 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:01:28 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,25 @@ void	redirs_free(t_redirs **lst)
 
 void	free_root_ast(t_ast *root)
 {
-	// dprintf(1, "seg1\n");
+//	dprintf(1, "seg1\n");
+//	dprintf(2, "root exists2\n");
 	if (!root)
 		return ;
 	// dprintf(1, "seg2\n");
-	free_root_ast(root->left);
+	if (root->left)
+		free_root_ast(root->left);
 	// dprintf(1, "seg3\n");
-	free_root_ast(root->right);
+	if (root->right)
+		free_root_ast(root->right);
 	// dprintf(1, "seg4\n");
 	if (root->type == CMD)
 		ft_lstfree(&root->args);
 	// dprintf(1, "seg5\n");
-	root->args = NULL;
+//	root->args = NULL;
 	if (root->redirs)
 		redirs_free(&root->redirs);
 	// dprintf(1, "seg6\n");
-	root->redirs = NULL;
+//	root->redirs = NULL;
 	free(root);
 	// dprintf(1, "seg7\n");
 	root = NULL;
@@ -101,17 +104,19 @@ peut-etre a changer: dans les conditions if exit_status != 0
 (en cas d'erreur free certaines choses si non erreur(= passage
 a la ligne suivante) ne pas les free)
 */
+
 void	free_minishell(t_ms *ms, int exit_status)
 {
 	if (ms->root)
 	{
-		// printf("inside if\n");
-		free_root_ast(ms->root);// fait un segfault apres avoir entrer la deuxieme ligne sur le prompt
+		free_root_ast(ms->root);
+		ms->root = NULL;
 	}
 	if (ms->lexer)
 	{
 		token_lst_free(&ms->lexer->token_lst);
 		free(ms->lexer);
+		ms->lexer = NULL;
 	}
 	if (ms->env && exit_status != 0)
 		ft_lstfree(&ms->env);
