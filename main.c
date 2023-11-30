@@ -174,7 +174,8 @@ int	main(int argc, char **argv, char **env)
 	minishell = init_ms(env);
 	if (!minishell)
 		return (1);
-	while (1)
+	int i = 0;
+	while (i < 2)
 	{
 //		preprompt_signals();
 		minishell->line = display_prompt();
@@ -196,7 +197,8 @@ int	main(int argc, char **argv, char **env)
 			// exec_env(minishell);
 			free_minishell(minishell, 0);
 		}
+		i++;
 	}
-	// free_minishell(minishell, 1);
+	free_minishell(minishell, 1);
 	return (0);
 }
