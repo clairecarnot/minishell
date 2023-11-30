@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:12:58 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/27 15:26:11 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/30 16:17:57 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	add_to_env(t_ms *ms, char *content)
 {
 	t_list	*new;
 
-	new = ft_lstnew(content);
+	printf("content2 = %s\n", content);
+	new = ft_lstnew(content);//ajouter protec
 	ft_lstadd_back(&ms->env, new);
 }
 

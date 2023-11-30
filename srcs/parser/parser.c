@@ -36,6 +36,7 @@ t_ast	*factor(t_ms *ms)
 {
 	t_ast	*node;
 
+	dprintf(2, "factor\n");
 	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && (ms->cur_tok->type < T_LESS || ms->cur_tok->type > T_DGREAT)))
 		return (NULL);
 	node = new_node(ms, CMD);
@@ -61,12 +62,14 @@ t_ast	*handle_par(t_ms *ms)
 {
 	t_ast	*node;
 
+	dprintf(2, "parenthese G\n");
 	node = NULL;
 	eat_token(ms, T_LPAR);
 	node = expr(ms);
 	if (!node)
 		return (NULL);
 	eat_token(ms, T_RPAR);
+	dprintf(2, "parenthese D\n");
 	return (node);
 }
 
@@ -75,6 +78,7 @@ t_ast	*term(t_ms *ms)
 	t_ast	*node;
 	t_ast	*middle_node;
 
+	dprintf(2, "term\n");
 	node = NULL;
 	middle_node = NULL;
 	if (ms->cur_tok && ms->cur_tok->type == T_LPAR)
@@ -96,7 +100,10 @@ t_ast	*term(t_ms *ms)
 			eat_token(ms, T_PIPE);
 			middle_node->right = factor(ms);
 			if (!middle_node->right)
+			{
+				dprintf(2, "pb right\n");
 				return (free(middle_node), free_root_ast(node), NULL);
+			}
 			middle_node->left = node;
 			node = middle_node;
 		}
@@ -109,6 +116,7 @@ t_ast	*expr(t_ms *ms)
 	t_ast	*node;
 	t_ast	*middle_node;
 
+	dprintf(2, "expr\n");
 	node = NULL;
 	middle_node = NULL;
 	node = term(ms);
@@ -129,21 +137,21 @@ t_ast	*expr(t_ms *ms)
 	return (node);
 }
 
-//int	parse(t_ms *ms)
-void	parse(t_ms *ms)
+int	parse(t_ms *ms)
 {
 	if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
-		return ;
-//		return (1);
+		return (1);
 	ms->root = expr(ms);
-	if (!ms->root)
-		return ;
-//		return (0);
 	if (ms->cur_tok->type != T_EOF)
 	{
 		printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
-		//error number = 2
-		//return (0);
+		g_exit_code = 2;
+		return (-1);
 	}
-//	return (1);
+	if (!ms->root)
+	{
+		printf("ici\n");
+		return (-1);
+	}
+	return (1);
 }

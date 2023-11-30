@@ -18,7 +18,7 @@ t_ast	*factor(t_ms *ms);
 t_ast	*handle_par(t_ms *ms);
 t_ast	*term(t_ms *ms);
 t_ast	*expr(t_ms *ms);
-void	parse(t_ms *ms);
+int		parse(t_ms *ms);
 
 //----------------------- handle_cmds.c ------------------
 // t_ast		*handle_cmd(t_ms *ms);

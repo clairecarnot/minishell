@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:46:00 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/30 14:30:15 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:40:19 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,17 @@ int	error_in_lexer(t_ms *ms)
 	t_token	*tok_lst;
 
 	tok_lst = ms->lexer->token_lst;
-	if (tok_lst->type == T_PIPE || tok_lst->type == T_AND_IF || \
-	tok_lst->type == T_OR_IF || tok_lst->type == T_RPAR)
-		return (printf("minishell: syntax error near \
-unexpected token `%s'\n", ms->lexer->token_lst->value), 1);
+// 	if (tok_lst->type == T_PIPE || tok_lst->type == T_AND_IF || \
+// 	tok_lst->type == T_OR_IF || tok_lst->type == T_RPAR)
+// 		return (printf("minishell: syntax error near \
+// unexpected token `%s'\n", ms->lexer->token_lst->value), 1);
 	if (check_par(ms) != 0)
 		return (1);
-	if (consecutive_op(ms) != 0)
-		return (1);
-	if (alone_and_after_op(ms) != 0)
-		return (1);
-	if (check_redir(ms) != 0)
-		return (1);
+	// if (consecutive_op(ms) != 0)
+	// 	return (1);
+	// if (alone_and_after_op(ms) != 0)
+	// 	return (1);
+	// if (check_redir(ms) != 0)
+	// 	return (1);
 	return (0);
 }
