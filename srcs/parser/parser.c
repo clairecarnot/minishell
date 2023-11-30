@@ -132,10 +132,12 @@ void	parse(t_ms *ms)
 	if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
 		return ;
 	ms->root = expr(ms);
+	if (!ms->root)
+		return ;
 	if (ms->cur_tok->type != T_EOF)
 	{
 		printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
-		free_root_ast(ms->root);
-		ms->root = NULL;
+		// free_root_ast(ms->root);
+		// ms->root = NULL;
 	}
 }

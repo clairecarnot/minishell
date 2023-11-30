@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:19:15 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/23 16:52:07 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:41:01 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ int	check_error_prelexer(char *line)
 {
 	if (check_quotes(line) != 0)
 		return (printf("quotes error\n"), 1);
-	if (check_redir_beforelex(line))
-		return (1);
+	// if (check_redir_beforelex(line))
+	// 	return (1);
 	return (0);
 }
