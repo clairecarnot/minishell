@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:30:04 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/24 14:14:51 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:56:27 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ et les characters speciaux, et pas les quotes ou les espaces
 char	*quote_state_close(t_ms *ms, int i, char *value)
 {
 	if (ms->lexer->src[ms->lexer->cur_pos + i] && \
-	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 1) && (ms->lexer->src \
+	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0) && (ms->lexer->src \
 	[ms->lexer->cur_pos + i] != '\'' && ms->lexer->src[ms->lexer->cur_pos + i] != '\"'))
 	{
 		if (!value)
@@ -119,7 +119,7 @@ t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q)
 	i = 0;
 	value = NULL;
 	while (ms->lexer->src[ms->lexer->cur_pos + i] && (qstate(nb_q) == 1 || \
-	(qstate(nb_q) == 0 && ms->lexer->src[ms->lexer->cur_pos + i] != ' ')))
+	(qstate(nb_q) == 0 && ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i] , 0))))
 	{
 		if (ms->lexer->src[ms->lexer->cur_pos + i] == qtype)
 			nb_q++;

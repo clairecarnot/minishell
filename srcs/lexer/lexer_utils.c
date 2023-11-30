@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:46:22 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/16 11:28:46 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:21:25 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,13 @@ int	ft_ischar(int c, int quotes)
 {
 	if (!quotes)
 	{
-		if (c != 32 && c != 40 && c != 41 \
-		&& c != 60 && c != 62 && c != 124 && c != 0 \
-		&& c != 34 && c != 39)
+		if (c != ' ' && c != '(' && c != ')' \
+		&& c != '<' && c != '>' && c != '|' && \
+		c != '&' && c != 0) /*\
+		&& c != 34 && c != 39)*/
 			return (1);
 	}
-	else if (quotes == 1)//peut etre pas necessaire
+	else if (quotes == 1)
 	{
 		if (c != 0)
 			return (1);
