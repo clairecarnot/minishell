@@ -21,21 +21,21 @@
  * L'AST operateur renvoye sera implante au-dessus de l'ancienne root, a partir de sa branche gauche
  */
 
-t_ast	*handle_op(t_ms *ms)
-{
-	t_ast	*new_ast;
+// t_ast	*handle_op(t_ms *ms)
+// {
+// 	t_ast	*new_ast;
 
-	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
-	if (!new_ast)
-		return (NULL);
-	eat_token(ms, ms->cur_tok->type);
-	if (ms->cur_tok && ms->cur_tok->type != T_EOF
-		&& (ms->cur_tok->type == T_WORD
-			|| ms->cur_tok->type >= T_LPAR))
-	{
-		new_ast->right = handle_cmd(ms);
-		if (!new_ast->right)
-			return (free_root_ast(new_ast), NULL);
-	}
-	return (new_ast);
-}
+// 	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
+// 	if (!new_ast)
+// 		return (NULL);
+// 	eat_token(ms, ms->cur_tok->type);
+// 	if (ms->cur_tok && ms->cur_tok->type != T_EOF
+// 		&& (ms->cur_tok->type == T_WORD
+// 			|| ms->cur_tok->type >= T_LPAR))
+// 	{
+// 		new_ast->right = handle_cmd(ms);
+// 		if (!new_ast->right)
+// 			return (free_root_ast(new_ast), NULL);
+// 	}
+// 	return (new_ast);
+// }

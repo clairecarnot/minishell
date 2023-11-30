@@ -60,13 +60,13 @@ t_redirs	*redirs_new(t_token *token, int type)
  * Verifie que le type envoye est un token redirection
  */
 
-int	is_redir(int type)
-{
-	if (type == T_LESS || type == T_GREAT
-		|| type == T_DLESS || type == T_DGREAT)
-		return (1);
-	return (0);
-}
+// int	is_redir(int type)
+// {
+// 	if (type == T_LESS || type == T_GREAT
+// 		|| type == T_DLESS || type == T_DGREAT)
+// 		return (1);
+// 	return (0);
+// }
 
 /*
  * handle_red:

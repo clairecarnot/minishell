@@ -23,6 +23,7 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 	char	*cmd;
 	t_list	*new_arg;
 
+	// dprintf(2, "cmd args\n");
 	if (!ms->cur_tok->value)// une commande peut avoir comme valeur NULL dans ce cas: """"""
 		cmd = NULL;
 		// cmd = ft_calloc(1, sizeof(char));
@@ -37,6 +38,7 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 		return (free(cmd), NULL);
 	ft_lstadd_back(&new_ast->args, new_arg);
 	eat_token(ms, T_WORD);
+	// dprintf(2, "tok1= %s\n", tok_to_str(ms->cur_tok));
 	return (new_ast->args);
 }
 
@@ -49,29 +51,29 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
  * 	si word simple, on ajoute ce word a la t_list des arguments de la commande
  */
 
-t_ast	*handle_cmd(t_ms *ms)
-{
-	t_ast	*new_ast;
+// t_ast	*handle_cmd(t_ms *ms)
+// {
+// 	t_ast	*new_ast;
 
-	if (ms->cur_tok->type == T_LPAR)
-		return (handle_par(ms));
-	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
-	if (!new_ast)
-		return (NULL);
-	while (ms->cur_tok && ms->cur_tok->type != T_PIPE
-		&& ms->cur_tok->type != T_AND_IF && ms->cur_tok->type != T_OR_IF
-		&& ms->cur_tok->type != T_EOF && ms->cur_tok->type != T_RPAR)
-	{
-		if (is_redir(ms->cur_tok->type))
-		{
-			if (!handle_red(ms, new_ast))
-				return (free_root_ast(new_ast), NULL);
-		}
-		else
-		{
-			if (!add_cmd_args(ms, new_ast))
-				return (free_root_ast(new_ast), NULL);
-		}
-	}
-	return (new_ast);
-}
+// 	if (ms->cur_tok->type == T_LPAR)
+// 		return (handle_par(ms));
+// 	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
+// 	if (!new_ast)
+// 		return (NULL);
+// 	while (ms->cur_tok && ms->cur_tok->type != T_PIPE
+// 		&& ms->cur_tok->type != T_AND_IF && ms->cur_tok->type != T_OR_IF
+// 		&& ms->cur_tok->type != T_EOF && ms->cur_tok->type != T_RPAR)
+// 	{
+// 		if (is_redir(ms->cur_tok->type))
+// 		{
+// 			if (!handle_red(ms, new_ast))
+// 				return (free_root_ast(new_ast), NULL);
+// 		}
+// 		else
+// 		{
+// 			if (!add_cmd_args(ms, new_ast))
+// 				return (free_root_ast(new_ast), NULL);
+// 		}
+// 	}
+// 	return (new_ast);
+// }

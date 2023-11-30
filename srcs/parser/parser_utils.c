@@ -48,6 +48,7 @@ int	eat_token(t_ms *ms, t_type type)// a garder
 {
 	if (ms->cur_tok->type == type)
 	{
+		// dprintf(2, "eat\n");
 		ms->cur_tok = ms->cur_tok->next_token;
 		return (1);
 	}

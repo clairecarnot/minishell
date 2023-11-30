@@ -10,15 +10,12 @@ srcs/lexer/lexer.c srcs/lexer/lexer_init.c srcs/lexer/lexer_utils.c \
 srcs/lexer/lexer_utils2.c srcs/lexer/lexer_error.c srcs/lexer/prelexer_error.c \
 srcs/lexer/lexer_parse_word.c srcs/lexer/lexer_error_redir.c \
 srcs/parser/parser.c srcs/parser/parser_utils.c \
-srcs/parser/handle_cmds.c srcs/parser/handle_ops.c srcs/parser/handle_par.c \
-srcs/parser/handle_pipes.c srcs/parser/handle_redirs.c \
-srcs/export/export.c \
+srcs/parser/handle_cmds.c srcs/parser/handle_redirs.c \
 srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c \
 srcs/signals/signals.c \
 srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_path.c \
-srcs/exec/cmd_utils.c srcs/exec/pipe_exec.c 
+srcs/exec/cmd_utils.c srcs/exec/pipe_exec.c \
 srcs/builtins/cmd_export.c srcs/builtins/cmd_export_utils.c srcs/builtins/cmd_env.c \
-srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c
 
 OBJS = $(SRCS:.c=.o)
 
