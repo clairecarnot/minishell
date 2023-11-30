@@ -174,8 +174,7 @@ int	main(int argc, char **argv, char **env)
 	minishell = init_ms(env);
 	if (!minishell)
 		return (1);
-	int i = 0;
-	while (i < 2)
+	while (1)
 	{
 //		preprompt_signals();
 		minishell->line = display_prompt();
@@ -189,6 +188,8 @@ int	main(int argc, char **argv, char **env)
 			// print_token_lst(minishell->lexer->token_lst);
 			minishell->cur_tok = minishell->lexer->token_lst;
 			parse(minishell);
+			if (!minishell->root)
+				return (free_minishell(minishell, 1), 1);
 			print_tree(minishell->root, 0);
 			//faire une fonction qui clean le parser pour la prochaine ligne
 			// visit_node(minishell->root);
@@ -197,7 +198,6 @@ int	main(int argc, char **argv, char **env)
 			// exec_env(minishell);
 			free_minishell(minishell, 0);
 		}
-		i++;
 	}
 	free_minishell(minishell, 1);
 	return (0);

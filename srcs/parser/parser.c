@@ -112,7 +112,8 @@ t_ast	*expr(t_ms *ms)
 
 	middle_node = NULL;
 	node = term(ms);
-	// if (!node) //a proteger
+	if (!node)
+		return (NULL);
 	while (ms->cur_tok->type == T_AND_IF || ms->cur_tok->type == T_OR_IF)
 	{
 		middle_node = new_node(ms, token_to_node(ms->cur_tok->type));
@@ -132,5 +133,9 @@ void	parse(t_ms *ms)
 		return ;
 	ms->root = expr(ms);
 	if (ms->cur_tok->type != T_EOF)
-		printf("syntax error\n");// a completer
+	{
+		printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
+		free_root_ast(ms->root);
+		ms->root = NULL;
+	}
 }
