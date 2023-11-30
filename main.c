@@ -188,6 +188,11 @@ int	main(int argc, char **argv, char **env)
 			print_token_lst(minishell->lexer->token_lst);
 			minishell->cur_tok = minishell->lexer->token_lst;
 			parse(minishell);
+			// if (!parse(minishell))
+			// {
+			// 	if g_exit_code == 0 -> malloc pb -> free_minishell(minishell, 1);
+			// 	if g_exit_code == 2 -> syntax pb -> free_minishell(minishell, 0);
+			// }
 			if (!minishell->root)
 				return (free_minishell(minishell, 1), 1);
 			print_tree(minishell->root, 0);
