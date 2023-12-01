@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:41:09 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/27 15:29:01 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:39:29 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int		has_equal(char *content);
 char	*add_qvar(char *content);
 
 //----------------------- cmd_env.c -----------------------
-void	add_to_env(t_ms *ms, char *content);
+t_list	*add_to_env(t_ms *ms, char *content);
 void	print_lst_env(t_list *env);
 int		exec_env(t_ms *ms);
 

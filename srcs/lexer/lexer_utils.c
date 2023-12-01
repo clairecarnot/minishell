@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:46:22 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/30 15:21:25 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 11:41:53 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ char	peek_next(t_lexer *lexer)
 	return (lexer->src[lexer->next_pos]);
 }
 
+
 int	ft_ischar(int c, int quotes)
 {
 	if (!quotes)
 	{
 		if (c != ' ' && c != '(' && c != ')' \
 		&& c != '<' && c != '>' && c != '|' && \
-		c != '&' && c != 0) /*\
+		/*c != '&' &&*/ c != 0) /*\
 		&& c != 34 && c != 39)*/
 			return (1);
 	}
