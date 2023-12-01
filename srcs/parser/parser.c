@@ -12,7 +12,10 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 
 	new_ast = ft_calloc(1, sizeof(t_ast));
 	if (!new_ast)
+	{
+		g_exit_code = 134;
 		return (NULL);
+	}
 	new_ast->type = type;
 	new_ast->right = NULL;
 	new_ast->left = NULL;
@@ -23,12 +26,15 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 	return (new_ast);
 }
 
-int	is_redirect(t_token *cur_tok)
+int	is_redirect(t_ms *ms, t_token *cur_tok)
 {
 	if (!cur_tok || (cur_tok->type < T_LESS || cur_tok->type > T_DGREAT))
 		return (0);
 	if (!cur_tok->next_token || cur_tok->next_token->type != T_WORD)
+	{
+		eat_token(ms, cur_tok->type);
 		return (0);
+	}
 	return (1);
 }
 
@@ -36,20 +42,24 @@ t_ast	*factor(t_ms *ms)
 {
 	t_ast	*node;
 
-	dprintf(2, "factor\n");
-	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && (ms->cur_tok->type < T_LESS || ms->cur_tok->type > T_DGREAT)))
+	// dprintf(2, "factor\n");
+	// if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && (ms->cur_tok->type < T_LESS || ms->cur_tok->type > T_DGREAT)))
+	// 	return (NULL);
+	// if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && !is_redirect(ms, ms->cur_tok)))
+	// 	return (NULL);
+	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && !is_redirect(ms, ms->cur_tok)))
 		return (NULL);
 	node = new_node(ms, CMD);
 	if (!node)
 		return (NULL);
-	while (ms->cur_tok && ms->cur_tok->type != T_EOF && (ms->cur_tok->type == T_WORD || is_redirect(ms->cur_tok)))
+	while (ms->cur_tok && ms->cur_tok->type != T_EOF && (ms->cur_tok->type == T_WORD || is_redirect(ms, ms->cur_tok)))
 	{
 		if (ms->cur_tok && ms->cur_tok->type == T_WORD)
 		{
 			if (!add_cmd_args(ms, node))
 				return (free_root_ast(node), NULL);
 		}
-		if (is_redirect(ms->cur_tok))
+		if (is_redirect(ms, ms->cur_tok))
 		{
 			if (!handle_red(ms, node))
 				return (free_root_ast(node), NULL);
@@ -62,14 +72,14 @@ t_ast	*handle_par(t_ms *ms)
 {
 	t_ast	*node;
 
-	dprintf(2, "parenthese G\n");
+	// dprintf(2, "parenthese G\n");
 	node = NULL;
 	eat_token(ms, T_LPAR);
 	node = expr(ms);
 	if (!node)
 		return (NULL);
 	eat_token(ms, T_RPAR);
-	dprintf(2, "parenthese D\n");
+	// dprintf(2, "parenthese D\n");
 	return (node);
 }
 
@@ -78,7 +88,7 @@ t_ast	*term(t_ms *ms)
 	t_ast	*node;
 	t_ast	*middle_node;
 
-	dprintf(2, "term\n");
+	// dprintf(2, "term\n");
 	node = NULL;
 	middle_node = NULL;
 	if (ms->cur_tok && ms->cur_tok->type == T_LPAR)
@@ -116,7 +126,7 @@ t_ast	*expr(t_ms *ms)
 	t_ast	*node;
 	t_ast	*middle_node;
 
-	dprintf(2, "expr\n");
+	// dprintf(2, "expr\n");
 	node = NULL;
 	middle_node = NULL;
 	node = term(ms);
@@ -142,7 +152,7 @@ int	parse(t_ms *ms)
 	if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
 		return (1);
 	ms->root = expr(ms);
-	if (ms->cur_tok->type != T_EOF)
+	if (ms->cur_tok->type != T_EOF && g_exit_code != 134)
 	{
 		printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
 		g_exit_code = 2;

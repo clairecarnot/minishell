@@ -190,7 +190,7 @@ int	main(int argc, char **argv, char **env)
 
 			if (parse(minishell) == -1)
 			{
-				if (g_exit_code == 0)
+				if (g_exit_code == 134)
 				{
 					printf("malloc error\n");
 					free_minishell(minishell, 1);

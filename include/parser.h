@@ -13,7 +13,7 @@
 
 //----------------------- parser.c -----------------------
 t_ast	*new_node(t_ms *ms, t_node_type type);
-int	is_redirect(t_token *cur_tok);
+int		is_redirect(t_ms *ms, t_token *cur_tok);
 t_ast	*factor(t_ms *ms);
 t_ast	*handle_par(t_ms *ms);
 t_ast	*term(t_ms *ms);
