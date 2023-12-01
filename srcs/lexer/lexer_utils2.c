@@ -6,12 +6,20 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:45:41 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/24 11:07:35 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 11:47:02 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
 #include "../libft/libft.h"
+
+int	ft_isand(char *src, int cur_posi)
+{
+	if (src[cur_posi] && src[cur_posi] == '&' && \
+	src[cur_posi + 1] && src[cur_posi + 1] == '&')
+		return (1);
+	return (0);
+}
 
 size_t	ft_strlen_lex(const char *s)
 {

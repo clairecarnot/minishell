@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/24 14:16:22 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 11:46:14 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ t_token	*lexer_next_token_2(t_ms *minishell, t_lexer *lexer)
 	else if (lexer->src[lexer->cur_pos] == '>')
 		return (advance(lexer), init_token(minishell, ">", T_GREAT));
 	else if (lexer->src[lexer->cur_pos] == '\'')
-		return (parse_quotes_word(minishell, 39, 0));
+		return (parse_quotes_word(minishell, 39, 0, 0));
 	else if (lexer->src[lexer->cur_pos] == '\"')
-		return (parse_quotes_word(minishell, 34, 0));
+		return (parse_quotes_word(minishell, 34, 0, 0));
 	else if (ft_ischar(lexer->src[lexer->cur_pos], 0))
 	{
 		qtype = first_quote(minishell->lexer);
-		return (parse_quotes_word(minishell, qtype, 2));
+		return (parse_quotes_word(minishell, qtype, 2, 0));
 		// return (parse_word(minishell, lexer, 0));
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:30:04 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/30 14:56:27 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 11:46:47 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*quote_state_close(t_ms *ms, int i, char *value)
 {
 	if (ms->lexer->src[ms->lexer->cur_pos + i] && \
 	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0) && (ms->lexer->src \
-	[ms->lexer->cur_pos + i] != '\'' && ms->lexer->src[ms->lexer->cur_pos + i] != '\"'))
+	[ms->lexer->cur_pos + i] != '\'' && ms->lexer->src[ms->lexer->cur_pos + i] \
+	!= '\"'))
 	{
 		if (!value)
 		{
@@ -46,7 +47,8 @@ char	*quote_state_close(t_ms *ms, int i, char *value)
 		}
 		else if (value)
 		{
-			value = quotes_strjoin(value, &ms->lexer->src[ms->lexer->cur_pos + i], 1);
+			value = quotes_strjoin(value, \
+			&ms->lexer->src[ms->lexer->cur_pos + i], 1);
 			if (!value)
 				free_minishell(ms, 1);
 		}
@@ -78,7 +80,8 @@ char	*quote_state_open(t_ms *ms, int qtype, int i, char *value)
 		}
 		else if (value)
 		{
-			value = quotes_strjoin(value, &ms->lexer->src[ms->lexer->cur_pos + i], 1);
+			value = quotes_strjoin(value, \
+			&ms->lexer->src[ms->lexer->cur_pos + i], 1);
 			if (!value)
 				free_minishell(ms, 1);
 		}
@@ -92,7 +95,7 @@ NULL, il faut advance_ntimes avec le nb de quotes
 */
 int	quote_size(t_ms *ms)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (ms->lexer->src[ms->lexer->cur_pos + i] == '\'' || \
@@ -111,15 +114,14 @@ suivant l'etat ouvert ou ferme des quotes. Quand on sort du while, si !value
 on doit bien creer un arg vide pour que plus tard l'arg soit bien existant 
 mais bien vide.
 */
-t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q)
+t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q, int i)
 {
-	int		i;
 	char	*value;
 
-	i = 0;
 	value = NULL;
 	while (ms->lexer->src[ms->lexer->cur_pos + i] && (qstate(nb_q) == 1 || \
-	(qstate(nb_q) == 0 && ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i] , 0))))
+	(qstate(nb_q) == 0 && ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0) \
+	&& !ft_isand(ms->lexer->src, ms->lexer->cur_pos + i))))
 	{
 		if (ms->lexer->src[ms->lexer->cur_pos + i] == qtype)
 			nb_q++;

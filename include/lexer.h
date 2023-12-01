@@ -49,7 +49,8 @@ int		is_wspace(char c);
 char	peek_next(t_lexer *lexer);
 int		ft_ischar(int c, int quotes);
 
-//--------------------- lexer_utils.c ----------------------
+//--------------------- lexer_utils2.c ----------------------
+int		ft_isand(char *src, int cur_posi);
 size_t	ft_strlen_lex(const char *s);
 char	*quotes_strjoin(char *s1, char *s2, int size);
 
@@ -58,7 +59,7 @@ int		qstate(int i);
 char	*quote_state_close(t_ms *ms, int i, char *value);
 char	*quote_state_open(t_ms *ms, int qtype, int i, char *value);
 int		quote_size(t_ms *ms);
-t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q);
+t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q, int i);
 // t_token	*parse_word(t_ms *minishell, t_lexer *lexer, int i);
 
 //--------------------- lexer_init.c ----------------------

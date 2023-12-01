@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:43:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/30 16:13:10 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:05:35 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,9 @@ int	add_variable(t_ms *ms, char *content)
 	}
 	else
 	{
-		printf("content = %s\n", content);
-		printf("cpy_content = %s\n", cpy_content);
-		add_to_env(ms, content);
+		// printf("content = %s\n", content);
+		// printf("cpy_content = %s\n", cpy_content);
+		ms->env = add_to_env(ms, content);
 		add_to_exp(ms, cpy_content);
 	}
 	return (0);
@@ -187,6 +187,7 @@ int	exec_export(t_ms *ms)
 			{
 				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))//s'il n'y a pas d'erreur on va ajouter la variable
 				{
+					// printf("add_variable\n");
 					if (add_variable(ms, exp_arg->content))
 						return (1);
 				}

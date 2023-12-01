@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:12:58 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/30 16:17:57 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:14:15 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@
 /*
 Ajouter a la liste env, a la fin
 */
-void	add_to_env(t_ms *ms, char *content)
+t_list	*add_to_env(t_ms *ms, char *content)
 {
+	char	*cpy_content;
 	t_list	*new;
 
-	printf("content2 = %s\n", content);
-	new = ft_lstnew(content);//ajouter protec
+	cpy_content = ft_strdup(content);//ajout protec
+	new = ft_lstnew(cpy_content);//ajouter protec
 	ft_lstadd_back(&ms->env, new);
+	return (ms->env);
 }
 
 void	print_lst_env(t_list *env)
@@ -43,9 +45,9 @@ La commande env liste les variables environnment
 int	exec_env(t_ms *ms)
 {
 	t_list	*exp_arg;
-	
+
 	exp_arg = ms->root->args;
-	if (ft_strncmp(exp_arg->content, "env", 5) == 0)
+	if (ft_strncmp(exp_arg->content, "env", 3) == 0)
 	{
 		print_lst_env(ms->env);
 	}
