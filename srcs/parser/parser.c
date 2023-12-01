@@ -10,10 +10,11 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 {
 	t_ast	*new_ast;
 
+	new_ast = NULL;
 	new_ast = ft_calloc(1, sizeof(t_ast));
 	if (!new_ast)
 	{
-		g_exit_code = 134;
+		ms->exit_code = 134;
 		return (NULL);
 	}
 	new_ast->type = type;
@@ -42,6 +43,7 @@ t_ast	*factor(t_ms *ms)
 {
 	t_ast	*node;
 
+	node = NULL;
 	// dprintf(2, "factor\n");
 	// if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && (ms->cur_tok->type < T_LESS || ms->cur_tok->type > T_DGREAT)))
 	// 	return (NULL);
@@ -111,7 +113,7 @@ t_ast	*term(t_ms *ms)
 			middle_node->right = factor(ms);
 			if (!middle_node->right)
 			{
-				dprintf(2, "pb right\n");
+//				dprintf(2, "pb right\n");
 				return (free(middle_node), free_root_ast(node), NULL);
 			}
 			middle_node->left = node;
@@ -152,15 +154,15 @@ int	parse(t_ms *ms)
 	if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
 		return (1);
 	ms->root = expr(ms);
-	if (ms->cur_tok->type != T_EOF && g_exit_code != 134)
+	if (ms->cur_tok->type != T_EOF && ms->exit_code != 134)
 	{
 		printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
-		g_exit_code = 2;
+		ms->exit_code = 2;
 		return (-1);
 	}
 	if (!ms->root)
 	{
-		printf("ici\n");
+//		printf("ici\n");
 		return (-1);
 	}
 	return (1);

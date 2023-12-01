@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/30 15:01:28 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/01 15:00:17 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,9 @@ a la ligne suivante) ne pas les free)
 
 void	free_minishell(t_ms *ms, int exit_status)
 {
+	int	exit_code;
+
+	exit_code = ms->exit_code;
 	if (ms->root)
 	{
 		free_root_ast(ms->root);
@@ -134,5 +137,5 @@ void	free_minishell(t_ms *ms, int exit_status)
 	if (ms && exit_status != 0)
 		free(ms);
 	if (exit_status != 0)
-		exit(exit_status);
+		exit(exit_code);
 }

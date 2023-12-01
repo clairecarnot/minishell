@@ -126,6 +126,7 @@ t_ms	*init_ms(char **env)
 	minishell->old_wkdir = NULL;
 	minishell->cur_node = NULL;
 	minishell->pidlst = NULL;
+	minishell->exit_code = 0;
 	if (init_env(minishell, env))
 		free_minishell(minishell, 1);
 	if (init_workdir(minishell))
@@ -171,6 +172,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	minishell = NULL;
 	minishell = init_ms(env);
 	if (!minishell)
 		return (1);
@@ -190,12 +192,12 @@ int	main(int argc, char **argv, char **env)
 
 			if (parse(minishell) == -1)
 			{
-				if (g_exit_code == 134)
+				if (minishell->exit_code == 134)
 				{
-					printf("malloc error\n");
+					printf("minishell: malloc error\n");
 					free_minishell(minishell, 1);
 				}
-				else if (g_exit_code == 2)
+				else if (minishell->exit_code == 2)
 					free_minishell(minishell, 0);
 			}
 			else
@@ -207,8 +209,8 @@ int	main(int argc, char **argv, char **env)
 				// exec_env(minishell);
 				free_minishell(minishell, 0);
 			}
-			}
 		}
+	}
 	free_minishell(minishell, 1);
 	return (0);
 }

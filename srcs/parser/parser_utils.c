@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 11:52:28 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/29 17:41:14 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:40:44 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	token_to_node(int type)// a garder
  * "Mange" un token du type indique => fait avancer une liste de token au token suivant
  */
 
-int	eat_token(t_ms *ms, t_type type)// a garder
+int	eat_token(t_ms *ms, t_type type)
 {
 	if (ms->cur_tok->type == type)
 	{

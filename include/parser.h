@@ -37,7 +37,7 @@ t_list		*add_cmd_args(t_ms *ms, t_ast *new_ast);
 // int			is_redir(int type);
 t_redirs	*handle_red(t_ms *ms, t_ast *new_ast);
 void		redirs_add_back(t_redirs **lst, t_redirs *new);
-t_redirs	*redirs_new(t_token *token, int type);
+t_redirs	*redirs_new(t_ms *ms, t_token *token, int type);
 
 //----------------------- utils.c ------------------------
 int			token_to_node(int type);

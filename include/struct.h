@@ -110,6 +110,7 @@ typedef struct s_ms
 	char		*old_wkdir;
 	t_ast		*cur_node;
 	t_list		*pidlst;
+	int			exit_code;
 }				t_ms;
 
 #endif 

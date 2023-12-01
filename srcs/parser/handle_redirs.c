@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/01 10:31:44 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:03:30 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,23 @@ void	redirs_add_back(t_redirs **lst, t_redirs *new)
  * La next redir est initialisee a NULL
  */
 
-t_redirs	*redirs_new(t_token *token, int type)
+t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 {
 	t_redirs	*d;
 
+	d = NULL;
 	d = malloc(sizeof(t_redirs));
 	if (!d)
 	{
-		g_exit_code = 134;
+		ms->exit_code = 134;
 		return (NULL);
 	}
 	d->type = token_to_node(type);
+	d->filename = NULL;
 	d->filename = ft_strdup(token->value);
 	if (!d->filename)
 	{
-		g_exit_code = 134;
+		ms->exit_code = 134;
 		return (free(d), NULL);
 	}
 	d->next_redir = NULL;
@@ -83,9 +85,10 @@ t_redirs	*handle_red(t_ms *ms, t_ast *new_ast)
 {
 	t_redirs	*new_redir;
 
+	new_redir = NULL;
 	if (ms->cur_tok->next_token->type != T_WORD)
 		return (NULL);
-	new_redir = redirs_new(ms->cur_tok->next_token, ms->cur_tok->type);
+	new_redir = redirs_new(ms, ms->cur_tok->next_token, ms->cur_tok->type);
 	if (!new_redir)
 		return (NULL);
 	redirs_add_back(&new_ast->redirs, new_redir);
