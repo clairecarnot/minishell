@@ -56,6 +56,7 @@ struct	s_ast
 	t_list		*args;
 	int			subsh;
 	t_redirs	*redirs;
+	int			*pipe;
 	int			dol;
 };
 

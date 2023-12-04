@@ -24,6 +24,7 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 	new_ast->subsh = 0;
 	new_ast->redirs = NULL;
 	new_ast->dol = ms->cur_tok->dol;
+	new_ast->pipe = NULL;
 	return (new_ast);
 }
 
