@@ -26,10 +26,15 @@ char	**lst_to_tab(t_list *lst);
 char    *ft_strjoin_slash(char const *s1, char const *s2);
 
 //----------------------- pipe_exec.c ------------------------
+t_list	*ft_lstnew_int(int pid);
+int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env);
+int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd);
+int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd);
 int	exec_pipeline(t_ast *node, t_ms *ms);
 
 //----------------------- clear_exec.c ------------------------
 void	free_tab(char **tab);
 void	free_cmd(t_cmd *cmd);
+int	close_if(int *fd);
 
 #endif

@@ -50,10 +50,29 @@ int	execute(t_ast *node, t_ms *ms)
 int	pre_exec(t_ms *ms)
 {
 	int	exit_code;
+	// t_list	*tmp;
+	// pid_t	pid;
 
 	//handle save STDIN STDOUT
 	//handle signals
 	exit_code = execute(ms->root, ms);
+	if (exit_code)
+		return (1);
+	// tmp = ms->pidlst;
+	// if (tmp)
+		// print_lst(tmp);
+	// 	dprintf(2, "lst does not exist\n");
+	// while (tmp && tmp->content)
+	// {
+	// 	dprintf(2, "avant waitpid\n");
+	// 	// pid = *((pid_t *)tmp->content);
+	// 	// dprintf(2, "pid = %d\n", *((pid_t *)tmp->content));
+	// 	if (waitpid(*((pid_t *)tmp->content), NULL, 0) == -1)
+	// 		perror("waitpid failed\n");
+	// 	dprintf(2, "waitpid done\n");
+	// 	// waitpid(pid, NULL, 0);
+	// 	tmp = tmp->next;
+	// }
 	//clear exec
 	return (exit_code);
 }

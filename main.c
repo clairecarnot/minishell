@@ -91,7 +91,8 @@ void	print_lst(t_list *args_enter)//temporaire
 	while (args)
 	{
 //		printf("args content = %s\n", (char *)args->content);
-		printf("%s\n", (char *)args->content);
+		// printf("%s\n", (char *)args->content);
+		dprintf(2, "%d\n", *((pid_t *)args->content));
 		args = args->next;
 	}
 }
@@ -158,9 +159,13 @@ void	print_tree(t_ast *root, int space)
 	printf("\n");
 	for (i = 10; i < space; i++)
 		printf(" ");
-	printf("%s ", node_to_str(root));
+	if (!root->parent)
+		printf("%s", node_to_str(root));
+	else
+		printf("%s par:%s", node_to_str(root), node_to_str(root->parent));
 	if (root->type == CMD)
-		printf("%s ss:%d dol:%d\n", (char *)root->args->content, root->subsh, root->dol);
+		printf("%s\n", (char *)root->args->content);
+		// printf("%s ss:%d dol:%d\n", (char *)root->args->content, root->subsh, root->dol);
 
 	print_tree(root->left, space);
 }
@@ -204,9 +209,9 @@ int	main(int argc, char **argv, char **env)
 			{
 				// print_tree(minishell->root, 0);
 				// visit_node(minishell->root);
-				exec_env(minishell);
-				exec_export(minishell);
-				// pre_exec(minishell);
+				// exec_env(minishell);
+				// exec_export(minishell);
+				pre_exec(minishell);
 				
 				free_minishell(minishell, 0);
 			}

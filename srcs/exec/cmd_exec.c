@@ -65,10 +65,12 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		return (1);
 	else if (pid == 0)
 	{
+		dprintf(2, "cmd = %s\n", cmd->args[0]);
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
-		free_cmd(cmd);
-		exit(1);
+		// free_cmd(cmd); a verifier
+		// free_tab(env); 
+		// return(1) ou free minishell ?
 	}
 	else
 	{
@@ -85,6 +87,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	char	**env;
+	// t_list	*tmp;
 
 	env = lst_to_tab(ms->env);
 	if (!env)
@@ -96,6 +99,12 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exec_builtin(cmd);
 	else
 		do_cmd(cmd, ms, env);
+	// tmp = ms->pidlst;
+	// while (tmp)
+	// {
+	// 	waitpid(*((pid_t *)tmp->content), NULL, 0);
+	// 	tmp = tmp->next;
+	// }
 	free_cmd(cmd);
 	free_tab(env);
 	return (0);

@@ -21,3 +21,14 @@ void	free_cmd(t_cmd *cmd)
 		free_tab(cmd->bin_paths);
 	free(cmd);
 }
+
+int	close_if(int *fd)
+{
+	if (*fd > 0)
+	{
+		if (close(*fd) < 0)
+			return (-1);
+		*fd = -1;
+	}
+	return (0);
+}

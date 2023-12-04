@@ -25,6 +25,7 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 	new_ast->redirs = NULL;
 	new_ast->dol = ms->cur_tok->dol;
 	new_ast->pipe = NULL;
+	new_ast->parent = NULL;
 	return (new_ast);
 }
 
@@ -117,7 +118,9 @@ t_ast	*term(t_ms *ms)
 //				dprintf(2, "pb right\n");
 				return (free(middle_node), free_root_ast(node), NULL);
 			}
+			middle_node->right->parent = middle_node;
 			middle_node->left = node;
+			node->parent = middle_node;
 			node = middle_node;
 		}
 	}
@@ -144,7 +147,9 @@ t_ast	*expr(t_ms *ms)
 		middle_node->right = term(ms);
 		if (!middle_node->right)
 			return (free(middle_node), free_root_ast(node), NULL);
+		middle_node->right->parent = middle_node;
 		middle_node->left = node;
+		node->parent = middle_node;
 		node = middle_node;
 	}
 	return (node);

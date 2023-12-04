@@ -22,6 +22,7 @@ t_list	*ft_lstnew(void *content)
 	if (!d)
 		return (0x0);
 	d->content = content;
+	d->n = -1;
 	d->next = 0x0;
 	return (d);
 }
