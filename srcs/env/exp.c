@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exp.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 16:59:46 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/05 11:34:33 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,13 @@ int	init_exp(t_ms *ms)
 		suiv = lst->next;
 		while (suiv)
 		{
-			if (ft_strncmp(lst->content, suiv->content,
-					min_len(lst->content, suiv->content)) > 0)
+			if (ft_strncmp(lst->content, suiv->content, \
+			min_len(lst->content, suiv->content)) > 0)
 				swap_lst(&lst->content, &suiv->content);
 			suiv = suiv->next;
 		}
 		lst = lst->next;
 	}
+	add_qvar_lst(ms->exp);
 	return (0);
 }

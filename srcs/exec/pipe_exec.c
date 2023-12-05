@@ -15,10 +15,10 @@ t_list	*ft_lstnew_int(int pid)
 
 int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 {
-	dprintf(2, "cmd = %s\n", cmd->args[0]);
+	// dprintf(2, "cmd = %s\n", cmd->args[0]);
 	(void)ms;
 	execve(cmd->args[0], cmd->args, env);
-	dprintf(2, "execve fails\n");
+	// dprintf(2, "execve fails\n");
 		// free_cmd(cmd); a verifier
 		// free_tab(env); 
 		// return(1) ou free minishell ?
@@ -51,7 +51,7 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 
 int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 {
-	dprintf(2, "pipex\n");
+	// dprintf(2, "pipex\n");
 	pid_t	pid;
 	t_list	*new_pid;
 
@@ -60,7 +60,7 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 		// return (0);
 	if (node->type == PIPE)
 	{
-		dprintf(2, "PIPE\n");
+		// dprintf(2, "PIPE\n");
 		pipex(ms, node->left, tmp_fd, fd);
 		pipex(ms, node->right, tmp_fd, fd);
 		// if (!node->parent || node->parent->type != PIPE)
@@ -69,7 +69,7 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 	else if (node->type == CMD && node->parent->right == node && node->parent && node->parent->type == PIPE \
 	&& (!node->parent->parent || node->parent->parent->type != PIPE))// end cmd
 	{
-		dprintf(2, "END CMD\n");
+		// dprintf(2, "END CMD\n");
 		pid = fork();
 		if (pid == -1)
 		{
@@ -90,15 +90,15 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 			if (!new_pid)
 				return (1); //A PROTEGER
 			ft_lstadd_back(&ms->pidlst, new_pid);
-			dprintf(2, "END CMD ---> end parent\n");
+			// dprintf(2, "END CMD ---> end parent\n");
 		}
 	}
 	else if (node->type == CMD)// middle cmd
 	{
-		dprintf(2, "MID CMD\n");
+		// dprintf(2, "MID CMD\n");
 		pipe(fd);// a proteger
-		dprintf(2, "pipe[0] = %d\n", fd[0]);
-		dprintf(2, "pipe[1] = %d\n", fd[1]);
+		// dprintf(2, "pipe[0] = %d\n", fd[0]);
+		// dprintf(2, "pipe[1] = %d\n", fd[1]);
 		pid = fork();
 		if (pid == -1)
 		{
@@ -142,7 +142,7 @@ int	exec_pipeline(t_ast *node, t_ms *ms)
 	fd[0] = -1;
 	fd[1] = -1;
     tmp_fd = dup(STDIN_FILENO); //a proteger
-	dprintf(2, "tmp = %d\n", tmp_fd);
+	// dprintf(2, "tmp = %d\n", tmp_fd);
     pipex(ms, node, tmp_fd, fd);
 	close_if(&tmp_fd);
 	tmp = ms->pidlst;

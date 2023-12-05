@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:27:50 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/11/27 15:29:03 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/05 15:30:51 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ int	error_exp(char *content)
 	while (content[++i] != '=' && content[i])
 	{
 		if ((content[i] < '0' || (content[i] > '9' && content[i] < 'A') || \
-		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_')
+		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_'  \
+		&& (content[i] == '+' && content[i + 1] && content[i + 1] != '='))
 			return (printf("oooominishell: export: `%s': not a valid identifier\n", content), 1);
 	}
 	return (0);
@@ -71,7 +72,7 @@ int	has_equal(char *content)
 	return (0);
 }
 /*
-Ajoute les quotes autour du contenu de la variable poour l'ajout a exp
+Ajoute les quotes autour du contenu de la variable pour l'ajout a exp
 */
 char	*add_qvar(char *content)
 {
@@ -94,4 +95,16 @@ char	*add_qvar(char *content)
 	cpy_content[j++] = '\"';
 	cpy_content[j] = '\0';
 	return (cpy_content);
+}
+
+void	add_qvar_lst(t_list *exp)
+{
+	t_list	*tmp_exp;
+
+	tmp_exp = exp;
+	while (tmp_exp)
+	{
+		tmp_exp->content = add_qvar(tmp_exp->content);
+		tmp_exp = tmp_exp->next;
+	}
 }

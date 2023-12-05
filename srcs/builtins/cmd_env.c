@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 10:12:58 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/01 15:14:15 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:44:04 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,15 @@
 /*
 Ajouter a la liste env, a la fin
 */
-t_list	*add_to_env(t_ms *ms, char *content)
+void add_to_env(t_ms *ms, char *content)
 {
 	char	*cpy_content;
 	t_list	*new;
 
-	cpy_content = ft_strdup(content);//ajout protec
+	cpy_content = ft_strdup_noplus(content);//ajout protec
+	
 	new = ft_lstnew(cpy_content);//ajouter protec
 	ft_lstadd_back(&ms->env, new);
-	return (ms->env);
 }
 
 void	print_lst_env(t_list *env)
