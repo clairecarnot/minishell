@@ -4,6 +4,7 @@
 #include "./include/env.h"
 #include "./include/signals.h"
 #include "./include/exec.h"
+#include "./include/builtins.h"
 
 char	*tok_to_str(t_token *token)//temporaire
 {
