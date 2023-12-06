@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.h                                           :+:      :+:    :+:   */
+/*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:41:09 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/05 16:47:32 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/06 18:01:49 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef BUILT_INS_H
+# define BUILT_INS_H
 
 # include "lexer.h"
 # include "parser.h"
 # include "struct.h"
-# include "export.h"
+# include "builtins.h"
 
-//----------------------- cmd_export.c -----------------------
-void	add_to_exp(t_ms *ms, char *content);
+//--------------------------- cmd_export.c --------------------------
 int		add_variable(t_ms *ms, char *content);
 void	print_lst_exp(t_list *exp);
 int		exec_export(t_ms *ms);
@@ -32,12 +31,25 @@ char	*add_qvar(char *content);
 void	add_qvar_lst(t_list *exp);
 
 //----------------------- cmd_export_utils2.c -----------------------
+int		ft_strlen_equal(char *content);
 int		find_plus(char *s);
 char	*ft_strdup_noplus2(char *s);
 char	*ft_strdup_noplus(char *s);
 
+//----------------------- cmd_export_replace.c -----------------------
+void	replace_in_exp(t_ms *ms, char *content);
+void	replace_in_env(t_ms *ms, char *content);
 
-//----------------------- cmd_env.c -----------------------
+//----------------------- cmd_export_dup.c -----------------------
+char	*ft_strjoin_wquote(char const *s1, char const *s2);
+char	*dup_after_equal(char *s);
+void	dup_in_exp(t_ms *ms, char *content);
+void	dup_in_env(t_ms *ms, char *content);
+
+//----------------------- cmd_export_add.c -----------------------
+void	add_to_exp(t_ms *ms, char *content);
+
+//---------------------------- cmd_env.c -----------------------------
 void	add_to_env(t_ms *ms, char *content);
 void	print_lst_env(t_list *env);
 int		exec_env(t_ms *ms);

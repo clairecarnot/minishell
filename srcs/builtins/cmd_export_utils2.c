@@ -6,12 +6,23 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:43:45 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/05 18:03:03 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/06 18:17:16 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/export.h"
+#include "../../include/builtins.h"
 #include "../libft/libft.h"
+
+int	ft_strlen_equal(char *content)
+{
+	int	i;
+
+	i = 0;
+	while (content[i] && (content[i] != '=' && content[i] != '+'))// a verifier si marche bien
+		i++;
+	// dprintf(2, "i = %d\n", i);
+	return (i);
+}
 
 int	find_plus(char *s)
 {
@@ -35,19 +46,17 @@ char	*ft_strdup_noplus2(char *s)
 
 	i = 0;
 	j = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(s) + 1 - 1));//malloc -1 car on ne va pas copier le +
+	dest = malloc(sizeof(char) * (ft_strlen(s) - 1) + 1);//malloc -1 car on ne va pas copier le +
 	if (!dest)
 		return (0x0);
 	while (s[i])
 	{
 		if (s[i] != '+')
-		{
-			dest[j] = ((char *)s)[i];
-			j++;
-		}
-		i++;
+			dest[j++] = s[i++];
+		else
+			i++;
 	}
-	dest[i] = '\0';
+	dest[j] = '\0';
 	return (dest);
 }
 

@@ -6,11 +6,11 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 15:27:50 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/05 15:30:51 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:05:14 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/export.h"
+#include "../../include/builtins.h"
 #include "../libft/libft.h"
 
 /*
@@ -25,18 +25,20 @@ int	error_exp(char *content)
 
 	i = -1;
 	if (!content[0])
-		return (printf("ominishell: export: `': not a valid identifier\n"), 1);
+		return (printf("minishell: export: `': not a valid identifier\n"), 1);
 	if (content[0] && content[0] == '-' && content[1])
-		return (printf("oominishell: export: %c%c: invalid option\n", content[0], content[1]), 1);
+		return (printf("minishell: export: %c%c: invalid option\n", content[0], content[1]), 1);
 	if (content[0] && (content[0] < 'A' || (content[0] > 'Z' && content[0] < 'a') || \
-	content[0] > 'z') && content[0] != '_')
-		return (printf("ooominishell: export: `%s': not a valid identifier\n", content), 1);
-	while (content[++i] != '=' && content[i])
+	content[0] > 'z') && content[0] != '_' && content[0] != '!')
+		return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);
+	while (content[++i] && content[i] != '=')
 	{
-		if ((content[i] < '0' || (content[i] > '9' && content[i] < 'A') || \
-		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_'  \
-		&& (content[i] == '+' && content[i + 1] && content[i + 1] != '='))
-			return (printf("oooominishell: export: `%s': not a valid identifier\n", content), 1);
+		if (content[i] == '!')
+			return (printf("%s: event not found\n", content + i), 1);
+		if (((content[i] < '0' || (content[i] > '9' && content[i] < 'A') || \
+		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_') || \
+		(content[i] == '+' && content[i + 1] && content[i + 1] != '='))
+			return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);
 	}
 	return (0);
 }
@@ -82,6 +84,8 @@ char	*add_qvar(char *content)
 	
 	i = 0;
 	j = 0;
+	if (!has_equal(content))
+		return (NULL);
 	cpy_content = malloc(ft_strlen(content) + 3 * sizeof(char));
 	if (!cpy_content)
 		return (NULL);
@@ -94,6 +98,7 @@ char	*add_qvar(char *content)
 		cpy_content[j++] = content[i++];
 	cpy_content[j++] = '\"';
 	cpy_content[j] = '\0';
+	// dprintf(2, "cpy_content = %s\n", cpy_content);
 	return (cpy_content);
 }
 

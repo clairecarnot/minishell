@@ -6,11 +6,11 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 16:43:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/05 18:06:44 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:09:30 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/export.h"
+#include "../../include/builtins.h"
 #include "../libft/libft.h"
 
 // It saves at the end of the chained list, the new variable
@@ -34,54 +34,36 @@
 // La syntaxe "export a=b" ajoute la variable a dans export et dans env de maniere classique
 
 // La syntaxe "export a+=b" permet de join l'ancienne variable a la nouvelle (sinon ca serait trop facile).
+
 // La variable d'environnement "_" est un peu particuliere, lorsqu'on export _=a et qu'on fait env la variable 
 // n'as pas change, en realite elle a change car lorsqu'on export *=a et qu'on fait echo $* la nouvelle 
 // variable s'affiche bien, a voir si vous voulez traiter ce cas ou non.
 
-/*
-Ajouter a la liste exp, dans l'ordre ascii
-*/
-void	add_to_exp(t_ms *ms, char *content)
-{
-	char	*cpy_content;
-	t_list	*exp_tmp;
-	t_list	*exp_tmp2;
-	t_list	*new;
-
-	cpy_content = ft_strdup_noplus(content);
-	exp_tmp = ms->exp;
-	exp_tmp2 = ms->exp;
-	new = ft_lstnew(cpy_content);
-	while (exp_tmp)
-	{
-		if (ft_strncmp(exp_tmp->content, content, ft_strlen(content)) >= 0)
-		{
-			new->next = exp_tmp2->next;
-			exp_tmp2->next = new;
-			return ;
-		}
-		exp_tmp2 = exp_tmp;
-		exp_tmp = exp_tmp->next;
-	}
-	new->next = exp_tmp2->next;
-	exp_tmp2->next = new;
-}
-
-int	ft_strlen_equal(char *content)//pb avec cette fonction , voir ou elle est appelee
-{
-	int	i;
-
-	i = 0;
-	while (content[i] && (content[i] != '=' || content[i] != '+'))// a verifier si marche bien
-		i++;
-	return (i);
-}
 
 /*
 Cherche si une variable du meme nom existe deja
 Si oui la remplacer
 */
-int	var_exists(t_ms *ms, char *content)
+int	var_exists_exp(t_ms *ms, char *content)
+{
+	int		i;
+	int		size;
+	t_list	*exp_tmp;
+
+	i = 0;
+	size = ft_strlen_equal(content);
+	// dprintf(2, "size = %d\n", size);
+	exp_tmp = ms->exp;
+	while (exp_tmp)
+	{
+		if (ft_strncmp(exp_tmp->content, content, size/* + 1*/) == 0)//variable deja existante trouvee
+			return (1);
+		exp_tmp = exp_tmp->next;
+	}
+	return (0);
+}
+
+int	var_exists_env(t_ms *ms, char *content)
 {
 	int		i;
 	int		size;
@@ -89,95 +71,15 @@ int	var_exists(t_ms *ms, char *content)
 
 	i = 0;
 	size = ft_strlen_equal(content);
+	// dprintf(2, "size = %d\n", size);
 	env_tmp = ms->env;
 	while (env_tmp)
 	{
-		if (ft_strncmp(env_tmp->content, content, size + 1) == 0)//variable deja existante trouvee
+		if (ft_strncmp(env_tmp->content, content, size/* + 1*/) == 0)//variable deja existante trouvee
 			return (1);
 		env_tmp = env_tmp->next;
 	}
 	return (0);
-}
-/*
-Remplace dans la liste exp, le contenu d'une variable deja existante
-*/
-void	replace_in_exp(t_ms *ms, char *content)
-{
-	t_list	*exp_tmp;
-	t_list	*exp_tmp2;
-	t_list	*new;
-	
-	exp_tmp = ms->exp;
-	exp_tmp2 = ms->exp;
-	new = ft_lstnew(content);// a proteger ?
-	while (exp_tmp)
-	{
-		if (ft_strncmp(exp_tmp->content, content, ft_strlen_equal(content)) == 0)
-		{
-			new->next = exp_tmp->next;
-			free(exp_tmp->content);
-			free(exp_tmp);
-			exp_tmp2->next = new;
-			return ;
-		}
-		exp_tmp2 = exp_tmp;
-		exp_tmp = exp_tmp->next;
-	}
-}
-
-void	replace_in_env(t_ms *ms, char *content)
-{
-	char	*cpy_content;
-	t_list	*env_tmp;
-	t_list	*env_tmp2;
-	t_list	*new;
-
-	cpy_content = ft_strdup(content);//ajout protec
-	env_tmp = ms->env;
-	env_tmp2 = ms->env;
-	new = ft_lstnew(cpy_content);// a proteger ?
-	while (env_tmp)
-	{
-		if (ft_strncmp(env_tmp->content, content, ft_strlen_equal(content)) == 0)
-		{
-			new->next = env_tmp->next;
-			free(env_tmp->content);
-			free(env_tmp);
-			env_tmp2->next = new;
-			return ;
-		}
-		env_tmp2 = env_tmp;
-		env_tmp = env_tmp->next;
-	}
-}
-
-void	dup_in_env(t_ms *ms, char *content)
-{
-	char	*cpy_content;
-	char	*join_content;
-	t_list	*env_tmp;
-	t_list	*env_tmp2;
-	t_list	*new;
-
-	cpy_content = ft_strdup(content);//ajout protec
-	env_tmp = ms->env;
-	env_tmp2 = ms->env;
-	while (env_tmp)
-	{
-		if (ft_strncmp(env_tmp->content, content, ft_strlen_equal(content)) == 0)
-		{
-			join_content = ft_strjoin(env_tmp->content, cpy_content);// a protger
-			free(cpy_content);
-			new = ft_lstnew(join_content);// a proteger ?
-			new->next = env_tmp->next;
-			free(env_tmp->content);
-			free(env_tmp);
-			env_tmp2->next = new;
-			return ;
-		}
-		env_tmp2 = env_tmp;
-		env_tmp = env_tmp->next;
-	}
 }
 
 /*
@@ -191,39 +93,52 @@ int	add_variable(t_ms *ms, char *content)
 	char	*cpy_content;
 
 	i = 0;
-	if (!has_equal(content) && !var_exists(ms, content))
+	if (!has_equal(content) && !var_exists_exp(ms, content))
 		return (add_to_exp(ms, content) , 0);
 	cpy_content = add_qvar(content);
 	if (!cpy_content)
 		return (1);//error a verifier
-	if (var_exists(ms, content) && find_plus(content))//case like VAR+=hey VAR exist already
+	if (var_exists_exp(ms, content) && var_exists_env(ms, content) && find_plus(content))//case like VAR+=hey VAR exist already
 	{
-		dprintf(2, "dup in env\n");
+		dprintf(2, "dup in env and exp\n");
 		dup_in_env(ms, content);
-		// dup_in_exp(ms, cpy_content);
-	}	
-	else if (var_exists(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
+		dup_in_exp(ms, content);
+	}
+	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && find_plus(content))
 	{
-		dprintf(2, "replace\n");
+		dprintf(2, "add in env  dup in exp\n");
+		add_to_env(ms, content);
+		dup_in_exp(ms, content);
+	}
+	else if (var_exists_exp(ms, content) && var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
+	{
+		dprintf(2, "replace in env and exp\n");
 		replace_in_env(ms, content);
+		replace_in_exp(ms, cpy_content);
+	}
+	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
+	{
+		dprintf(2, "add in env  replace in exp\n");
+		add_to_env(ms, content);
 		replace_in_exp(ms, cpy_content);
 	}
 	else//other cases when VAR doesn't exist before
 	{
-		dprintf(2, "add\n");
+		dprintf(2, "add in env and exp\n");
 		add_to_env(ms, content);
 		add_to_exp(ms, cpy_content);
 	}
 	return (0);
 }
 
-// print la liste t_list *exp en ecrivant export avant chaque ligne
+/*
+print la liste t_list *exp en ecrivant export avant chaque ligne
+*/
 void	print_lst_exp(t_list *exp)
 {
 	t_list	*lst;
 
 	lst = exp;
-	// printf("print export ---->\n");
 	while (lst)
 	{
 		printf("export %s\n", (char *)lst->content);
@@ -231,7 +146,10 @@ void	print_lst_exp(t_list *exp)
 	}
 }
 
-// la fonction export recupere les t_list *env et t_list *exp
+/*
+cmd export : si export n'est suivi de rien d'autre -> on print la list exp
+sinon s'il n'y a pas d'erreur dans l'ecriture des variables, on les ajoute aux listes exp et env
+*/
 int	exec_export(t_ms *ms)
 {
 	int		i;
@@ -239,22 +157,21 @@ int	exec_export(t_ms *ms)
 	
 	i = 0;
 	exp_arg = ms->root->args;
-	if (ft_strncmp(exp_arg->content, "export", 6) == 0)//si content est bien la cmd export
+	if (ft_strncmp(exp_arg->content, "export", 6) == 0)
 	{
-		if (!exp_arg->next)//si export n'a pas d'arg qui le succede, alors print la lst exp
+		if (!exp_arg->next)
 			return (print_lst_exp(ms->exp), 0);
 		else
 		{
 			exp_arg = exp_arg->next;
 			while (exp_arg)
 			{
-				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))//s'il n'y a pas d'erreur on va ajouter la variable
+				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))
 				{
-					// printf("add_variable\n");
 					if (add_variable(ms, exp_arg->content))
 						return (1);
 				}
-				exp_arg = exp_arg->next;//on passe a l'arg suivant
+				exp_arg = exp_arg->next;
 				i++;
 			}
 		}

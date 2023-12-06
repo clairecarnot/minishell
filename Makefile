@@ -17,6 +17,7 @@ srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_path.
 srcs/exec/cmd_utils.c srcs/exec/pipe_exec.c\
 srcs/builtins/cmd_export.c srcs/builtins/cmd_export_utils.c \
 srcs/builtins/cmd_export_utils2.c srcs/builtins/cmd_env.c \
+srcs/builtins/cmd_export_add.c srcs/builtins/cmd_export_dup.c srcs/builtins/cmd_export_replace.c 
 
 OBJS = $(SRCS:.c=.o)
 
