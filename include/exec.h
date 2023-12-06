@@ -15,7 +15,7 @@ void	abs_rel_path(t_cmd *cmd);
 char	**get_bin_paths(char **env);
 void	build_path(t_cmd *cmd);
 t_cmd	*node_to_cmd(t_ast *node, char **env);
-int	exec_builtin(t_cmd *cmd);
+int	exec_builtin(t_ms *ms, t_cmd *cmd);
 int	do_cmd(t_cmd *cmd, t_ms *ms, char **env);
 int	exec_cmd(t_ast *node, t_ms *ms);
 
