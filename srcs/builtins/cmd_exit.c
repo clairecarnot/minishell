@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/06 18:12:13 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/06 18:47:09 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ void	free_exit(t_ms *ms)
 
 long long	atoll_exit(char *args, int *error)
 {
-	long long	n;
-	int			sign;
-	int			i;
+	unsigned long long	n;
+	int					sign;
+	int					i;
 
 	n = 0;
 	sign = 1;
@@ -64,13 +64,13 @@ long long	atoll_exit(char *args, int *error)
 	if (args[i] && (args[i] == '+' || args[i] == '-'))
 	{
 		if (args[i] == '-')
-			sign *= (-1);
+			sign = -1;
 		i++;
 	}
 	while (args[i] && args[i] >= '0' && args[i] <= '9')
 	{
 		n = n * 10 + args[i] - '0';
-		if (is_toobig(n, error))
+		if (is_toobig(n, sign, error))
 			return (2);
 		i++;
 	}
@@ -105,8 +105,8 @@ int	exec_exit(t_ms *ms, t_cmd *cmd)
 		exit_code = get_exit_code(cmd->args[1], &error);
 		if (exit_code == 2 && error == 1)
 			exit_msg(ms, "exit", cmd->args[1], "numeric argument required\n");
-		if (count_args(cmd->args) > 2)
-			return (exit_msg(ms, "exit", cmd->args[1], "too many arguments"), 1);
+		else if (count_args(cmd->args) > 2)
+			return (exit_msg(ms, "exit", NULL, "too many arguments\n"), 1);
 	}
 	(free_exit(ms), exit(exit_code));
 	return (0);

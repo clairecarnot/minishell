@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/06 18:09:22 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/06 18:48:28 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ bool	is_whitespace(char c)
 	return (false);
 }
 
-bool	is_toobig(long long n, int *error)
+bool	is_toobig(unsigned long long n, int sign, int *error)
 {
-	if (n > LLONG_MAX || n < LLONG_MIN)
+	if ((sign > 0 && n > LLONG_MAX)
+		|| (sign < 0 && n > -(unsigned long long)(LLONG_MIN)))
 	{
 		*error = 1;
 		return (true);

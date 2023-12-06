@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:53:37 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/06 18:09:42 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/06 18:37:59 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		exec_exit(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_exit_utils.c -----------------------
 bool	is_whitespace(char c);
-bool	is_toobig(long long n, int *error);
+bool	is_toobig(unsigned long long n, int sign, int *error);
 bool	is_notnumeric(char *args, int *error);
 char	*join_strs(t_ms *ms, char *s1, char *s2);
 void	exit_msg(t_ms *ms, char *cmd, char *details, char *error);
