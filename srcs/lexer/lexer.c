@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/01 11:46:14 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:55:15 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ t_token	*lexer_next_token(t_ms *minishell, t_lexer *lexer)
 	else if (lexer->src[lexer->cur_pos] == '>' && peek_next(lexer) == '>')
 		return (advance_ntimes(lexer, 2), \
 		init_token(minishell, ">>", T_DGREAT));
-	else if (lexer->src[lexer->cur_pos] == '\n')//a verifier car ne marche pas
-		return (advance(lexer), init_token(minishell, "\n", T_NEWLINE));
+	// else if (lexer->src[lexer->cur_pos] == '\n')//a verifier car ne marche pas
+	// 	return (advance(lexer), init_token(minishell, "\n", T_NEWLINE));
 	else if (lexer->src[lexer->cur_pos] == '|')
 		return (advance(lexer), init_token(minishell, "|", T_PIPE));
 	else
@@ -104,7 +104,6 @@ int	lexer(t_ms *minishell, char *s)
 		free_minishell(minishell, 1);
 	while (s[minishell->lexer->cur_pos])
 	{
-		minishell->lexer->dol = 0;
 		minishell->lexer->cur_c = s[minishell->lexer->cur_pos];
 		token_add_back(&minishell->lexer->token_lst, \
 		lexer_next_token(minishell, minishell->lexer));

@@ -67,7 +67,9 @@ void	print_token_lst(t_token *token)//temporaire
 	token_lst = token;
 	while (token_lst)
 	{
-		dprintf(1, "%s est de type %s dol =%d\n", (token_lst)->value, tok_to_str(token_lst), token_lst->dol);
+		dprintf(2, "%s est de type %s\n", (token_lst)->value, tok_to_str(token_lst));
+		dprintf(2, "print lst\n");
+		print_lst(token_lst->dol);
 		token_lst = (token_lst)->next_token;
 	}
 }
@@ -87,13 +89,17 @@ void	print_redirs(t_redirs *args_enter)//temporaire
 void	print_lst(t_list *args_enter)//temporaire
 {
 	t_list	*args;
+	int		i = 0;
 
 	args = args_enter;
 	while (args)
 	{
 //		printf("args content = %s\n", (char *)args->content);
 		// printf("%s\n", (char *)args->content);
-		dprintf(2, "%d\n", *((pid_t *)args->content));
+		// dprintf(2, "%d\n", *((pid_t *)args->content));
+		dprintf(2, "%d\n", args->n);
+		// dprintf(2, "%d\n", i);
+		i++;
 		args = args->next;
 	}
 }
@@ -194,8 +200,8 @@ int	main(int argc, char **argv, char **env)
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
 			print_token_lst(minishell->lexer->token_lst);
-			minishell->cur_tok = minishell->lexer->token_lst;
 
+			minishell->cur_tok = minishell->lexer->token_lst;
 			if (parse(minishell) == -1)
 			{
 				if (minishell->exit_code == 134)

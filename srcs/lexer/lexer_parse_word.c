@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:30:04 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/07 12:11:36 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:37:49 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ char	*quote_state_open(t_ms *ms, int qtype, int i, char *value)
 	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 1) && \
 	(ms->lexer->src[ms->lexer->cur_pos + i] != qtype))
 	{
-		if (ms->lexer->src[ms->lexer->cur_pos + i] == '$' && qtype == 39)
-			ms->lexer->dol = 1;
 		if (!value)
 		{
 			value = ft_calloc(2, sizeof(char));
@@ -87,6 +85,64 @@ char	*quote_state_open(t_ms *ms, int qtype, int i, char *value)
 		}
 	}
 	return (value);
+}
+
+void	update_lstdol_in(t_ms *ms, int qtype, int i, t_list **dol)
+{
+	t_list	*new;
+
+	new = NULL;
+	if (ms->lexer->src[ms->lexer->cur_pos + i] && \
+	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 1) && \
+	(ms->lexer->src[ms->lexer->cur_pos + i] != qtype))
+	{
+		if (ms->lexer->src[ms->lexer->cur_pos + i] == '$' && qtype == '\'')
+		{
+			new = ft_lstnew_int(0);
+			if (!new)
+			{
+				ms->exit_code = 134;
+				free_minishell(ms, 1);
+			}		
+		}
+		else if (ms->lexer->src[ms->lexer->cur_pos + i] == '$' && qtype == '\"')
+		{
+			new = ft_lstnew_int(1);
+			if (!new)
+			{
+				ms->exit_code = 134;
+				free_minishell(ms, 1);
+			}		
+		}
+		ft_lstadd_back(dol, new);
+	}
+}
+
+void	update_lstdol_out(t_ms *ms, int i, t_list **dol)
+{
+	t_list	*new;
+
+	new = NULL;
+	// dprintf(2, "lstdol out\n");
+	if (ms->lexer->src[ms->lexer->cur_pos + i] && \
+	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0) && (ms->lexer->src \
+	[ms->lexer->cur_pos + i] != '\'' && ms->lexer->src[ms->lexer->cur_pos + i] \
+	!= '\"'))
+	{
+		// dprintf(2, "lstdol out 2\n");
+		if (ms->lexer->src[ms->lexer->cur_pos + i] == '$')
+		{
+			// dprintf(2, "lstdol out 3\n");
+			new = ft_lstnew_int(1);
+			if (!new)
+			{
+				
+				ms->exit_code = 134;
+				free_minishell(ms, 1);
+			}
+		}
+		ft_lstadd_back(dol, new);
+	}
 }
 
 /*
@@ -117,18 +173,29 @@ mais bien vide.
 t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q, int i)
 {
 	char	*value;
+	t_list	*dol;
 
+	dol = NULL;
 	value = NULL;
+	// dprintf(2, "1\n");
 	while (ms->lexer->src[ms->lexer->cur_pos + i] && (qstate(nb_q) == 1 || \
 	(qstate(nb_q) == 0 && ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0) \
 	&& !ft_isand(ms->lexer->src, ms->lexer->cur_pos + i))))
 	{
 		if (ms->lexer->src[ms->lexer->cur_pos + i] == qtype)
 			nb_q++;
+		// dprintf(2, "2\n");
 		if (qstate(nb_q) == 1)
+		{
+			update_lstdol_in(ms, qtype, i, &dol);
 			value = quote_state_open(ms, qtype, i, value);
+		}
+		// dprintf(2, "3\n");
 		if (qstate(nb_q) == 0)
+		{
+			update_lstdol_out(ms, i, &dol);
 			value = quote_state_close(ms, i, value);
+		}
 		i++;
 	}
 	if (!value && qstate(nb_q) == 0)
@@ -138,6 +205,12 @@ t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q, int i)
 			free_minishell(ms, 1);
 		i = quote_size(ms);
 	}
+	// dprintf(2, "4\n");
 	advance_ntimes(ms->lexer, i);
-	return (init_token(ms, value, T_WORD));
+	return (init_token_wdol(ms, value, T_WORD, dol));
+	// t_token *tok;
+	
+	// tok = init_token_wdol(ms, value, T_WORD, dol);
+	// print_lst(tok->dol);
+	// return (tok);
 }

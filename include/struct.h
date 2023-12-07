@@ -57,7 +57,6 @@ struct	s_ast
 	int			subsh;
 	t_redirs	*redirs;
 	int			*pipe;
-	// int			dol;
 	t_ast		*parent;
 };
 
@@ -83,7 +82,7 @@ typedef struct s_token
 	char			*value;
 	struct s_token	*next_token;
 	size_t			tok_nb;
-	int				dol;
+	t_list			*dol;// expand du $ = 1, non expand = 0
 }		t_token;
 
 typedef struct s_lexer
@@ -96,8 +95,6 @@ typedef struct s_lexer
 	size_t	next_pos;
 	t_token	*token_lst;
 	size_t	tok_count;//nb de token final
-	int		dol;//indicateur de dollar dans quotes
-	//si $ est dans ' ' alors dol = 1 et ne pas expand 
 }		t_lexer;
 
 typedef struct s_ms

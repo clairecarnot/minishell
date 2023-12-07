@@ -6,6 +6,7 @@
 # include "struct.h"
 # include "parser.h"
 # include "builtins.h"
+# include "exec.h"
 # include <stddef.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -65,6 +66,7 @@ t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q, int i);
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
+t_token	*init_token_wdol(t_ms *minishell, char *value, t_type type, t_list *dol);
 
 //--------------------- lexer_error.c ----------------------
 int		check_par(t_ms *ms);

@@ -1,6 +1,6 @@
 #include "../../include/exec.h"
 
-t_list	*ft_lstnew_int(int pid)
+t_list	*ft_lstnew_int(int pid)//pid veut dire pid ou int du dol
 {
 	t_list	*d;
 

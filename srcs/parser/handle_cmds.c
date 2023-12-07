@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/07 10:54:44 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/07 16:39:23 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 		g_exit_code = 134;
 		return (free(cmd), NULL);
 	}
-	new_arg->n = ms->cur_tok->dol;
+	// new_arg->n = ms->cur_tok->dol;
 	ft_lstadd_back(&new_ast->args, new_arg);
 	eat_token(ms, T_WORD);
 	return (new_ast->args);
