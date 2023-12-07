@@ -57,7 +57,7 @@ struct	s_ast
 	int			subsh;
 	t_redirs	*redirs;
 	int			*pipe;
-	int			dol;
+	// int			dol;
 	t_ast		*parent;
 };
 

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 14:30:04 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/01 11:46:47 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:11:36 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ int	quote_size(t_ms *ms)
 Cette fonction parse les mots avec ou sans quotes, pour en faire des T_WORD. 
 S'il y a des quotes dans le mot, on envoie le type des 1eres quotes rencontrees 
 (simples ou doubles). La grande boucle while se traduit tel que : tant que 
-src[cur_pos + i] existe et que qstate (l'etait des quotes) est ouverte(1) OU 
+src[cur_pos + i] existe et que qstate (l'etat des quotes) est ouverte(1) OU 
 est fermee(0) et src[cur_pos + i] n'est pas un espace, alors on parse le mot 
 suivant l'etat ouvert ou ferme des quotes. Quand on sort du while, si !value 
 on doit bien creer un arg vide pour que plus tard l'arg soit bien existant 
