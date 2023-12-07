@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_exec.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
+/*   Updated: 2023/12/06 17:57:11 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 t_cmd	*node_to_cmd(t_ast *node, char **env)
@@ -29,7 +41,7 @@ t_cmd	*node_to_cmd(t_ast *node, char **env)
 	return (cmd);
 }
 
-int	exec_builtin(t_cmd *cmd)
+int	exec_builtin(t_ms *ms, t_cmd *cmd)
 {
 	if (cmd->builtin == ECHO)
 		return (0); //A remplacer par ligne ci-dessous
@@ -50,8 +62,7 @@ int	exec_builtin(t_cmd *cmd)
 		return (0); //A remplacer par ligne ci-dessous
 //		return (exec_env);
 	if (cmd->builtin == EXIT)
-		return (0); //A remplacer par ligne ci-dessous
-//		return (exec_exit);
+		return (exec_exit(ms, cmd));
 	return (1);
 }
 
@@ -96,7 +107,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	if (!cmd)
 		return (free_tab(env), 1);
 	if (cmd->builtin != NOBUILT)
-		exec_builtin(cmd);
+		exec_builtin(ms, cmd);
 	else
 		do_cmd(cmd, ms, env);
 	// tmp = ms->pidlst;

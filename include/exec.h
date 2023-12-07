@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
+/*   Updated: 2023/12/06 17:55:54 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXEC_H
 # define EXEC_H
 
 # include "lexer.h"
 # include "struct.h"
+# include "builtins.h"
 
 //----------------------- exec.c ------------------------
 int	exec_andif(t_ast *node, t_ms *ms);
@@ -15,7 +28,7 @@ void	abs_rel_path(t_cmd *cmd);
 char	**get_bin_paths(char **env);
 void	build_path(t_cmd *cmd);
 t_cmd	*node_to_cmd(t_ast *node, char **env);
-int	exec_builtin(t_cmd *cmd);
+int	exec_builtin(t_ms *ms, t_cmd *cmd);
 int	do_cmd(t_cmd *cmd, t_ms *ms, char **env);
 int	exec_cmd(t_ast *node, t_ms *ms);
 

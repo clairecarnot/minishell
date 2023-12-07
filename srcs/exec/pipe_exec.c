@@ -41,7 +41,7 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 		return (free_tab(env), 1);
 	if (cmd->builtin != NOBUILT)
 	{
-		exec_builtin(cmd);
+		exec_builtin(ms, cmd);
 		// exit(0); dans chaque fonction ? ou ici ?
 	}
 	else
