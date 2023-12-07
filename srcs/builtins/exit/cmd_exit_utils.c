@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exit_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/06 18:48:28 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/07 12:33:23 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/builtins.h"
+#include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
 bool	is_whitespace(char c)

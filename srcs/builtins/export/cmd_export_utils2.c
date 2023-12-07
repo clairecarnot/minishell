@@ -6,11 +6,11 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:43:45 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/06 18:17:16 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:33:00 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/builtins.h"
+#include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
 int	ft_strlen_equal(char *content)

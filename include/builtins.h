@@ -8,6 +8,7 @@
 # include "exec.h"
 # include <stdbool.h>
 
+//xxxxxxxxxxxxxxxxxxxxxxxxx export xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_export.c -----------------------
 int		add_variable(t_ms *ms, char *content);
 void	print_lst_exp(t_list *exp);
@@ -44,6 +45,8 @@ void	add_to_env(t_ms *ms, char *content);
 void	print_lst_env(t_list *env);
 int		exec_env(t_ms *ms);
 
+
+//xxxxxxxxxxxxxxxxxxxxxxxxx exit xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_exit.c -----------------------
 int		count_args(char **args);
 void	free_exit(t_ms *ms);
