@@ -12,14 +12,14 @@
 //----------------------- cmd_export.c -----------------------
 int		add_variable(t_ms *ms, char *content);
 void	print_lst_exp(t_list *exp);
-int		exec_export(t_ms *ms);
+int		exec_export(t_ms *ms, t_ast *node);
 
 //----------------------- cmd_export_utils.c -----------------------
 int		error_exp(char *content);
 int		error_exp_spaces(char *content);
 int		has_equal(char *content);
-char	*add_qvar(char *content);
-void	add_qvar_lst(t_list *exp);
+char	*add_qvar(t_ms *ms, char *content);
+void	add_qvar_lst(t_ms *ms, t_list *exp);
 
 //----------------------- cmd_export_utils2.c -----------------------
 int		ft_strlen_equal(char *content);

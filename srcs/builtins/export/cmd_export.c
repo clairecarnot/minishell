@@ -82,8 +82,11 @@ int	add_variable(t_ms *ms, char *content)
 
 	i = 0;
 	if (!has_equal(content) && !var_exists_exp(ms, content))
+	{
+		dprintf(2, "add to exp\n");
 		return (add_to_exp(ms, content) , 0);
-	cpy_content = add_qvar(content);
+	}
+	cpy_content = add_qvar(ms, content);
 	if (!cpy_content)
 		return (1);//error a verifier
 	if (var_exists_exp(ms, content) && var_exists_env(ms, content) && find_plus(content))//case like VAR+=hey VAR exist already
@@ -138,13 +141,13 @@ void	print_lst_exp(t_list *exp)
 cmd export : si export n'est suivi de rien d'autre -> on print la list exp
 sinon s'il n'y a pas d'erreur dans l'ecriture des variables, on les ajoute aux listes exp et env
 */
-int	exec_export(t_ms *ms)
+int	exec_export(t_ms *ms, t_ast *node)
 {
 	int		i;
 	t_list	*exp_arg;
-	
+
 	i = 0;
-	exp_arg = ms->root->args;
+	exp_arg = node->args;
 	if (ft_strncmp(exp_arg->content, "export", 6) == 0)
 	{
 		if (!exp_arg->next)
@@ -152,8 +155,9 @@ int	exec_export(t_ms *ms)
 		else
 		{
 			exp_arg = exp_arg->next;
-			while (exp_arg)
+			while (exp_arg)// changer
 			{
+				dprintf(2, "exp_arg->content: %s\n", (char*)exp_arg->content);
 				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))
 				{
 					if (add_variable(ms, exp_arg->content))
@@ -166,4 +170,36 @@ int	exec_export(t_ms *ms)
 	}
 	return (0);
 }
+
+// int	exec_export(t_ms *ms, t_ast *node)
+// {
+// 	int		i;
+// 	t_list	*exp_arg;
+	
+// 	i = 0;
+// 	exp_arg = node;
+// 	if (ft_strncmp(exp_arg->content, "export", 6) == 0)
+// 	{
+// 		if (!exp_arg->next)
+// 			return (print_lst_exp(ms->exp), 0);
+// 		else
+// 		{
+// 			exp_arg = exp_arg->next;
+// 			while (exp_arg)// changer
+// 			{
+// 				dprintf(2, "exp_arg->content: %s\n", exp_arg->content);
+// 				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))
+// 				{
+// 					dprintf(2, "add variables\n");
+// 					if (add_variable(ms, exp_arg->content))
+// 						return (1);
+// 				}
+
+// 				exp_arg = exp_arg->next;
+// 				i++;
+// 			}
+// 		}
+// 	}
+// 	return (0);
+// }
 

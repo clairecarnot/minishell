@@ -13,20 +13,20 @@ int	error_exp(char *content)
 
 	i = -1;
 	if (!content[0])
-		return (printf("minishell: export: `': not a valid identifier\n"), 1);
+		return (printf("0minishell: export: `': not a valid identifier\n"), 1);
 	if (content[0] && content[0] == '-' && content[1])
-		return (printf("minishell: export: %c%c: invalid option\n", content[0], content[1]), 1);
+		return (printf("00minishell: export: %c%c: invalid option\n", content[0], content[1]), 1);
 	if (content[0] && (content[0] < 'A' || (content[0] > 'Z' && content[0] < 'a') || \
 	content[0] > 'z') && content[0] != '_' && content[0] != '!')
-		return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);
+		return (printf("000minishell: export: `%s': not a valid identifier\n", content), 1);
 	while (content[++i] && content[i] != '=')
 	{
 		if (content[i] == '!')
 			return (printf("%s: event not found\n", content + i), 1);
 		if (((content[i] < '0' || (content[i] > '9' && content[i] < 'A') || \
-		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_') || \
+		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_' && content[i] != '+') || \
 		(content[i] == '+' && content[i + 1] && content[i + 1] != '='))
-			return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);
+			return (printf("0000minishell: export: `%s': not a valid identifier\n", content), 1);
 	}
 	return (0);
 }
@@ -39,9 +39,10 @@ int	error_exp_spaces(char *content)
 	int	i;
 
 	i = 0;
-	while (content[i] && content[i++] != '=')
+	while (content[i] && content[i] != '=')
+		i++;
 	if (content[i - 1] == ' ')
-		return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);
+		return (printf("00000minishell: export: `%s': not a valid identifier\n", content), 1);
 	return (0);
 }
 
@@ -64,7 +65,7 @@ int	has_equal(char *content)
 /*
 Ajoute les quotes autour du contenu de la variable pour l'ajout a exp
 */
-char	*add_qvar(char *content)
+char	*add_qvar(t_ms *ms, char *content)
 {
 	int		i;
 	int		j;
@@ -76,7 +77,10 @@ char	*add_qvar(char *content)
 		return (NULL);
 	cpy_content = malloc(ft_strlen(content) + 3 * sizeof(char));
 	if (!cpy_content)
-		return (NULL);
+	{
+		ms->exit_code = 134;
+		free_minishell(ms, 1);
+	}
 	while (content[i] && content[i] != '=')
 		cpy_content[j++] = content[i++];
 	i++;
@@ -90,14 +94,14 @@ char	*add_qvar(char *content)
 	return (cpy_content);
 }
 
-void	add_qvar_lst(t_list *exp)
+void	add_qvar_lst(t_ms *ms, t_list *exp)
 {
 	t_list	*tmp_exp;
 
 	tmp_exp = exp;
 	while (tmp_exp)
 	{
-		tmp_exp->content = add_qvar(tmp_exp->content);
+		tmp_exp->content = add_qvar(ms, tmp_exp->content);
 		tmp_exp = tmp_exp->next;
 	}
 }
