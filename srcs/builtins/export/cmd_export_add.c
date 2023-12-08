@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:03:19 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/07 12:33:15 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/08 16:55:25 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,18 @@ void	add_to_exp(t_ms *ms, char *content)
 	t_list	*new;
 
 	cpy_content = ft_strdup_noplus(content);
+	
 	exp_tmp = ms->exp;
 	exp_tmp2 = ms->exp;
 	new = ft_lstnew(cpy_content);
+	if (!new)
+	{
+		dprintf(2, "add to exp !new\n");// leak a init_exp, lst_dup, strdup
+		free(content);
+		free(cpy_content);
+		ms->exit_code = 134;
+		free_minishell(ms, 1);
+	}
 	while (exp_tmp)
 	{
 		if (ft_strncmp(exp_tmp->content, content, ft_strlen(content)) >= 0)
