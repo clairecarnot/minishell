@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/11 15:38:40 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/11 18:45:56 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
+	cmd->env = NULL;
 	cmd->bin_paths = NULL;
 	cmd->abs_or_rel = 0;
 	cmd->valid_path = 0;
@@ -81,18 +82,19 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		return (1);
 	else if (pid == 0)
 	{
+//		dprintf(2, "%s\n", cmd->args[0]);
 		if (!cmd->valid_path)
 		{
 			if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
 				(ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
 			else
 				(ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
-			(free_cmd(cmd), free_tab(env));
+			free_cmd(cmd);
 			exit(127); //A CHECKER
 		}
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
-		(free_cmd(cmd), free_tab(env));
+		free_cmd(cmd);
 		exit(errno); //free minishell ?
 	}
 	else
@@ -122,19 +124,20 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	cmd = node_to_cmd(ms, node, env);
 	if (!cmd)
 		return (free_tab(env), 1);
+	cmd->env = env;
 	if (cmd->builtin != NOBUILT)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
 	if (exit_code == 1)
-		return (free(cmd), free_tab(env), 1);//on n'attend pas les children
+		return (free(cmd), 1);//on n'attend pas les children
 	tmp = ms->pidlst;
 	while (tmp)
 	{
-		waitpid(*((pid_t *)tmp->content), NULL, 0);
+		waitpid(tmp->n, NULL, 0);
 		tmp = tmp->next;
 	}
 	free_cmd(cmd);
-	free_tab(env);
+//	free_tab(env);
 	return (0);
 }

@@ -126,6 +126,8 @@ char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list *dol)
 		i++;
 	}
 	j = i + 1;
+//	dprintf(2, "arg[%d] = %c\n", i, arg[i]);
+//	dprintf(2, "arg[%d] = %c\n", j, arg[j]);
 	if (!arg[j])
 		return (arg);
 	if (arg[j] == '$')
@@ -134,7 +136,7 @@ char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list *dol)
 		if (!arg)
 			return (NULL);
 	}
-	if (arg[j] != '\"' || arg[j] != '\'')
+	if (arg[j] == '\"' || arg[j] == '\'')
 		exp_arg = skip_dol(arg, i, j);
 	else
 	{
@@ -144,6 +146,7 @@ char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list *dol)
 			j++;
 		var = get_varvalue(ms, arg, i, j);
 //		}
+//		dprintf(2, "var = %s\n", var);
 		if (!var && ms->exit_code == 134)
 			return (free(arg), NULL);
 		else if (!var)
@@ -177,6 +180,7 @@ int	cmd_expand(t_ms *ms, char **args, t_list *dol)
 		{
 			if (args[i][j] == '$')
 			{
+//				dprintf(2, "dol->n = %d\n", dol->n);
 				if (dol && dol->n)
 					args[i] = expand_dol(ms, args[i], dol_count, dol);
 				if (!args[i])

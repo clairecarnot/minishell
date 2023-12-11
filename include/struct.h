@@ -20,6 +20,7 @@ typedef enum e_builtin_type
 
 typedef struct s_cmd
 {
+	char	**env;
 	char	**args;
 	t_builtin_type	builtin;
 	char	**bin_paths;
