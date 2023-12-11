@@ -22,6 +22,7 @@ char	*add_qvar(t_ms *ms, char *content);
 void	add_qvar_lst(t_ms *ms, t_list *exp);
 
 //----------------------- cmd_export_utils2.c -----------------------
+int		ft_slen(char *s);
 int		ft_strlen_equal(char *content);
 int		find_plus(char *s);
 char	*ft_strdup_noplus2(char *s);
@@ -32,10 +33,10 @@ void	replace_in_exp(t_ms *ms, char *content);
 void	replace_in_env(t_ms *ms, char *content);
 
 //----------------------- cmd_export_dup.c -----------------------
-char	*ft_strjoin_wquote(char const *s1, char const *s2);
-char	*dup_after_equal(char *s);
-void	dup_in_exp(t_ms *ms, char *content);
-void	dup_in_env(t_ms *ms, char *content);
+char	*ft_strjoin_wquote(char *s1, char *s2);
+char	*dup_after_equal(t_ms *ms, char *s, int i);
+void	join_in_exp(t_ms *ms, char *content);
+void	join_in_env(t_ms *ms, char *content);
 
 //----------------------- cmd_export_add.c -----------------------
 void	add_to_exp(t_ms *ms, char *content);

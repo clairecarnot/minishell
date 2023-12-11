@@ -185,6 +185,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	minishell = NULL;
 	minishell = init_ms(env);
+	minishell->i = 0;// a supprimer
 	if (!minishell)
 		return (1);
 	while (1)

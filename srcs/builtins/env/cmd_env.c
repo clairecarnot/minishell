@@ -10,7 +10,6 @@ void add_to_env(t_ms *ms, char *content)
 	t_list	*new;
 
 	cpy_content = ft_strdup_noplus(content);//ajout protec
-	
 	new = ft_lstnew(cpy_content);//ajouter protec
 	ft_lstadd_back(&ms->env, new);
 }

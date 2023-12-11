@@ -74,7 +74,7 @@ char	*add_qvar(t_ms *ms, char *content)
 	i = 0;
 	j = 0;
 	if (!has_equal(content))
-		return (NULL);
+		return (content);
 	cpy_content = malloc(ft_strlen(content) + 3 * sizeof(char));
 	if (!cpy_content)
 	{
@@ -97,11 +97,14 @@ char	*add_qvar(t_ms *ms, char *content)
 void	add_qvar_lst(t_ms *ms, t_list *exp)
 {
 	t_list	*tmp_exp;
+	char	*tmp_content;
 
 	tmp_exp = exp;
 	while (tmp_exp)
 	{
-		tmp_exp->content = add_qvar(ms, tmp_exp->content);
+		tmp_content = tmp_exp->content;
+		tmp_exp->content = add_qvar(ms, tmp_content);
+		free(tmp_content);
 		tmp_exp = tmp_exp->next;
 	}
 }

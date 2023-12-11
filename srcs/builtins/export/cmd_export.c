@@ -40,12 +40,15 @@ int	var_exists_exp(t_ms *ms, char *content)
 
 	i = 0;
 	size = ft_strlen_equal(content);
-	// dprintf(2, "size = %d\n", size);
+	dprintf(2, "size = %d, content = %s\n", size, content);
 	exp_tmp = ms->exp;
 	while (exp_tmp)
 	{
 		if (ft_strncmp(exp_tmp->content, content, size/* + 1*/) == 0)//variable deja existante trouvee
+		{
+			// dprintf(2, "size = %d exp_tmp->content = %s, content = %s\n", size, (char *)exp_tmp->content, content);
 			return (1);
+		}
 		exp_tmp = exp_tmp->next;
 	}
 	return (0);
@@ -77,47 +80,45 @@ Sinon --> l'ajouter a env et a exp
 */
 int	add_variable(t_ms *ms, char *content)
 {
-	int		i;
-	char	*cpy_content;
-
-	i = 0;
 	if (!has_equal(content) && !var_exists_exp(ms, content))
 	{
 		dprintf(2, "add to exp\n");
 		return (add_to_exp(ms, content) , 0);
 	}
-	cpy_content = add_qvar(ms, content);
-	if (!cpy_content)
-		return (1);//error a verifier
+	else if (!has_equal(content) && var_exists_exp(ms, content))
+	{
+		dprintf(2, "noting\n");
+		return (0);
+	}
 	if (var_exists_exp(ms, content) && var_exists_env(ms, content) && find_plus(content))//case like VAR+=hey VAR exist already
 	{
 		dprintf(2, "dup in env and exp\n");
-		dup_in_env(ms, content);
-		dup_in_exp(ms, content);
+		join_in_env(ms, content);
+		join_in_exp(ms, content);
 	}
 	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && find_plus(content))
 	{
 		dprintf(2, "add in env  dup in exp\n");
+		join_in_exp(ms, content);
 		add_to_env(ms, content);
-		dup_in_exp(ms, content);
 	}
 	else if (var_exists_exp(ms, content) && var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
 	{
 		dprintf(2, "replace in env and exp\n");
 		replace_in_env(ms, content);
-		replace_in_exp(ms, cpy_content);
+		replace_in_exp(ms, content);//cpy_content
 	}
 	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
 	{
 		dprintf(2, "add in env  replace in exp\n");
 		add_to_env(ms, content);
-		replace_in_exp(ms, cpy_content);
+		replace_in_exp(ms, content);//cpy_content
 	}
 	else//other cases when VAR doesn't exist before
 	{
 		dprintf(2, "add in env and exp\n");
 		add_to_env(ms, content);
-		add_to_exp(ms, cpy_content);
+		add_to_exp(ms, content);// precedemment cpy_content
 	}
 	return (0);
 }
@@ -161,7 +162,10 @@ int	exec_export(t_ms *ms, t_ast *node)
 				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))
 				{
 					if (add_variable(ms, exp_arg->content))
+					{
+						dprintf(2, "return after add varriable\n");
 						return (1);
+					}
 				}
 				exp_arg = exp_arg->next;
 				i++;

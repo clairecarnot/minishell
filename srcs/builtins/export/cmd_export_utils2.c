@@ -6,12 +6,24 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:43:45 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/07 12:33:00 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:30:00 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
+
+int	ft_slen(char *s)
+{
+	int	i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	while (s[i])
+		i++;
+	return (i);
+}
 
 int	ft_strlen_equal(char *content)
 {
@@ -29,7 +41,7 @@ int	find_plus(char *s)
 	int	i;
 
 	i = 0;
-	while (s[i])
+	while (s[i] && s[i] != '=')
 	{
 		if (s[i] == '+')
 			return (1);

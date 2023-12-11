@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/07 12:33:09 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:51:34 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,15 @@ void	replace_in_exp(t_ms *ms, char *content)
 	t_list	*exp_tmp;
 	t_list	*exp_tmp2;
 	t_list	*new;
-	
+	char	*cpy_content;
+
 	exp_tmp = ms->exp;
 	exp_tmp2 = ms->exp;
-	new = ft_lstnew(content);// a proteger ?
+	cpy_content = add_qvar(ms, content);
+	new = ft_lstnew(cpy_content);// a proteger
 	while (exp_tmp)
 	{
-		if (ft_strncmp(exp_tmp->content, content, ft_strlen_equal(content)) == 0)
+		if (ft_strncmp(exp_tmp->content, cpy_content, ft_strlen_equal(cpy_content)) == 0)
 		{
 			new->next = exp_tmp->next;
 			free(exp_tmp->content);
