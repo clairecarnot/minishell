@@ -68,7 +68,7 @@ void	print_token_lst(t_token *token)//temporaire
 	while (token_lst)
 	{
 		dprintf(2, "%s est de type %s\n", (token_lst)->value, tok_to_str(token_lst));
-		// print_lst(token_lst->dol);
+		print_lst(token_lst->dol);
 		token_lst = (token_lst)->next_token;
 	}
 }
@@ -198,7 +198,7 @@ int	main(int argc, char **argv, char **env)
 		{	
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
-			// print_token_lst(minishell->lexer->token_lst);
+//			print_token_lst(minishell->lexer->token_lst);
 
 			minishell->cur_tok = minishell->lexer->token_lst;
 			if (parse(minishell) == -1)
@@ -215,10 +215,9 @@ int	main(int argc, char **argv, char **env)
 			{
 				// print_tree(minishell->root, 0);
 				// visit_node(minishell->root);
-				exec_env(minishell);
-				exec_export(minishell, minishell->root);
-				// pre_exec(minishell);
-				
+//				exec_env(minishell);
+//				exec_export(minishell, minishell->root);
+				pre_exec(minishell);
 				free_minishell(minishell, 0);
 			}
 		}

@@ -58,6 +58,7 @@ struct	s_ast
 	t_redirs	*redirs;
 	int			*pipe;
 	t_ast		*parent;
+	t_list		*dol;
 };
 
 typedef enum e_type

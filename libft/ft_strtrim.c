@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 09:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/05/15 18:05:56 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:14:26 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	char	*d;
 
 	i = 0;
-	if (!s1 || ! set)
+	if (!s1 || !set)
 		return (0x0);
 	while (s1[i] && ft_isset(s1[i], set))
 		i++;

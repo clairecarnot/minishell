@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/06 17:55:54 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/11 16:51:10 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	pre_exec(t_ms *ms);
 void	abs_rel_path(t_cmd *cmd);
 char	**get_bin_paths(char **env);
 void	build_path(t_cmd *cmd);
-t_cmd	*node_to_cmd(t_ast *node, char **env);
+t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env);
 int	exec_builtin(t_ms *ms, t_cmd *cmd);
 int	do_cmd(t_cmd *cmd, t_ms *ms, char **env);
 int	exec_cmd(t_ast *node, t_ms *ms);
@@ -49,5 +49,14 @@ int	exec_pipeline(t_ast *node, t_ms *ms);
 void	free_tab(char **tab);
 void	free_cmd(t_cmd *cmd);
 int	close_if(int *fd);
+
+//----------------------- expand.c ------------------------
+char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
+char	*skip_dol(char *arg, int i, int j);
+char	*repl_dol(char *arg, char *var, int i, int j);
+char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_list *dol);
+char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list *dol);
+int	cmd_expand(t_ms *ms, char **args, t_list *dol);
+
 
 #endif

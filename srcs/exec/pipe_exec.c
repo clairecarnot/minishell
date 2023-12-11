@@ -36,7 +36,7 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 	env = lst_to_tab(ms->env);
 	if (!env)
 		return (1);
-	cmd = node_to_cmd(node, env);
+	cmd = node_to_cmd(ms, node, env);
 	if (!cmd)
 		return (free_tab(env), 1);
 	if (cmd->builtin != NOBUILT)

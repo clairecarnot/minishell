@@ -6,13 +6,13 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/11 10:17:43 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/11 15:38:40 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/exec.h"
 
-t_cmd	*node_to_cmd(t_ast *node, char **env)
+t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 {
 	t_cmd	*cmd;
 
@@ -25,8 +25,11 @@ t_cmd	*node_to_cmd(t_ast *node, char **env)
 	cmd->args = lst_to_tab(node->args);
 	if (!cmd->args)
 		return (free_cmd(cmd), NULL);
-	if (!cmd_expand(cmd->args, node->dol)) //EXPAND
+//	dprintf(2, "avant expand\n");
+	if (cmd_expand(ms, cmd->args, node->dol) == 1) //EXPAND
 		return (free_cmd(cmd), NULL); // A CHECKER
+//	dprintf(2, "apres expand\n");
+//	(void)ms;
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);
 	else
@@ -78,21 +81,30 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		return (1);
 	else if (pid == 0)
 	{
-		dprintf(2, "cmd = %s\n", cmd->args[0]);
+		if (!cmd->valid_path)
+		{
+			if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
+				(ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
+			else
+				(ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
+			(free_cmd(cmd), free_tab(env));
+			exit(127); //A CHECKER
+		}
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
-		// free_cmd(cmd); a verifier
-		// free_tab(env); 
-		// return(1) ou free minishell ?
+		(free_cmd(cmd), free_tab(env));
+		exit(errno); //free minishell ?
 	}
 	else
 	{
 		new_pid = ft_lstnew(&pid);
 		if (!new_pid)
-			return (1); //A PROTEGER
+		{
+			ms->exit_code = 134;
+			return (1);
+		}
 		ft_lstadd_back(&ms->pidlst, new_pid);
 	}
-	//parent waitpid?
 	return (0);
 }
 
@@ -100,24 +112,28 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	char	**env;
-	// t_list	*tmp;
+	t_list	*tmp;
+	int	exit_code;
 
+	exit_code = 0;
 	env = lst_to_tab(ms->env);
 	if (!env)
 		return (1);
-	cmd = node_to_cmd(node, env);
+	cmd = node_to_cmd(ms, node, env);
 	if (!cmd)
 		return (free_tab(env), 1);
 	if (cmd->builtin != NOBUILT)
-		exec_builtin(ms, cmd);
+		exit_code = exec_builtin(ms, cmd);
 	else
-		do_cmd(cmd, ms, env);
-	// tmp = ms->pidlst;
-	// while (tmp)
-	// {
-	// 	waitpid(*((pid_t *)tmp->content), NULL, 0);
-	// 	tmp = tmp->next;
-	// }
+		exit_code = do_cmd(cmd, ms, env);
+	if (exit_code == 1)
+		return (free(cmd), free_tab(env), 1);//on n'attend pas les children
+	tmp = ms->pidlst;
+	while (tmp)
+	{
+		waitpid(*((pid_t *)tmp->content), NULL, 0);
+		tmp = tmp->next;
+	}
 	free_cmd(cmd);
 	free_tab(env);
 	return (0);
