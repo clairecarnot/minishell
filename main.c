@@ -140,6 +140,7 @@ t_ms	*init_ms(char **env)
 		free_minishell(minishell, 1);
 	if (init_exp(minishell))
 		free_minishell(minishell, 1);
+	minishell->i = 0;// a supprimer
 	return (minishell);
 }
 
@@ -185,7 +186,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	minishell = NULL;
 	minishell = init_ms(env);
-	minishell->i = 0;// a supprimer
+	
 	if (!minishell)
 		return (1);
 	while (1)

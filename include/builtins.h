@@ -18,25 +18,37 @@ int		exec_export(t_ms *ms, t_ast *node);
 int		error_exp(char *content);
 int		error_exp_spaces(char *content);
 int		has_equal(char *content);
-char	*add_qvar(t_ms *ms, char *content);
+char	*add_qvar(t_ms *ms, char *content, int i, int u);
 void	add_qvar_lst(t_ms *ms, t_list *exp);
 
 //----------------------- cmd_export_utils2.c -----------------------
 int		ft_slen(char *s);
-int		ft_strlen_equal(char *content);
+int		slen_equal(char *content);
 int		find_plus(char *s);
-char	*ft_strdup_noplus2(char *s);
-char	*ft_strdup_noplus(char *s);
+char	*ft_strdup_noplus2(t_ms *ms, char *s);
+char	*ft_strdup_noplus(t_ms *ms, char *s);
+
+//----------------------- cmd_export_utils3.c -----------------------
+int		var_exists_exp(t_ms *ms, char *content);
+int		var_exists_env(t_ms *ms, char *content);
+void	prefree_minishell(t_ms *ms, char *str);
 
 //----------------------- cmd_export_replace.c -----------------------
 void	replace_in_exp(t_ms *ms, char *content);
 void	replace_in_env(t_ms *ms, char *content);
 
-//----------------------- cmd_export_dup.c -----------------------
-char	*ft_strjoin_wquote(char *s1, char *s2);
+//----------------------- cmd_export_join_env.c -----------------------
 char	*dup_after_equal(t_ms *ms, char *s, int i);
-void	join_in_exp(t_ms *ms, char *content);
+char	*ft_sjoin(t_ms *ms, char *s1, char *s2, int i);
+t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct);
 void	join_in_env(t_ms *ms, char *content);
+
+//----------------------- cmd_export_join_exp.c -----------------------
+char	*sjoin_noequal(t_ms *ms, char *s1, char *s2, int i);
+char	*sjoin_wquote(t_ms *ms, char *s1, char *s2, int i);
+t_list	*join_in_exp3(t_ms *ms, char *cpy_ct, char *join_ct);
+char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct);
+void	join_in_exp(t_ms *ms, char *content);
 
 //----------------------- cmd_export_add.c -----------------------
 void	add_to_exp(t_ms *ms, char *content);

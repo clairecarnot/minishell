@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:43:45 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/11 17:30:00 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:03:29 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ft_slen(char *s)
 	return (i);
 }
 
-int	ft_strlen_equal(char *content)
+int	slen_equal(char *content)
 {
 	int	i;
 
@@ -50,7 +50,7 @@ int	find_plus(char *s)
 	return (0);
 }
 
-char	*ft_strdup_noplus2(char *s)
+char	*ft_strdup_noplus2(t_ms *ms, char *s)
 {
 	int		i;
 	int		j;
@@ -58,9 +58,12 @@ char	*ft_strdup_noplus2(char *s)
 
 	i = 0;
 	j = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(s) - 1) + 1);//malloc -1 car on ne va pas copier le +
+	dest = malloc(sizeof(char) * (ft_strlen(s) - 1 + 1));// c'est verifie
 	if (!dest)
-		return (0x0);
+	{
+		ms->exit_code = 134;
+		free_minishell(ms, 1);
+	}
 	while (s[i])
 	{
 		if (s[i] != '+')
@@ -72,27 +75,28 @@ char	*ft_strdup_noplus2(char *s)
 	return (dest);
 }
 
-char	*ft_strdup_noplus(char *s)
+char	*ft_strdup_noplus(t_ms *ms, char *s)
 {
 	char	*dest;
 	int		i;
 
 	i = 0;
 	if (find_plus(s) == 1)
-		dest = ft_strdup_noplus2(s);
+		dest = ft_strdup_noplus2(ms, s);
 	else
 	{
-		dest = malloc(sizeof(char) * ft_strlen(s) + 1);
+		dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie
 		if (!dest)
-			return (0x0);
-		// dprintf(2, "no find plus\n");
-		while (((char *)s)[i])
 		{
-			dest[i] = ((char *)s)[i];
+			ms->exit_code = 134;
+			free_minishell(ms, 1);
+		}
+		while (s[i])
+		{
+			dest[i] = s[i];
 			i++;
 		}
 		dest[i] = '\0';
 	}
-	// dprintf(2, "dest = %s\n", dest);
 	return (dest);
 }

@@ -25,7 +25,7 @@ int	error_exp(char *content)
 			return (printf("%s: event not found\n", content + i), 1);
 		if (((content[i] < '0' || (content[i] > '9' && content[i] < 'A') || \
 		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_' && content[i] != '+') || \
-		(content[i] == '+' && content[i + 1] && content[i + 1] != '='))
+		(content[i] == '+' && content[i + 1] && content[i + 1] != '=') || (content[i] == '+' && !content[i + 1]))
 			return (printf("0000minishell: export: `%s': not a valid identifier\n", content), 1);
 	}
 	return (0);
@@ -65,19 +65,19 @@ int	has_equal(char *content)
 /*
 Ajoute les quotes autour du contenu de la variable pour l'ajout a exp
 */
-char	*add_qvar(t_ms *ms, char *content)
+char	*add_qvar(t_ms *ms, char *content, int i, int u)
 {
-	int		i;
 	int		j;
 	char	*cpy_content;
-	
-	i = 0;
+
 	j = 0;
 	if (!has_equal(content))
 		return (content);
 	cpy_content = malloc(ft_strlen(content) + 3 * sizeof(char));
 	if (!cpy_content)
 	{
+		if (content && u == 1)
+			free(content);
 		ms->exit_code = 134;
 		free_minishell(ms, 1);
 	}
@@ -90,7 +90,6 @@ char	*add_qvar(t_ms *ms, char *content)
 		cpy_content[j++] = content[i++];
 	cpy_content[j++] = '\"';
 	cpy_content[j] = '\0';
-	// dprintf(2, "cpy_content = %s\n", cpy_content);
 	return (cpy_content);
 }
 
@@ -103,7 +102,7 @@ void	add_qvar_lst(t_ms *ms, t_list *exp)
 	while (tmp_exp)
 	{
 		tmp_content = tmp_exp->content;
-		tmp_exp->content = add_qvar(ms, tmp_content);
+		tmp_exp->content = add_qvar(ms, tmp_content, 0, 0);
 		free(tmp_content);
 		tmp_exp = tmp_exp->next;
 	}

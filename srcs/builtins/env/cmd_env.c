@@ -9,8 +9,10 @@ void add_to_env(t_ms *ms, char *content)
 	char	*cpy_content;
 	t_list	*new;
 
-	cpy_content = ft_strdup_noplus(content);//ajout protec
-	new = ft_lstnew(cpy_content);//ajouter protec
+	cpy_content = ft_strdup_noplus(ms, content);// a reverifier
+	new = ft_lstnew(cpy_content);// c'est protege
+	if (!new)
+		prefree_minishell(ms, cpy_content);
 	ft_lstadd_back(&ms->env, new);
 }
 
