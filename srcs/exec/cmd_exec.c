@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/11 18:45:56 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/13 14:20:08 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 int	exec_builtin(t_ms *ms, t_cmd *cmd)
 {
 	if (cmd->builtin == ECHO)
-		return (0); //A remplacer par ligne ci-dessous
-//		return (exec_echo);
+		return (exec_echo(ms, cmd));
 	if (cmd->builtin == CD)
 		return (0); //A remplacer par ligne ci-dessous
 //		return (exec_cd);
@@ -86,9 +85,9 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		if (!cmd->valid_path)
 		{
 			if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
-				(ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
+				(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
 			else
-				(ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
+				(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
 			free_cmd(cmd);
 			exit(127); //A CHECKER
 		}
@@ -114,7 +113,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	char	**env;
-	t_list	*tmp;
+	// t_list	*tmp;
 	int	exit_code;
 
 	exit_code = 0;
@@ -131,12 +130,12 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exit_code = do_cmd(cmd, ms, env);
 	if (exit_code == 1)
 		return (free(cmd), 1);//on n'attend pas les children
-	tmp = ms->pidlst;
-	while (tmp)
-	{
-		waitpid(tmp->n, NULL, 0);
-		tmp = tmp->next;
-	}
+	// tmp = ms->pidlst;
+	// while (tmp)
+	// {
+	// 	waitpid(tmp->n, NULL, 0);
+	// 	tmp = tmp->next;
+	// }
 	free_cmd(cmd);
 //	free_tab(env);
 	return (0);
