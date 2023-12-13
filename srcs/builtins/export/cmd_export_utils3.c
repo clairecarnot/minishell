@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:21:55 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/12 16:52:29 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/13 10:15:58 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	var_exists_exp(t_ms *ms, char *content)
 
 	i = 0;
 	size = slen_equal(content);
-	dprintf(2, "size = %d, content = %s\n", size, content);
+	// dprintf(2, "size = %d, content = %s\n", size, content);
 	exp_tmp = ms->exp;
 	while (exp_tmp)
 	{
