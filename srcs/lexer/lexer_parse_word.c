@@ -118,10 +118,12 @@ void	update_lstdol_in(t_ms *ms, int qtype, int i, t_list **dol)
 	}
 }
 
-void	update_lstdol_out(t_ms *ms, int i, t_list **dol)
+int	update_lstdol_out(t_ms *ms, int i, t_list **dol)
 {
+	int		j;
 	t_list	*new;
 
+	j = 1;
 	new = NULL;
 	// dprintf(2, "lstdol out\n");
 	if (ms->lexer->src[ms->lexer->cur_pos + i] && \
@@ -133,6 +135,11 @@ void	update_lstdol_out(t_ms *ms, int i, t_list **dol)
 		if (ms->lexer->src[ms->lexer->cur_pos + i] == '$')
 		{
 			// dprintf(2, "lstdol out 3\n");
+			while(ms->lexer->src[ms->lexer->cur_pos + i + j] == '$')
+				j++;
+			if (ms->lexer->src[ms->lexer->cur_pos + i + j] == '\'' || ms->lexer->src[ms->lexer->cur_pos + i + j] == '\"')
+				return (j);//
+			
 			new = ft_lstnew_int(1);
 			if (!new)
 			{
@@ -193,8 +200,14 @@ t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q, int i)
 		// dprintf(2, "3\n");
 		if (qstate(nb_q) == 0)
 		{
-			update_lstdol_out(ms, i, &dol);
-			value = quote_state_close(ms, i, value);
+			i += update_lstdol_out(ms, i, &dol);
+			// if (ms->lexer->src[ms->lexer->cur_pos + i] == '\'' || ms->lexer->src[ms->lexer->cur_pos + i] == '\"')
+			// {
+			// 	qtype = ms->lexer->src[ms->lexer->cur_pos + i] - '0';
+			// 	nb_q++;
+			// }
+			// else
+				value = quote_state_close(ms, i, value);
 		}
 		i++;
 	}
