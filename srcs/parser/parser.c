@@ -33,9 +33,16 @@ int	is_redirect(t_ms *ms, t_token *cur_tok)
 {
 	if (!cur_tok || (cur_tok->type < T_LESS || cur_tok->type > T_DGREAT))
 		return (0);
-	if (!cur_tok->next_token)
+	if (!cur_tok->next_token || cur_tok->next_token->type == T_EOF)
+	{
+		if (cur_tok->next_token && cur_tok->next_token->value)
+			free(cur_tok->next_token->value);
+		cur_tok->next_token->value = ft_strdup("newline");
+		if (!cur_tok->next_token->value)
+			ms->exit_code = 134;
 		return (0);
-	if (cur_tok->next_token->type != T_WORD)
+	}
+	else if (cur_tok->next_token->type != T_WORD)
 	{
 		eat_token(ms, cur_tok->type);
 		return (0);
@@ -48,11 +55,6 @@ t_ast	*factor(t_ms *ms)
 	t_ast	*node;
 
 	node = NULL;
-//	dprintf(2, "factor1\n");
-	// if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && (ms->cur_tok->type < T_LESS || ms->cur_tok->type > T_DGREAT)))
-	// 	return (NULL);
-	// if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && !is_redirect(ms, ms->cur_tok)))
-	// 	return (NULL);
 	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && !is_redirect(ms, ms->cur_tok)))
 		return (NULL);
 	node = new_node(ms, CMD);
@@ -60,25 +62,18 @@ t_ast	*factor(t_ms *ms)
 		return (NULL);
 	while (ms->cur_tok && ms->cur_tok->type != T_EOF && (ms->cur_tok->type == T_WORD || is_redirect(ms, ms->cur_tok)))
 	{
-//		dprintf(2, "factor2\n");
-//		dprintf(2, "%s\n", tok_to_str(ms->cur_tok));
-//		dprintf(2, "%s\n", ms->cur_tok->value);
 		if (ms->cur_tok && ms->cur_tok->type == T_WORD)
 		{
 			if (!add_cmd_args(ms, node))
 				return (free_root_ast(node), NULL);
 		}
-		dprintf(2, "factor3\n");
-		dprintf(2, "%s\n", tok_to_str(ms->cur_tok));
 		if (is_redirect(ms, ms->cur_tok))
 		{
-//			dprintf(2, "factor4\n");
 			if (!handle_red(ms, node))
 				return (free_root_ast(node), NULL);
 		}
 	}
-//	dprintf(2, "factor5\n");
-	dprintf(2, "%s\n", tok_to_str(ms->cur_tok));
+//	dprintf(2, "%s\n", tok_to_str(ms->cur_tok));
 	return (node);
 }
 
