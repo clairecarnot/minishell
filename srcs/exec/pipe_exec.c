@@ -29,7 +29,9 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 {
 	t_cmd	*cmd;
 	char	**env;
+//	int	exit_code;
 
+//	exit_code = 0;
 	dup2(tmp_fd, STDIN_FILENO); //a proteger
 	close_if(&tmp_fd); //a proteg ?
 
@@ -41,12 +43,17 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 		return (free_tab(env), 1);
 	if (cmd->builtin != NOBUILT)
 	{
-		exec_builtin(ms, cmd);
-		// exit(0); dans chaque fonction ? ou ici ?
+//		exit_code = exec_builtin(ms, cmd);
+//		if (exit_code != 0)
+		if (exec_builtin(ms, cmd) == 1) //erreur
+			(free_cmd(cmd), free_exit(ms), exit(ms->exit_code)); //est-ce le bon code erreur?
+		else
+			(free_exit(ms), exit(0));
 	}
 	else
 		do_cmdpipe(cmd, ms, env);
-	return (1); // a verif
+	(free_cmd(cmd), free_exit(ms), exit(ms->exit_code)); //est-ce le bon code erreur?
+	return (1); //on exit dans tous les cas avant
 }
 
 int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
@@ -137,7 +144,7 @@ int	exec_pipeline(t_ast *node, t_ms *ms)
 {
     int tmp_fd;
     int fd[2];
-	t_list	*tmp;
+	// t_list	*tmp;
 
 	fd[0] = -1;
 	fd[1] = -1;
@@ -145,11 +152,11 @@ int	exec_pipeline(t_ast *node, t_ms *ms)
 	// dprintf(2, "tmp = %d\n", tmp_fd);
     pipex(ms, node, tmp_fd, fd);
 	close_if(&tmp_fd);
-	tmp = ms->pidlst;
-	while (tmp)
-	{
-		waitpid(tmp->n, NULL, 0);
-		tmp = tmp->next;
-	}
+	// tmp = ms->pidlst;
+	// while (tmp)
+	// {
+	// 	waitpid(tmp->n, NULL, 0);
+	// 	tmp = tmp->next;
+	// }
 	return (0);
 }
