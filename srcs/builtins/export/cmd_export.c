@@ -27,99 +27,58 @@
 // n'as pas change, en realite elle a change car lorsqu'on export *=a et qu'on fait echo $* la nouvelle 
 // variable s'affiche bien, a voir si vous voulez traiter ce cas ou non.
 
-
-/*
-Cherche si une variable du meme nom existe deja
-Si oui la remplacer
-*/
-int	var_exists_exp(t_ms *ms, char *content)
-{
-	int		i;
-	int		size;
-	t_list	*exp_tmp;
-
-	i = 0;
-	size = ft_strlen_equal(content);
-	// dprintf(2, "size = %d\n", size);
-	exp_tmp = ms->exp;
-	while (exp_tmp)
-	{
-		if (ft_strncmp(exp_tmp->content, content, size/* + 1*/) == 0)//variable deja existante trouvee
-			return (1);
-		exp_tmp = exp_tmp->next;
-	}
-	return (0);
-}
-
-int	var_exists_env(t_ms *ms, char *content)
-{
-	int		i;
-	int		size;
-	t_list	*env_tmp;
-
-	i = 0;
-	size = ft_strlen_equal(content);
-	// dprintf(2, "size = %d\n", size);
-	env_tmp = ms->env;
-	while (env_tmp)
-	{
-		if (ft_strncmp(env_tmp->content, content, size/* + 1*/) == 0)//variable deja existante trouvee
-			return (1);
-		env_tmp = env_tmp->next;
-	}
-	return (0);
-}
-
 /*
 S'il n'y a pas de '=' apres le nom de la variable et que la variable n'existe pas deja -> ajouter a exp list
 Si la variable existe deja --> la remplacer dans env et dans exp
 Sinon --> l'ajouter a env et a exp
 */
+// int	add_variable2(t_ms *ms, char *content)
+// {
+
+// }
+
 int	add_variable(t_ms *ms, char *content)
 {
-	int		i;
-	char	*cpy_content;
-
-	i = 0;
 	if (!has_equal(content) && !var_exists_exp(ms, content))
 	{
 		dprintf(2, "add to exp\n");
 		return (add_to_exp(ms, content) , 0);
 	}
-	cpy_content = add_qvar(ms, content);
-	if (!cpy_content)
-		return (1);//error a verifier
+	else if (!has_equal(content) && var_exists_exp(ms, content))
+		return (dprintf(2, "noting\n"), 0);
 	if (var_exists_exp(ms, content) && var_exists_env(ms, content) && find_plus(content))//case like VAR+=hey VAR exist already
 	{
 		dprintf(2, "dup in env and exp\n");
-		dup_in_env(ms, content);
-		dup_in_exp(ms, content);
+		join_in_env(ms, content);
+		join_in_exp(ms, content);
 	}
 	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && find_plus(content))
 	{
 		dprintf(2, "add in env  dup in exp\n");
+		join_in_exp(ms, content);
 		add_to_env(ms, content);
-		dup_in_exp(ms, content);
 	}
 	else if (var_exists_exp(ms, content) && var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
 	{
 		dprintf(2, "replace in env and exp\n");
 		replace_in_env(ms, content);
-		replace_in_exp(ms, cpy_content);
+		replace_in_exp(ms, content);//cpy_content
 	}
 	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
 	{
 		dprintf(2, "add in env  replace in exp\n");
 		add_to_env(ms, content);
-		replace_in_exp(ms, cpy_content);
+		replace_in_exp(ms, content);//cpy_content
 	}
 	else//other cases when VAR doesn't exist before
 	{
 		dprintf(2, "add in env and exp\n");
 		add_to_env(ms, content);
-		add_to_exp(ms, cpy_content);
+		add_to_exp(ms, content);// precedemment cpy_content
 	}
 	return (0);
+
+	// return (add_variable2(ms, content));// verifier que ca marche bien
 }
 
 /*
@@ -157,11 +116,14 @@ int	exec_export(t_ms *ms, t_ast *node)
 			exp_arg = exp_arg->next;
 			while (exp_arg)// changer
 			{
-				dprintf(2, "exp_arg->content: %s\n", (char*)exp_arg->content);
+				// dprintf(2, "exp_arg->content: %s\n", (char*)exp_arg->content);
 				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))
 				{
 					if (add_variable(ms, exp_arg->content))
+					{
+						dprintf(2, "return after add variable\n");
 						return (1);
+					}
 				}
 				exp_arg = exp_arg->next;
 				i++;
@@ -171,35 +133,4 @@ int	exec_export(t_ms *ms, t_ast *node)
 	return (0);
 }
 
-// int	exec_export(t_ms *ms, t_ast *node)
-// {
-// 	int		i;
-// 	t_list	*exp_arg;
-	
-// 	i = 0;
-// 	exp_arg = node;
-// 	if (ft_strncmp(exp_arg->content, "export", 6) == 0)
-// 	{
-// 		if (!exp_arg->next)
-// 			return (print_lst_exp(ms->exp), 0);
-// 		else
-// 		{
-// 			exp_arg = exp_arg->next;
-// 			while (exp_arg)// changer
-// 			{
-// 				dprintf(2, "exp_arg->content: %s\n", exp_arg->content);
-// 				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))
-// 				{
-// 					dprintf(2, "add variables\n");
-// 					if (add_variable(ms, exp_arg->content))
-// 						return (1);
-// 				}
-
-// 				exp_arg = exp_arg->next;
-// 				i++;
-// 			}
-// 		}
-// 	}
-// 	return (0);
-// }
 

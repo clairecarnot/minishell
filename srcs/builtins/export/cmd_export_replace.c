@@ -6,12 +6,33 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/07 12:33:09 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:44:39 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
+
+char	*ft_sdup(t_ms *ms, char *s)
+{
+	char	*dest;
+	int		i;
+
+	dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est protege
+	if (!dest)//verifier que ft_strlen ne crash pas quand s est null
+	{
+		ms->exit_code = 134;
+		free_minishell(ms, 1);
+	}
+	i = 0;
+	while (((char *)s)[i])
+	{
+		dest[i] = ((char *)s)[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
+}
 
 /*
 Remplace dans la liste exp, le contenu d'une variable deja existante
@@ -21,13 +42,15 @@ void	replace_in_exp(t_ms *ms, char *content)
 	t_list	*exp_tmp;
 	t_list	*exp_tmp2;
 	t_list	*new;
-	
+	char	*cpy_content;
+
 	exp_tmp = ms->exp;
 	exp_tmp2 = ms->exp;
-	new = ft_lstnew(content);// a proteger ?
+	cpy_content = add_qvar(ms, content, 0, 0 /* ou 1 s'il faut free content*/);
+	new = ft_lstnew(cpy_content);// a proteger
 	while (exp_tmp)
 	{
-		if (ft_strncmp(exp_tmp->content, content, ft_strlen_equal(content)) == 0)
+		if (ft_strncmp(exp_tmp->content, cpy_content, slen_equal(cpy_content)) == 0)
 		{
 			new->next = exp_tmp->next;
 			free(exp_tmp->content);
@@ -47,13 +70,16 @@ void	replace_in_env(t_ms *ms, char *content)
 	t_list	*env_tmp2;
 	t_list	*new;
 
-	cpy_content = ft_strdup(content);//ajout protec
+	cpy_content = ft_sdup(ms, content);// c'est protege
 	env_tmp = ms->env;
 	env_tmp2 = ms->env;
-	new = ft_lstnew(cpy_content);// a proteger ?
+	new = ft_lstnew(cpy_content);
+	if (!new)
+		prefree_minishell(ms, cpy_content);
 	while (env_tmp)
 	{
-		if (ft_strncmp(env_tmp->content, content, ft_strlen_equal(content)) == 0)
+		if (ft_strncmp(env_tmp->content, content, slen_equal(content)) == 0 &&\
+		ft_strncmp(env_tmp->content, content, slen_equal(env_tmp->content)) == 0)
 		{
 			new->next = env_tmp->next;
 			free(env_tmp->content);

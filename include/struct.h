@@ -101,6 +101,7 @@ typedef struct s_lexer
 
 typedef struct s_ms
 {
+	int			i;
 	t_lexer		*lexer;
 	char		*line;
 	t_token		*cur_tok;
