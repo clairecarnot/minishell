@@ -26,8 +26,9 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	return (free(var), new_var);
 }
 
-char	*skip_dol(char *arg, int i, int j)
+char	*skip_dol(char *arg, int i, int j, int data[2])
 {
+//	dprintf(2, "skip dol\n");
 	char	*new_arg;
 	int		k;
 
@@ -48,11 +49,14 @@ char	*skip_dol(char *arg, int i, int j)
 		k++;
 	}
 	new_arg[k] = '\0';
+	data[0] -= 1;
+	data[1] = 1;
 	return (new_arg);
 }
 
 char	*repl_dol(char *arg, char *var, int i, int j)
 {
+//	dprintf(2, "repl dol\n");
 	char	*new_arg;
 	int		k;
 
@@ -124,38 +128,51 @@ int	dol_standalone(char *arg)
 	return (0);
 }
 
-char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list **dol)
+char	*expand_dol(t_ms *ms, char *arg, int data[2], t_list **dol)
 {
+//	dprintf(2, "expand dol1\n");
+//	dprintf(2, "%s\n", arg);
+//	dprintf(2, "dol_count = %d\n", *dol_count);
 	int		i;
 	int		j;
 	char	*exp_arg;
 	char	*var;
+	int		dol_nb;
 
+	dol_nb = data[0];
 	exp_arg = NULL;
 	var = NULL;
 	i = 0;
-	while (arg[i] && (arg[i] != '$' || (arg[i] == '$' && dol_count)))
+	while (arg[i] && (arg[i] != '$' || (arg[i] == '$' && dol_nb)))
 	{
 		if (arg[i] == '$')
-			dol_count--;
+			dol_nb--;
 		i++;
 	}
+//	dprintf(2, "i = %d\n", i);
 	if (!arg[i + 1] || dol_standalone(&arg[i + 1]))
 		return (arg);
+//	dprintf(2, "expand dol2\n");
+//	dprintf(2, "%s\n", arg);
 	j = i + 1;
 	if (arg[j] == '$')
 		arg = keep_one_dol_only(ms, arg, i, dol);
 	if (!arg)
 		return (NULL);
+//	dprintf(2, "expand dol3\n");
+//	dprintf(2, "%s\n", arg);
 	while (arg[j] && arg[j] != '$' && arg[j] != '\"' && arg[j] != '\'')
 		j++;
 	var = get_varvalue(ms, arg, i, j);
+//	dprintf(2, "var = %s\n", var);
 	if (!var && ms->exit_code == 134)
 		return (free(arg), NULL);
 	else if (!var)
-		exp_arg = skip_dol(arg, i, j);
+		exp_arg = skip_dol(arg, i, j, data);
 	else
 		exp_arg = repl_dol(arg, var, i, j);
+//	dprintf(2, "expand dol4\n");
+//	dprintf(2, "%s\n", exp_arg);
 	if (!exp_arg)
 	{
 		ms->exit_code = 134;
@@ -165,11 +182,25 @@ char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list **dol)
 	return (free(arg), exp_arg);
 }
 
+void	init_data(int data[2])
+{
+	data[0] = 0;
+	data[1] = 0;
+}
+
+void	update_expand_pos(int data[2], int *j)
+{
+	data[0] += 1;
+	if (data[1] == 1)
+		*j -= 1;
+	data[1] = 0;
+}
+
 int	cmd_expand(t_ms *ms, char **args, t_list *dol)
 {
 	int	i;
 	int	j;
-	int	dol_count;
+	int	data[2];
 
 	i = -1;
 	if (!args)
@@ -177,18 +208,18 @@ int	cmd_expand(t_ms *ms, char **args, t_list *dol)
 	while (args[++i])
 	{
 		j = -1;
-		dol_count = 0;
+		init_data(data);
 		while (args[i][++j])
 		{
 			if (args[i][j] == '$')
 			{
-//				dprintf(2, "dol->n = %d\n", dol->n);
 				if (dol->n)
-					args[i] = expand_dol(ms, args[i], dol_count, &dol);
+					args[i] = expand_dol(ms, args[i], data, &dol);
 				if (!args[i])
 					return (1);
 				dol = dol->next;
-				dol_count++;
+//				dol_count++;
+				update_expand_pos(data, &j);
 			}
 		}
 	}
