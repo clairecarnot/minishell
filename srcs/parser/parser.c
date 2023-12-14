@@ -35,11 +35,10 @@ int	is_redirect(t_ms *ms, t_token *cur_tok)
 		return (0);
 	if (!cur_tok->next_token || cur_tok->next_token->type == T_EOF)
 	{
-		if (cur_tok->next_token && cur_tok->next_token->value)
-			free(cur_tok->next_token->value);
-		cur_tok->next_token->value = ft_strdup("newline");
-		if (!cur_tok->next_token->value)
-			ms->exit_code = 134;
+		cur_tok->next_token->type = T_NEWLINE;
+//		cur_tok->next_token->value = ft_strdup("newline");
+//		if (!cur_tok->next_token->value)
+//			ms->exit_code = 134;
 		return (0);
 	}
 	else if (cur_tok->next_token->type != T_WORD)
@@ -55,8 +54,19 @@ t_ast	*factor(t_ms *ms)
 	t_ast	*node;
 
 	node = NULL;
+//	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && !is_redirect(ms, ms->cur_tok)))
+//		return (NULL);
 	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && !is_redirect(ms, ms->cur_tok)))
-		return (NULL);
+	{
+		if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
+		{
+			ms->cur_tok->type = T_NEWLINE;
+//			ms->cur_tok->value = ft_strdup("newline");
+//			if (!ms->cur_tok->value)
+//				ms->exit_code = 134;
+			return (NULL);
+		}
+	}
 	node = new_node(ms, CMD);
 	if (!node)
 		return (NULL);
@@ -167,14 +177,14 @@ int	parse(t_ms *ms)
 	ms->root = expr(ms);
 	if (ms->cur_tok->type != T_EOF && ms->exit_code != 134)
 	{
-		printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
+		if (ms->cur_tok->type == T_NEWLINE)
+			printf("minishell: syntax error near unexpected token `newline'\n");
+		else
+			printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
 		ms->exit_code = 2;
 		return (-1);
 	}
 	if (!ms->root)
-	{
-//		printf("ici\n");
 		return (-1);
-	}
 	return (1);
 }
