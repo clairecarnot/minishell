@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 16:46:22 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/01 11:41:53 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/14 11:29:29 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	advance(t_lexer *lexer)
 	lexer->next_pos += 1;
 }
 
-void	advance_ntimes(t_lexer *lexer, int i)
+void	advntimes(t_lexer *lexer, int i)
 {
 	while (i > 0)
 	{

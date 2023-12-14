@@ -140,7 +140,8 @@ t_ms	*init_ms(char **env)
 		free_minishell(minishell, 1);
 	if (init_exp(minishell))
 		free_minishell(minishell, 1);
-	minishell->i = 0;// a supprimer
+	minishell->i = 0;//index lexer pour norme
+	minishell->j = 0;//lexer pour norme
 	return (minishell);
 }
 
@@ -177,6 +178,61 @@ void	print_tree(t_ast *root, int space)
 	print_tree(root->left, space);
 }
 
+char	*ft_sjoin_char(t_ms *ms, char *s1, char s2)
+{
+	char	*dest;
+	int		i;
+
+	i = 0;
+	if (ms)
+	dest = malloc(sizeof(char) * ft_slen(s1) + 1 + 1);// a proteger
+	if (s1)
+	{
+		while (s1[i])
+		{
+			dest[i] = s1[i];
+			i++;
+		}
+	}
+	if (s2)
+		dest[i] = s2;
+	dest[i + 1] = '\0';
+	return (dest);
+}
+
+int	count_dolq(char *line, int i)
+{
+	int	dol;
+
+	dol = 0;
+	while(line[i + dol] && line[i + dol] == '$')
+		dol++;
+	if (line[i + dol] && (line[i + dol] == '\'' || line[i + dol] == '\"'))
+		return (dol);
+	return (0);
+}
+
+char	*remove_dolq(t_ms *ms)
+{
+	int		i;
+	int		nb_dol;
+	char	*new;
+
+	i = 0;
+	new = NULL;
+	while (ms->line[i])
+	{
+		nb_dol = 0;
+		if (ms->line[i] == '$')
+			nb_dol = count_dolq(ms->line, i);
+		if (nb_dol)
+			i += nb_dol;
+		new = ft_sjoin_char(ms, new, ms->line[i]);
+		i++;
+	}
+	return (new);
+}
+
 int	main(int argc, char **argv, char **env)
 {
 
@@ -196,6 +252,9 @@ int	main(int argc, char **argv, char **env)
 		if (!minishell->line)
 			return (free_minishell(minishell, 0), 0);//verifier protec
 //		postprompt_signals();
+		// dprintf(2, "ms->line = %s\n", minishell->line);
+		// minishell->line = remove_dolq(minishell);
+		// dprintf(2, "ms->line = %s\n", minishell->line);
 		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
 		{	
 			if (!minishell->lexer)
@@ -203,25 +262,25 @@ int	main(int argc, char **argv, char **env)
 			print_token_lst(minishell->lexer->token_lst);
 
 			minishell->cur_tok = minishell->lexer->token_lst;
-			if (parse(minishell) == -1)
-			{
-				if (minishell->exit_code == 134)
-				{
-					printf("minishell: malloc error\n");
-					free_minishell(minishell, 1);
-				}
-				else if (minishell->exit_code == 2)
-					free_minishell(minishell, 0);
-			}
-			else
-			{
-				// print_tree(minishell->root, 0);
-				// visit_node(minishell->root);
-//				exec_env(minishell);
-//				exec_export(minishell, minishell->root);
-				// pre_exec(minishell);
-				free_minishell(minishell, 0);
-			}
+// 			if (parse(minishell) == -1)
+// 			{
+// 				if (minishell->exit_code == 134)
+// 				{
+// 					printf("minishell: malloc error\n");
+// 					free_minishell(minishell, 1);
+// 				}
+// 				else if (minishell->exit_code == 2)
+// 					free_minishell(minishell, 0);
+// 			}
+// 			else
+// 			{
+// 				// print_tree(minishell->root, 0);
+// 				// visit_node(minishell->root);
+// //				exec_env(minishell);
+// //				exec_export(minishell, minishell->root);
+// 				// pre_exec(minishell);
+// 				free_minishell(minishell, 0);
+// 			}
 		}
 	}
 	free_minishell(minishell, 1);

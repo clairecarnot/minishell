@@ -37,20 +37,21 @@ void	free_root_ast(t_ast *root);
 void	free_minishell(t_ms *minishell, int exit_status);
 
 //----------------------- lexer.c ------------------------
-int		first_quote(t_lexer *lexer);
+int	first_quote(t_lexer *lexer);
 t_token	*lexer_next_token_2(t_ms *minishell, t_lexer *lexer);
-t_token	*lexer_next_token(t_ms *minishell, t_lexer * lexer);
+t_token	*lexer_next_token(t_ms *minishell, t_lexer *lexer);
 void	token_add_back(t_token **lst, t_token *new);
-int		lexer(t_ms *minishell, char *s);
+int	lexer(t_ms *minishell, char *s);
 
 //--------------------- lexer_utils.c ----------------------
 void	advance(t_lexer *lexer);
-void	advance_ntimes(t_lexer *lexer, int i);
+void	advntimes(t_lexer *lexer, int i);
 int		is_wspace(char c);
 char	peek_next(t_lexer *lexer);
 int		ft_ischar(int c, int quotes);
 
 //--------------------- lexer_utils2.c ----------------------
+int		quote_size(t_ms *ms);
 int		ft_isand(char *src, int cur_posi);
 size_t	ft_strlen_lex(const char *s);
 char	*quotes_strjoin(char *s1, char *s2, int size);
@@ -59,14 +60,20 @@ char	*quotes_strjoin(char *s1, char *s2, int size);
 int		qstate(int i);
 char	*quote_state_close(t_ms *ms, int i, char *value);
 char	*quote_state_open(t_ms *ms, int qtype, int i, char *value);
-int		quote_size(t_ms *ms);
-t_token	*parse_quotes_word(t_ms *ms, int qtype, int nb_q, int i);
-// t_token	*parse_word(t_ms *minishell, t_lexer *lexer, int i);
+int		case_value_null(t_ms *ms, char **value);
+t_token	*parse_quotes_word(t_ms *ms, int qtype, char *value);
+
+//--------------------- lexer_parse_word2.c ----------------------
+int		else_qtype(int qtype);
+int		switch_qtype(t_ms *ms, int i, int qtype);
+int		case_w_dol(t_ms *ms, int qtype, char **value);
+void	update_lstdol_in(t_ms *ms, int qtype, int i, t_list **dol);
+int		update_lstdol_out(t_ms *ms, int i, int j, t_list **dol);
 
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
-t_token	*init_token_wdol(t_ms *minishell, char *value, t_type type, t_list *dol);
+t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_list *dol);
 
 //--------------------- lexer_error.c ----------------------
 int		check_par(t_ms *ms);
@@ -81,9 +88,9 @@ int		check_redir1(t_token *tok_lst);
 int		check_redir(t_ms *ms);
 
 //--------------------- prelexer_error.c ----------------------
-// int		count_quotes(char *line);
-int		count_squotes(char *line);
-int		count_dquotes(char *line);
+int		check_after_lessgreat(char *line, size_t i);
+int		check_redir_beforelex(char *line);
+int		check_quotes(char *str);
 int		check_error_prelexer(char *line);
 
 

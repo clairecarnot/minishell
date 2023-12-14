@@ -6,12 +6,27 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:45:41 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/01 11:47:02 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/14 14:05:22 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
 #include "../libft/libft.h"
+
+/*
+Renseigne sur le nb de quotes presents a la suite, lorqu'on parse une value
+NULL, il faut advance_ntimes avec le nb de quotes
+*/
+int	quote_size(t_ms *ms)
+{
+	int	i;
+
+	i = 0;
+	while (ms->lexer->src[ms->lexer->cur_pos + i] == '\'' || \
+	ms->lexer->src[ms->lexer->cur_pos + i] == '\"')
+		i++;
+	return (i);
+}
 
 int	ft_isand(char *src, int cur_posi)
 {

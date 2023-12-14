@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/07 17:55:15 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/14 12:16:34 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ t_token	*lexer_next_token_2(t_ms *minishell, t_lexer *lexer)
 	else if (lexer->src[lexer->cur_pos] == '>')
 		return (advance(lexer), init_token(minishell, ">", T_GREAT));
 	else if (lexer->src[lexer->cur_pos] == '\'')
-		return (parse_quotes_word(minishell, 39, 0, 0));
+		return (parse_quotes_word(minishell, 39, NULL));
 	else if (lexer->src[lexer->cur_pos] == '\"')
-		return (parse_quotes_word(minishell, 34, 0, 0));
+		return (parse_quotes_word(minishell, 34, NULL));
 	else if (ft_ischar(lexer->src[lexer->cur_pos], 0))
 	{
 		qtype = first_quote(minishell->lexer);
-		return (parse_quotes_word(minishell, qtype, 2, 0));
+		minishell->nb_q = 2;
+		return (parse_quotes_word(minishell, qtype, NULL));
 		// return (parse_word(minishell, lexer, 0));
 	}
 	return (NULL);
@@ -60,17 +61,20 @@ t_token	*lexer_next_token_2(t_ms *minishell, t_lexer *lexer)
 
 t_token	*lexer_next_token(t_ms *minishell, t_lexer *lexer)
 {
+	minishell->i = 0;
+	minishell->j = 0;
+	minishell->nb_q = 0;
 	while (is_wspace(lexer->src[lexer->cur_pos]) != 0)
 		advance(lexer);
 	if (lexer->src[lexer->cur_pos] == '|' && peek_next(lexer) == '|')
-		return (advance_ntimes(lexer, 2), init_token(minishell, "||", T_OR_IF));
+		return (advntimes(lexer, 2), init_token(minishell, "||", T_OR_IF));
 	else if (lexer->src[lexer->cur_pos] == '&' && peek_next(lexer) == '&')
-		return (advance_ntimes(lexer, 2), \
+		return (advntimes(lexer, 2), \
 		init_token(minishell, "&&", T_AND_IF));
 	else if (lexer->src[lexer->cur_pos] == '<' && peek_next(lexer) == '<')
-		return (advance_ntimes(lexer, 2), init_token(minishell, "<<", T_DLESS));
+		return (advntimes(lexer, 2), init_token(minishell, "<<", T_DLESS));
 	else if (lexer->src[lexer->cur_pos] == '>' && peek_next(lexer) == '>')
-		return (advance_ntimes(lexer, 2), \
+		return (advntimes(lexer, 2), \
 		init_token(minishell, ">>", T_DGREAT));
 	// else if (lexer->src[lexer->cur_pos] == '\n')//a verifier car ne marche pas
 	// 	return (advance(lexer), init_token(minishell, "\n", T_NEWLINE));
