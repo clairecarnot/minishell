@@ -28,7 +28,7 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 
 char	*skip_dol(char *arg, int i, int j, int data[2])
 {
-	dprintf(2, "skip dol\n");
+//	dprintf(2, "skip dol\n");
 	char	*new_arg;
 	int		k;
 
@@ -56,7 +56,7 @@ char	*skip_dol(char *arg, int i, int j, int data[2])
 
 char	*repl_dol(char *arg, char *var, int i, int j)
 {
-	dprintf(2, "repl dol\n");
+//	dprintf(2, "repl dol\n");
 	char	*new_arg;
 	int		k;
 
@@ -113,12 +113,24 @@ char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_list **dol)
 
 int	dol_standalone(char *arg)
 {
+//	dprintf(2, "dol stdalone\n");
 	int	i;
 
 	i = 0;
+	if (arg[i] && arg[i] == ' ')
+	{
+		while (arg[i] && arg[i] == ' ')
+			i++;
+		if (!arg[i])
+			return (1);
+		else
+			return (0);
+	}
 	if (arg[i] && arg[i] == '$')
 	{
 		while (arg[i] && arg[i] == '$')
+			i++;
+		while (arg[i] && arg[i] == ' ')
 			i++;
 		if (!arg[i])
 			return (1);
@@ -130,8 +142,8 @@ int	dol_standalone(char *arg)
 
 char	*expand_dol(t_ms *ms, char *arg, int data[2], t_list **dol)
 {
-	dprintf(2, "expand dol1\n");
-	dprintf(2, "%s\n", arg);
+//	dprintf(2, "expand dol1\n");
+//	dprintf(2, "%s\n", arg);
 	int		i;
 	int		j;
 	char	*exp_arg;
@@ -151,14 +163,14 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_list **dol)
 //	dprintf(2, "i = %d\n", i);
 	if (!arg[i + 1] || dol_standalone(&arg[i + 1]))
 		return (arg);
-	dprintf(2, "expand dol2\n");
+//	dprintf(2, "expand dol2\n");
 //	dprintf(2, "%s\n", arg);
 	j = i + 1;
 	if (arg[j] == '$')
 		arg = keep_one_dol_only(ms, arg, i, dol);
 	if (!arg)
 		return (NULL);
-	dprintf(2, "expand dol3\n");
+//	dprintf(2, "expand dol3\n");
 //	dprintf(2, "%s\n", arg);
 	while (arg[j] && arg[j] != '$' && arg[j] != '\"' && arg[j] != '\'')
 		j++;
