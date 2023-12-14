@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/11 16:51:10 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/14 14:30:48 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,9 @@ int	close_if(int *fd);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
 char	*skip_dol(char *arg, int i, int j);
 char	*repl_dol(char *arg, char *var, int i, int j);
-char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_list *dol);
-char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list *dol);
+char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_list **dol);
+int	dol_standalone(char *arg);
+char	*expand_dol(t_ms *ms, char *arg, int dol_count, t_list **dol);
 int	cmd_expand(t_ms *ms, char **args, t_list *dol);
 
 
