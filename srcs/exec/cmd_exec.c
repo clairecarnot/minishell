@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/13 14:20:08 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/14 11:44:11 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 		return (free_cmd(cmd), NULL); // A CHECKER
 //	dprintf(2, "apres expand\n");
 //	(void)ms;
+	if (!cmd->args[0])
+		return (cmd);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);
 	else
