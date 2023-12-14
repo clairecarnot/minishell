@@ -101,7 +101,10 @@ typedef struct s_lexer
 
 typedef struct s_ms
 {
-	int			i;// a supprimer test malloc
+	int			i;//index lexer
+	int			j;//lexer pour norme
+	int			nb_q;//lexer pour norme
+
 	t_lexer		*lexer;
 	char		*line;
 	t_token		*cur_tok;
