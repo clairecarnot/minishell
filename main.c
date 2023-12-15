@@ -237,6 +237,7 @@ int	main(int argc, char **argv, char **env)
 {
 
 	t_ms	*minishell;
+	int	fd;
 
 	(void)argc;
 	(void)argv;
@@ -244,8 +245,9 @@ int	main(int argc, char **argv, char **env)
 		exit(0);
 	else
 	{
-		int fd = open("/dev/stdin", O_RDWR);
-		dup2(fd, STDOUT_FILENO);
+		fd = open("/dev/stdin", O_RDWR); //A PROTEGER
+		dup2(fd, STDOUT_FILENO); //A PROTEGER
+		close_if(&fd);
 	}
 	minishell = NULL;
 	minishell = init_ms(env);
@@ -265,7 +267,7 @@ int	main(int argc, char **argv, char **env)
 		{	
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
-			// print_token_lst(minishell->lexer->token_lst);
+			print_token_lst(minishell->lexer->token_lst);
 
 			minishell->cur_tok = minishell->lexer->token_lst;
 			if (parse(minishell) == -1)
