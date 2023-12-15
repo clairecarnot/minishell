@@ -22,6 +22,17 @@ int	case_w_dol(t_ms *ms, int qtype, char **value)
 {
 	if (ms->j > 0)
 	{
+		while (ms->lexer->src[ms->lexer->cur_pos + ms->i + ms->j]
+			&& (ms->lexer->src[ms->lexer->cur_pos + ms->i + ms->j] == '\''
+				|| ms->lexer->src[ms->lexer->cur_pos + ms->i + ms->j] == '\"'))
+		{
+			if (ms->lexer->src[ms->lexer->cur_pos + ms->i + ms->j + 1]
+				&& ms->lexer->src[ms->lexer->cur_pos + ms->i + ms->j]
+				== ms->lexer->src[ms->lexer->cur_pos + ms->i + ms->j + 1])
+					ms->j++;
+			else
+				break ;
+		}
 		ms->i += ms->j;
 		qtype = ms->lexer->src[ms->lexer->cur_pos + ms->i];
 		ms->nb_q++;

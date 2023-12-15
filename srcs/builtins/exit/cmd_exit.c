@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/13 17:35:33 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/15 10:17:00 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	exec_exit(t_ms *ms, t_cmd *cmd)
 	int	error;
 
 	error = 0;
-	if (isatty(0) == 1)
+	if (isatty(0) == 1 && isatty(1) == 1)
 		ft_putstr_fd("exit\n", 1);
 	if (count_args(cmd->args) == 1)
 		exit_code = ms->exit_code;

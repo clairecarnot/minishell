@@ -240,9 +240,15 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	if (!isatty(0)) //pour ./minishell | ./minishell (SIGPIPE)
+		exit(0);
+	else
+	{
+		int fd = open("/dev/stdin", O_RDWR);
+		dup2(fd, STDOUT_FILENO);
+	}
 	minishell = NULL;
 	minishell = init_ms(env);
-	
 	if (!minishell)
 		return (1);
 	while (1)
@@ -259,7 +265,7 @@ int	main(int argc, char **argv, char **env)
 		{	
 			if (!minishell->lexer)
 				return (free_minishell(minishell, 1), 1);
-//			print_token_lst(minishell->lexer->token_lst);
+			// print_token_lst(minishell->lexer->token_lst);
 
 			minishell->cur_tok = minishell->lexer->token_lst;
 			if (parse(minishell) == -1)

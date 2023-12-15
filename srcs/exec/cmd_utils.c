@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:53 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/06 17:12:53 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/15 11:55:19 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,14 @@ char	**lst_to_tab(t_list *lst)
 		return (NULL);
 	while (tmp)
 	{
-		args[i] = ft_strdup(tmp->content);
-		if (!args[i])
-			return (free_tab(args), NULL);
+		if (tmp->content)
+		{
+			args[i] = ft_strdup(tmp->content);
+			if (!args[i])
+				return (free_tab(args), NULL);
+		}
+		else
+			args[i] = NULL;
 		i++;
 		tmp = tmp->next;
 	}
