@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:30:06 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/14 11:28:36 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/15 15:52:28 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_token	*init_token(t_ms *minishell, char *value, t_type type)
 	token->dol = NULL;
 	return (token);
 }
-t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_list *dol)
+t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_dol *dol)
 {
 	t_token	*token;
 

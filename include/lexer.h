@@ -33,6 +33,7 @@ char	*display_prompt();
 void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);
 void	redirs_free(t_redirs **lst);
+void	dol_free(t_dol **dol);
 void	free_root_ast(t_ast *root);
 void	free_minishell(t_ms *minishell, int exit_status);
 
@@ -67,13 +68,17 @@ t_token	*parse_quotes_word(t_ms *ms, int qtype, char *value);
 int		else_qtype(int qtype);
 int		switch_qtype(t_ms *ms, int i, int qtype);
 int		case_w_dol(t_ms *ms, int qtype, char **value);
-void	update_lstdol_in(t_ms *ms, int qtype, int i, t_list **dol);
-int		update_lstdol_out(t_ms *ms, int i, int j, t_list **dol);
+void		update_lstdol_in(t_ms *ms, int qtype, int i, t_dol **dol);
+int		update_lstdol_out(t_ms *ms, int i, int j, t_dol **dol);
+
+int	count_dol_chars_in(t_ms *ms, int i);
+int	count_dol_chars_out(t_ms *ms, int i);
+int	update_lstdol(t_dol **dol, t_list *new_d, t_list *new_c);
 
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
-t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_list *dol);
+t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_dol *dol);
 
 //--------------------- lexer_error.c ----------------------
 int		check_par(t_ms *ms);

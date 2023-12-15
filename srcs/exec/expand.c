@@ -84,7 +84,7 @@ char	*repl_dol(char *arg, char *var, int i, int j)
 	return (new_arg);
 }
 
-char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_list **dol)
+char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol)
 {
 //	dprintf(2, "keep one dol only\n");
 	char	*new_arg;
@@ -96,7 +96,7 @@ char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_list **dol)
 	while (arg[j] && arg[j] == '$')
 	{
 		j++;
-		*dol = (*dol)->next;
+		(*dol)->d = (*dol)->d->next;
 	}
 	new_arg = ft_calloc(ft_strlen(arg) - (j - i) + 2, sizeof(char));
 	if (!new_arg)
@@ -142,7 +142,7 @@ int	dol_standalone(char *arg)
 	return (0);
 }
 
-char	*expand_dol(t_ms *ms, char *arg, int data[2], t_list **dol)
+char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 {
 //	dprintf(2, "expand dol1\n");
 //	dprintf(2, "%s\n", arg);
@@ -192,9 +192,12 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_list **dol)
 	if (!exp_arg)
 	{
 		ms->exit_code = 134;
+		if (var)
+			free(var);
 		return (free(arg), NULL);
-		//free value
 	}
+	if (var)
+		free(var);
 	return (free(arg), exp_arg);
 }
 
@@ -204,19 +207,24 @@ void	init_data(int data[2])
 	data[1] = 0;
 }
 
-void	update_expand_pos(int data[2], int *j)
+void	update_expand_pos(int data[2], int *j, t_dol **dol)
 {
 	data[0] += 1;
 	if (data[1] == 1)
 		*j -= 1;
 	data[1] = 0;
+	(*dol)->d = (*dol)->d->next;
+	(*dol)->c = (*dol)->c->next;
 }
 
-int	cmd_expand(t_ms *ms, char **args, t_list *dol)
+int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
 {
 	int	i;
 	int	j;
 	int	data[2];
+	//data[0] = dol_count
+	//data[1] = 1 means a dol has been skipped and we need to go back from 1 char 
+	// in the loop (j -= 1)
 
 	i = -1;
 	if (!args)
@@ -229,13 +237,13 @@ int	cmd_expand(t_ms *ms, char **args, t_list *dol)
 		{
 			if (args[i][j] == '$')
 			{
-				if (dol->n)
+				if (dol->d->n)
 					args[i] = expand_dol(ms, args[i], data, &dol);
 				if (!args[i])
 					return (1);
-				dol = dol->next;
+//				dol = dol->next;
 //				dol_count++;
-				update_expand_pos(data, &j);
+				update_expand_pos(data, &j, &dol);
 			}
 		}
 	}
