@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/14 11:44:11 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/18 10:56:49 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,14 @@
 t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 {
 	t_cmd	*cmd;
+	t_list	*tmp_d;
+	t_list	*tmp_c;
 
+	if (node->dol)
+	{
+		tmp_d = node->dol->d;
+		tmp_c = node->dol->c;
+	}
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
@@ -27,10 +34,19 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	if (!cmd->args)
 		return (free_cmd(cmd), NULL);
 //	dprintf(2, "avant expand\n");
-	if (cmd_expand(ms, cmd->args, node->dol) == 1) //EXPAND
-		return (free_cmd(cmd), NULL); // A CHECKER
-//	dprintf(2, "apres expand\n");
-//	(void)ms;
+	if (node->dol)
+	{
+		if (cmd_expand(ms, cmd->args, node->dol) == 1) //EXPAND
+		{
+			node->dol->d = tmp_d;
+			node->dol->c = tmp_c;
+			return (free_cmd(cmd), NULL); // A CHECKER
+		}
+		//	dprintf(2, "apres expand\n");
+		//	(void)ms;
+		node->dol->d = tmp_d;
+		node->dol->c = tmp_c;
+	}
 	if (!cmd->args[0])
 		return (cmd);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')

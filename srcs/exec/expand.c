@@ -17,13 +17,19 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	value = getenv(var);
 	if (!value)
 		return (free(var), NULL);
-	new_var = ft_strtrim(ft_strdup(value), " ");
-	if (!new_var)
+	value = ft_strdup(value);
+	if (!value)
 	{
 		ms->exit_code = 134;
 		return (free(var), NULL);
 	}
-	return (free(var), new_var);
+	new_var = ft_strtrim(value, " ");
+	if (!new_var)
+	{
+		ms->exit_code = 134;
+		return (free(value), free(var), NULL);
+	}
+	return (free(value), free(var), new_var);
 }
 
 char	*skip_dol(char *arg, int i, int j, int data[2])
@@ -97,6 +103,7 @@ char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol)
 	{
 		j++;
 		(*dol)->d = (*dol)->d->next;
+		(*dol)->c = (*dol)->c->next;
 	}
 	new_arg = ft_calloc(ft_strlen(arg) - (j - i) + 2, sizeof(char));
 	if (!new_arg)
@@ -177,7 +184,8 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 //	dprintf(2, "expand dol3\n");
 //	dprintf(2, "%s\n", arg);
 	j = i + 1;
-	while (arg[j] && arg[j] != '$' && arg[j] != '\"' && arg[j] != '\'')
+	while (arg[j] && arg[j] != '$' && arg[j] != '\"' && arg[j] != '\''
+			&& (*dol)->c->n--)
 		j++;
 	var = get_varvalue(ms, arg, i, j);
 //	dprintf(2, "var = %s\n", var);

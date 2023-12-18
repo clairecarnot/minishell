@@ -81,38 +81,41 @@ int	count_dol_chars_out(t_ms *ms, int i)
 	return (count);
 }
 
-int	update_lstdol(t_dol **dol, t_list *new_d, t_list *new_c)
+int	update_lstdol(t_dol **dol, t_list *d, t_list *c)
 {
-	if (!(*dol))
+	if (!(*dol) && d && c)
 	{
+		dprintf(2, "create dol\n");
 		*dol = ft_calloc(1, sizeof(t_dol));
 		if (!(*dol))
 			return (1);
 		(*dol)->d = NULL;
 		(*dol)->c = NULL;
 	}
-	ft_lstadd_back(&(*dol)->d, new_d);
-	ft_lstadd_back(&(*dol)->c, new_c);
+	if (d)
+		ft_lstadd_back(&(*dol)->d, d);
+	if (c)
+		ft_lstadd_back(&(*dol)->c, c);
 	return (0);
 }
 
 void	update_lstdol_in(t_ms *ms, int qtype, int i, t_dol **dol)
 {
-	t_list	*new_d;
-	t_list	*new_c;
+	t_list	*d;
+	t_list	*c;
 
-	new_d = NULL;
-	new_c = NULL;
+	d = NULL;
+	c = NULL;
 	if (ms->lexer->src[ms->lexer->cur_pos + i] && \
 //	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 1) &&
-	(ms->lexer->src[ms->lexer->cur_pos + i] != qtype))
+		(ms->lexer->src[ms->lexer->cur_pos + i] != qtype))
 	{
 		if (ms->lexer->src[ms->lexer->cur_pos + i] == '$' && qtype == '\'')
 		{
-			new_d = ft_lstnew_int(0);
-			new_c = ft_lstnew_int(0);
-			if (!new_d || !new_c) // a verifier
-				prefree_minishell(ms, NULL);
+			d = ft_lstnew_int(0);
+			c = ft_lstnew_int(0);
+			if (!d || !c) // a verifier
+				(ft_lstfree(&d), ft_lstfree(&c), prefree_minishell(ms, NULL));
 			// {
 			// 	ms->exit_code = 134;
 			// 	free_minishell(ms, 1);
@@ -120,28 +123,28 @@ void	update_lstdol_in(t_ms *ms, int qtype, int i, t_dol **dol)
 		}
 		else if (ms->lexer->src[ms->lexer->cur_pos + i] == '$' && qtype == '\"')
 		{
-			new_d = ft_lstnew_int(1);
-			new_c = ft_lstnew_int(count_dol_chars_in(ms, i + 1));
-			if (!new_d || !new_c) // a verifier
-				prefree_minishell(ms, NULL);
+			d = ft_lstnew_int(1);
+			c = ft_lstnew_int(count_dol_chars_in(ms, i + 1));
+			if (!d || !c) // a verifier
+				(ft_lstfree(&d), ft_lstfree(&c), prefree_minishell(ms, NULL));
 			// {
 			// 	ms->exit_code = 134;
 			// 	free_minishell(ms, 1);
 			// }
 		}
 		//ft_lstadd_back(dol, new);
-		if (update_lstdol(dol, new_d, new_c) == 1)
-			prefree_minishell(ms, NULL);
+		if (update_lstdol(dol, d, c) == 1)
+			(ft_lstfree(&d), ft_lstfree(&c), prefree_minishell(ms, NULL));
 	}
 }
 
 int	update_lstdol_out(t_ms *ms, int i, int j, t_dol **dol)
 {
-	t_list	*new_d;
-	t_list	*new_c;
+	t_list	*d;
+	t_list	*c;
 
-	new_d = NULL;
-	new_c = NULL;
+	d = NULL;
+	c = NULL;
 	if (ms->lexer->src[ms->lexer->cur_pos + i] && \
 	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0) && (ms->lexer->src \
 	[ms->lexer->cur_pos + i] != '\'' && ms->lexer->src[ms->lexer->cur_pos + i] \
@@ -154,18 +157,18 @@ int	update_lstdol_out(t_ms *ms, int i, int j, t_dol **dol)
 			if (ms->lexer->src[ms->lexer->cur_pos + i + j] == '\'' || \
 			ms->lexer->src[ms->lexer->cur_pos + i + j] == '\"')
 				return (j);
-			new_d = ft_lstnew_int(1);
-			new_c = ft_lstnew_int(count_dol_chars_out(ms, i + 1));
-			if (!new_d || !new_c)
-				prefree_minishell(ms, NULL);
+			d = ft_lstnew_int(1);
+			c = ft_lstnew_int(count_dol_chars_out(ms, i + 1));
+			if (!d || !c)
+				(ft_lstfree(&d), ft_lstfree(&c), prefree_minishell(ms, NULL));
 //			{
 //				ms->exit_code = 134;
 //				free_minishell(ms, 1);
 //			}
 		}
 //		ft_lstadd_back(dol, new);
-		if (update_lstdol(dol, new_d, new_c) == 1)
-			prefree_minishell(ms, NULL);
+		if (update_lstdol(dol, d, c) == 1)
+			(ft_lstfree(&d), ft_lstfree(&c), prefree_minishell(ms, NULL));
 	}
 	return (0);
 }
