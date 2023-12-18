@@ -102,10 +102,8 @@ sinon s'il n'y a pas d'erreur dans l'ecriture des variables, on les ajoute aux l
 */
 int	exec_export(t_ms *ms, t_ast *node)
 {
-	int		i;
 	t_list	*exp_arg;
 
-	i = 0;
 	exp_arg = node->args;
 	if (ft_strncmp(exp_arg->content, "export", 6) == 0)
 	{
@@ -126,7 +124,6 @@ int	exec_export(t_ms *ms, t_ast *node)
 					}
 				}
 				exp_arg = exp_arg->next;
-				i++;
 			}
 		}
 	}

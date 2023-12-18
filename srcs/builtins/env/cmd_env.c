@@ -23,7 +23,8 @@ void	print_lst_env(t_list *env)
 	lst = env;
 	while (lst)
 	{
-		printf("%s\n", (char *)lst->content);
+		if (lst && lst->content)
+			printf("%s\n", (char *)lst->content);
 		lst = lst->next;
 	}
 }

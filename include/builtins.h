@@ -51,6 +51,8 @@ char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct);
 void	join_in_exp(t_ms *ms, char *content);
 
 //----------------------- cmd_export_add.c -----------------------
+void	add_to_exp3(t_ms *ms, t_list *new, t_list *prev);
+void	add_to_exp2(t_list *new, t_list *prev);
 void	add_to_exp(t_ms *ms, char *content);
 
 //----------------------- cmd_env.c -----------------------
@@ -58,6 +60,11 @@ void	add_to_env(t_ms *ms, char *content);
 void	print_lst_env(t_list *env);
 int		exec_env(t_ms *ms);
 
+//xxxxxxxxxxxxxxxxxxxxxxxxx unset xxxxxxxxxxxxxxxxxxxxxxxxxx
+//----------------------- cmd_unset.c -----------------------
+void	del_var_exp(t_ms *ms, char *content);
+void	del_var_env(t_ms *ms, char *content);
+int		exec_unset(t_ms *ms, t_ast *node);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx exit xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_exit.c -----------------------

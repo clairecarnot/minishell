@@ -18,7 +18,8 @@ srcs/exec/cmd_utils.c srcs/exec/pipe_exec.c srcs/exec/expand.c \
 srcs/builtins/export/cmd_export.c srcs/builtins/export/cmd_export_utils.c \
 srcs/builtins/export/cmd_export_utils2.c srcs/builtins/export/cmd_export_utils3.c srcs/builtins/env/cmd_env.c \
 srcs/builtins/export/cmd_export_add.c srcs/builtins/export/cmd_export_replace.c \
- srcs/builtins/export/cmd_export_join_env.c  srcs/builtins/export/cmd_export_join_exp.c \
+srcs/builtins/export/cmd_export_join_env.c  srcs/builtins/export/cmd_export_join_exp.c \
+srcs/builtins/unset/cmd_unset.c \
 srcs/builtins/exit/cmd_exit.c srcs/builtins/exit/cmd_exit_utils.c \
 srcs/builtins/echo/cmd_echo.c
 

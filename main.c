@@ -276,9 +276,10 @@ int	main(int argc, char **argv, char **env)
 			{
 				// print_tree(minishell->root, 0);
 				// visit_node(minishell->root);
-//				exec_env(minishell);
-//				exec_export(minishell, minishell->root);
-				pre_exec(minishell);
+				exec_env(minishell);
+				exec_export(minishell, minishell->root);
+				exec_unset(minishell, minishell->root);
+				// pre_exec(minishell);
 				free_minishell(minishell, 0);
 			}
 		}
