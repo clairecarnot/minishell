@@ -100,7 +100,8 @@ mais bien vide.
 */
 t_token	*parse_quotes_word(t_ms *ms, int qtype, char *value)
 {
-	t_list	*dol;
+//	t_list	*dol;
+	t_dol	*dol;
 
 	dol = NULL;
 	while (ms->lexer->src[ms->lexer->cur_pos + ms->i] && (qstate(ms->nb_q) == \

@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/06 17:12:49 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/18 12:24:07 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	abs_rel_path(t_cmd *cmd)
 	cmd->abs_or_rel = 1;
 	if (access(cmd->args[0], F_OK | X_OK) == 0)
 		cmd->valid_path = 1;
+	dprintf(2, "ok\n");
 	cmd->builtin = NOBUILT;
 }
 

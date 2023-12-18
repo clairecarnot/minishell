@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/08 16:55:02 by mapoirie         ###   ########.fr       */
+/*   Updated: 2023/12/18 11:24:52 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,10 @@ void	token_lst_free(t_token **lst)
 		while (ptr)
 		{
 			tmp = ptr->next_token;
-			if (ptr->type == T_WORD)
+			if (ptr->type == T_WORD || ptr->type == T_NEWLINE)
 				free(ptr->value);
+//			if (ptr->dol)
+//				dol_free(&(ptr->dol));
 			free(ptr);
 			ptr = tmp;
 		}
@@ -74,6 +76,20 @@ void	redirs_free(t_redirs **lst)
 	}
 }
 
+void	dol_free(t_dol **dol)
+{
+	if (dol)
+	{
+		if ((*dol)->d)
+			ft_lstfree(&(*dol)->d);
+		if ((*dol)->c)
+			ft_lstfree(&(*dol)->c);
+		if (*dol)
+			free(*dol);
+		*dol = NULL;
+	}
+}
+
 void	free_root_ast(t_ast *root)
 {
 //	dprintf(1, "seg1\n");
@@ -93,6 +109,8 @@ void	free_root_ast(t_ast *root)
 //	root->args = NULL;
 	if (root->redirs)
 		redirs_free(&root->redirs);
+	if (root->dol)
+		dol_free(&root->dol);
 	// dprintf(1, "seg6\n");
 //	root->redirs = NULL;
 	free(root);

@@ -68,7 +68,10 @@ void	print_token_lst(t_token *token)//temporaire
 	while (token_lst)
 	{
 		dprintf(2, "%s est de type %s\n", (token_lst)->value, tok_to_str(token_lst));
-		print_lst(token_lst->dol);
+		if (token_lst->dol)
+			print_lst(token_lst->dol->d);
+		if (token_lst->dol)
+			print_lst(token_lst->dol->c);
 		token_lst = (token_lst)->next_token;
 	}
 }
@@ -108,11 +111,20 @@ void	visit_node(t_ast *root)//temporaire
 	if (!root)
 		return ;
 	visit_node(root->left);
+	/*
 	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
 	if (root->args)
 		print_lst(root->args);
 	if (root->redirs)
 		print_redirs(root->redirs);
+		*/
+	if (root->dol)
+	{
+		print_lst(root->dol->d);
+		print_lst(root->dol->c);
+	}
+	else
+		dprintf(2, "pas de dol\n");
 	visit_node(root->right);
 //	printf("exiting node %s\n", node_to_str(root));
 }
@@ -237,12 +249,20 @@ int	main(int argc, char **argv, char **env)
 {
 
 	t_ms	*minishell;
+	int	fd;
 
 	(void)argc;
 	(void)argv;
+	if (!isatty(0)) //pour ./minishell | ./minishell (SIGPIPE)
+		exit(0);
+	else
+	{
+		fd = open("/dev/stdin", O_RDWR); //A PROTEGER
+		dup2(fd, STDOUT_FILENO); //A PROTEGER
+		close_if(&fd);
+	}
 	minishell = NULL;
 	minishell = init_ms(env);
-	
 	if (!minishell)
 		return (1);
 	while (1)
@@ -275,11 +295,10 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				// print_tree(minishell->root, 0);
-				// visit_node(minishell->root);
-				exec_env(minishell);
-				exec_export(minishell, minishell->root);
-				exec_unset(minishell, minishell->root);
-				// pre_exec(minishell);
+				visit_node(minishell->root);
+//				exec_env(minishell);
+//				exec_export(minishell, minishell->root);
+				pre_exec(minishell);
 				free_minishell(minishell, 0);
 			}
 		}
