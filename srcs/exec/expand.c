@@ -247,6 +247,8 @@ int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
 		{
 			if (args[i][j] == '$')
 			{
+				if (!dol->d)
+					dprintf(2, "dol->d n'existe pas\n");
 				if (dol->d->n)
 					args[i] = expand_dol(ms, args[i], data, &dol);
 				if (!args[i])

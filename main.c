@@ -111,11 +111,20 @@ void	visit_node(t_ast *root)//temporaire
 	if (!root)
 		return ;
 	visit_node(root->left);
+	/*
 	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
 	if (root->args)
 		print_lst(root->args);
 	if (root->redirs)
 		print_redirs(root->redirs);
+		*/
+	if (root->dol)
+	{
+		print_lst(root->dol->d);
+		print_lst(root->dol->c);
+	}
+	else
+		dprintf(2, "pas de dol\n");
 	visit_node(root->right);
 //	printf("exiting node %s\n", node_to_str(root));
 }
@@ -286,7 +295,7 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				// print_tree(minishell->root, 0);
-				// visit_node(minishell->root);
+				visit_node(minishell->root);
 //				exec_env(minishell);
 //				exec_export(minishell, minishell->root);
 				pre_exec(minishell);

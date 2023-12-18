@@ -6,13 +6,13 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/18 16:16:27 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/18 18:09:18 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/exec.h"
 
-int	tab_size(char **tab)
+/*int	tab_size(char **tab)
 {
 	int	i;
 
@@ -78,6 +78,7 @@ char	**post_expand_adj(t_ms *ms, char **args, char **tmp)
 	}
 	return (args);
 }
+*/
 
 t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 {
@@ -87,6 +88,9 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 
 	if (node->dol)
 	{
+		if (!node->dol->d)
+			dprintf(2, "dol->d n'existe pas\n");
+//		dprintf(2, "dol = %d\n", node->dol->d->n);
 		tmp_d = node->dol->d;
 		tmp_c = node->dol->c;
 	}
@@ -98,10 +102,11 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	cmd->abs_or_rel = 0;
 	cmd->valid_path = 0;
 	cmd->args = NULL;
-	cmd->tmp_args = lst_to_tab(node->args);
-	if (!cmd->tmp_args)
-		return (free_cmd(cmd), NULL);
-	cmd->args = tab_cpy(ms, cmd->tmp_args);
+	//	cmd->tmp_args = lst_to_tab(node->args);
+	cmd->args = lst_to_tab(node->args);
+	//	if (!cmd->tmp_args)
+	//		return (free_cmd(cmd), NULL);
+	//	cmd->args = tab_cpy(ms, cmd->tmp_args);
 	if (!cmd->args)
 		return (free_cmd(cmd), NULL);
 	if (node->dol)
@@ -114,29 +119,27 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 		}
 		node->dol->d = tmp_d;
 		node->dol->c = tmp_c;
-		cmd->args = post_expand_adj(ms, cmd->args, cmd->tmp_args);
-		if (!cmd->args)
-			return (free_cmd(cmd), NULL); // A CHECKER
+		//		cmd->args = post_expand_adj(ms, cmd->args, cmd->tmp_args);
+		//		if (!cmd->args)
+		//			return (free_cmd(cmd), NULL); // A CHECKER
 	}
-	/*
-	   int	i;
-	   i = 0;
-	   while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
-	   {
-	   free(cmd->args[i]);
-	   i++;
-	   if (!cmd->args[i])
-	   {
-	   cmd->args = NULL;
-	   break ;
-	   }
-	   cmd->args = &cmd->args[i];
-	   }
-	   */
-//	if (!cmd->args[0]) //?
-//		return (cmd);
-//	dprintf(2, "arg[0] exists\n");
-//	dprintf(2, "%s\n", cmd->args[0]);
+	int	i;
+	i = 0;
+	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
+	{
+		free(cmd->args[i]);
+		i++;
+		if (!cmd->args[i])
+		{
+			cmd->args = NULL;
+			break ;
+		}
+		cmd->args = &cmd->args[i];
+	}
+		if (!cmd->args || !cmd->args[0])
+			return (cmd);
+	//	dprintf(2, "arg[0] exists\n");
+	//	dprintf(2, "%s\n", cmd->args[0]);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);
 	else

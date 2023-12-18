@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:41 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/18 16:19:12 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/18 16:52:47 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	free_cmd(t_cmd *cmd)
 {
 	if (cmd->args)
 		free_tab(cmd->args);
-	if (cmd->tmp_args)
-		free_tab(cmd->tmp_args);
+//	if (cmd->tmp_args)
+//		free_tab(cmd->tmp_args);
 	if (cmd->bin_paths)
 		free_tab(cmd->bin_paths);
 	if (cmd->env)
