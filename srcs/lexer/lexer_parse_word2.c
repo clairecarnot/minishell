@@ -85,7 +85,6 @@ int	update_lstdol(t_dol **dol, t_list *d, t_list *c)
 {
 	if (!(*dol) && d && c)
 	{
-		dprintf(2, "create dol\n");
 		*dol = ft_calloc(1, sizeof(t_dol));
 		if (!(*dol))
 			return (1);

@@ -120,7 +120,7 @@ char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol)
 	return (free(arg), new_arg);
 }
 
-int	dol_standalone(char *arg)
+int	dol_standalone(char *arg, t_dol **dol)
 {
 //	dprintf(2, "dol stdalone\n");
 	int	i;
@@ -146,6 +146,8 @@ int	dol_standalone(char *arg)
 		else
 			return (0);
 	}
+	if ((*dol)->c->n == 0)
+		return (1);
 	return (0);
 }
 
@@ -172,7 +174,7 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 //	dprintf(2, "i = %d\n", i);
 //	dprintf(2, "expand dol2\n");
 //	dprintf(2, "%c\n", arg[i]);
-	if (!arg[i] || !arg[i + 1] || dol_standalone(&arg[i + 1]))
+	if (!arg[i] || !arg[i + 1] || dol_standalone(&arg[i + 1], dol))
 		return (arg);
 //	dprintf(2, "%s\n", arg);
 //	dprintf(2, "arg[%d] = %c\n", i, arg[i]);

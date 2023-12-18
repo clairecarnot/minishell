@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/18 10:59:19 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/18 11:24:52 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,7 @@ void	dol_free(t_dol **dol)
 		if ((*dol)->c)
 			ft_lstfree(&(*dol)->c);
 		if (*dol)
-		{
-			dprintf(2, "dol free\n");
 			free(*dol);
-		}
 		*dol = NULL;
 	}
 }

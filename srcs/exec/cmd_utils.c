@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:53 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/15 11:55:19 by ccarnot          ###   ########.fr       */
+/*   Updated: 2023/12/18 15:57:56 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,36 @@ char	*ft_strjoin_slash(char const *s1, char const *s2)
 		dest[i + j] = s2[j];
 	dest[i + j] = '\0';
 	return (dest);
+}
+
+char	**tab_cpy(t_ms *ms, char **tab)
+{
+	int		i;
+	int		size;
+	char	**cpy;
+
+	cpy = NULL;
+	size = tab_size(tab);
+//	dprintf(2, "size = %d\n", size);
+	cpy = ft_calloc(size + 1, sizeof(char *));
+	if (!cpy)
+	{
+		ms->exit_code = 134;
+		return (NULL);
+	}
+//	i = 0; CALLOC?
+//	while (i++ <= size)
+//		cpy[size] = 0;
+	i = 0;
+//	dprintf(2, "%s\n", tab[i]);
+	while (i < size)
+	{
+//		dprintf(2, "%s\n", tab[i]);
+		cpy[i] = ft_strdup(tab[i]);
+		if (!cpy[i])
+			return (free_tab(cpy), NULL);
+		i++;
+	}
+	cpy[i] = NULL;
+	return (cpy);
 }
