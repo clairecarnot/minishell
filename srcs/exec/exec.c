@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/13 15:54:04 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 15:43:38 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,8 @@ int	exec_orif(t_ast *node, t_ms *ms)
 	return (0);
 }
 
-int	execute(t_ast *node, t_ms *ms)
+int	execute(t_ast *node, t_ms *ms) //return exit_code?
 {
-	//init pipes?
 	if (!node)
 		return (0);
 	if (node->type == CMD)

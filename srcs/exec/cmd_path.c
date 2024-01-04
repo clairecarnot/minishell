@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 12:03:06 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 15:55:31 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	**get_bin_paths(char **env)
 
 void	build_path(t_cmd *cmd)
 {
-	dprintf(2, "args[0] = %s\n", cmd->args[0]);
+//	dprintf(2, "args[0] = %s\n", cmd->args[0]);
 	char	*path;
 	int		i;
 

@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 12:42:04 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 16:55:19 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	//	cmd->args = tab_cpy(ms, cmd->tmp_args);
 	if (!cmd->args)
 		return (free_cmd(cmd), NULL);
+	/*
 	if (node->dol)
 	{
 		if (cmd_expand(ms, cmd->args, node->dol) == 1)
@@ -123,12 +124,15 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 		//		if (!cmd->args)
 		//			return (free_cmd(cmd), NULL); // A CHECKER
 	}
+	*/
+	(void)ms;
+	/*
 	int	i;
 	i = 0;
 //	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
 	while (cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
 	{
-//		dprintf(2, "cur args[i] = %s\n", cmd->args[i]);
+		dprintf(2, "cur args[i] = %s\n", cmd->args[i]);
 		free(cmd->args[i]);
 		cmd->args[i] = NULL;
 		i++;
@@ -140,6 +144,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 //		}
 	}
 	cmd->args = &cmd->args[i];
+	*/
 	if (!cmd->args || !cmd->args[0])
 	{
 		if (cmd->args && !cmd->args[0])
@@ -194,29 +199,33 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	int		pid;
 	t_list	*new_pid;
 
+	if (!cmd->valid_path)
+	{
+//		dprintf(2, "no valid path\n");
+		if (!cmd->args || !cmd->args[0])
+			return (0);
+		if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
+			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
+		else
+			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
+		ms->exit_code = 127;
+		return (1);
+	}
 	pid = fork();
 	if (pid == -1)
 		return (1);
 	else if (pid == 0)
 	{
-//		dprintf(2, "%s\n", cmd->args[0]);
-		if (!cmd->valid_path)
-		{
-			if (!cmd->args || !cmd->args[0])
-			{
-				free_cmd(cmd);
-				exit(127); //A CHECKER
-			}
-			if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
-				(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
-			else
-				(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
-			free_cmd(cmd);
-			exit(127); //A CHECKER
-		}
+//		int j = 0;
+//		while (cmd->args[j])
+//		{
+//			dprintf(2, "%s\n", cmd->args[j]);
+//			j++;
+//		}
+		//		dprintf(2, "%s\n", cmd->args[0]);
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
-		free_cmd(cmd);
+		//		free_cmd(cmd);
 		exit(errno); //free minishell ?
 	}
 	else
@@ -251,8 +260,9 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
-	if (exit_code == 1)
-		return (free(cmd), 1);//on n'attend pas les children
+//	dprintf(2, "%d\n", exit_code);
+	if (exit_code != 0)
+		return (free_cmd(cmd), exit_code);
 	// tmp = ms->pidlst;
 	// while (tmp)
 	// {
