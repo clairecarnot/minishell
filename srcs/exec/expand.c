@@ -259,5 +259,6 @@ int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
 			}
 		}
 	}
+	dprintf(2, "return 0\n");
 	return (0);
 }

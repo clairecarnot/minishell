@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:41 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 16:54:43 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 17:09:47 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ void	free_tab(char **tab)
 void	free_cmd(t_cmd *cmd)
 {
 	if (cmd->args)
+	{
+		dprintf(2, "free args\n");
 		free_tab(cmd->args);
+	}
 //	if (cmd->tmp_args)
 //		free_tab(cmd->tmp_args);
 	if (cmd->bin_paths)

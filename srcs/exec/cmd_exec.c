@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 16:55:19 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 17:37:08 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,6 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	//	cmd->args = tab_cpy(ms, cmd->tmp_args);
 	if (!cmd->args)
 		return (free_cmd(cmd), NULL);
-	/*
 	if (node->dol)
 	{
 		if (cmd_expand(ms, cmd->args, node->dol) == 1)
@@ -124,15 +123,11 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 		//		if (!cmd->args)
 		//			return (free_cmd(cmd), NULL); // A CHECKER
 	}
-	*/
-	(void)ms;
-	/*
 	int	i;
 	i = 0;
-//	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
-	while (cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
+	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
 	{
-		dprintf(2, "cur args[i] = %s\n", cmd->args[i]);
+//		dprintf(2, "cur args[i] = %s\n", cmd->args[i]);
 		free(cmd->args[i]);
 		cmd->args[i] = NULL;
 		i++;
@@ -142,15 +137,20 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 //			cmd->args = NULL;
 //			break ;
 //		}
+//		cmd->args = &cmd->args[i];
+//	if (!cmd->args || !cmd->args[0])
 	}
-	cmd->args = &cmd->args[i];
-	*/
-	if (!cmd->args || !cmd->args[0])
+	if (!cmd->args[i])
 	{
-		if (cmd->args && !cmd->args[0])
-			cmd->args = NULL;
+		*cmd->args = NULL;
+//		if (cmd->args && !cmd->args[0])
+//			cmd->args = NULL;
 		return (cmd);
 	}
+	else if (i > 0)
+		cmd->args = tab_cpy(ms, &cmd->args[i], cmd->args);
+//	else
+//		cmd->args = &cmd->args[i];
 	//	dprintf(2, "arg[0] exists\n");
 	//	dprintf(2, "%s\n", cmd->args[0]);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
