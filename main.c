@@ -245,6 +245,19 @@ char	*remove_dolq(t_ms *ms)
 	return (new);
 }
 
+/*
+ * note {a}
+ * ./minishell(1) | ./minishell(2)
+ * Le minishell(2) n'est pas un terminal, il va exit
+ * Pour le minishell(1):
+ * Le pipeline va remplacer la STDOUT par un pipe[1] => comme le ms(2) va exit, 
+ * il y aura un SIGPIPE si le ms(1) essaye d'ecrire dans le pipe[1]
+ * On doit donc re-rediriger la sortie pipe[1] vers STDOUT afin d'eviter le SIGPIPE
+ * Comme STDOUT est deja remplace par pipe[1], on utilise STDIN pour rediriger pipe[1]
+ * (effectivement, stdin et stdout se rapportent au meme fichier, le terminal
+ * donc bien que differents on peut remplacer l'un par l'autre)
+ */
+
 int	main(int argc, char **argv, char **env)
 {
 
@@ -253,7 +266,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	if (!isatty(0)) //pour ./minishell | ./minishell (SIGPIPE)
+	if (!isatty(0)) //pour ./minishell | ./minishell (SIGPIPE - note {a})
 		exit(0);
 	else
 	{
@@ -295,11 +308,13 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				// print_tree(minishell->root, 0);
-				visit_node(minishell->root);
+//				visit_node(minishell->root);
 //				exec_env(minishell);
 //				exec_export(minishell, minishell->root);
 				pre_exec(minishell);
+//				dprintf(2, "after exec\n");
 				free_minishell(minishell, 0);
+//				dprintf(2, "after free\n");
 			}
 		}
 	}

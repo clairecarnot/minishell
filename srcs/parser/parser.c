@@ -24,6 +24,7 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 	new_ast->subsh = 0;
 	new_ast->redirs = NULL;
 	new_ast->dol = ms->cur_tok->dol;
+//	ft_doladd_back(&new_ast->dol, ms->cur_tok->dol);
 	new_ast->pipe = NULL;
 	new_ast->parent = NULL;
 	return (new_ast);
@@ -62,18 +63,22 @@ t_ast	*factor(t_ms *ms)
 		return (NULL);
 	while (ms->cur_tok && ms->cur_tok->type != T_EOF && (ms->cur_tok->type == T_WORD || is_redirect(ms, ms->cur_tok)))
 	{
+//		dprintf(2, "dans la boucle\n");
 		if (ms->cur_tok && ms->cur_tok->type == T_WORD)
 		{
 			if (!add_cmd_args(ms, node))
 				return (free_root_ast(node), NULL);
 		}
+//		dprintf(2, "apres args\n");
 		while (is_redirect(ms, ms->cur_tok))
 		{
 			if (!handle_red(ms, node))
 				return (free_root_ast(node), NULL);
 		}
+//		dprintf(2, "apres redirs\n");
 	}
 //	dprintf(2, "%s\n", tok_to_str(ms->cur_tok));
+//	dprintf(2, "return node\n");
 	return (node);
 }
 

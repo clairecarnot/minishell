@@ -6,12 +6,44 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/18 18:14:05 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 11:20:07 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
+
+void	ft_doladd_back(t_dol **dol, t_dol *new)
+{
+//	dprintf(2, "dol_addback\n");
+	t_list	*ptr_c;
+	t_list	*ptr_d;
+
+//	new->d->next = NULL;
+//	new->c->next = NULL;
+	if (*dol == NULL)
+		*dol = new;
+	else
+	{
+//		dprintf(2, "boucle 1\n");
+		ptr_d = (*dol)->d;
+		ptr_c = (*dol)->c;
+//		dprintf(2, "boucle 2\n");
+		while (ptr_d->next)
+			ptr_d = ptr_d->next;
+//		dprintf(2, "boucle 3\n");
+		ptr_d->next = new->d;
+		ptr_d = ptr_d->next;
+		ptr_d->next = NULL;
+		while (ptr_c->next)
+			ptr_c = ptr_c->next;
+		ptr_c->next = new->c;
+		ptr_c = ptr_c->next;
+		ptr_c->next = NULL;
+//		dprintf(2, "boucle 4\n");
+	}
+//	dprintf(2, "out of addback\n");
+}
 
 /*
  * add_cmd_args:
@@ -20,6 +52,7 @@
 
 t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 {
+//	dprintf(2, "add cmd args\n");
 	char	*cmd;
 	t_list	*new_arg;
 
@@ -46,8 +79,11 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 	}
 	// new_arg->n = ms->cur_tok->dol;
 	ft_lstadd_back(&new_ast->args, new_arg);
+//	dprintf(2, "avant add back\n");
 	if (ms->cur_tok->dol)
-		new_ast->dol = ms->cur_tok->dol;
+		ft_doladd_back(&new_ast->dol, ms->cur_tok->dol);
+//	dprintf(2, "apres add back\n");
+//		new_ast->dol = ms->cur_tok->dol;
 	eat_token(ms, T_WORD);
 	return (new_ast->args);
 }

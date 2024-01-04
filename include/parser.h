@@ -22,6 +22,7 @@ int		parse(t_ms *ms);
 
 //----------------------- handle_cmds.c ------------------
 // t_ast		*handle_cmd(t_ms *ms);
+void	ft_doladd_back(t_dol **dol, t_dol *new);
 t_list		*add_cmd_args(t_ms *ms, t_ast *new_ast);
 
 //----------------------- handle_ops.c -------------------

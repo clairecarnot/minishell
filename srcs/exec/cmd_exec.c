@@ -6,13 +6,12 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/18 18:09:18 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 12:42:04 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/exec.h"
 
-//modif add commit
 /*int	tab_size(char **tab)
 {
 	int	i;
@@ -102,7 +101,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	cmd->bin_paths = NULL;
 	cmd->abs_or_rel = 0;
 	cmd->valid_path = 0;
-	cmd->args = NULL;
+//	cmd->args = NULL;
 	//	cmd->tmp_args = lst_to_tab(node->args);
 	cmd->args = lst_to_tab(node->args);
 	//	if (!cmd->tmp_args)
@@ -126,19 +125,27 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	}
 	int	i;
 	i = 0;
-	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
+//	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
+	while (cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
 	{
+//		dprintf(2, "cur args[i] = %s\n", cmd->args[i]);
 		free(cmd->args[i]);
+		cmd->args[i] = NULL;
 		i++;
-		if (!cmd->args[i])
-		{
-			cmd->args = NULL;
-			break ;
-		}
-		cmd->args = &cmd->args[i];
+//		if (!cmd->args[i])
+//		{
+//			dprintf(2, "sortie boucle\n");
+//			cmd->args = NULL;
+//			break ;
+//		}
 	}
-		if (!cmd->args || !cmd->args[0])
-			return (cmd);
+	cmd->args = &cmd->args[i];
+	if (!cmd->args || !cmd->args[0])
+	{
+		if (cmd->args && !cmd->args[0])
+			cmd->args = NULL;
+		return (cmd);
+	}
 	//	dprintf(2, "arg[0] exists\n");
 	//	dprintf(2, "%s\n", cmd->args[0]);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
@@ -154,6 +161,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 		cmd->bin_paths = get_bin_paths(env);
 		build_path(cmd);
 	}
+//	dprintf(2, "return cmd\n");
 	return (cmd);
 }
 
@@ -191,9 +199,14 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		return (1);
 	else if (pid == 0)
 	{
-		dprintf(2, "%s\n", cmd->args[0]);
+//		dprintf(2, "%s\n", cmd->args[0]);
 		if (!cmd->valid_path)
 		{
+			if (!cmd->args || !cmd->args[0])
+			{
+				free_cmd(cmd);
+				exit(127); //A CHECKER
+			}
 			if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
 				(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
 			else
