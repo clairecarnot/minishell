@@ -14,7 +14,7 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 	new_ast = ft_calloc(1, sizeof(t_ast));
 	if (!new_ast)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (NULL);
 	}
 	new_ast->type = type;
@@ -165,7 +165,7 @@ int	parse(t_ms *ms)
 	if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
 		return (1);
 	ms->root = expr(ms);
-	if (ms->cur_tok->type != T_EOF && ms->exit_code != 134)
+	if (ms->cur_tok->type != T_EOF && ms->exit_code != 255)
 	{
 		if (ms->cur_tok->type == T_NEWLINE)
 			printf("minishell: syntax error near unexpected token `newline'\n");

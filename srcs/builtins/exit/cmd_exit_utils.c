@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/07 12:33:23 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:09:17 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*join_strs(t_ms *ms, char *s1, char *s2)
 	if (!dest)
 	{
 		free(s1);
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (NULL);
 	}
 	i = -1;

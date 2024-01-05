@@ -13,20 +13,45 @@ int	error_exp(char *content)
 
 	i = -1;
 	if (!content[0])
-		return (printf("0minishell: export: `': not a valid identifier\n"), 1);
+		return (ft_putstr_fd("minishell: export: `': not a valid identifier\n", 2), 1);
 	if (content[0] && content[0] == '-' && content[1])
-		return (printf("00minishell: export: %c%c: invalid option\n", content[0], content[1]), 1);
+	{	
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putchar_fd(content[0], 2);
+		ft_putchar_fd(content[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+		return (1);
+		// return (printf("minishell: export: %c%c", content[0], content[1]), 1);
+	}
 	if (content[0] && (content[0] < 'A' || (content[0] > 'Z' && content[0] < 'a') || \
 	content[0] > 'z') && content[0] != '_' && content[0] != '!')
-		return (printf("000minishell: export: `%s': not a valid identifier\n", content), 1);
+	{
+		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd(content, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+		return (1);
+		// return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);
+	}
 	while (content[++i] && content[i] != '=')
 	{
 		if (content[i] == '!')
-			return (printf("%s: event not found\n", content + i), 1);
+		{
+			ft_putstr_fd("\"", 2);
+			ft_putstr_fd(content + i, 2);
+			ft_putstr_fd(": event not found\n", 2);
+			return (1);
+			// return (printf("%s: event not found\n", content + i), 1);
+		}
 		if (((content[i] < '0' || (content[i] > '9' && content[i] < 'A') || \
 		(content[i] > 'Z' && content[i] < 'a') || content[i] > 'z') && content[i] != '_' && content[i] != '+') || \
 		(content[i] == '+' && content[i + 1] && content[i + 1] != '=') || (content[i] == '+' && !content[i + 1]))
-			return (printf("0000minishell: export: `%s': not a valid identifier\n", content), 1);
+		{
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(content, 2);
+			ft_putstr_fd("': not a valid identifier\n", 2);
+			return (1);
+			// return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);
+		}
 	}
 	return (0);
 }
@@ -41,8 +66,8 @@ int	error_exp_spaces(char *content)
 	i = 0;
 	while (content[i] && content[i] != '=')
 		i++;
-	if (content[i - 1] == ' ')
-		return (printf("00000minishell: export: `%s': not a valid identifier\n", content), 1);
+	if (i != 0 && content[i - 1] == ' ')
+		return (printf("minishell: export: `%s': not a valid identifier\n", content), 1);// enlever les 0000 
 	return (0);
 }
 
@@ -78,7 +103,7 @@ char	*add_qvar(t_ms *ms, char *content, int i, int u)
 	{
 		if (content && u == 1)
 			free(content);
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		free_minishell(ms, 1);
 	}
 	while (content[i] && content[i] != '=')

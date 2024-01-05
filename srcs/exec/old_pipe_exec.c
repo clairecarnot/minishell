@@ -54,13 +54,13 @@ int	create_pipeline(t_ast *node, t_ms *ms, t_list *pipeline)
 		node_content = ft_calloc(1, sizeof(t_ast));
 		if (!node_content)
 		{
-			ms->exit_code = 134;
+			ms->exit_code = 255;
 			return (ft_lstfree(pipeline), 1);
 		}
 		new_cmd = ft_lstnew(node_content);
 		if (!new_cmd)
 		{
-			ms->exit_code = 134;
+			ms->exit_code = 255;
 			return (free(node_content), ft_lstfree(pipeline), 1);
 		}
 		ft_lstadd_back(&pipeline, new_cmd);

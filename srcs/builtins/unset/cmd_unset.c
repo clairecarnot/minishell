@@ -47,28 +47,22 @@ void	del_var_env(t_ms *ms, char *content)
 	free(cur);
 }
 
-int	exec_unset(t_ms *ms, t_ast *node)
+int	exec_unset(t_ms *ms, t_cmd *cmd)
 {
-	t_list	*unset_arg;
+	int	i;
 
-	unset_arg = node->args;
-	if (ft_strncmp(unset_arg->content, "unset", 6) == 0)
+	i = 1;
+	if (!cmd->args[i])
+		return (0);
+	else
 	{
-		if (!unset_arg->next)
-			return (0);
-		else
+		while (cmd->args[i])
 		{
-			unset_arg = unset_arg->next;
-			while (unset_arg)
-			{
-
-				del_var_env(ms, unset_arg->content);
-				del_var_exp(ms, unset_arg->content);
-				if (!unset_arg->next)
-					return (0);
-				else
-					unset_arg = unset_arg->next;
-			}
+			del_var_env(ms, cmd->args[i]);
+			del_var_exp(ms, cmd->args[i]);
+			i++;
+			if (!cmd->args[i])
+				return (0);
 		}
 	}
 	return (0);

@@ -10,7 +10,7 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	var = ft_calloc(j - i, sizeof(char));
 	if (!var)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (NULL);
 	}
 	ft_strlcpy(var, &arg[i + 1], j - i);
@@ -20,13 +20,13 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	value = ft_strdup(value);
 	if (!value)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (free(var), NULL);
 	}
 	new_var = ft_strtrim(value, " ");
 	if (!new_var)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (free(value), free(var), NULL);
 	}
 	return (free(value), free(var), new_var);
@@ -108,7 +108,7 @@ char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol)
 	new_arg = ft_calloc(ft_strlen(arg) - (j - i) + 2, sizeof(char));
 	if (!new_arg)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (free(arg), NULL);
 	}
 	k = -1;
@@ -191,7 +191,7 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 		j++;
 	var = get_varvalue(ms, arg, i, j);
 //	dprintf(2, "var = %s\n", var);
-	if (!var && ms->exit_code == 134)
+	if (!var && ms->exit_code == 255)
 		return (free(arg), NULL);
 	else if (!var)
 		exp_arg = skip_dol(arg, i, j, data);
@@ -201,7 +201,7 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 //	dprintf(2, "%s\n", exp_arg);
 	if (!exp_arg)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		if (var)
 			free(var);
 		return (free(arg), NULL);

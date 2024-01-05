@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/18 18:09:18 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 15:49:46 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,17 +165,13 @@ int	exec_builtin(t_ms *ms, t_cmd *cmd)
 		return (0); //A remplacer par ligne ci-dessous
 //		return (exec_cd);
 	if (cmd->builtin == PWD)
-		return (0); //A remplacer par ligne ci-dessous
-//		return (exec_pwd);
+		return (exec_pwd(ms, cmd));
 	if (cmd->builtin == EXPORT)
-		return (0); //A remplacer par ligne ci-dessous
-//		return (exec_export);
+		return (exec_export(ms, cmd));
 	if (cmd->builtin == UNSET)
-		return (0); //A remplacer par ligne ci-dessous
-//		return (exec_unset);
+		return (exec_unset(ms, cmd));
 	if (cmd->builtin == ENV)
-		return (0); //A remplacer par ligne ci-dessous
-//		return (exec_env);
+		return (exec_env(ms, cmd));
 	if (cmd->builtin == EXIT)
 		return (exec_exit(ms, cmd));
 	return (1);
@@ -211,7 +207,7 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		new_pid = ft_lstnew(&pid);
 		if (!new_pid)
 		{
-			ms->exit_code = 134;
+			ms->exit_code = 255;
 			return (1);
 		}
 		ft_lstadd_back(&ms->pidlst, new_pid);

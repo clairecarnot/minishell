@@ -161,7 +161,16 @@ char	*display_prompt()
 {
 	char	*line;
 
-	line = readline("minishell$ ");
+	// line = readline("minishell$ ");
+	if (isatty(fileno(stdin)))
+		line = readline("minishell$ ");
+	else
+	{
+		char *line2;
+		line2 = get_next_line(fileno(stdin), 0);
+		line = ft_strtrim(line2, "\n");
+		free(line2);
+	}
 	if (!line)
 		return (NULL);
 	add_history(line);
@@ -284,7 +293,7 @@ int	main(int argc, char **argv, char **env)
 			minishell->cur_tok = minishell->lexer->token_lst;
 			if (parse(minishell) == -1)
 			{
-				if (minishell->exit_code == 134)
+				if (minishell->exit_code == 255)
 				{
 					printf("minishell: malloc error\n");
 					free_minishell(minishell, 1);
@@ -295,9 +304,7 @@ int	main(int argc, char **argv, char **env)
 			else
 			{
 				// print_tree(minishell->root, 0);
-				visit_node(minishell->root);
-//				exec_env(minishell);
-//				exec_export(minishell, minishell->root);
+				// visit_node(minishell->root);
 				pre_exec(minishell);
 				free_minishell(minishell, 0);
 			}
