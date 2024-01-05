@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 17:38:15 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 09:46:19 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int	equals(char *s1, char *s2);
 t_builtin_type	builtin_type_is(char *builtin);
 char	**lst_to_tab(t_list *lst);
 char    *ft_strjoin_slash(char const *s1, char const *s2);
-//char	**tab_cpy(t_ms *ms, char **tab);
-char	**tab_cpy(t_ms *ms, char **tab, char **toerase);
+char	**tab_cpy(t_ms *ms, char **tab);
 
 //----------------------- cmd_utils2.c ------------------------
 int	tab_size(char **tab);

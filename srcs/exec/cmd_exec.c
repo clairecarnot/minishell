@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 17:37:08 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 09:50:23 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	t_cmd	*cmd;
 	t_list	*tmp_d;
 	t_list	*tmp_c;
+	char	**tmp;
 
 	if (node->dol)
 	{
@@ -143,12 +144,24 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	if (!cmd->args[i])
 	{
 		*cmd->args = NULL;
+//		free(cmd->args);
+//		cmd->args = NULL;
 //		if (cmd->args && !cmd->args[0])
 //			cmd->args = NULL;
 		return (cmd);
 	}
-	else if (i > 0)
-		cmd->args = tab_cpy(ms, &cmd->args[i], cmd->args);
+	if (i > 0)
+	{
+		tmp = tab_cpy(ms, &cmd->args[i]);
+		while (cmd->args[i])
+		{
+			free(cmd->args[i]);
+			cmd->args[i] = NULL;
+			i++;
+		}
+		free(cmd->args);
+		cmd->args = tmp;
+	}
 //	else
 //		cmd->args = &cmd->args[i];
 	//	dprintf(2, "arg[0] exists\n");

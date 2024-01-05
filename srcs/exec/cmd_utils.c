@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:53 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 17:37:31 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 09:46:00 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*ft_strjoin_slash(char const *s1, char const *s2)
 	return (dest);
 }
 
-char	**tab_cpy(t_ms *ms, char **tab, char **toerase)
+char	**tab_cpy(t_ms *ms, char **tab)
 {
 	int		i;
 	int		size;
@@ -122,6 +122,5 @@ char	**tab_cpy(t_ms *ms, char **tab, char **toerase)
 		i++;
 	}
 	cpy[i] = NULL;
-	free_tab(toerase);
 	return (cpy);
 }
