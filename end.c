@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/04 15:36:13 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 17:18:23 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,8 @@ void	free_minishell(t_ms *ms, int exit_status)
 	int	exit_code;
 
 	exit_code = ms->exit_code;
+	if (ms->pidlst)
+		ft_lstfree(&ms->pidlst);
 	if (ms->root)
 	{
 		free_root_ast(ms->root);

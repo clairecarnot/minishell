@@ -113,6 +113,7 @@ typedef struct s_ms
 	int			i;//index lexer
 	int			j;//lexer pour norme
 	int			nb_q;//lexer pour norme
+	int			flag_q;
 
 	t_lexer		*lexer;
 	char		*line;

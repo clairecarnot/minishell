@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/05 09:50:23 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 16:36:01 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 	}
 	int	i;
 	i = 0;
-	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0)
+	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0 && !ms->flag_q)
 	{
 //		dprintf(2, "cur args[i] = %s\n", cmd->args[i]);
 		free(cmd->args[i]);
@@ -141,9 +141,10 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 //		cmd->args = &cmd->args[i];
 //	if (!cmd->args || !cmd->args[0])
 	}
-	if (!cmd->args[i])
+	if (!cmd->args[i] || !ft_strlen(cmd->args[i]))
 	{
-		*cmd->args = NULL;
+		if (!ms->flag_q)
+			*cmd->args = NULL;
 //		free(cmd->args);
 //		cmd->args = NULL;
 //		if (cmd->args && !cmd->args[0])
@@ -215,8 +216,13 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	if (!cmd->valid_path)
 	{
 //		dprintf(2, "no valid path\n");
-		if (!cmd->args || !cmd->args[0])
+		if (!cmd->args || !cmd->args[0] || !ft_strlen(cmd->args[0]))
+		{
+			if (ms->flag_q == 1)
+				ft_putstr_fd("minishell: : command not found\n", 2);
+			ms->flag_q--;
 			return (0);
+		}
 		if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
 			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
 		else
@@ -226,7 +232,10 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	}
 	pid = fork();
 	if (pid == -1)
+	{
+		ms->exit_code = errno; //A CHECKER
 		return (1);
+	}
 	else if (pid == 0)
 	{
 //		int j = 0;
@@ -238,11 +247,11 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		//		dprintf(2, "%s\n", cmd->args[0]);
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
-		//		free_cmd(cmd);
-		exit(errno); //free minishell ?
+		(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?
 	}
 	else
 	{
+		ms->flag_q--;
 		new_pid = ft_lstnew(&pid);
 		if (!new_pid)
 		{
@@ -273,16 +282,12 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
-//	dprintf(2, "%d\n", exit_code);
-	if (exit_code != 0)
-		return (free_cmd(cmd), exit_code);
 	// tmp = ms->pidlst;
 	// while (tmp)
 	// {
 	// 	waitpid(tmp->n, NULL, 0);
 	// 	tmp = tmp->next;
 	// }
-	free_cmd(cmd);
 //	free_tab(env);
-	return (0);
+	return (free_cmd(cmd), exit_code);
 }

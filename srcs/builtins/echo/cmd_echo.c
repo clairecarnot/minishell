@@ -45,7 +45,7 @@ int	exec_echo(t_ms *ms, t_cmd *cmd)
 		{
 			ft_putstr_fd(cmd->args[i], 1);
 			if (cmd->args[i + 1] && ft_strlen(cmd->args[i + 1])
-				&& ft_strlen(cmd->args[i]))
+				&& (cmd->args[i - 1] && ft_strlen(cmd->args[i - 1])))
 				write(1, " ", 1);
 		}
 	}

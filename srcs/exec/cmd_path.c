@@ -17,7 +17,7 @@ void	abs_rel_path(t_cmd *cmd)
 	cmd->abs_or_rel = 1;
 	if (access(cmd->args[0], F_OK | X_OK) == 0)
 		cmd->valid_path = 1;
-	dprintf(2, "ok\n");
+	//dprintf(2, "ok\n");
 	cmd->builtin = NOBUILT;
 }
 

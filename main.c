@@ -288,33 +288,39 @@ int	main(int argc, char **argv, char **env)
 		// dprintf(2, "ms->line = %s\n", minishell->line);
 		// minishell->line = remove_dolq(minishell);
 		// dprintf(2, "ms->line = %s\n", minishell->line);
-		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
-		{	
-			if (!minishell->lexer)
-				return (free_minishell(minishell, 1), 1);
-//			print_token_lst(minishell->lexer->token_lst);
+//		if (!check_error_prelexer(minishell->line) && !lexer(minishell, minishell->line))// if no error
+		if (!check_error_prelexer(minishell->line))
+		{
+			if (*minishell->line == '\"' || *minishell->line == '\'')
+				minishell->flag_q = 1;
+			if (!lexer(minishell, minishell->line))// if no error
+			{	
+				if (!minishell->lexer)
+					return (free_minishell(minishell, 1), 1);
+				//print_token_lst(minishell->lexer->token_lst);
 
-			minishell->cur_tok = minishell->lexer->token_lst;
-			if (parse(minishell) == -1)
-			{
-				if (minishell->exit_code == 134)
+				minishell->cur_tok = minishell->lexer->token_lst;
+				if (parse(minishell) == -1)
 				{
-					printf("minishell: malloc error\n");
-					free_minishell(minishell, 1);
+					if (minishell->exit_code == 134)
+					{
+						printf("minishell: malloc error\n");
+						free_minishell(minishell, 1);
+					}
+					else if (minishell->exit_code == 2)
+						free_minishell(minishell, 0);
 				}
-				else if (minishell->exit_code == 2)
+				else
+				{
+					// print_tree(minishell->root, 0);
+					//				visit_node(minishell->root);
+					//				exec_env(minishell);
+					//				exec_export(minishell, minishell->root);
+					pre_exec(minishell);
+					//				dprintf(2, "after exec\n");
 					free_minishell(minishell, 0);
-			}
-			else
-			{
-				// print_tree(minishell->root, 0);
-//				visit_node(minishell->root);
-//				exec_env(minishell);
-//				exec_export(minishell, minishell->root);
-				pre_exec(minishell);
-//				dprintf(2, "after exec\n");
-				free_minishell(minishell, 0);
-//				dprintf(2, "after free\n");
+					//				dprintf(2, "after free\n");
+				}
 			}
 		}
 	}

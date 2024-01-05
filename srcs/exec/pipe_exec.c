@@ -13,15 +13,31 @@ t_list	*ft_lstnew_int(int pid)//pid veut dire pid ou int du dol
 	return (d);
 }
 
+//Comment le main recupere-t-il le code d'erreur?
 int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 {
-	// dprintf(2, "cmd = %s\n", cmd->args[0]);
-	(void)ms;
+	if (!cmd->valid_path)
+	{
+//		dprintf(2, "no valid path\n");
+		if (!cmd->args || !cmd->args[0] || !ft_strlen(cmd->args[0]))
+		{
+			if (ms->flag_q == 1)
+				ft_putstr_fd("minishell: : command not found\n", 2);
+			ms->flag_q--;
+			(free_cmd(cmd), free_exit(ms), exit(0)); //on exit sans quitter ms - 0
+		}
+		if (cmd->abs_or_rel)
+			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
+		else
+			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
+		(free_cmd(cmd), free_exit(ms), exit(127)); //on exit sans quitter ms - 127
+	}
+//	(void)env;
+//	dprintf(2, "boonjoour\n");
+//	exit(300);
 	execve(cmd->args[0], cmd->args, env);
-	// dprintf(2, "execve fails\n");
-		// free_cmd(cmd); a verifier
-		// free_tab(env); 
-		// return(1) ou free minishell ?
+	dprintf(2, "execve fails\n");
+	(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?
 	return (1);
 }
 
@@ -29,9 +45,9 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 {
 	t_cmd	*cmd;
 	char	**env;
-//	int	exit_code;
+	int	exit_code;
 
-//	exit_code = 0;
+	exit_code = 0;
 	dup2(tmp_fd, STDIN_FILENO); //a proteger
 	close_if(&tmp_fd); //a proteg ?
 
@@ -41,19 +57,17 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 	cmd = node_to_cmd(ms, node, env);
 	if (!cmd)
 		return (free_tab(env), 1);
+	cmd->env = env;
 	if (cmd->builtin != NOBUILT)
-	{
-//		exit_code = exec_builtin(ms, cmd);
-//		if (exit_code != 0)
-		if (exec_builtin(ms, cmd) == 1) //erreur
-			(free_cmd(cmd), free_exit(ms), exit(ms->exit_code)); //est-ce le bon code erreur?
-		else
-			(free_exit(ms), exit(0));
-	}
+		exit_code = exec_builtin(ms, cmd);
 	else
-		do_cmdpipe(cmd, ms, env);
-	(free_cmd(cmd), free_exit(ms), exit(ms->exit_code)); //est-ce le bon code erreur?
-	return (1); //on exit dans tous les cas avant
+		exit_code = do_cmdpipe(cmd, ms, env);
+	(free_cmd(cmd), free_exit(ms), exit(exit_code)); //pour exit les builtins
+//	dprintf(2, "exit code = %d\n", exit_code);
+//	free_cmd(cmd);
+//	free_exit(ms);
+//	exit(exit_code);
+	return (0); //on exit dans tous les cas avant
 }
 
 int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
