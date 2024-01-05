@@ -41,7 +41,6 @@ int	exec_env(t_ms *ms, t_cmd *cmd)
 		ft_putstr_fd("env: ‘", 2);
 		ft_putstr_fd(cmd->args[1], 2);
 		ft_putstr_fd("’: No such file or directory\n", 2);
-		// ms->exit_code = 127;
 		return (0);
 	}
 }

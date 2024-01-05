@@ -54,6 +54,11 @@ int	exec_unset(t_ms *ms, t_cmd *cmd)
 	i = 1;
 	if (!cmd->args[i])
 		return (0);
+	else if (cmd->args[i] && !cmd->args[i][0])
+	{
+		return (ft_putstr_fd("minishell: export: `': \
+not a valid identifier\n", 2), 0);
+	}
 	else
 	{
 		while (cmd->args[i])
