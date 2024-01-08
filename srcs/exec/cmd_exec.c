@@ -1,5 +1,141 @@
 #include "../../include/exec.h"
 
+void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd)
+{
+	t_list	*new;
+
+	if (!ms->hdlst)
+	{
+		ms->hdlst = ft_calloc(1, sizeof(t_list));
+		if (!ms->hdlst)
+		{
+			free(name);
+			free_cmd(cmd);
+			free_minishell(ms, 1);
+		}
+	}
+	new = ft_lstnew(name);
+	if (!new)
+	{
+		free(name);
+		ft_lstfree(&ms->hdlst);
+		free_cmd(cmd);
+		free_minishell(ms, 1);		
+	}
+	ft_lstadd_back(&ms->hdlst, new);
+}
+
+char random_char(t_ms *ms, t_cmd *cmd)
+{
+    int		fd;
+    char	c;
+	int		buf;
+
+    fd = open("/dev/urandom", O_RDONLY);
+	if (fd == -1)
+	{
+        perror("Error opening /dev/urandom");
+        free_cmd(cmd);
+        free_minishell(ms, 1);// a verifier
+    }
+    buf = read(fd, &c, sizeof(c));
+    if (buf != sizeof(c))
+	{
+        perror("Error reading from /dev/urandom");
+        close(fd);
+		free_cmd(cmd);
+        free_minishell(ms, 1);// a verifier
+    }
+    close(fd);
+	if (c < 0)
+		return (-c);
+	// dprintf(2, "c = %d\n", c);
+    return (c);
+}
+
+
+char *generate_hdname(t_ms *ms, t_cmd *cmd)
+{
+    int		i;
+	char	*name; // +1 pour le caractère de fin de chaîne
+
+	i = 0;
+	name = ft_calloc(11, sizeof(char));
+	if (!name)
+	{
+		free_cmd(cmd);
+		free_minishell(ms, 1);// a verifier
+		return (NULL);
+	}
+	while (i < 10)
+	{
+		name[i] = (random_char(ms, cmd) + '0') % 26 + 97;
+		i++;
+	}
+	name[i] = '\0';
+	update_hdlst(ms, name, cmd);
+    return (name);
+}
+
+int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
+{
+	int	fd;
+	char *line;
+	char	*hdname;
+	int		limlen;
+	int		linelen;
+
+	limlen = ft_strlen(redirs->filename);
+	hdname = generate_hdname(ms, cmd);
+	// hdname = "name";
+	// (void)cmd;
+	dprintf(2, "hdname = %s\n", hdname);
+	fd = open(hdname, O_CREAT |  O_RDWR, 0666);// u random peut etre
+	if (fd < 0)
+	{
+		perror("minishell: heredoc");
+		ms->exit_code = 1;
+		return (1);
+	}
+	dup2(ms->in, STDIN_FILENO);
+	// dprintf(2, "%d\n", fd);
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+		{
+			perror("minishell: readline");
+			ms->exit_code = 1;
+			close_if(&fd);
+			unlink("/tmp/here_doc");
+			return (1);
+		}
+		// dprintf(2, "lim = %s\n", redirs->filename);
+		dprintf(2, "line0 = %s\n", line);
+		linelen = ft_strlen(line);
+		if (ft_strncmp(line, redirs->filename, limlen) == 0 && (linelen == limlen))
+		{
+			dprintf(2, "line = %s\n", line);
+			free(line);
+			// close_if(&fd);
+			break ;
+		}
+		ft_putstr_fd(line, fd); //?
+		free(line);
+	}
+
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		perror("minishell: dup2 failed");
+		ms->exit_code = 1;
+		return (1);
+	}
+	close_if(&fd);// a proteger
+	// dprintf(2, "fin handle less\n");
+	// dprintf(2, "%d\n", STDIN_FILENO);
+	return (0);
+}
+
 int	handle_less(t_ms *ms, t_redirs *redirs)
 {
 	int	fd;
@@ -85,7 +221,6 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 {
 	t_redirs	*tmp;
 
-	(void)cmd;
 	tmp = node->redirs;
 	while (tmp)
 	{
@@ -104,7 +239,11 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 			if (handle_dgreat(ms, tmp) == 1)
 				return (1);
 		}
-		// if (tmp->type == DLESS)
+		else if (tmp->type == DLESS)
+		{
+			if (handle_dless(ms, tmp, cmd) == 1)
+				return (1);
+		}
 		tmp = tmp->next_redir;
 	}
 	// dprintf(2, "fin cmd_redir\n");

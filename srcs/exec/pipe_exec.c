@@ -35,6 +35,8 @@ int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 //	(void)env;
 //	dprintf(2, "boonjoour\n");
 //	exit(300);
+	close_if(&ms->in);
+	close_if(&ms->out);
 	execve(cmd->args[0], cmd->args, env);
 	dprintf(2, "execve fails\n");
 //	(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?

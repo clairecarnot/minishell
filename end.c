@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/05 18:17:41 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:50:52 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,8 +144,18 @@ a la ligne suivante) ne pas les free)
 void	free_minishell(t_ms *ms, int exit_status)
 {
 	int	exit_code;
+	t_list		*hdtmp;
 
 	exit_code = ms->exit_code;
+	close_if(&ms->in);
+	close_if(&ms->out);
+	hdtmp = ms->hdlst;
+	while (hdtmp)
+	{
+		if (hdtmp->content)
+			unlink(hdtmp->content);
+		hdtmp = hdtmp->next;
+	}
 	if (ms->pidlst)
 		ft_intlstfree(&ms->pidlst);
 	if (ms->root)
@@ -172,6 +182,8 @@ void	free_minishell(t_ms *ms, int exit_status)
 		free(ms->line);
 		ms->line = NULL;
 	}
+	if (ms->hdlst)
+		ft_lstfree(&ms->hdlst);
 	if (ms && exit_status != 0)
 		free(ms);
 	if (exit_status != 0)

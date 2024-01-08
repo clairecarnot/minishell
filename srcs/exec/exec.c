@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/08 14:32:33 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:51:12 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	pre_exec(t_ms *ms)
 {
 	int	exit_code;
 	t_list	*tmp;
+	// t_list	*hdtmp;
 	// pid_t	pid;
 
 	ms->in = dup(STDIN_FILENO); //A PROTEGER?
@@ -80,6 +81,16 @@ int	pre_exec(t_ms *ms)
 	}
 	dup2(ms->in, STDIN_FILENO);
 	dup2(ms->out, STDOUT_FILENO);
+	// close_if(&ms->in);
+	// close_if(&ms->out);
+	// close_if("/tmp/here_doc");
+	// hdtmp = ms->hdlst;
+	// while (hdtmp)
+	// {
+	// 	if (hdtmp->content)
+	// 		unlink(hdtmp->content);
+	// 	hdtmp = hdtmp->next;
+	// }
 	// dprintf(2, "after exec, after waitpid\n");
 	//clear exec
 	return (exit_code);

@@ -148,6 +148,7 @@ t_ms	*init_ms(char **env)
 	minishell->exit_code = 0;
 	minishell->in = -1;
 	minishell->out = -1;
+	minishell->hdlst = NULL;
 	if (init_env(minishell, env))
 		free_minishell(minishell, 1);
 	if (init_workdir(minishell))
@@ -164,6 +165,7 @@ char	*display_prompt()
 	// dprintf(2, "display prompt\n");
 	char	*line;
 
+	line = NULL;
 	line = readline("minishell$ ");
 	// if (isatty(fileno(stdin)))
 	// 	line = readline("minishell$ ");

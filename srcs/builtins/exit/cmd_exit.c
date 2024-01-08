@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/05 18:17:50 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/08 17:52:47 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,17 @@ int	count_args(char **args)
 
 void	free_exit(t_ms *ms)
 {
+	t_list		*hdtmp;
+	
+	close_if(&ms->in);
+	close_if(&ms->out);
+	hdtmp = ms->hdlst;
+	while (hdtmp)
+	{
+		if (hdtmp->content)
+			unlink(hdtmp->content);
+		hdtmp = hdtmp->next;
+	}
 	if (ms->pidlst)
 		ft_intlstfree(&ms->pidlst);
 	if (ms->root)
@@ -46,6 +57,8 @@ void	free_exit(t_ms *ms)
 		free(ms->old_wkdir);
 	if (ms->line)
 		free(ms->line);
+	if (ms->hdlst)
+		ft_lstfree(&ms->hdlst);
 	if (ms)
 		free(ms);
 }

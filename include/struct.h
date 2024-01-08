@@ -135,6 +135,7 @@ typedef struct s_ms
 	int			exit_code;
 	int			in;
 	int			out;
+	t_list		*hdlst;
 }				t_ms;
 
 #endif 
