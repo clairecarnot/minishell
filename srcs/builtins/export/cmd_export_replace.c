@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/12 16:44:39 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:09:37 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_sdup(t_ms *ms, char *s)
 	dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est protege
 	if (!dest)//verifier que ft_strlen ne crash pas quand s est null
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		free_minishell(ms, 1);
 	}
 	i = 0;

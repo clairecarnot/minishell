@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/01 15:03:30 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/04 14:14:17 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 	d = malloc(sizeof(t_redirs));
 	if (!d)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (NULL);
 	}
 	d->type = token_to_node(type);
@@ -56,7 +56,7 @@ t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 	d->filename = ft_strdup(token->value);
 	if (!d->filename)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		return (free(d), NULL);
 	}
 	d->next_redir = NULL;

@@ -12,7 +12,7 @@
 //----------------------- cmd_export.c -----------------------
 int		add_variable(t_ms *ms, char *content);
 void	print_lst_exp(t_list *exp);
-int		exec_export(t_ms *ms, t_ast *node);
+int		exec_export(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_export_utils.c -----------------------
 int		error_exp(char *content);
@@ -52,19 +52,19 @@ void	join_in_exp(t_ms *ms, char *content);
 
 //----------------------- cmd_export_add.c -----------------------
 void	add_to_exp3(t_ms *ms, t_list *new, t_list *prev);
-void	add_to_exp2(t_list *new, t_list *prev);
+void	add_to_exp2(t_list *new, t_list *prev, t_list **cur);
 void	add_to_exp(t_ms *ms, char *content);
 
 //----------------------- cmd_env.c -----------------------
 void	add_to_env(t_ms *ms, char *content);
 void	print_lst_env(t_list *env);
-int		exec_env(t_ms *ms);
+int		exec_env(t_ms *ms, t_cmd *cmd);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx unset xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_unset.c -----------------------
 void	del_var_exp(t_ms *ms, char *content);
 void	del_var_env(t_ms *ms, char *content);
-int		exec_unset(t_ms *ms, t_ast *node);
+int		exec_unset(t_ms *ms, t_cmd *cmd);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx exit xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_exit.c -----------------------
@@ -85,5 +85,9 @@ void	exit_msg(t_ms *ms, char *cmd, char *details, char *error);
 //----------------------- cmd_echo.c -----------------------
 int	handle_echo_n(t_ms *ms, char **args, int *newline, int *after_n);
 int	exec_echo(t_ms *ms, t_cmd *cmd);
+
+//xxxxxxxxxxxxxxxxxxxxxxxxx pwd xxxxxxxxxxxxxxxxxxxxxxxxxx
+//----------------------- cmd_pwd.c -----------------------
+int	exec_pwd(t_ms *ms, t_cmd *cmd);
 
 #endif

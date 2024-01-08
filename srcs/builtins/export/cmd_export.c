@@ -1,78 +1,42 @@
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-// It saves at the end of the chained list, the new variable
-// export variables in the env list
-
-// It works with several arguments, do it one by one 
-
-// Export without argument print the env in ASCII order and will print…
-
-// Careful with error in the name variable : the first character has to 
-// be a letter (no number or special character) and no special character in the entire name
-
-// If several variables and an error in one, there will be an error message but 
-// the others variables are still gonna be add to env and/or exp.
-// Attention aux erreurs de nom de variables, si la variable commence par un chiffre,
-// un ^, un = ou un -, contient un + ou un ^, une erreur est renvoyee. 
-// Peut etre qu'il existe d'autres exceptions...
-
-// La syntaxe "export a" ajoute la variable a dans export mais PAS dans env
-// La syntaxe "export a=" ajoute la variable a dans export (a="") et dans env (a)
-// La syntaxe "export a=b" ajoute la variable a dans export et dans env de maniere classique
-
-// La syntaxe "export a+=b" permet de join l'ancienne variable a la nouvelle (sinon ca serait trop facile).
-
-// La variable d'environnement "_" est un peu particuliere, lorsqu'on export _=a et qu'on fait env la variable 
-// n'as pas change, en realite elle a change car lorsqu'on export *=a et qu'on fait echo $* la nouvelle 
-// variable s'affiche bien, a voir si vous voulez traiter ce cas ou non.
-
-/*
-S'il n'y a pas de '=' apres le nom de la variable et que la variable n'existe pas deja -> ajouter a exp list
-Si la variable existe deja --> la remplacer dans env et dans exp
-Sinon --> l'ajouter a env et a exp
-*/
-// int	add_variable2(t_ms *ms, char *content)
-// {
-
-// }
-
 int	add_variable(t_ms *ms, char *content)
 {
 	if (!has_equal(content) && !var_exists_exp(ms, content))
 	{
-		dprintf(2, "add to exp\n");
+		// dprintf(2, "add to exp\n");
 		return (add_to_exp(ms, content) , 0);
 	}
 	else if (!has_equal(content) && var_exists_exp(ms, content))
-		return (dprintf(2, "noting\n"), 0);
-	if (var_exists_exp(ms, content) && var_exists_env(ms, content) && find_plus(content))//case like VAR+=hey VAR exist already
+		return (/*dprintf(2, "noting\n"),*/ 0);
+	if (var_exists_exp(ms, content) && var_exists_env(ms, content) && find_plus(content))
 	{
-		dprintf(2, "dup in env and exp\n");
+		// dprintf(2, "dup in env and exp\n");
 		join_in_env(ms, content);
 		join_in_exp(ms, content);
 	}
 	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && find_plus(content))
 	{
-		dprintf(2, "add in env  dup in exp\n");
+		// dprintf(2, "add in env  dup in exp\n");
 		join_in_exp(ms, content);
 		add_to_env(ms, content);
 	}
-	else if (var_exists_exp(ms, content) && var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
+	else if (var_exists_exp(ms, content) && var_exists_env(ms, content) && !find_plus(content))
 	{
-		dprintf(2, "replace in env and exp\n");
+		// dprintf(2, "replace in env and exp\n");
 		replace_in_env(ms, content);
 		replace_in_exp(ms, content);//cpy_content
 	}
-	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && !find_plus(content))//case like VAR=hey VAR exist already
+	else if (var_exists_exp(ms, content) && !var_exists_env(ms, content) && !find_plus(content))
 	{
-		dprintf(2, "add in env  replace in exp\n");
+		// dprintf(2, "add in env  replace in exp\n");
 		add_to_env(ms, content);
 		replace_in_exp(ms, content);//cpy_content
 	}
 	else//other cases when VAR doesn't exist before
 	{
-		dprintf(2, "add in env and exp\n");
+		// dprintf(2, "add in env and exp\n");
 		add_to_env(ms, content);
 		add_to_exp(ms, content);// precedemment cpy_content
 	}
@@ -100,34 +64,28 @@ void	print_lst_exp(t_list *exp)
 cmd export : si export n'est suivi de rien d'autre -> on print la list exp
 sinon s'il n'y a pas d'erreur dans l'ecriture des variables, on les ajoute aux listes exp et env
 */
-int	exec_export(t_ms *ms, t_ast *node)
+int	exec_export(t_ms *ms, t_cmd *cmd)
 {
-	t_list	*exp_arg;
+	int i;
 
-	exp_arg = node->args;
-	if (ft_strncmp(exp_arg->content, "export", 6) == 0)
+	i = 1;
+	if (!cmd->args[i])
+		return (print_lst_exp(ms->exp), 0);
+	else
 	{
-		if (!exp_arg->next)
-			return (print_lst_exp(ms->exp), 0);
-		else
+		while (cmd->args[i])
 		{
-			exp_arg = exp_arg->next;
-			while (exp_arg)// changer
+			// dprintf(2, "exp_arg->content: %s\n", (char*)exp_arg->content);
+			if (!error_exp_spaces(cmd->args[i]) && !error_exp(cmd->args[i]))
 			{
-				// dprintf(2, "exp_arg->content: %s\n", (char*)exp_arg->content);
-				if (!error_exp_spaces(exp_arg->content) && !error_exp(exp_arg->content))
+				if (add_variable(ms, cmd->args[i]))
 				{
-					if (add_variable(ms, exp_arg->content))
-					{
-						dprintf(2, "return after add variable\n");
-						return (1);
-					}
+					// dprintf(2, "return after add variable\n");
+					return (1);
 				}
-				exp_arg = exp_arg->next;
 			}
+			i++;
 		}
 	}
 	return (0);
 }
-
-

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:34 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/12 16:47:03 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:09:31 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*dup_after_equal(t_ms *ms, char *s, int i)
 	dest = malloc(sizeof(char) * (ft_strlen(s) - (slen_equal(s) - 2) + 1));// c'est verifie
 	if (!dest)
 	{
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		free_minishell(ms, 1);
 	}
 	i = 0;
@@ -49,7 +49,7 @@ char	*ft_sjoin(t_ms *ms, char *s1, char *s2, int i)
 	{
 		if (s2)
 			free(s2);
-		ms->exit_code = 134;
+		ms->exit_code = 255;
 		free_minishell(ms, 1);
 	}
 	while (s1[++i])

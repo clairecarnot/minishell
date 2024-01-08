@@ -32,14 +32,15 @@ void	print_lst_env(t_list *env)
 /*
 La commande env liste les variables environnment 
 */
-int	exec_env(t_ms *ms)
+int	exec_env(t_ms *ms, t_cmd *cmd)
 {
-	t_list	*exp_arg;
-
-	exp_arg = ms->root->args;
-	if (ft_strncmp(exp_arg->content, "env", 3) == 0)
+	if (!cmd->args[1])
+		return (print_lst_env(ms->env), 0);
+	else
 	{
-		print_lst_env(ms->env);
+		ft_putstr_fd("env: ‘", 2);
+		ft_putstr_fd(cmd->args[1], 2);
+		ft_putstr_fd("’: No such file or directory\n", 2);
+		return (0);
 	}
-	return (0);
 }

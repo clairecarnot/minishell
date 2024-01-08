@@ -161,7 +161,16 @@ char	*display_prompt()
 {
 	char	*line;
 
-	line = readline("minishell$ ");
+	// line = readline("minishell$ ");
+	if (isatty(fileno(stdin)))
+		line = readline("minishell$ ");
+	else
+	{
+		char *line2;
+		line2 = get_next_line(fileno(stdin), 0);
+		line = ft_strtrim(line2, "\n");
+		free(line2);
+	}
 	if (!line)
 		return (NULL);
 	add_history(line);
@@ -294,15 +303,14 @@ int	main(int argc, char **argv, char **env)
 			if (*minishell->line == '\"' || *minishell->line == '\'')
 				minishell->flag_q = 1;
 			if (!lexer(minishell, minishell->line))// if no error
-			{	
+			{
 				if (!minishell->lexer)
 					return (free_minishell(minishell, 1), 1);
 				//print_token_lst(minishell->lexer->token_lst);
-
 				minishell->cur_tok = minishell->lexer->token_lst;
 				if (parse(minishell) == -1)
 				{
-					if (minishell->exit_code == 134)
+					if (minishell->exit_code == 255)
 					{
 						printf("minishell: malloc error\n");
 						free_minishell(minishell, 1);
@@ -319,7 +327,6 @@ int	main(int argc, char **argv, char **env)
 					pre_exec(minishell);
 					//				dprintf(2, "after exec\n");
 					free_minishell(minishell, 0);
-					//				dprintf(2, "after free\n");
 				}
 			}
 		}
