@@ -1,5 +1,29 @@
 #include "../../include/exec.h" 
 
+char	*ft_getenv(t_ms *ms, char *var)
+{
+	t_list	*tmp;
+	char	*value;
+
+	value = NULL;
+	tmp = ms->env;
+	while (tmp)
+	{
+		if (ft_strncmp(var, tmp->content, ft_strlen(var)) == 0)
+		{
+			value = ft_strdup(tmp->content + ft_strlen(var) + 1);
+			if (!value)
+			{
+				ms->exit_code = 255;
+				return (NULL);
+			}
+			return (value);
+		}
+		tmp = tmp->next;
+	}
+	return (NULL);
+}
+
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 {
 	char	*var;
@@ -14,15 +38,15 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 		return (NULL);
 	}
 	ft_strlcpy(var, &arg[i + 1], j - i);
-	value = getenv(var);
+	value = ft_getenv(ms, var);
 	if (!value)
 		return (free(var), NULL);
-	value = ft_strdup(value);
-	if (!value)
-	{
-		ms->exit_code = 134;
-		return (free(var), NULL);
-	}
+//	value = ft_strdup(value);
+//	if (!value)
+//	{
+//		ms->exit_code = 134;
+//		return (free(var), NULL);
+//	}
 	new_var = ft_strtrim(value, " ");
 	if (!new_var)
 	{

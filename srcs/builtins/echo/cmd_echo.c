@@ -1,6 +1,13 @@
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
+/*
+ * handle_echo_n:
+ * Counts the number of following '-n' options (as many n as wanted per option
+ * but nothing else)
+ * If there is at least one valid -n, a newline won't be printed
+ */
+
 int	handle_echo_n(t_ms *ms, char **args, int *newline, int *after_n)
 {
 	int	i;
@@ -8,22 +15,33 @@ int	handle_echo_n(t_ms *ms, char **args, int *newline, int *after_n)
 
 	(void)ms;
 	i = 0;
-	while (args[i])
+	while (args[i] && ft_strncmp(args[i], "-n", 2) == 0)
 	{
-		j = 2;
-		while (args[i][j] && args[i][j] == 'n')
-			j++;
-		if (args[i][j])
-			break ;
-		else
+		if (ft_strlen(args[i]) > 2)
 		{
-			*newline = 0;
-			*after_n = *after_n + 1;
+			j = 2;
+			while (args[i][j] && args[i][j] == 'n')
+				j++;
+			if (args[i][j])
+				break ;
 		}
+		*newline = 0;
+		*after_n = *after_n + 1;
 		i++;
 	}
 	return (0);
 }
+
+/*
+ * exec_echo:
+ * executes echo builtin
+ * 	'newline' = 1 indicates a newline should be printed at the end; it depends
+ * if there is one or several -n options (-n = no newline)
+ *	'after_n' = x indicates the number of '-n' arguments to pass before reaching
+ * the first word to be printed; a space is printed between non-empty words
+ *
+ * Both 'newline' and 'after_n' params are updated thanks to the handle_echo_n function
+ */
 
 int	exec_echo(t_ms *ms, t_cmd *cmd)
 {

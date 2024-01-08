@@ -6,13 +6,31 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/05 17:18:23 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 18:17:41 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/lexer.h"
 #include "./include/parser.h"
 #include "./include/struct.h"
+
+void	ft_intlstfree(t_list **lst)
+{
+	t_list	*ptr;
+	t_list	*tmp;
+
+	if (lst)
+	{
+		ptr = *lst;
+		while (ptr)
+		{
+			tmp = ptr->next;
+			free(ptr);
+			ptr = tmp;
+		}
+		*lst = NULL;
+	}
+}
 
 void	ft_lstfree(t_list **lst)
 {
@@ -129,7 +147,7 @@ void	free_minishell(t_ms *ms, int exit_status)
 
 	exit_code = ms->exit_code;
 	if (ms->pidlst)
-		ft_lstfree(&ms->pidlst);
+		ft_intlstfree(&ms->pidlst);
 	if (ms->root)
 	{
 		free_root_ast(ms->root);

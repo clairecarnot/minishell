@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/05 09:46:19 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/08 09:29:47 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	free_cmd(t_cmd *cmd);
 int	close_if(int *fd);
 
 //----------------------- expand.c ------------------------
+char	*ft_getenv(t_ms *ms, char *var);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
 char	*skip_dol(char *arg, int i, int j, int data[2]);
 char	*repl_dol(char *arg, char *var, int i, int j);

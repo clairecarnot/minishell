@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/05 17:19:03 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/05 18:17:50 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	count_args(char **args)
 void	free_exit(t_ms *ms)
 {
 	if (ms->pidlst)
-		ft_lstfree(&ms->pidlst);
+		ft_intlstfree(&ms->pidlst);
 	if (ms->root)
 		free_root_ast(ms->root);
 	if (ms->lexer)

@@ -37,7 +37,8 @@ int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 //	exit(300);
 	execve(cmd->args[0], cmd->args, env);
 	dprintf(2, "execve fails\n");
-	(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?
+//	(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?
+	(free_cmd(cmd), free_exit(ms), exit(errno)); // on exit ms, code err?
 	return (1);
 }
 

@@ -30,6 +30,7 @@ t_ms	*init_ms(char **env);
 char	*display_prompt();
 
 //----------------------- end.c ------------------------
+void	ft_intlstfree(t_list **lst);
 void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);
 void	redirs_free(t_redirs **lst);
