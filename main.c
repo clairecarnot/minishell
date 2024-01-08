@@ -146,6 +146,8 @@ t_ms	*init_ms(char **env)
 	minishell->cur_node = NULL;
 	minishell->pidlst = NULL;
 	minishell->exit_code = 0;
+	minishell->in = -1;
+	minishell->out = -1;
 	if (init_env(minishell, env))
 		free_minishell(minishell, 1);
 	if (init_workdir(minishell))
@@ -159,21 +161,23 @@ t_ms	*init_ms(char **env)
 
 char	*display_prompt()
 {
+	// dprintf(2, "display prompt\n");
 	char	*line;
 
-	// line = readline("minishell$ ");
-	if (isatty(fileno(stdin)))
-		line = readline("minishell$ ");
-	else
-	{
-		char *line2;
-		line2 = get_next_line(fileno(stdin), 0);
-		line = ft_strtrim(line2, "\n");
-		free(line2);
-	}
+	line = readline("minishell$ ");
+	// if (isatty(fileno(stdin)))
+	// 	line = readline("minishell$ ");
+	// else
+	// {
+	// 	char *line2;
+	// 	line2 = get_next_line(fileno(stdin), 0);
+	// 	line = ft_strtrim(line2, "\n");
+	// 	free(line2);
+	// }
 	if (!line)
 		return (NULL);
 	add_history(line);
+	// dprintf(2, "end display prompt\n");
 	return (line);
 }
 
@@ -325,7 +329,7 @@ int	main(int argc, char **argv, char **env)
 					//				exec_env(minishell);
 					//				exec_export(minishell, minishell->root);
 					pre_exec(minishell);
-					//				dprintf(2, "after exec\n");
+									// dprintf(2, "after exec\n");
 					free_minishell(minishell, 0);
 				}
 			}

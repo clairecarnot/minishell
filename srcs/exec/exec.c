@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 15:43:38 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/08 12:41:25 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ int	pre_exec(t_ms *ms)
 	t_list	*tmp;
 	// pid_t	pid;
 
+	ms->in = dup(STDIN_FILENO); //A PROTEGER?
+	ms->out = dup(STDOUT_FILENO);//A PROTEGER?
 	//handle save STDIN STDOUT
 	//handle signals
 	exit_code = execute(ms->root, ms);
@@ -76,6 +78,8 @@ int	pre_exec(t_ms *ms)
 		waitpid(tmp->n, NULL, 0);
 		tmp = tmp->next;
 	}
+	dup2(ms->in, STDIN_FILENO);
+	dup2(ms->out, STDIN_FILENO);
 //	dprintf(2, "after exec, after waitpid\n");
 	//clear exec
 	return (exit_code);

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/04 14:14:17 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/08 12:43:40 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,59 @@ void	redirs_add_back(t_redirs **lst, t_redirs *new)
 	}
 }
 
+// t_redirtype	*redirtype_new(t_ms *ms, t_node_type type)
+// {
+// 	t_redirtype	*tmp;
+
+// 	tmp = NULL;
+// 	tmp = ft_calloc(1, sizeof(t_redirtype));
+// 	if (!tmp)
+// 	{
+// 		ms->exit_code = 255;
+// 		return (NULL);
+// 	}
+// 	tmp->type = type;
+// 	tmp->next = NULL;
+// 	return (tmp);
+// }
+
+// void	rt_addback(t_redirtype **lst, t_redirtype *new)
+// {
+// 	t_redirtype	*ptr;
+
+// 	if (*lst == 0x0)
+// 		*lst = new;
+// 	else
+// 	{
+// 		ptr = *lst;
+// 		while (ptr->next)
+// 			ptr = ptr->next;
+// 		ptr->next = new;
+// 	}
+	// dprintf(2, "rt \n");
+	// if (new->type == CMD)
+	// 	dprintf(2, "CMD \n");
+	// else if (new->type == PIPE)
+	// 	dprintf(2, "PIPE \n");
+	// else if (new->type == AND_IF)
+	// 	dprintf(2, "AND_IF \n");
+	// else if (new->type == OR_IF)
+	// 	dprintf(2, "OR_IF \n");
+	// else if (new->type == LESS)
+	// 	dprintf(2, "LESS \n");
+	// else if (new->type == GREAT)
+	// 	dprintf(2, "GREAT \n");
+	// else if (new->type == DLESS)
+	// 	dprintf(2, "DLESS \n");
+	// else if (new->type == DGREAT)
+	// 	dprintf(2, "DGREAT \n");
+	// else if (new->type == NEWLINE)
+	// 	dprintf(2, "NEWLINE \n");
+	// else 
+// 	// 	dprintf(2, "UNKNOW \n");
+	
+// }
+
 /*
  * redirs_new:
  * Cree une nouvelle structure t_redirs du type indique par le current token
@@ -43,14 +96,20 @@ void	redirs_add_back(t_redirs **lst, t_redirs *new)
 t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 {
 	t_redirs	*d;
-
+	// t_redirtype	*rt;
+	
+	// rt = redirtype_new(ms, token_to_node(type));
+	// if (!rt)
+	// 	return (NULL);
 	d = NULL;
-	d = malloc(sizeof(t_redirs));
+	d = ft_calloc(1, sizeof(t_redirs));
 	if (!d)
 	{
 		ms->exit_code = 255;
+		// free(rt);
 		return (NULL);
 	}
+	// rt_addback(&d->redirtype, rt);
 	d->type = token_to_node(type);
 	d->filename = NULL;
 	d->filename = ft_strdup(token->value);
@@ -60,6 +119,26 @@ t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 		return (free(d), NULL);
 	}
 	d->next_redir = NULL;
+	// if (d->type == CMD)
+	// 	dprintf(2, "CMD \n");
+	// else if (d->type == PIPE)
+	// 	dprintf(2, "PIPE \n");
+	// else if (d->type == AND_IF)
+	// 	dprintf(2, "AND_IF \n");
+	// else if (d->type == OR_IF)
+	// 	dprintf(2, "OR_IF \n");
+	// else if (d->type == LESS)
+	// 	dprintf(2, "LESS \n");
+	// else if (d->type == GREAT)
+	// 	dprintf(2, "GREAT \n");
+	// else if (d->type == DLESS)
+	// 	dprintf(2, "DLESS \n");
+	// else if (d->type == DGREAT)
+	// 	dprintf(2, "DGREAT \n");
+	// else if (d->type == NEWLINE)
+	// 	dprintf(2, "NEWLINE \n");
+	// else 
+	// 	dprintf(2, "UNKNOW \n");
 	return (d);
 }
 

@@ -1,72 +1,50 @@
 #include "../../include/exec.h"
 
-/*int	tab_size(char **tab)
+int	handle_less(t_ms *ms, t_ast *node)
 {
-	int	i;
+	int	fd;
 
-	i = 0;
-	while (tab && tab[i])
-		i++;
-	return (i);
+	fd = open(node->redirs->filename,  O_RDONLY, 0666);
+	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(node->redirs->filename, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
+		ms->exit_code = 1;
+		return (1);
+	}
+	if (dup2(fd, STDIN_FILENO) == -1)
+	{
+		perror("minishell: dup2 failed");
+		ms->exit_code = 1;
+		return (1);
+	}
+	close_if(&fd);
+	// dprintf(2, "fin handle less\n");
+	return (0);
 }
 
-char	**resize_tab(char **tab, int i)
+int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 {
-	char	**new;
-	int		size;
-	int		j;
+	t_redirs	*tmp;
 
-	new = NULL;
-	size = tab_size(tab) - 1;
-	new = ft_calloc(size + 1, sizeof(char *));
-	if (!new)
-		return (free_tab(tab), NULL);
-//	j = 0;
-//	while (j++ <= size) //CHECKER SI ON PEUT S'EN PASSER AVEC LE CALLOC
-//		new[j] = 0;
-	j = 0;
-	while (j < i)
+	(void)cmd;
+	tmp = node->redirs;
+	while (tmp)
 	{
-		new[j] = ft_strdup(tab[j]);
-		if (!new[j])
-			return (free_tab(new), free_tab(tab), NULL);
-		j++;
+		// dprintf(2, "%s\n", node_to_str(node->redirs->type));
+		if (tmp->type == LESS)
+			if (handle_less(ms, node) == 1)
+				return (1);
+		// if (tmp->type == GREAT)
+		// if (tmp->type == DLESS)
+		// if (tmp->type == DGREAT)
+		tmp = tmp->next_redir;
 	}
-	while (tab[j + 1])
-	{
-		new[j] = ft_strdup(tab[j + 1]);
-		if (!new[j])
-			return (free_tab(new), free_tab(tab), NULL);
-		j++;
-	}
-	new[j] = 0; //IDEM
-	return (free_tab(tab), new);
+	// dprintf(2, "fin cmd_redir\n");
+	return (0);
 }
-
-char	**post_expand_adj(t_ms *ms, char **args, char **tmp)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (args[i + j] && tmp[i])
-	{
-		if (ft_strlen(args[i + j]) == 0 && ft_strlen(tmp[i]) > 0)
-		{
-			args = resize_tab(args, i + j);
-			if (!args)
-			{
-				ms->exit_code = 134;
-				return (NULL);
-			}
-			j--;
-		}
-		i++;
-	}
-	return (args);
-}
-*/
 
 t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 {
@@ -168,7 +146,10 @@ t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env)
 		cmd->bin_paths = get_bin_paths(env);
 		build_path(cmd);
 	}
-//	dprintf(2, "return cmd\n");
+	if (node->redirs)
+		if (cmd_redirs(ms, node, cmd) == 1)
+			return(free_cmd(cmd), NULL); // A CHECKER
+	// dprintf(2, "return cmd\n");
 	return (cmd);
 }
 

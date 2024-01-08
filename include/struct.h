@@ -49,8 +49,15 @@ typedef enum e_node_type
 	DGREAT,
 }			t_node_type;
 
+// typedef	struct s_redirtype
+// {
+// 	t_node_type			type;
+// 	struct s_redirtype	*next;
+// }	t_redirtype;
+
 typedef struct s_redirs
 {
+	// t_redirtype		*redirtype;
 	t_node_type		type;
 	char			*filename;
 	struct s_redirs	*next_redir;
@@ -126,6 +133,8 @@ typedef struct s_ms
 	t_ast		*cur_node;
 	t_list		*pidlst;
 	int			exit_code;
+	int			in;
+	int			out;
 }				t_ms;
 
 #endif 
