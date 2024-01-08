@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/08 12:43:40 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/08 13:58:48 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 	// 	dprintf(2, "NEWLINE \n");
 	// else 
 	// 	dprintf(2, "UNKNOW \n");
+	// dprintf(2, "%s\n", d->filename);
 	return (d);
 }
 

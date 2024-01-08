@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/08 12:13:36 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:01:43 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	execute(t_ast *node, t_ms *ms);
 int	pre_exec(t_ms *ms);
 
 //----------------------- cmd_exec.c ------------------------
-int	handle_less(t_ms *ms, t_ast *node);
+int	handle_less(t_ms *ms, t_redirs *redirs);
 int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd);
 t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env);
 int	exec_builtin(t_ms *ms, t_cmd *cmd);

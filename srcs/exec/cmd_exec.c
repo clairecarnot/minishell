@@ -1,27 +1,83 @@
 #include "../../include/exec.h"
 
-int	handle_less(t_ms *ms, t_ast *node)
+int	handle_less(t_ms *ms, t_redirs *redirs)
 {
 	int	fd;
 
-	fd = open(node->redirs->filename,  O_RDONLY, 0666);
+	fd = open(redirs->filename,  O_RDONLY, 0666);
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(node->redirs->filename, 2);
+		ft_putstr_fd(redirs->filename, 2);
 		ft_putstr_fd(": ", 2);
 		perror("");
 		ms->exit_code = 1;
 		return (1);
 	}
+	// dprintf(2, "%d\n", fd);
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("minishell: dup2 failed");
 		ms->exit_code = 1;
 		return (1);
 	}
-	close_if(&fd);
+	close_if(&fd);// a proteger
 	// dprintf(2, "fin handle less\n");
+	// dprintf(2, "%d\n", STDIN_FILENO);
+	return (0);
+}
+
+int	handle_great(t_ms *ms, t_redirs *redirs)
+{
+	int	fd;
+
+	fd = open(redirs->filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redirs->filename, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
+		ms->exit_code = 1;
+		return (1);
+	}
+	// dprintf(2, "%d\n", fd);
+	if (dup2(fd, STDOUT_FILENO) == -1)
+	{
+		perror("minishell: dup2 failed");
+		ms->exit_code = 1;
+		return (1);
+	}
+	close_if(&fd);// a proteger
+	// dprintf(2, "fin handle great\n");
+	// dprintf(2, "%d\n", STDIN_FILENO);
+	return (0);
+}
+
+int	handle_dgreat(t_ms *ms, t_redirs *redirs)
+{
+	int	fd;
+
+	fd = open(redirs->filename, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	if (fd < 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(redirs->filename, 2);
+		ft_putstr_fd(": ", 2);
+		perror("");
+		ms->exit_code = 1;
+		return (1);
+	}
+	// dprintf(2, "%d\n", fd);
+	if (dup2(fd, STDOUT_FILENO) == -1)
+	{
+		perror("minishell: dup2 failed");
+		ms->exit_code = 1;
+		return (1);
+	}
+	close_if(&fd);// a proteger
+	// dprintf(2, "fin handle dgreat\n");
+	// dprintf(2, "%d\n", STDIN_FILENO);
 	return (0);
 }
 
@@ -33,13 +89,22 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 	tmp = node->redirs;
 	while (tmp)
 	{
-		// dprintf(2, "%s\n", node_to_str(node->redirs->type));
 		if (tmp->type == LESS)
-			if (handle_less(ms, node) == 1)
+		{
+			if (handle_less(ms, tmp) == 1)
 				return (1);
-		// if (tmp->type == GREAT)
+		}
+		else if (tmp->type == GREAT)
+		{
+			if (handle_great(ms, tmp) == 1)
+				return (1);
+		}
+		else if (tmp->type == DGREAT)
+		{
+			if (handle_dgreat(ms, tmp) == 1)
+				return (1);
+		}
 		// if (tmp->type == DLESS)
-		// if (tmp->type == DGREAT)
 		tmp = tmp->next_redir;
 	}
 	// dprintf(2, "fin cmd_redir\n");
@@ -210,6 +275,8 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 //			j++;
 //		}
 		//		dprintf(2, "%s\n", cmd->args[0]);
+		close_if(&ms->in);
+		close_if(&ms->out);
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
 		(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?
