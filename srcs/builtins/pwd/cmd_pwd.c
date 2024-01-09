@@ -10,7 +10,7 @@ int	exec_pwd(t_ms *ms, t_cmd *cmd)
 	else
 	{
 		perror("getcwd() error");
-		ms->exit_code = 255;
+		ms->exit_code = 255;// peut etre a changer
 		free_cmd(cmd);
 		free_minishell(ms, 1);
 	}

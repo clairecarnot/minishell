@@ -362,8 +362,7 @@ int	exec_builtin(t_ms *ms, t_cmd *cmd)
 	if (cmd->builtin == ECHO)
 		return (exec_echo(ms, cmd));
 	if (cmd->builtin == CD)
-		return (0); //A remplacer par ligne ci-dessous
-//		return (exec_cd);
+		return (exec_cd(ms, cmd));
 	if (cmd->builtin == PWD)
 		return (exec_pwd(ms, cmd));
 	if (cmd->builtin == EXPORT)

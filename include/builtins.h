@@ -90,4 +90,8 @@ int	exec_echo(t_ms *ms, t_cmd *cmd);
 //----------------------- cmd_pwd.c -----------------------
 int	exec_pwd(t_ms *ms, t_cmd *cmd);
 
+//xxxxxxxxxxxxxxxxxxxxxxxxx cd xxxxxxxxxxxxxxxxxxxxxxxxxx
+//----------------------- cmd_cd.c -----------------------
+int	exec_cd(t_ms *ms, t_cmd *cmd);
+
 #endif

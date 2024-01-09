@@ -15,8 +15,8 @@ t_builtin_type	builtin_type_is(char *builtin)
 {
 	if (equals(builtin, "echo"))
 		return (ECHO);
-	if (equals(builtin, "cd"))
-		return (ECHO);
+	// if (equals(builtin, "cd"))
+	// 	return (ECHO);
 	if (equals(builtin, "cd"))
 		return (CD);
 	if (equals(builtin, "pwd"))
