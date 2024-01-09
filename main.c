@@ -327,11 +327,11 @@ int	main(int argc, char **argv, char **env)
 				else
 				{
 					// print_tree(minishell->root, 0);
-					//				visit_node(minishell->root);
-					//				exec_env(minishell);
-					//				exec_export(minishell, minishell->root);
+					//visit_node(minishell->root);
+					//exec_env(minishell);
+					//exec_export(minishell, minishell->root);
 					pre_exec(minishell);
-									// dprintf(2, "after exec\n");
+					// dprintf(2, "after exec\n");
 					free_minishell(minishell, 0);
 				}
 			}

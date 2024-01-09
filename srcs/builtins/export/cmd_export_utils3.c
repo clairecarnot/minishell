@@ -19,11 +19,11 @@ Si oui la remplacer
 */
 int	var_exists_exp(t_ms *ms, char *content)
 {
-	int		i;
+//	int		i;
 	int		size;
 	t_list	*exp_tmp;
 
-	i = 0;
+//	i = 0;
 	size = slen_equal(content);
 	// dprintf(2, "size = %d, content = %s\n", size, content);
 	exp_tmp = ms->exp;
@@ -42,11 +42,11 @@ int	var_exists_exp(t_ms *ms, char *content)
 
 int	var_exists_env(t_ms *ms, char *content)
 {
-	int		i;
+//	int		i;
 	int		size;
 	t_list	*env_tmp;
 
-	i = 0;
+//	i = 0;
 	size = slen_equal(content);
 	// dprintf(2, "size = %d\n", size);
 	env_tmp = ms->env;

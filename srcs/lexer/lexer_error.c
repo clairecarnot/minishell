@@ -86,12 +86,12 @@ unexpected token `%s'\n", tok_lst->next_token->value), 1);
 // line 98 parenthesis pb
 int	error_in_lexer(t_ms *ms)
 {
-	t_token	*tok_lst;
+//	t_token	*tok_lst;
 
-	tok_lst = ms->lexer->token_lst;
-// 	if (tok_lst->type == T_PIPE || tok_lst->type == T_AND_IF || \
+//	tok_lst = ms->lexer->token_lst;
+// 	if (tok_lst->type == T_PIPE || tok_lst->type == T_AND_IF ||
 // 	tok_lst->type == T_OR_IF || tok_lst->type == T_RPAR)
-// 		return (printf("minishell: syntax error near \
+// 		return (printf("minishell: syntax error near
 // unexpected token `%s'\n", ms->lexer->token_lst->value), 1);
 	if (check_par(ms) != 0)
 		return (1);

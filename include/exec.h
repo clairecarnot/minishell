@@ -62,6 +62,7 @@ void	free_cmd(t_cmd *cmd);
 int	close_if(int *fd);
 
 //----------------------- expand.c ------------------------
+int	is_same_len(char *s1, char *s2);
 char	*ft_getenv(t_ms *ms, char *var);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
 char	*skip_dol(char *arg, int i, int j, int data[2]);
