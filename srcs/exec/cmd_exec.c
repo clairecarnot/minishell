@@ -1,4 +1,5 @@
 #include "../../include/exec.h"
+#include "../../include/signals.h"
 
 void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd)
 {
@@ -413,6 +414,7 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 //			j++;
 //		}
 		//		dprintf(2, "%s\n", cmd->args[0]);
+		child_signals();
 		close_if(&ms->in);
 		close_if(&ms->out);
 		execve(cmd->args[0], cmd->args, env);
@@ -421,6 +423,8 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	}
 	else
 	{
+		ms_signals();
+		// preprompt_signals();
 		ms->flag_q--;
 		new_pid = ft_lstnew(&pid);
 		if (!new_pid)

@@ -6,11 +6,12 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/09 10:20:22 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:08:13 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/exec.h"
+#include "../../include/signals.h"
 
 int	exec_andif(t_ast *node, t_ms *ms)
 {
@@ -81,6 +82,7 @@ int	pre_exec(t_ms *ms)
 	}
 	dup2(ms->in, STDIN_FILENO);
 	dup2(ms->out, STDOUT_FILENO);
+	preprompt_signals();
 	// close_if(&ms->in);
 	// close_if(&ms->out);
 	// close_if("/tmp/here_doc");

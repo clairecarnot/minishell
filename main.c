@@ -295,7 +295,7 @@ int	main(int argc, char **argv, char **env)
 		return (1);
 	while (1)
 	{
-//		preprompt_signals();
+		preprompt_signals();
 		minishell->line = display_prompt();
 		if (!minishell->line)
 			return (free_minishell(minishell, 0), 0);//verifier protec
