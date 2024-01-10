@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/10 18:16:51 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/10 18:40:22 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,20 @@ int	pre_exec(t_ms *ms)
 		return (1);
 	// dprintf(2, "after exec, before waitpid\n");
 	tmp = ms->pidlst;
-	/*
 	while (tmp)
 	{
 		dprintf(2, "pid = %d\n", tmp->n);
 		waitpid(tmp->n, &status, 0);
 		tmp = tmp->next;
 	}
+	/*
+	int ret  = waitpid(tmp->n, &status, WUNTRACED);
+	dprintf(2, "%d\n", ret);
+	perror("waitpid 1");
+	ret = waitpid(tmp->n, &status, WUNTRACED);
+	dprintf(2, "%d\n", ret);
+	perror("waitpid 2");
 	*/
-	waitpid(tmp->n, &status, WUNTRACED);
-	waitpid(tmp->n, &status, WUNTRACED);
 	if (WIFEXITED(status))
 	{
 		dprintf(2, "exit code recu\n");
@@ -97,7 +101,8 @@ int	pre_exec(t_ms *ms)
 	}
 	else if (WIFSIGNALED(status))
 	{
-//		dprintf(2, "signal recu2\n");
+		dprintf(2, "signal recu2\n");
+		dprintf(2, "signal = %d\n", WTERMSIG(status));
 		ms->exit_code = 128 + WTERMSIG(status);
 		if (print)
 		{

@@ -49,14 +49,16 @@ void	signal_newprompt(int signal)
 
 void	preprompt_signals(void)
 {
-//	signal(SIGQUIT, SIG_IGN);
-//	signal(SIGINT, signal_newprompt);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, signal_newprompt);
+	/*
 	struct sigaction	act;
 
 	ignore_sigquit();
 	ft_memset(&act, 0, sizeof(act));
 	act.sa_handler = &signal_newprompt;
 	sigaction(SIGINT, &act, NULL);
+	*/
 }
 
 /*
@@ -71,19 +73,19 @@ void	sig_handler(int signal)
 */
 void	child_signals(void)
 {
-	dprintf(2, "child signals\n");
-//	signal(SIGINT, SIG_DFL);
-//	signal(SIGQUIT, SIG_DFL);
+//	dprintf(2, "child signals\n");
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 //	signal(SIGQUIT, sig_handler);
+
+	/*
 	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(act));
-//	act.sa_handler = &sig_handler;
 	act.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
-//	signal(SIGINT, SIG_DFL);
-//	signal(SIGQUIT, SIG_DFL);
+	*/
 }
 
 void	postfork_ms_sig(int signal)
@@ -96,16 +98,16 @@ void	postfork_ms_sig(int signal)
 
 void	ms_signals(void)
 {
-//	signal(SIGINT, SIG_IGN);
+	signal(SIGINT, postfork_ms_sig);
+	signal(SIGQUIT, postfork_ms_sig);
+	/*
 	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(act));
-//	signal(SIGINT, SIG_IGN);
-//	signal(SIGQUIT, SIG_IGN);
 	act.sa_handler = &postfork_ms_sig;
-	// act.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &act, NULL);
 	sigaction(SIGQUIT, &act, NULL);
+	*/
 }
 
 /*
