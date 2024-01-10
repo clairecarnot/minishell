@@ -33,8 +33,8 @@ void	signal_newprompt(int signal)
 	if (signal == SIGINT)
 	{
 		printf("\n");
-		rl_on_new_line();
 		rl_replace_line("", 0);
+		rl_on_new_line();
 		rl_redisplay();
 	}
 }
@@ -49,84 +49,89 @@ void	signal_newprompt(int signal)
 
 void	preprompt_signals(void)
 {
+//	signal(SIGQUIT, SIG_IGN);
+//	signal(SIGINT, signal_newprompt);
 	struct sigaction	act;
 
 	ignore_sigquit();
-	// dprintf(2, "hellooo\n");
-
 	ft_memset(&act, 0, sizeof(act));
 	act.sa_handler = &signal_newprompt;
 	sigaction(SIGINT, &act, NULL);
 }
 
+/*
 void	sig_handler(int signal)
 {
-	dprintf(2, "child routine\n");
 	(void)signal;
 	// signal(SIGINT, SIG_DFL);
 	// signal(SIGQUIT, SIG_DFL);
 	ft_putstr_fd("\n", 2);
 	exit(0);
 }
-
+*/
 void	child_signals(void)
 {
+	dprintf(2, "child signals\n");
+//	signal(SIGINT, SIG_DFL);
+//	signal(SIGQUIT, SIG_DFL);
+//	signal(SIGQUIT, sig_handler);
 	struct sigaction	act;
 
-	// dprintf(2, "hello\n");
 	ft_memset(&act, 0, sizeof(act));
-	act.sa_handler = &sig_handler;
-	// act.sa_handler = SIG_DFL;
+//	act.sa_handler = &sig_handler;
+	act.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &act, NULL);
-	// sigaction(SIGQUIT, &act, NULL);
-	// signal(SIGINT, SIG_DFL);
-	// signal(SIGQUIT, SIG_DFL);
 	sigaction(SIGQUIT, &act, NULL);
+//	signal(SIGINT, SIG_DFL);
+//	signal(SIGQUIT, SIG_DFL);
 }
 
 void	postfork_ms_sig(int signal)
 {
+//	dprintf(2, "newline\n");
 	(void)signal;
 	ft_putstr_fd("\n", 2);
+ 	//rl_on_new_line();
 }
 
 void	ms_signals(void)
 {
+//	signal(SIGINT, SIG_IGN);
 	struct sigaction	act;
 
 	ft_memset(&act, 0, sizeof(act));
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
+//	signal(SIGINT, SIG_IGN);
+//	signal(SIGQUIT, SIG_IGN);
 	act.sa_handler = &postfork_ms_sig;
 	// act.sa_handler = SIG_IGN;
-	// sigaction(SIGINT, &act, NULL);
-	// sigaction(SIGQUIT, &act, NULL);
+	sigaction(SIGINT, &act, NULL);
+	sigaction(SIGQUIT, &act, NULL);
 }
 
-// /*
-//  * signal_newline
-//  * Prints a newline
-//  */
+/*
+* signal_newline
+* Prints a newline
+*/
 
-// void	signal_newline(int signal)
-// {
-// 	(void)signal;
-// 	rl_on_new_line();
-// }
+void	signal_newline(int signal)
+{
+ 	(void)signal;
+ 	rl_on_new_line();
+}
 
-// /*
-//  * postprompt_signals
-//  * Called when the shell is non-interactive (already received user input) = it means that only the foreground=running processes need to react to the received signals (and not minishell)
-//  * Sets the actions for when the SIGQUIT (ctrl-c) and SIGINT (ctrl-\) signals
-//  * They simply print a newline
-//  */
+/*
+ * postprompt_signals
+ * Called when the shell is non-interactive (already received user input) = it means that only the foreground=running processes need to react to the received signals (and not minishell)
+ * Sets the actions for when the SIGQUIT (ctrl-c) and SIGINT (ctrl-\) signals
+ * They simply print a newline
+ */
 
-// void	postprompt_signals(void)
-// {
-// 	struct sigaction	act;
+void	postprompt_signals(void)
+{
+	struct sigaction	act;
 
-// 	ft_memset(&act, 0, sizeof(act));
-// 	act.sa_handler = &signal_newline;
-// 	sigaction(SIGINT, &act, NULL);
-// 	sigaction(SIGQUIT, &act, NULL);
-// }
+ 	ft_memset(&act, 0, sizeof(act));
+ 	act.sa_handler = &signal_newline;
+ 	sigaction(SIGINT, &act, NULL);
+ 	sigaction(SIGQUIT, &act, NULL);
+}

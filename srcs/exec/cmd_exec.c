@@ -423,10 +423,13 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	}
 	else
 	{
+//		dprintf(2, "pid2 = %d\n", pid);
+		//signal(SIGINT, SIG_IGN);
 		ms_signals();
 		// preprompt_signals();
+		//postprompt_signals();
 		ms->flag_q--;
-		new_pid = ft_lstnew(&pid);
+		new_pid = ft_lstnew_int(pid);
 		if (!new_pid)
 		{
 			ms->exit_code = 255;
@@ -441,9 +444,13 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	char	**env;
-	// t_list	*tmp;
+	t_list	*tmp;
 	int	exit_code;
+	int	status;
+	int	print;
 
+	status = 0;
+	print = 1;
 	exit_code = 0;
 	env = lst_to_tab(ms->env);
 	if (!env)
@@ -456,6 +463,39 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
+	tmp = ms->pidlst;
+//	waitpid(tmp->n, &status, WUNTRACED);
+//	dprintf(2, "pid == %d\n", tmp->n);
+//	waitpid(tmp->n, &status, WUNTRACED);
+//	dprintf(2, "pid == %d\n", tmp->n);
+//	while (wait(&status) > 0)
+	/*
+	while (waitpid(tmp->n, &status, WUNTRACED) > 0)
+	{
+	if (WIFEXITED(status))
+	{
+		dprintf(2, "exit code recuuuuuuu\n");
+		dprintf(2, "code = %d\n", WEXITSTATUS(status));
+		ms->exit_code = WEXITSTATUS(status);
+	}
+	else if (WIFSIGNALED(status))
+	{
+		dprintf(2, "signal recu\n");
+		ms->exit_code = 128 + WTERMSIG(status);
+		if (print)
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
+			else if (WTERMSIG(status) == SIGINT)
+			{
+				dprintf(2, "signal = sigint\n");
+				ft_putstr_fd("\n", 2);
+			}
+			print = 0;
+		}
+	}
+	}
+	*/
 	// tmp = ms->pidlst;
 	// while (tmp)
 	// {

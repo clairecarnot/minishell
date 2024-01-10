@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/10 15:08:13 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:16:51 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,13 @@ int	pre_exec(t_ms *ms)
 {
 	int	exit_code;
 	t_list	*tmp;
+	int	status;
+	int	print;	
 	// t_list	*hdtmp;
 	// pid_t	pid;
 
+	status = 0;
+	print = 1;
 	ms->in = dup(STDIN_FILENO); //A PROTEGER?
 	ms->out = dup(STDOUT_FILENO);//A PROTEGER?
 	//handle save STDIN STDOUT
@@ -75,14 +79,43 @@ int	pre_exec(t_ms *ms)
 		return (1);
 	// dprintf(2, "after exec, before waitpid\n");
 	tmp = ms->pidlst;
+	/*
 	while (tmp)
 	{
-		waitpid(tmp->n, NULL, 0);
+		dprintf(2, "pid = %d\n", tmp->n);
+		waitpid(tmp->n, &status, 0);
 		tmp = tmp->next;
+	}
+	*/
+	waitpid(tmp->n, &status, WUNTRACED);
+	waitpid(tmp->n, &status, WUNTRACED);
+	if (WIFEXITED(status))
+	{
+		dprintf(2, "exit code recu\n");
+		dprintf(2, "code = %d\n", WEXITSTATUS(status));
+		ms->exit_code = WEXITSTATUS(status);
+	}
+	else if (WIFSIGNALED(status))
+	{
+//		dprintf(2, "signal recu2\n");
+		ms->exit_code = 128 + WTERMSIG(status);
+		if (print)
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
+			else if (WTERMSIG(status) == SIGINT)
+			{
+				;
+//				dprintf(2, "signal = sigint\n");
+//				ft_putstr_fd("\n", 2);
+			}
+			print = 0;
+		}
 	}
 	dup2(ms->in, STDIN_FILENO);
 	dup2(ms->out, STDOUT_FILENO);
-	preprompt_signals();
+	//postprompt_signals();
+	//preprompt_signals();
 	// close_if(&ms->in);
 	// close_if(&ms->out);
 	// close_if("/tmp/here_doc");
