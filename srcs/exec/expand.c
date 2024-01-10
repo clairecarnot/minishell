@@ -1,7 +1,22 @@
 #include "../../include/exec.h" 
 
+int	is_same_len(char *s1, char *s2)
+{
+	int	len;
+	int	i;
+
+	i = 0;
+	len = ft_strlen(s1);
+	while (s2[i] && s2[i] != '=')
+		i++;
+	if (i == len)
+		return (1);
+	return (0);
+}
+
 char	*ft_getenv(t_ms *ms, char *var)
 {
+//	dprintf(2, "var = %s\n", var);
 	t_list	*tmp;
 	char	*value;
 
@@ -9,7 +24,8 @@ char	*ft_getenv(t_ms *ms, char *var)
 	tmp = ms->env;
 	while (tmp)
 	{
-		if (ft_strncmp(var, tmp->content, ft_strlen(var)) == 0)
+		if (ft_strncmp(var, tmp->content, ft_strlen(var)) == 0
+				&& is_same_len(var, tmp->content))
 		{
 			value = ft_strdup(tmp->content + ft_strlen(var) + 1);
 			if (!value)
@@ -172,7 +188,8 @@ int	dol_standalone(char *arg, t_dol **dol)
 char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 {
 //	dprintf(2, "expand dol1\n");
-//	dprintf(2, "%s\n", arg);
+//	dprintf(2, "arg = %s\n", arg);
+//	dprintf(2, "dol_nb =  %d\n", data[0]);
 	int		i;
 	int		j;
 	char	*exp_arg;
@@ -183,7 +200,7 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 	exp_arg = NULL;
 	var = NULL;
 	i = 0;
-	while (arg[i] && (arg[i] != '$' || (arg[i] == '$' && dol_nb)))
+	while (arg[i] && (arg[i] != '$' || (arg[i] == '$' && dol_nb > 0)))
 	{
 		if (arg[i] == '$')
 			dol_nb--;
@@ -193,11 +210,15 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 //	dprintf(2, "expand dol2\n");
 //	dprintf(2, "%c\n", arg[i]);
 	if (!arg[i] || !arg[i + 1] || dol_standalone(&arg[i + 1], dol))
+//	{
+//		dprintf(2, "ici\n");
 		return (arg);
+//	}
 //	dprintf(2, "%s\n", arg);
 //	dprintf(2, "arg[%d] = %c\n", i, arg[i]);
 	if (arg[i + 1] == '$')
 		arg = keep_one_dol_only(ms, arg, i, dol);
+//	dprintf(2, "expand dol2 - 2\n");
 	if (!arg)
 		return (NULL);
 //	dprintf(2, "arg[%d] = %c\n", i, arg[i]);
@@ -226,6 +247,8 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 	}
 	if (var)
 		free(var);
+	data[0] -= 1;
+//	dprintf(2, "exp_arg = %s\n", exp_arg);
 	return (free(arg), exp_arg);
 }
 
@@ -263,12 +286,20 @@ int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
 		init_data(data);
 		while (args[i][++j])
 		{
+//			dprintf(2, "args[i] = %s\n", args[i]);
+//			dprintf(2, "args[i][j] = %c\n", args[i][j]);
+//			dprintf(2, "dol->d->n = %d\n", dol->d->n);
 			if (args[i][j] == '$')
 			{
 //				if (!dol->d)
 //					dprintf(2, "dol->d n'existe pas\n");
 				if (dol->d->n)
+				{
+//					dprintf(2, "args[i] = %s\n", args[i]);
+//					dprintf(2, "args[i][j] = %c\n", args[i][j]);
+//					dprintf(2, "dol->d->n = %d\n", dol->d->n);
 					args[i] = expand_dol(ms, args[i], data, &dol);
+				}
 				if (!args[i])
 					return (1);
 //				dol = dol->next;

@@ -53,6 +53,7 @@ int	count_dol_chars_in(t_ms *ms, int i)
 	count = 0;
 	while (ms->lexer->src[ms->lexer->cur_pos + i]
 		&& ms->lexer->src[ms->lexer->cur_pos + i] != '$'
+		&& ms->lexer->src[ms->lexer->cur_pos + i] != '='
 		&& ms->lexer->src[ms->lexer->cur_pos + i] != '\"'
 		&& ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0)
 		&& !ft_isand(ms->lexer->src, ms->lexer->cur_pos + i)) // A VERIFIER
@@ -70,6 +71,7 @@ int	count_dol_chars_out(t_ms *ms, int i)
 	count = 0;
 	while (ms->lexer->src[ms->lexer->cur_pos + i]
 		&& ms->lexer->src[ms->lexer->cur_pos + i] != '$'
+		&& ms->lexer->src[ms->lexer->cur_pos + i] != '='
 		&& ms->lexer->src[ms->lexer->cur_pos + i] != '\"'
 		&& ms->lexer->src[ms->lexer->cur_pos + i] != '\''
 		&& ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0)
