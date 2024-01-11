@@ -133,6 +133,7 @@ typedef struct s_ms
 	t_ast		*cur_node;
 	t_list		*pidlst;
 	int			exit_code;
+	int			previous_exit_code;
 	int			in;
 	int			out;
 	t_list		*hdlst;

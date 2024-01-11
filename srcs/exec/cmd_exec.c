@@ -425,6 +425,7 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	{
 //		dprintf(2, "pid2 = %d\n", pid);
 		//signal(SIGINT, SIG_IGN);
+//		signal(SIGINT, SIG_IGN);
 		ms_signals();
 		// preprompt_signals();
 		//postprompt_signals();

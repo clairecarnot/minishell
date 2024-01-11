@@ -1,4 +1,5 @@
 #include "../../include/exec.h"
+#include "../../include/signals.h"
 
 t_list	*ft_lstnew_int(int pid)//pid veut dire pid ou int du dol
 {
@@ -102,11 +103,13 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 		}
 		else if (pid == 0)
 		{
+			child_signals();
 			if (exec_cmdpipe(ms, node, tmp_fd))
 				return (1); //A VERIF
 		}
 		else
 		{
+			ms_signals();
 			// dprintf(2, "pid = %d\n", pid);
 			close_if(&tmp_fd);
 			tmp_fd = dup(STDIN_FILENO);
@@ -131,6 +134,7 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 		}
 		else if (pid == 0)
 		{
+			child_signals();
 			dup2(fd[1], STDOUT_FILENO);
 			//a proteger
 			close_if(&fd[0]); //a proteg ?
@@ -140,6 +144,7 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 		}
 		else
 		{
+			ms_signals();
 			// dprintf(2, "pid = %d\n", pid);
 			close_if(&fd[1]);
 			close_if(&tmp_fd);

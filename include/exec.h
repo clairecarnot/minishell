@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/08 14:01:43 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/11 10:41:35 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	close_if(int *fd);
 //----------------------- expand.c ------------------------
 int	is_same_len(char *s1, char *s2);
 char	*ft_getenv(t_ms *ms, char *var);
+char	*exp_exitcode(t_ms *ms);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
 char	*skip_dol(char *arg, int i, int j, int data[2]);
 char	*repl_dol(char *arg, char *var, int i, int j);

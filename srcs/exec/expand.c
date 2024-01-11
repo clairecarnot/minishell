@@ -40,6 +40,19 @@ char	*ft_getenv(t_ms *ms, char *var)
 	return (NULL);
 }
 
+char	*exp_exitcode(t_ms *ms)
+{
+	char	*new_var;
+
+	new_var = ft_itoa(ms->previous_exit_code);
+	if (!new_var)
+	{
+		ms->exit_code = 255;
+		return (NULL);
+	}
+	return (new_var);
+}
+
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 {
 	char	*var;
@@ -47,6 +60,8 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	char	*new_var;
 
 	value = NULL;
+	if (arg[i + 1] == '?')
+		return (exp_exitcode(ms));
 	var = ft_calloc(j - i, sizeof(char));
 	if (!var)
 	{

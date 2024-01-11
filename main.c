@@ -146,6 +146,7 @@ t_ms	*init_ms(char **env)
 	minishell->cur_node = NULL;
 	minishell->pidlst = NULL;
 	minishell->exit_code = 0;
+	minishell->previous_exit_code = 0;
 	minishell->in = -1;
 	minishell->out = -1;
 	minishell->hdlst = NULL;
@@ -299,6 +300,13 @@ int	main(int argc, char **argv, char **env)
 		minishell->line = display_prompt();
 		if (!minishell->line)
 			return (free_minishell(minishell, 0), 0);//verifier protec
+		if (g_exit_code == 2)
+		{
+			minishell->exit_code = 130;
+			g_exit_code = 0;
+		}
+		minishell->previous_exit_code = minishell->exit_code;
+		minishell->exit_code = 0;
 //		postprompt_signals();
 		// dprintf(2, "ms->line = %s\n", minishell->line);
 		// minishell->line = remove_dolq(minishell);
