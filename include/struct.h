@@ -33,6 +33,9 @@ typedef struct s_cmd
 	char	**bin_paths;
 	int	abs_or_rel;
 	int	valid_path;
+	int	redir;
+	int	valid_redir;
+	char	*invalid_io;
 }		t_cmd;
 
 typedef struct s_ast	t_ast;

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/11 10:41:35 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/11 18:33:21 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,19 @@ int	exec_orif(t_ast *node, t_ms *ms);
 int	execute(t_ast *node, t_ms *ms);
 int	pre_exec(t_ms *ms);
 
-//----------------------- cmd_exec.c ------------------------
+//----------------------- cmd_hdoc.c ------------------------
+void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd);
+char	random_char(t_ms *ms, t_cmd *cmd);
+char	*generate_hdname(t_ms *ms, t_cmd *cmd);
+
+//----------------------- cmd_redirs.c ------------------------
 int	handle_less(t_ms *ms, t_redirs *redirs);
+int	handle_less(t_ms *ms, t_redirs *redirs);
+int	handle_great(t_ms *ms, t_redirs *redirs);
+int	handle_dgreat(t_ms *ms, t_redirs *redirs);
 int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd);
+
+//----------------------- cmd_exec.c ------------------------
 t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env);
 int	exec_builtin(t_ms *ms, t_cmd *cmd);
 int	do_cmd(t_cmd *cmd, t_ms *ms, char **env);
@@ -66,11 +76,13 @@ int	is_same_len(char *s1, char *s2);
 char	*ft_getenv(t_ms *ms, char *var);
 char	*exp_exitcode(t_ms *ms);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
-char	*skip_dol(char *arg, int i, int j, int data[2]);
+//char	*skip_dol(char *arg, int i, int j, int data[2]);
+char	*skip_dol(char *arg, int i, int j, int data[3]);
 char	*repl_dol(char *arg, char *var, int i, int j);
 char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol);
 int	dol_standalone(char *arg, t_dol **dol);
-char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol);
+//char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol);
+char	*expand_dol(t_ms *ms, char *arg, int data[3], t_dol **dol);
 int	cmd_expand(t_ms *ms, char **args, t_dol *dol);
 
 

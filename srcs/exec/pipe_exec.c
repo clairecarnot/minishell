@@ -38,6 +38,8 @@ int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 //	exit(300);
 	close_if(&ms->in);
 	close_if(&ms->out);
+//	dprintf(2, "args[0] = %s\n", cmd->args[0]);
+//	dprintf(2, "avant execve\n");
 	execve(cmd->args[0], cmd->args, env);
 	dprintf(2, "execve fails\n");
 //	(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?
@@ -47,6 +49,7 @@ int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 
 int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 {
+//	dprintf(2, "exec cmdppipe\n");
 	t_cmd	*cmd;
 	char	**env;
 	int	exit_code;
@@ -57,11 +60,23 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 
 	env = lst_to_tab(ms->env);
 	if (!env)
-		return (1);
+		free_minishell(ms, 1);
+//		return (1);
 	cmd = node_to_cmd(ms, node, env);
 	if (!cmd)
-		return (free_tab(env), 1);
+		return (free_tab(env), free_minishell(ms, 1), 1);
+//		return (free_tab(env), 1);
 	cmd->env = env;
+	if (cmd->redir && !cmd->valid_redir)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(cmd->invalid_io, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd("\n", 2);
+		(free_cmd(cmd), free_exit(ms), exit(1));
+	}
+//	dprintf(2, "after redirs\n");
 	if (cmd->builtin != NOBUILT)
 		exit_code = exec_builtin(ms, cmd);
 	else
@@ -94,7 +109,7 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 	else if (node->type == CMD && node->parent->right == node && node->parent && node->parent->type == PIPE \
 	&& (!node->parent->parent || node->parent->parent->type != PIPE))// end cmd
 	{
-		// dprintf(2, "END CMD\n");
+//		dprintf(2, "END CMD\n");
 		pid = fork();
 		if (pid == -1)
 		{
@@ -122,7 +137,7 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 	}
 	else if (node->type == CMD)// middle cmd
 	{
-		// dprintf(2, "MID CMD\n");
+//		dprintf(2, "MID CMD\n");
 		pipe(fd);// a proteger
 		// dprintf(2, "pipe[0] = %d\n", fd[0]);
 		// dprintf(2, "pipe[1] = %d\n", fd[1]);
@@ -170,9 +185,9 @@ int	exec_pipeline(t_ast *node, t_ms *ms)
 
 	fd[0] = -1;
 	fd[1] = -1;
-    tmp_fd = dup(STDIN_FILENO); //a proteger
+	tmp_fd = dup(STDIN_FILENO); //a proteger
 	// dprintf(2, "tmp = %d\n", tmp_fd);
-    pipex(ms, node, tmp_fd, fd);
+	pipex(ms, node, tmp_fd, fd);
 	close_if(&tmp_fd);
 	// tmp = ms->pidlst;
 	// while (tmp)

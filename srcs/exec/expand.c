@@ -81,7 +81,7 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	return (free(value), free(var), new_var);
 }
 
-char	*skip_dol(char *arg, int i, int j, int data[2])
+char	*skip_dol(char *arg, int i, int j, int data[3])
 {
 //	dprintf(2, "skip dol\n");
 	char	*new_arg;
@@ -200,10 +200,10 @@ int	dol_standalone(char *arg, t_dol **dol)
 	return (0);
 }
 
-char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
+char	*expand_dol(t_ms *ms, char *arg, int data[3], t_dol **dol)
 {
 //	dprintf(2, "expand dol1\n");
-//	dprintf(2, "arg = %s\n", arg);
+	dprintf(2, "arg = %s\n", arg);
 //	dprintf(2, "dol_nb =  %d\n", data[0]);
 	int		i;
 	int		j;
@@ -261,7 +261,10 @@ char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol)
 		return (free(arg), NULL);
 	}
 	if (var)
+	{
+		data[2] += ft_strlen(var) - 1;
 		free(var);
+	}
 	data[0] -= 1;
 //	dprintf(2, "exp_arg = %s\n", exp_arg);
 	return (free(arg), exp_arg);
@@ -271,6 +274,7 @@ void	init_data(int data[2])
 {
 	data[0] = 0;
 	data[1] = 0;
+	data[2] = 0;
 }
 
 void	update_expand_pos(int data[2], int *j, t_dol **dol)
@@ -278,7 +282,10 @@ void	update_expand_pos(int data[2], int *j, t_dol **dol)
 	data[0] += 1;
 	if (data[1] == 1)
 		*j -= 1;
+	if (data[2] > 0)
+		*j += data[2];
 	data[1] = 0;
+	data[2] = 0;
 	(*dol)->d = (*dol)->d->next;
 	(*dol)->c = (*dol)->c->next;
 }
@@ -287,10 +294,12 @@ int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
 {
 	int	i;
 	int	j;
-	int	data[2];
+	int	data[3];
 	//data[0] = dol_count
 	//data[1] = 1 means a dol has been skipped and we need to go back from 1 char 
 	// in the loop (j -= 1)
+	//data[2] = x means a $ has been replaced and we move from x chars since they are
+	//not to be analyzed in the loop
 
 	i = -1;
 	if (!args)
@@ -301,9 +310,9 @@ int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
 		init_data(data);
 		while (args[i][++j])
 		{
-//			dprintf(2, "args[i] = %s\n", args[i]);
-//			dprintf(2, "args[i][j] = %c\n", args[i][j]);
-//			dprintf(2, "dol->d->n = %d\n", dol->d->n);
+			dprintf(2, "args[i] = %s\n", args[i]);
+			dprintf(2, "args[i][j] = %c\n", args[i][j]);
+			dprintf(2, "dol->d->n = %d\n", dol->d->n);
 			if (args[i][j] == '$')
 			{
 //				if (!dol->d)
