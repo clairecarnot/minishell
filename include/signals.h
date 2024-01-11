@@ -7,13 +7,12 @@
 # include "struct.h"
 
 //----------------------- signals.c ------------------------
-void	ignore_sigquit(void);
+void	sig_hdoc(int signal);
+void	hd_signals(void);
 void	signal_newprompt(int signal);
 void	preprompt_signals(void);
-void	signal_newline(int signal);
-void	postprompt_signals(void);
 void	child_signals(void);
-void	ms_signals(void);
 void	postfork_ms_sig(int signal);
+void	ms_signals(void);
 
 #endif

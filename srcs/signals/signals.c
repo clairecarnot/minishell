@@ -3,6 +3,20 @@
 
 int	g_exit_code = 0;
 
+void	sig_hdoc(int signal)
+{
+	(void)signal;
+	close(0);
+	ft_putstr_fd("\n", 2);
+	g_exit_code = 2;
+}
+
+void	hd_signals(void)
+{
+	signal(SIGINT, sig_hdoc);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 /*
  * signal_new_prompt
  * Set the following actions when SIGINT is received:
@@ -36,7 +50,7 @@ void	signal_newprompt(int signal)
 
 void	preprompt_signals(void)
 {
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN); //A PROTEGER
 	signal(SIGINT, signal_newprompt);
 }
 

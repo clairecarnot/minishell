@@ -90,7 +90,7 @@ int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
 	hdname = generate_hdname(ms, cmd);
 	// hdname = "name";
 	// (void)cmd;
-	dprintf(2, "hdname = %s\n", hdname);
+//	dprintf(2, "hdname = %s\n", hdname);
 	fd = open(hdname, O_CREAT |  O_RDWR, 0666);// u random peut etre
 	if (fd < 0)
 	{
@@ -100,23 +100,31 @@ int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
 	}
 	dup2(ms->in, STDIN_FILENO);
 	// dprintf(2, "%d\n", fd);
+	hd_signals();
 	while (1)
 	{
 		line = readline("> ");
+		if (g_exit_code == 2)
+		{
+//			open("/dev/stdin", O_RDONLY); //ne marche pas
+			open("/dev/stdout", O_RDONLY); //A PROTEGER
+			close_if(&fd);
+			return (1);
+		}
 		if (!line)
 		{
 			perror("minishell: readline");
 			ms->exit_code = 1;
 			close_if(&fd);
-			unlink("/tmp/here_doc");
+			//unlink("/tmp/here_doc");
 			return (1);
 		}
 		// dprintf(2, "lim = %s\n", redirs->filename);
-		dprintf(2, "line0 = %s\n", line);
+//		dprintf(2, "line0 = %s\n", line);
 		linelen = ft_strlen(line);
 		if (ft_strncmp(line, redirs->filename, limlen) == 0 && (linelen == limlen))
 		{
-			dprintf(2, "line = %s\n", line);
+//			dprintf(2, "line = %s\n", line);
 			free(line);
 			// close_if(&fd);
 			break ;
@@ -134,6 +142,7 @@ int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
 	close_if(&fd);// a proteger
 	// dprintf(2, "fin handle less\n");
 	// dprintf(2, "%d\n", STDIN_FILENO);
+	preprompt_signals();
 	return (0);
 }
 
