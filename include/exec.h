@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/12 12:12:34 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/12 13:57:19 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int	close_if(int *fd);
 int	is_same_len(char *s1, char *s2);
 char	*ft_getenv(t_ms *ms, char *var);
 char	*exp_exitcode(t_ms *ms);
+int	isset(char c, char const *set);
+char	*trim_beg(char const *s1, char const *set);
 int	count_consec_spc(char *value);
 char	*ft_trimvar(char *value);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);

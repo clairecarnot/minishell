@@ -53,6 +53,48 @@ char	*exp_exitcode(t_ms *ms)
 	return (new_var);
 }
 
+int	isset(char c, char const *set)
+{
+	int	i;
+
+	i = 0;
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	*trim_beg(char const *s1, char const *set)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	*d;
+
+	i = 0;
+	if (!s1 || !set)
+		return (0x0);
+	while (s1[i] && isset(s1[i], set))
+		i++;
+	j = ft_strlen(s1) - 1;
+//	while (j > i && isset(s1[j], set))
+//		j--;
+	d = malloc(sizeof(char) * (j - i + 2));
+	if (!d)
+		return (0x0);
+	k = 0;
+	while (i <= j)
+	{
+		d[k] = s1[i];
+		k++;
+		i++;
+	}
+	d[k] = '\0';
+	return (d);
+}
 int	count_consec_spc(char *value)
 {
 	int	i;
@@ -79,7 +121,7 @@ int	count_consec_spc(char *value)
 
 char	*ft_trimvar(char *value)
 {
-	dprintf(2, "value = %s\n", value);
+//	dprintf(2, "value = %s\n", value);
 	char	*trim_val;
 	char	*new_val;
 	int	i;
@@ -88,15 +130,15 @@ char	*ft_trimvar(char *value)
 	i = 0;
 	j = 0;
 	trim_val = NULL;
-	dprintf(2, "count = %lu\n", ft_strlen(value) - count_consec_spc(value) + 1);
+//	dprintf(2, "count = %lu\n", ft_strlen(value) - count_consec_spc(value) + 1);
 	new_val = ft_calloc(ft_strlen(value) - count_consec_spc(value) + 1,
 			sizeof(char));
 	if (!new_val)
 		return (NULL);
 	while (value[i])
 	{		
-		dprintf(2, "value[i] = %c", value[i]);
-		dprintf(2, "-\n");
+//		dprintf(2, "value[i] = %c", value[i]);
+//		dprintf(2, "-\n");
 		new_val[j] = value[i];
 		if (value[i] == ' ')
 		{
@@ -111,11 +153,11 @@ char	*ft_trimvar(char *value)
 		}
 	}
 	new_val[j] = '\0';
-	dprintf(2, "new_val = %s\n", new_val);
-	trim_val = ft_strtrim(new_val, " ");
+//	dprintf(2, "new_val = %s\n", new_val);
+	trim_val = trim_beg(new_val, " ");
 	if (!trim_val)
 		return (free(new_val), NULL);
-	dprintf(2, "trim_val = %s\n", trim_val);
+//	dprintf(2, "trim_val = %s\n", trim_val);
 	return (free(new_val), trim_val);
 }
 
