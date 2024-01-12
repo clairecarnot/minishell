@@ -53,72 +53,6 @@ char	*exp_exitcode(t_ms *ms)
 	return (new_var);
 }
 
-int	count_consec_spc(char *value)
-{
-	int	i;
-	int	j;
-	int	consec_spc;
-
-	i = 0;
-	consec_spc = 0;
-	while (value[i])
-	{
-		j = 1;
-		if (value[i] == ' ')
-		{
-			while (value[i + j] && value[i + j] == ' ')
-			{
-				consec_spc++;
-				j++;
-			}
-		}
-		i += j;
-	}
-	return (consec_spc);
-}
-
-char	*ft_trimvar(char *value)
-{
-	dprintf(2, "value = %s\n", value);
-	char	*trim_val;
-	char	*new_val;
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	trim_val = NULL;
-	dprintf(2, "count = %lu\n", ft_strlen(value) - count_consec_spc(value) + 1);
-	new_val = ft_calloc(ft_strlen(value) - count_consec_spc(value) + 1,
-			sizeof(char));
-	if (!new_val)
-		return (NULL);
-	while (value[i])
-	{		
-		dprintf(2, "value[i] = %c", value[i]);
-		dprintf(2, "-\n");
-		new_val[j] = value[i];
-		if (value[i] == ' ')
-		{
-			while (value[i] && value[i] == ' ')
-				i++;
-			j++;
-		}
-		else
-		{
-			i++;
-			j++;
-		}
-	}
-	new_val[j] = '\0';
-	dprintf(2, "new_val = %s\n", new_val);
-	trim_val = ft_strtrim(new_val, " ");
-	if (!trim_val)
-		return (free(new_val), NULL);
-	dprintf(2, "trim_val = %s\n", trim_val);
-	return (free(new_val), trim_val);
-}
-
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 {
 	char	*var;
@@ -138,7 +72,7 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	value = ft_getenv(ms, var);
 	if (!value)
 		return (free(var), NULL);
-	new_var = ft_trimvar(value);
+	new_var = ft_strtrim(value, " ");
 	if (!new_var)
 	{
 		ms->exit_code = 255;
@@ -334,73 +268,4 @@ char	*expand_dol(t_ms *ms, char *arg, int data[3], t_dol **dol)
 	data[0] -= 1;
 //	dprintf(2, "exp_arg = %s\n", exp_arg);
 	return (free(arg), exp_arg);
-}
-
-void	init_data(int data[2])
-{
-	data[0] = 0;
-	data[1] = 0;
-	data[2] = 0;
-}
-
-void	update_expand_pos(int data[2], int *j, t_dol **dol)
-{
-	data[0] += 1;
-	if (data[1] == 1)
-		*j -= 1;
-	if (data[2] > 0)
-		*j += data[2];
-	data[1] = 0;
-	data[2] = 0;
-	(*dol)->d = (*dol)->d->next;
-	(*dol)->c = (*dol)->c->next;
-}
-
-int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
-{
-	int	i;
-	int	j;
-	int	data[3];
-	//data[0] = dol_count
-	//data[1] = 1 means a dol has been skipped and we need to go back from 1 char 
-	// in the loop (j -= 1)
-	//data[2] = x means a $ has been replaced and we move from x chars since they are
-	//not to be analyzed in the loop
-
-	i = -1;
-	if (!args)
-		return (0);
-	while (args[++i])
-	{
-		j = -1;
-		init_data(data);
-		while (args[i][++j])
-		{
-//			dprintf(2, "args[i] = %s\n", args[i]);
-//			dprintf(2, "args[i][j] = %c\n", args[i][j]);
-//			dprintf(2, "dol->d->n = %d\n", dol->d->n);
-			if (args[i][j] == '$')
-			{
-//				if (!dol->d)
-//					dprintf(2, "dol->d n'existe pas\n");
-				if (dol->d->n)
-				{
-//					dprintf(2, "args[i] = %s\n", args[i]);
-//					dprintf(2, "args[i][j] = %c\n", args[i][j]);
-//					dprintf(2, "dol->d->n = %d\n", dol->d->n);
-//					if (i == 0)
-//						args[i] = expand_dol_first(ms, args[i], data, &dol);
-//					else
-						args[i] = expand_dol(ms, args[i], data, &dol);
-				}
-				if (!args[i])
-					return (1);
-//				dol = dol->next;
-//				dol_count++;
-				update_expand_pos(data, &j, &dol);
-			}
-		}
-	}
-//	dprintf(2, "return 0\n");
-	return (0);
 }
