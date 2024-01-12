@@ -189,7 +189,7 @@ char	*get_varvalue(t_ms *ms, char *arg, int i, int j)
 	return (free(value), free(var), new_var);
 }
 
-char	*skip_dol(char *arg, int i, int j, int data[3])
+char	*skip_dol(char *arg, int i, int j, int data[5])
 {
 //	dprintf(2, "skip dol\n");
 	char	*new_arg;
@@ -308,7 +308,7 @@ int	dol_standalone(char *arg, t_dol **dol)
 	return (0);
 }
 
-char	*expand_dol(t_ms *ms, char *arg, int data[3], t_dol **dol)
+char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol)
 {
 //	dprintf(2, "expand dol1\n");
 //	dprintf(2, "arg = %s\n", arg);
@@ -378,50 +378,133 @@ char	*expand_dol(t_ms *ms, char *arg, int data[3], t_dol **dol)
 	return (free(arg), exp_arg);
 }
 
-void	init_data(int data[2])
+void	init_data(int data[5])
 {
 	data[0] = 0;
 	data[1] = 0;
 	data[2] = 0;
+	data[3] = 0;
+	data[4] = 0;
 }
 
-void	update_expand_pos(int data[2], int *j, t_dol **dol)
+void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol)
 {
-	data[0] += 1;
-	if (data[1] == 1)
-		*j -= 1;
-	if (data[2] > 0)
-		*j += data[2];
+	if (data[3])
+	{
+		*i += 1;
+		*j = data[4];
+	}
+	else
+	{
+		data[0] += 1;
+		if (data[1] == 1)
+			*j -= 1;
+		if (data[2] > 0)
+			*j += data[2];
+	}
 	data[1] = 0;
 	data[2] = 0;
+	data[3] = 0;
+	data[4] = 0;
 	(*dol)->d = (*dol)->d->next;
 	(*dol)->c = (*dol)->c->next;
 }
 
-int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
+int	contains_spc(char *arg, int j, int data[5])
+{
+	int	i;
+
+	i = 0;
+	if (data[1])
+		return (0);
+	while (arg[j] && i < data[2])
+	{
+		if (arg[j] == ' ')
+			return (1);
+		j++;
+		i++;
+	}
+	return (0);
+}
+
+char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
+{
+	char	**new_args;
+	char	*beg;
+	char	*end;
+	int	size;
+	int	k;
+
+	size = 0;
+	beg = NULL;
+	end = NULL;
+	if (j == 0)
+	{
+		while (cmd->args[i][j] && cmd->args[i][j] != ' ')
+			j++;
+	}
+	beg = ft_calloc(j + 1, sizeof(char));
+	if (!beg)
+		return (NULL);
+	ft_strlcpy(beg, cmd->args[i], j);
+	end = ft_calloc(ft_strlen(&cmd->args[i][j + 1]) + 1, sizeof(char));
+	if (!end)
+		return (free(beg), NULL);
+	ft_strlcpy(beg, &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1]));
+	while (cmd->args[size])
+		size++;
+	new_args = ft_calloc(size + 2, sizeof(char *));
+	if (!new_args)
+		return (free(beg), free(end), NULL);
+	k = 0;
+	while (k < i)
+	{
+		new_args[k] = ft_strdup(cmd->args[k]);
+		if (!new_args[k])
+			return (free_tab(new_args), free(beg), free(end), NULL);
+		k++;
+	}
+	new_args[k++] = beg;
+	new_args[k++] = end;
+	while (k < size)
+	{
+		new_args[k] = ft_strdup(cmd->args[k - 1]);
+		if (!new_args[k])
+			return (free_tab(new_args), NULL);
+		k++;
+	}
+	new_args[k] = NULL;
+	data[3] = 1;
+	data[4] = ft_strlen(cmd->args[i]) - (data[2] - ft_strlen(new_args[i]));
+	return (free_tab(cmd->args), new_args);
+}
+
+int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 {
 	int	i;
 	int	j;
-	int	data[3];
+	int	data[5];
 	//data[0] = dol_count
 	//data[1] = 1 means a dol has been skipped and we need to go back from 1 char 
 	// in the loop (j -= 1)
 	//data[2] = x means a $ has been replaced and we move from x chars since they are
 	//not to be analyzed in the loop
+	//data[3] = 1 means the list of args has been redefined
+	//data[4] = x gives the new start of j, after the list of args has been redefined
 
 	i = -1;
-	if (!args)
+	if (!cmd->args)
 		return (0);
-	while (args[++i])
+	while (cmd->args[++i])
 	{
 		j = -1;
 		init_data(data);
-		while (args[i][++j])
+		while (cmd->args[i][++j])
 		{
-//			dprintf(2, "args[i] = %s\n", args[i]);
-//			dprintf(2, "args[i][j] = %c\n", args[i][j]);
+//			dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
+//			dprintf(2, "cmd->args[i][j] = %c\n", cmd->args[i][j]);
 //			dprintf(2, "dol->d->n = %d\n", dol->d->n);
-			if (args[i][j] == '$')
+			if (cmd->args[i][j] == '$')
 			{
 //				if (!dol->d)
 //					dprintf(2, "dol->d n'existe pas\n");
@@ -430,16 +513,24 @@ int	cmd_expand(t_ms *ms, char **args, t_dol *dol)
 //					dprintf(2, "args[i] = %s\n", args[i]);
 //					dprintf(2, "args[i][j] = %c\n", args[i][j]);
 //					dprintf(2, "dol->d->n = %d\n", dol->d->n);
-//					if (i == 0)
-//						args[i] = expand_dol_first(ms, args[i], data, &dol);
-//					else
-						args[i] = expand_dol(ms, args[i], data, &dol);
+					if (i == 0)
+					{
+						cmd->args[i] = expand_dol_first(ms, cmd->args[i], data, &dol);
+						if (!cmd->args[i])
+							return (1);
+						if (contains_spc(cmd->args[i], j, data))
+							cmd->args = redefine_args(cmd, i, j, data);
+						if (!cmd->args)
+							return (1);
+					}
+					else
+					{
+						cmd->args[i] = expand_dol(ms, cmd->args[i], data, &dol);
+						if (!cmd->args[i])
+							return (1);
+					}
 				}
-				if (!args[i])
-					return (1);
-//				dol = dol->next;
-//				dol_count++;
-				update_expand_pos(data, &j, &dol);
+				update_expand_pos(data, &i, &j, &dol);
 			}
 		}
 	}

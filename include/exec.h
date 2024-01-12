@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/12 13:57:19 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/12 18:04:46 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	handle_dgreat(t_ms *ms, t_redirs *redirs);
 int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd);
 
 //----------------------- cmd_exec.c ------------------------
-t_cmd	*node_to_cmd(t_ms *ms, t_ast *node, char **env);
+t_cmd	*init_cmd(char **env);
+int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd);
 int	exec_builtin(t_ms *ms, t_cmd *cmd);
 int	do_cmd(t_cmd *cmd, t_ms *ms, char **env);
 int	exec_cmd(t_ast *node, t_ms *ms);
@@ -44,7 +45,7 @@ int	exec_cmd(t_ast *node, t_ms *ms);
 //----------------------- cmd_path.c ------------------------
 void	abs_rel_path(t_cmd *cmd);
 char	**get_bin_paths(char **env);
-void	build_path(t_cmd *cmd);
+int	build_path(t_cmd *cmd);
 
 //----------------------- cmd_utils.c ------------------------
 int	equals(char *s1, char *s2);
@@ -72,6 +73,10 @@ void	free_cmd(t_cmd *cmd);
 int	close_if(int *fd);
 
 //----------------------- expand.c ------------------------
+char	*ft_trimvar_first(char *value);
+char	*get_varvalue_first(t_ms *ms, char *arg, int i, int j);
+char	*expand_dol_first(t_ms *ms, char *arg, int data[5], t_dol **dol);
+
 int	is_same_len(char *s1, char *s2);
 char	*ft_getenv(t_ms *ms, char *var);
 char	*exp_exitcode(t_ms *ms);
@@ -80,14 +85,16 @@ char	*trim_beg(char const *s1, char const *set);
 int	count_consec_spc(char *value);
 char	*ft_trimvar(char *value);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
-//char	*skip_dol(char *arg, int i, int j, int data[2]);
-char	*skip_dol(char *arg, int i, int j, int data[3]);
+char	*skip_dol(char *arg, int i, int j, int data[5]);
 char	*repl_dol(char *arg, char *var, int i, int j);
 char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol);
 int	dol_standalone(char *arg, t_dol **dol);
-//char	*expand_dol(t_ms *ms, char *arg, int data[2], t_dol **dol);
-char	*expand_dol(t_ms *ms, char *arg, int data[3], t_dol **dol);
-int	cmd_expand(t_ms *ms, char **args, t_dol *dol);
+char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol);
+void	init_data(int data[5]);
+void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol);
+int	contains_spc(char *arg, int j, int data[5]);
+char	**redefine_args(t_cmd *cmd, int i, int j, int data[5]);
+int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol);
 
 
 #endif

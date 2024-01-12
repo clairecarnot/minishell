@@ -283,7 +283,14 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	if (!isatty(0)) //pour ./minishell | ./minishell (SIGPIPE - note {a})
-		exit(0);
+	{
+		//get_next_line()
+		//si arg envoye = minishell ( ./minishell | ./minishell ) ( bash | bash )
+			exit(0);
+		//sinon (echo "echo coucou" | ./minishell) ( echo "echo coucou" | bash )
+		//lexer, parser, exec mais pas dans une boucle surtout
+		//exit(0);
+	}
 	else
 	{
 		fd = open("/dev/stdin", O_RDWR); //A PROTEGER

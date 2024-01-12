@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 15:55:31 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/12 15:48:47 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**get_bin_paths(char **env)
 	return (binaries);
 }
 
-void	build_path(t_cmd *cmd)
+int	build_path(t_cmd *cmd)
 {
 //	dprintf(2, "args[0] = %s\n", cmd->args[0]);
 	char	*path;
@@ -58,15 +58,16 @@ void	build_path(t_cmd *cmd)
 	{
 		path = ft_strjoin_slash(cmd->bin_paths[i], cmd->args[0]);
 		if (!path)
-			return ;
+			return (1);
 		if (access(path, F_OK | X_OK) == 0)
 		{
 			free(cmd->args[0]);
 			cmd->args[0] = path;
 			cmd->valid_path = 1;
-			return ;
+			return (0);
 		}
 		free(path);
 		i++;
 	}
+	return (0);
 }

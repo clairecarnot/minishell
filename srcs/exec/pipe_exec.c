@@ -60,13 +60,13 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 
 	env = lst_to_tab(ms->env);
 	if (!env)
-		free_minishell(ms, 1);
-//		return (1);
-	cmd = node_to_cmd(ms, node, env);
+		free_minishell(ms, 255);
+	cmd = init_cmd(env);
 	if (!cmd)
-		return (free_tab(env), free_minishell(ms, 1), 1);
-//		return (free_tab(env), 1);
-	cmd->env = env;
+		free_minishell(ms, 255); //env deja free, si 1 => badmalloc : free ms
+	exit_code = node_to_cmd(ms, node, cmd);
+	if (exit_code != 0)
+		(free_cmd(cmd), free_minishell(ms, exit_code));
 	if (cmd->redir && !cmd->valid_redir)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -81,11 +81,9 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmdpipe(cmd, ms, env);
-	(free_cmd(cmd), free_exit(ms), exit(exit_code)); //pour exit les builtins
+	(free_cmd(cmd), free_minishell(ms, exit_code)); //pour exit les builtins
+//	(free_cmd(cmd), free_exit(ms), exit(exit_code));
 //	dprintf(2, "exit code = %d\n", exit_code);
-//	free_cmd(cmd);
-//	free_exit(ms);
-//	exit(exit_code);
 	return (0); //on exit dans tous les cas avant
 }
 
