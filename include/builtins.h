@@ -93,5 +93,18 @@ int	exec_pwd(t_ms *ms, t_cmd *cmd);
 //xxxxxxxxxxxxxxxxxxxxxxxxx cd xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_cd.c -----------------------
 int	exec_cd(t_ms *ms, t_cmd *cmd);
+char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name);
+char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line);
+
+//----------------------- cmd_cd_pwd_exp.c -----------------------
+char	*replace_oldpwd_exp2(t_ms *ms, t_cmd *cmd);
+void	replace_oldpwd_exp(t_ms *ms, t_cmd *cmd);
+char	*add_qvar_pwd(t_ms *ms, t_cmd* cmd, char *content, int i);
+void	replace_pwd_exp(t_ms *ms, t_cmd *cmd);
+
+//----------------------- cmd_cd_pwd_env.c -----------------------
+char	*replace_oldpwd_env2(t_ms *ms, t_cmd *cmd);
+void	replace_oldpwd_env(t_ms *ms, t_cmd *cmd);
+void	replace_pwd_env(t_ms *ms, t_cmd *cmd);
 
 #endif
