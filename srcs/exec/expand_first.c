@@ -2,6 +2,7 @@
 
 char	*ft_trimvar_first(char *value)
 {
+//	dprintf(2, "trim var first\n");
 //	dprintf(2, "value = %s\n", value);
 //	char	*trim_val;
 	char	*new_val;
@@ -39,11 +40,13 @@ char	*ft_trimvar_first(char *value)
 //	if (!trim_val)
 //		return (free(new_val), NULL);
 //	dprintf(2, "trim_val = %s\n", trim_val);
+//	dprintf(2, "new_val = %s\n", new_val);
 	return (new_val);
 }
 
 char	*get_varvalue_first(t_ms *ms, char *arg, int i, int j)
 {
+//	dprintf(2, "var value first\n");
 	char	*var;
 	char	*value;
 	char	*new_var;
@@ -72,6 +75,7 @@ char	*get_varvalue_first(t_ms *ms, char *arg, int i, int j)
 
 char	*expand_dol_first(t_ms *ms, char *arg, int data[5], t_dol **dol)
 {
+//	dprintf(2, "expand dol first\n");
 //	dprintf(2, "expand dol1\n");
 //	dprintf(2, "arg = %s\n", arg);
 //	dprintf(2, "dol_nb =  %d\n", data[0]);
@@ -113,7 +117,7 @@ char	*expand_dol_first(t_ms *ms, char *arg, int data[5], t_dol **dol)
 	while (arg[j] && arg[j] != '$' && arg[j] != '\"' && arg[j] != '\''
 			&& (*dol)->c->n--)
 		j++;
-	var = get_varvalue(ms, arg, i, j);
+	var = get_varvalue_first(ms, arg, i, j);
 //	dprintf(2, "var = %s\n", var);
 	if (!var && ms->exit_code == 255)
 		return (free(arg), NULL);
@@ -132,7 +136,8 @@ char	*expand_dol_first(t_ms *ms, char *arg, int data[5], t_dol **dol)
 	}
 	if (var)
 	{
-		data[2] += ft_strlen(var) - 1;
+		data[2] += ft_strlen(var);
+//		dprintf(2, "data[2] = %d\n", data[2]);
 		free(var);
 	}
 	data[0] -= 1;

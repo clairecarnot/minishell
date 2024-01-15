@@ -370,7 +370,7 @@ char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol)
 	}
 	if (var)
 	{
-		data[2] += ft_strlen(var) - 1;
+		data[2] += ft_strlen(var);
 		free(var);
 	}
 	data[0] -= 1;
@@ -400,7 +400,7 @@ void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol)
 		if (data[1] == 1)
 			*j -= 1;
 		if (data[2] > 0)
-			*j += data[2];
+			*j += data[2] - 1;
 	}
 	data[1] = 0;
 	data[2] = 0;
@@ -429,6 +429,10 @@ int	contains_spc(char *arg, int j, int data[5])
 
 char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 {
+//	dprintf(2, "i arg = %d\n", i);
+//	dprintf(2, "j arg = %d\n", j);
+//	dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
+//	dprintf(2, "cmd->args[i][j] = %c\n", cmd->args[i][j]);
 	char	**new_args;
 	char	*beg;
 	char	*end;
@@ -438,19 +442,23 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 	size = 0;
 	beg = NULL;
 	end = NULL;
-	if (j == 0)
-	{
-		while (cmd->args[i][j] && cmd->args[i][j] != ' ')
-			j++;
-	}
-	beg = ft_calloc(j + 1, sizeof(char));
+//	if (j == 0)
+//	{
+	while (cmd->args[i][j] && cmd->args[i][j] != ' ')
+		j++;
+//	}
+//	dprintf(2, "i arg 2 = %d\n", i);
+//	dprintf(2, "j arg 2 = %d\n", j);
+	beg = ft_calloc(j + 2, sizeof(char));
 	if (!beg)
 		return (NULL);
-	ft_strlcpy(beg, cmd->args[i], j);
-	end = ft_calloc(ft_strlen(&cmd->args[i][j + 1]) + 1, sizeof(char));
+	ft_strlcpy(beg, cmd->args[i], j + 1);
+//	dprintf(2, "beg = %s\n", beg);
+	end = ft_calloc(ft_strlen(&cmd->args[i][j + 1] + 1), sizeof(char));
 	if (!end)
 		return (free(beg), NULL);
-	ft_strlcpy(beg, &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1]));
+	ft_strlcpy(end, &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1] - 1));
+//	dprintf(2, "end = %s\n", end);
 	while (cmd->args[size])
 		size++;
 	new_args = ft_calloc(size + 2, sizeof(char *));
@@ -475,7 +483,13 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 	}
 	new_args[k] = NULL;
 	data[3] = 1;
-	data[4] = ft_strlen(cmd->args[i]) - (data[2] - ft_strlen(new_args[i]));
+//	data[4] = ft_strlen(cmd->args[i]) - (data[2] - ft_strlen(new_args[i]));
+//	dprintf(2, "data[2] = %d\n", data[2]);
+//	dprintf(2, "new_args[i] = %s\n", new_args[i]);
+//	dprintf(2, "len new args[i] = %zu\n", ft_strlen(new_args[i]));
+//	dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
+//	dprintf(2, "len cmd args[i] = %zu\n", ft_strlen(cmd->args[i]));
+	data[4] = data[2] - (ft_strlen(new_args[i]) - (j - 1));
 	return (free_tab(cmd->args), new_args);
 }
 
@@ -499,6 +513,7 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 	{
 		j = -1;
 		init_data(data);
+//		dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
 		while (cmd->args[i][++j])
 		{
 //			dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
@@ -518,19 +533,24 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 						cmd->args[i] = expand_dol_first(ms, cmd->args[i], data, &dol);
 						if (!cmd->args[i])
 							return (1);
+//						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
 						if (contains_spc(cmd->args[i], j, data))
 							cmd->args = redefine_args(cmd, i, j, data);
 						if (!cmd->args)
 							return (1);
+//						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
 					}
 					else
 					{
 						cmd->args[i] = expand_dol(ms, cmd->args[i], data, &dol);
 						if (!cmd->args[i])
 							return (1);
+//						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
 					}
 				}
 				update_expand_pos(data, &i, &j, &dol);
+//				dprintf(2, "i = %d\n", i);
+//				dprintf(2, "j = %d\n", j);
 			}
 		}
 	}
