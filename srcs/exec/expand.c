@@ -392,7 +392,7 @@ void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol)
 	if (data[3])
 	{
 		*i += 1;
-		*j = data[4];
+		*j = data[4] - 2;
 	}
 	else
 	{
@@ -427,6 +427,30 @@ int	contains_spc(char *arg, int j, int data[5])
 	return (0);
 }
 
+/*
+size_t  ft_strlcpybis(char *dst, const char *src, size_t size)
+{
+//	dprintf(2, "src = %s\n", src);
+//	dprintf(2, "src len = %zu\n", ft_strlen(src));
+//	dprintf(2, "size = %zu\n", size);
+        size_t  i;
+
+        i = 0;
+        if (size == 0)
+                return (ft_strlen(src));
+        while (i < size - 1 && src[i])
+        {
+//		dprintf(2, "i = %zu\n", i);
+//		dprintf(2, "src[i] = %c\n", src[i]);
+                dst[i] = src[i];
+                i++;
+        }
+        dst[i] = '\0';
+//	dprintf(2, "dst = %s\n", dst);
+        return (ft_strlen(src));
+}
+*/
+
 char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 {
 //	dprintf(2, "i arg = %d\n", i);
@@ -442,11 +466,10 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 	size = 0;
 	beg = NULL;
 	end = NULL;
-//	if (j == 0)
-//	{
 	while (cmd->args[i][j] && cmd->args[i][j] != ' ')
 		j++;
-//	}
+	if (j == 0)
+		return (cmd->args); //A CHECKER
 //	dprintf(2, "i arg 2 = %d\n", i);
 //	dprintf(2, "j arg 2 = %d\n", j);
 	beg = ft_calloc(j + 2, sizeof(char));
@@ -454,10 +477,12 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 		return (NULL);
 	ft_strlcpy(beg, cmd->args[i], j + 1);
 //	dprintf(2, "beg = %s\n", beg);
-	end = ft_calloc(ft_strlen(&cmd->args[i][j + 1] + 1), sizeof(char));
+//	dprintf(2, "end = %s\n", &cmd->args[i][j + 1]);
+//	dprintf(2, "size end = %lu\n", ft_strlen(&cmd->args[i][j + 1]) + 1);
+	end = ft_calloc(ft_strlen(&cmd->args[i][j + 1]) + 1, sizeof(char));
 	if (!end)
 		return (free(beg), NULL);
-	ft_strlcpy(end, &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1] - 1));
+	ft_strlcpy(end, &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1]) + 1);
 //	dprintf(2, "end = %s\n", end);
 	while (cmd->args[size])
 		size++;
