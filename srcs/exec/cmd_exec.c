@@ -174,6 +174,17 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		child_signals();
 		close_if(&ms->in);
 		close_if(&ms->out);
+//		dprintf(1, "avant execve\n");
+		/*
+		while (1)
+		{
+			char *line;
+			line = get_next_line(0, 0);
+			dprintf(2, "line = %s\n", line);
+			if (!line)
+				break ;
+		}
+		*/
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
 		(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?

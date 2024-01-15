@@ -1,38 +1,43 @@
 #include "../../include/exec.h"
 #include "../../include/signals.h"
 
-int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
+//int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
+char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter)
 {
 	int	fd;
 	char *line;
 	char	*hdname;
 	int		limlen;
 	int		linelen;
+	int		eof;
 
+	eof = 0;
 	limlen = ft_strlen(redirs->filename);
-	hdname = generate_hdname(ms, cmd);
+	hdname = generate_hdname(ms, cmd); //deja protege
 	// hdname = "name";
 	// (void)cmd;
-//	dprintf(2, "hdname = %s\n", hdname);
-	fd = open(hdname, O_CREAT |  O_RDWR, 0666);
+	//	dprintf(2, "hdname = %s\n", hdname);
+//	fd = open(hdname, O_CREAT |  O_RDWR, 0666);
+	fd = open(hdname, O_CREAT |  O_WRONLY, 0666);
 	if (fd < 0)
 	{
 		perror("minishell: heredoc");
 		ms->exit_code = 1;
-		return (1);
+		//return (1);
+		return (NULL);
 	}
-	dup2(ms->in, STDIN_FILENO); //A PROTEGER
-	// dprintf(2, "%d\n", fd);
+	dup2(ms->in, STDIN_FILENO); //A PROTEGER// pour pouvoir ecrire dans le bon terminal
+				    // dprintf(2, "%d\n", fd);
 	hd_signals();
 	while (1)
 	{
 		line = readline("> ");
 		if (g_exit_code == 2)
 		{
-//			open("/dev/stdin", O_RDONLY); //ne marche pas
 			open("/dev/stdout", O_RDONLY); //A PROTEGER
 			close_if(&fd);
-			return (1);
+			return (NULL);
+			//return (1);
 		}
 		if (!line)
 		{
@@ -40,33 +45,42 @@ int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
 			ms->exit_code = 1;
 			close_if(&fd);
 			//unlink("/tmp/here_doc");
-			return (1);
+			return (NULL);
+			//return (1);
 		}
 		// dprintf(2, "lim = %s\n", redirs->filename);
-//		dprintf(2, "line0 = %s\n", line);
+		//		dprintf(2, "line0 = %s\n", line);
 		linelen = ft_strlen(line);
 		if (ft_strncmp(line, redirs->filename, limlen) == 0 && (linelen == limlen))
 		{
-//			dprintf(2, "line = %s\n", line);
+			//			dprintf(2, "line = %s\n", line);
 			free(line);
+			eof = 1;
 			// close_if(&fd);
 			break ;
 		}
+//		dprintf(2, "line = %s\n", line);
 		ft_putstr_fd(line, fd); //?
+		if (eof)
+			ft_putstr_fd("\0", fd);
+		else
+			ft_putstr_fd("\n", fd);
 		free(line);
 	}
-
+	/*
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("minishell: dup2 failed");
 		ms->exit_code = 1;
 		return (1);
 	}
+	*/
 	close_if(&fd);// a proteger
-	// dprintf(2, "fin handle less\n");
-	// dprintf(2, "%d\n", STDIN_FILENO);
-	preprompt_signals();
-	return (0);
+      // dprintf(2, "fin handle less\n");
+      // dprintf(2, "%d\n", STDIN_FILENO);
+	preprompt_signals(); // A MODIFIER SI CHILD
+	free(limiter);
+	return (ft_strdup(hdname));
 }
 
 int	handle_less(t_ms *ms, t_redirs *redirs)
@@ -195,6 +209,17 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 	tmp = node->redirs;
 	while (tmp)
 	{
+		if (tmp->type == DLESS)
+		{
+			tmp->filename = handle_dless(ms, tmp, cmd, tmp->filename);
+			if (!tmp->filename)
+				return (1);
+		}
+		tmp = tmp->next_redir;
+	}
+	tmp = node->redirs;
+	while (tmp)
+	{
 		if (tmp->type == LESS)
 		{
 			if (handle_less(ms, tmp) == 1)
@@ -215,7 +240,8 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 		}
 		else if (tmp->type == DLESS)
 		{
-			if (handle_dless(ms, tmp, cmd) == 1)
+			if (handle_less(ms, tmp) == 1)
+//			if (handle_dless(ms, tmp, cmd) == 1)
 				return (cmd->invalid_io = tmp->filename, 1);
 //				return (1);
 		}

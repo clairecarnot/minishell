@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/12 18:04:46 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/15 15:27:06 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char	random_char(t_ms *ms, t_cmd *cmd);
 char	*generate_hdname(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_redirs.c ------------------------
-int	handle_less(t_ms *ms, t_redirs *redirs);
+char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter);
+//int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd);
 int	handle_less(t_ms *ms, t_redirs *redirs);
 int	handle_great(t_ms *ms, t_redirs *redirs);
 int	handle_dgreat(t_ms *ms, t_redirs *redirs);
