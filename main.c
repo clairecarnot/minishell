@@ -152,7 +152,7 @@ t_ms	*init_ms(char **env)
 	minishell->hdlst = NULL;
 	if (init_env(minishell, env))
 		free_minishell(minishell, 1);
-	if (init_workdir(minishell))
+	if (init_workdir(minishell, 0))
 		free_minishell(minishell, 1);
 	if (init_exp(minishell))
 		free_minishell(minishell, 1);
@@ -206,60 +206,61 @@ void	print_tree(t_ast *root, int space)
 	print_tree(root->left, space);
 }
 
-char	*ft_sjoin_char(t_ms *ms, char *s1, char s2)
-{
-	char	*dest;
-	int		i;
+// char	*ft_sjoin_char(t_ms *ms, char *s1, char s2)
+// {
+// 	char	*dest;
+// 	int		i;
 
-	i = 0;
-	if (ms)
-	dest = malloc(sizeof(char) * ft_slen(s1) + 1 + 1);// a proteger
-	if (s1)
-	{
-		while (s1[i])
-		{
-			dest[i] = s1[i];
-			i++;
-		}
-	}
-	if (s2)
-		dest[i] = s2;
-	dest[i + 1] = '\0';
-	return (dest);
-}
+// 	i = 0;
+// 	if (ms)
+// 	dest = malloc(sizeof(char) * ft_slen(s1) + 1 + 1);// a proteger
+// 	if (s1)
+// 	{
+// 		while (s1[i])
+// 		{
+// 			dest[i] = s1[i];
+// 			i++;
+// 		}
+// 	}
+// 	if (s2)
+// 		dest[i] = s2;
+// 	dest[i + 1] = '\0';
+// 	return (dest);
+// }
 
-int	count_dolq(char *line, int i)
-{
-	int	dol;
+// int	count_dolq(char *line, int i)
+// {
+// 	int	dol;
 
-	dol = 0;
-	while(line[i + dol] && line[i + dol] == '$')
-		dol++;
-	if (line[i + dol] && (line[i + dol] == '\'' || line[i + dol] == '\"'))
-		return (dol);
-	return (0);
-}
+// 	dol = 0;
+// 	while(line[i + dol] && line[i + dol] == '$')
+// 		dol++;
+// 	if (line[i + dol] && (line[i + dol] == '\'' || line[i + dol] == '\"'))
+// 		return (dol);
+// 	return (0);
+// }
 
-char	*remove_dolq(t_ms *ms)
-{
-	int		i;
-	int		nb_dol;
-	char	*new;
+// char	*remove_dolq(t_ms *ms)
+// {
+// 	int		i;
+// 	int		nb_dol;
+// 	char	*new;
 
-	i = 0;
-	new = NULL;
-	while (ms->line[i])
-	{
-		nb_dol = 0;
-		if (ms->line[i] == '$')
-			nb_dol = count_dolq(ms->line, i);
-		if (nb_dol)
-			i += nb_dol;
-		new = ft_sjoin_char(ms, new, ms->line[i]);
-		i++;
-	}
-	return (new);
-}
+// 	i = 0;
+// 	new = NULL;
+// 	while (ms->line[i])
+// 	{
+// 		nb_dol = 0;
+// 		if (ms->line[i] == '$')
+// 			nb_dol = count_dolq(ms->line, i);
+// 		if (nb_dol)
+// 			i += nb_dol;
+// 		new = ft_sjoin_char(ms, new, ms->line[i]);
+// 		i++;
+// 	}
+// 	return (new);
+// }
+
 
 /*
  * note {a}
@@ -279,9 +280,11 @@ int	main(int argc, char **argv, char **env)
 
 	t_ms	*minishell;
 	int	fd;
+	int	i;
 
 	(void)argc;
 	(void)argv;
+	i = 0;
 	if (!isatty(0)) //pour ./minishell | ./minishell (SIGPIPE - note {a})
 	{
 		//get_next_line()
@@ -304,6 +307,8 @@ int	main(int argc, char **argv, char **env)
 	while (1)
 	{
 		preprompt_signals();
+		// dprintf(2, "ms->wkdir = %s\n", minishell->wkdir);
+		// dprintf(2, "ms->oldwkdir = %s\n", minishell->old_wkdir);
 		minishell->line = display_prompt();
 		if (!minishell->line)
 			return (free_minishell(minishell, 0), 0);//verifier protec
@@ -351,6 +356,9 @@ int	main(int argc, char **argv, char **env)
 				}
 			}
 		}
+		if (init_workdir(minishell, 1))
+			return (free_minishell(minishell, 0), 0);//verifier protec
+		i++;
 	}
 	free_minishell(minishell, 1);
 	return (0);

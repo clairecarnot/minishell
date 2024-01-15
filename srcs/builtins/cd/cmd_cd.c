@@ -43,10 +43,79 @@ char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name)
 	return (NULL);
 }
 
-int	exec_cd(t_ms *ms, t_cmd *cmd)
+int	cd_dash(t_ms *ms, t_cmd *cmd)
+{
+	t_list	*env_tmp;
+
+	env_tmp = ms->env;
+	(void)cmd;
+	while (env_tmp)
+	{
+		if (ft_strncmp(env_tmp->content, "OLDPWD", 6) == 0)
+		{
+			printf("%s\n", (char *)env_tmp->content);
+			return (chdir(env_tmp->content + 7), 0);
+		}
+		env_tmp = env_tmp->next;
+	}
+	ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+	return (0);
+}
+// minishell$ cd ..
+// minishell$ cd minishell/
+// minishell$ cd include/
+// minishell$ cd ..
+// minishell$ cd .
+// minishell$ unset PWD
+// minishell$ cd -
+// minishell$ pwd
+
+int	cd_slash(t_ms *ms, t_cmd *cmd)
+{
+	if (chdir(cmd->args[1]) != 0)
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(cmd->args[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+	else
+	{
+		replace_oldpwd_env(ms, cmd);
+		replace_oldpwd_exp(ms, cmd);
+		replace_pwd_env(ms, cmd);
+		replace_pwd_exp(ms, cmd);
+	}
+	return (1);
+}
+
+int	cd_else(t_ms *ms, t_cmd *cmd)
 {
 	char	*tmp_dir;
-	char	*tmp_dir2;
+	char	*dir;
+
+	tmp_dir = ft_strjoin(ms->wkdir, "/");// a proteger
+	dir = ft_strjoin(tmp_dir, cmd->args[1]);// a proteger
+	free(tmp_dir);
+	if (chdir(dir) != 0)
+	{
+		free(dir);
+		ft_putstr_fd("minishell: cd : ", 2);
+		ft_putstr_fd(cmd->args[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
+	}
+	else
+	{
+		free(dir);
+		replace_oldpwd_env(ms, cmd);
+		replace_oldpwd_exp(ms, cmd);
+		replace_pwd_env(ms, cmd);
+		replace_pwd_exp(ms, cmd);
+	}
+	return (1);
+}
+
+int	exec_cd(t_ms *ms, t_cmd *cmd)
+{
 	char	*dir;
 
 	if (cmd->args && cmd->args[1] && cmd->args[2])// cd avec deux args --> erreur
@@ -62,48 +131,12 @@ int	exec_cd(t_ms *ms, t_cmd *cmd)
 	}
 	if (cmd->args && cmd->args[1])// cd chemin
 	{
-		if (cmd->args[1][0] != '/')
-		{
-			tmp_dir = getvar_env(ms, cmd, "PWD");
-			tmp_dir2 = ft_strjoin(tmp_dir, "/");
-			dir = ft_strjoin(tmp_dir2, cmd->args[1]);
-			free(tmp_dir2);
-			free(tmp_dir);
-			if (chdir(dir) != 0)
-			{
-				free(dir);
-				perror("cd");
-				// ft_putstr_fd("cd: ", 2);
-				// ft_putstr_fd(cmd->args[1], 2);
-				// ft_putstr_fd(": No such file or directory\n", 2);
-			}
-			else
-			{
-				free(dir);
-				replace_oldpwd_env(ms, cmd);
-				replace_oldpwd_exp(ms, cmd);
-				replace_pwd_env(ms, cmd);
-				replace_pwd_exp(ms, cmd);
-			}
-			return (1);
-		}
-		else
-		{
-			if (chdir(cmd->args[1]) != 0)
-			{
-				ft_putstr_fd("bash: cd: ", 2);
-				ft_putstr_fd(cmd->args[1], 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-			}
-			else
-			{
-				replace_oldpwd_env(ms, cmd);
-				replace_oldpwd_exp(ms, cmd);
-				replace_pwd_env(ms, cmd);
-				replace_pwd_exp(ms, cmd);
-			}
-			return (1);
-		}
+		if (cmd->args[1][0] == '-')
+			cd_dash(ms, cmd);
+		else if (cmd->args[1][0] == '/')
+			cd_slash(ms, cmd);
+		else if (cmd->args[1][0] != '/')
+			cd_else(ms, cmd);
 	}
 	return (0);
 }

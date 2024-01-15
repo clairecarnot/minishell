@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wkdirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 17:13:46 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/15 19:15:08 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ int	is_var_in_env(t_list *env, char *var)
 	return (0);
 }
 
-int	init_oldwkdir(t_ms *ms)
+int	init_oldwkdir(t_ms *ms, int i)
 {
 	t_list	*tmp;
 
 	tmp = ms->env;
-	if (is_var_in_env(ms->env, "OLDPWD"))
+	// if (is_var_in_env(ms->env, "OLDPWD"))
+	if (i == 0)
 	{
 		while (tmp)
 		{
@@ -54,7 +55,9 @@ int	init_oldwkdir(t_ms *ms)
 		ms->old_wkdir = ft_strdup(ms->wkdir);
 		if (!ms->old_wkdir)
 			return (free(ms->wkdir), 1);
+		
 	}
+	// dprintf(2, "ms->oldwkdir = %s\n", ms->old_wkdir);
 	return (0);
 }
 
@@ -64,14 +67,18 @@ int	init_oldwkdir(t_ms *ms)
  * Calls init_oldworkdir (for norminette purpose)
  */
 
-int	init_workdir(t_ms *ms)
+int	init_workdir(t_ms *ms, int i)
 {
 	char	buffer[PATH_MAX];
 	char	*wd;
 
+	free(ms->wkdir);
+	free(ms->old_wkdir);
 	wd = getcwd(buffer, PATH_MAX);
-	ms->wkdir = ft_strdup(wd);
+	ms->wkdir = ft_strdup(wd);// a gerer quand dossier est supprime
+	init_oldwkdir(ms, i);
+	// dprintf(2, "ms->wkdir = %s\n", ms->wkdir);
 	if (!ms->wkdir)
 		return (1);
-	return (init_oldwkdir(ms));
+	return (0);
 }

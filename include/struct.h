@@ -142,4 +142,4 @@ typedef struct s_ms
 	t_list		*hdlst;
 }				t_ms;
 
-#endif 
+#endif

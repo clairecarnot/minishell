@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:37:07 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 17:15:13 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/15 16:20:15 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ char	*replace_shlvl(char *old, char *new);
 int		update_shlvl(t_ms *ms);
 int		init_env(t_ms *ms, char **env);
 int		is_var_in_env(t_list *env, char *var);
-int		init_oldwkdir(t_ms *ms);
-int		init_workdir(t_ms *ms);
+int		init_oldwkdir(t_ms *ms, int i);
+int		init_workdir(t_ms *ms, int i);
 //
 //----------------------- exp.c ------------------------
 int		min_len(char *s1, char *s2);

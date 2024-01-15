@@ -8,7 +8,9 @@ int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
 	char	*hdname;
 	int		limlen;
 	int		linelen;
+	int tmp;
 
+	tmp = 0;
 	limlen = ft_strlen(redirs->filename);
 	hdname = generate_hdname(ms, cmd);
 	// hdname = "name";
@@ -49,10 +51,15 @@ int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
 		{
 //			dprintf(2, "line = %s\n", line);
 			free(line);
+			tmp = 1;
 			// close_if(&fd);
 			break ;
 		}
-		ft_putstr_fd(line, fd); //?
+		ft_putstr_fd(line, fd);
+		if (tmp)
+			ft_putstr_fd("\0", fd);
+		else
+			ft_putstr_fd("\n", fd);
 		free(line);
 	}
 
