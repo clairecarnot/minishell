@@ -2,18 +2,17 @@
 #include "../../include/signals.h"
 
 //int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
-char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter)
+//char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter)
+char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 {
 	int	fd;
 	char *line;
 	char	*hdname;
 	int		limlen;
 	int		linelen;
-	int		eof;
 
-	eof = 0;
 	limlen = ft_strlen(redirs->filename);
-	hdname = generate_hdname(ms, cmd); //deja protege
+	hdname = generate_hdname(ms); //deja protege
 	// hdname = "name";
 	// (void)cmd;
 	//	dprintf(2, "hdname = %s\n", hdname);
@@ -31,6 +30,8 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter)
 	hd_signals();
 	while (1)
 	{
+//		ft_putstr_fd("> ", 1);
+//		line = get_next_line(0, 0);
 		line = readline("> ");
 		if (g_exit_code == 2)
 		{
@@ -55,18 +56,16 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter)
 		{
 			//			dprintf(2, "line = %s\n", line);
 			free(line);
-			eof = 1;
+//			line = get_next_line(0, 1);
 			// close_if(&fd);
 			break ;
 		}
 //		dprintf(2, "line = %s\n", line);
 		ft_putstr_fd(line, fd); //?
-		if (eof)
-			ft_putstr_fd("\0", fd);
-		else
-			ft_putstr_fd("\n", fd);
+		ft_putstr_fd("\n", fd);
 		free(line);
 	}
+	ft_putstr_fd("\0", fd);
 	/*
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
@@ -206,6 +205,7 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 	t_redirs	*tmp;
 
 	cmd->redir = 1;
+	/*
 	tmp = node->redirs;
 	while (tmp)
 	{
@@ -217,6 +217,7 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 		}
 		tmp = tmp->next_redir;
 	}
+	*/
 	tmp = node->redirs;
 	while (tmp)
 	{

@@ -303,6 +303,7 @@ int	main(int argc, char **argv, char **env)
 		return (1);
 	while (1)
 	{
+//		dprintf(2, "nvelle boucle\n");
 		preprompt_signals();
 		minishell->line = display_prompt();
 		if (!minishell->line)

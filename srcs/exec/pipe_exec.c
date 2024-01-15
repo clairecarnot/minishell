@@ -81,8 +81,8 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmdpipe(cmd, ms, env);
-	(free_cmd(cmd), free_minishell(ms, exit_code)); //pour exit les builtins
-//	(free_cmd(cmd), free_exit(ms), exit(exit_code));
+//	(free_cmd(cmd), free_minishell(ms, exit_code)); ATTENTION NE QUITTE PAS MS SI 0
+	(free_cmd(cmd), free_exit(ms), exit(exit_code)); //pour exit les builtins
 //	dprintf(2, "exit code = %d\n", exit_code);
 	return (0); //on exit dans tous les cas avant
 }
@@ -122,6 +122,8 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 		}
 		else
 		{
+//			dprintf(2, "pid = %d\n", pid);
+//			dprintf(2, "arg[0] = %s\n", (char *) node->args->content);
 			ms_signals();
 			// dprintf(2, "pid = %d\n", pid);
 			close_if(&tmp_fd);
@@ -157,6 +159,8 @@ int pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 		}
 		else
 		{
+//			dprintf(2, "pid = %d\n", pid);
+//			dprintf(2, "arg[0] = %s\n", (char *) node->args->content);
 			ms_signals();
 			// dprintf(2, "pid = %d\n", pid);
 			close_if(&fd[1]);

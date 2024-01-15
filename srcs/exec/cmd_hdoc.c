@@ -1,7 +1,7 @@
 #include "../../include/exec.h"
 #include "../../include/signals.h"
 
-void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd)
+void	update_hdlst(t_ms *ms, char *name)
 {
 	t_list	*new;
 
@@ -11,7 +11,7 @@ void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd)
 		if (!ms->hdlst)
 		{
 			free(name);
-			free_cmd(cmd);
+//			free_cmd(cmd);
 			free_minishell(ms, 1);
 		}
 	}
@@ -20,13 +20,13 @@ void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd)
 	{
 		free(name);
 		ft_lstfree(&ms->hdlst);
-		free_cmd(cmd);
+//		free_cmd(cmd);
 		free_minishell(ms, 1);		
 	}
 	ft_lstadd_back(&ms->hdlst, new);
 }
 
-char	random_char(t_ms *ms, t_cmd *cmd)
+char	random_char(t_ms *ms)
 {
     int		fd;
     char	c;
@@ -36,7 +36,7 @@ char	random_char(t_ms *ms, t_cmd *cmd)
 	if (fd == -1)
 	{
         perror("Error opening /dev/urandom");
-        free_cmd(cmd);
+//        free_cmd(cmd);
         free_minishell(ms, 1);// a verifier
     }
     buf = read(fd, &c, sizeof(c));
@@ -44,7 +44,7 @@ char	random_char(t_ms *ms, t_cmd *cmd)
 	{
         perror("Error reading from /dev/urandom");
         close(fd);
-		free_cmd(cmd);
+//		free_cmd(cmd);
         free_minishell(ms, 1);// a verifier
     }
     close(fd);
@@ -55,7 +55,7 @@ char	random_char(t_ms *ms, t_cmd *cmd)
 }
 
 
-char	*generate_hdname(t_ms *ms, t_cmd *cmd)
+char	*generate_hdname(t_ms *ms)
 {
     int		i;
 	char	*name; // +1 pour le caractère de fin de chaîne
@@ -64,16 +64,16 @@ char	*generate_hdname(t_ms *ms, t_cmd *cmd)
 	name = ft_calloc(11, sizeof(char));
 	if (!name)
 	{
-		free_cmd(cmd);
+//		free_cmd(cmd);
 		free_minishell(ms, 1);// a verifier
 		return (NULL);
 	}
 	while (i < 10)
 	{
-		name[i] = (random_char(ms, cmd) + '0') % 26 + 97;
+		name[i] = (random_char(ms) + '0') % 26 + 97;
 		i++;
 	}
 	name[i] = '\0';
-	update_hdlst(ms, name, cmd);
+	update_hdlst(ms, name);
     return (name);
 }

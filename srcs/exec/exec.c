@@ -6,12 +6,37 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/11 11:32:33 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/15 17:33:17 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/exec.h"
 #include "../../include/signals.h"
+
+int	open_heredocs(t_ms *ms, t_ast *node)
+{
+	t_redirs	*tmp;
+
+	if (!node)
+		return (0);
+	tmp = node->redirs;
+	if (open_heredocs(ms, node->left) == 1)
+		return (1);
+	while (tmp)
+	{
+//		dprintf(2, "ici\n");
+		if (tmp->type == DLESS)
+		{
+			tmp->filename = handle_dless(ms, tmp, tmp->filename);
+			if (!tmp->filename)
+				return (1);
+		}
+		tmp = tmp->next_redir;
+	}
+	if (open_heredocs(ms, node->right) == 1)
+		return (1);
+	return (0);
+}
 
 int	exec_andif(t_ast *node, t_ms *ms)
 {
@@ -65,19 +90,24 @@ int	pre_exec(t_ms *ms)
 	t_list	*tmp;
 	int	status;
 	int	print;	
-	// t_list	*hdtmp;
-	// pid_t	pid;
 
 	status = 0;
 	print = 1;
 	ms->in = dup(STDIN_FILENO); //A PROTEGER?
 	ms->out = dup(STDOUT_FILENO);//A PROTEGER?
-	//handle save STDIN STDOUT
-	//handle signals
+	if (open_heredocs(ms, ms->root))
+		return (1);
+//	dprintf(2, "after heredocs\n");
 	exit_code = execute(ms->root, ms);
 	if (exit_code)
 		return (1);
 	// dprintf(2, "after exec, before waitpid\n");
+//	tmp = ms->pidlst;
+//	while (tmp)
+//	{
+//		dprintf(2, "pid liste = %d\n", tmp->n);
+//		tmp = tmp->next;
+//	}
 	tmp = ms->pidlst;
 	while (tmp)
 	{
@@ -85,14 +115,6 @@ int	pre_exec(t_ms *ms)
 		waitpid(tmp->n, &status, 0);
 		tmp = tmp->next;
 	}
-	/*
-	int ret  = waitpid(tmp->n, &status, WUNTRACED);
-	dprintf(2, "%d\n", ret);
-	perror("waitpid 1");
-	ret = waitpid(tmp->n, &status, WUNTRACED);
-	dprintf(2, "%d\n", ret);
-	perror("waitpid 2");
-	*/
 	if (WIFEXITED(status))
 	{
 //		dprintf(2, "exit code recu\n");
@@ -119,19 +141,6 @@ int	pre_exec(t_ms *ms)
 	}
 	dup2(ms->in, STDIN_FILENO);
 	dup2(ms->out, STDOUT_FILENO);
-	//postprompt_signals();
-	//preprompt_signals();
-	// close_if(&ms->in);
-	// close_if(&ms->out);
-	// close_if("/tmp/here_doc");
-	// hdtmp = ms->hdlst;
-	// while (hdtmp)
-	// {
-	// 	if (hdtmp->content)
-	// 		unlink(hdtmp->content);
-	// 	hdtmp = hdtmp->next;
-	// }
 	// dprintf(2, "after exec, after waitpid\n");
-	//clear exec
 	return (exit_code);
 }

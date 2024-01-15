@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/15 15:27:06 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/15 16:46:50 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,17 @@ int	execute(t_ast *node, t_ms *ms);
 int	pre_exec(t_ms *ms);
 
 //----------------------- cmd_hdoc.c ------------------------
-void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd);
-char	random_char(t_ms *ms, t_cmd *cmd);
-char	*generate_hdname(t_ms *ms, t_cmd *cmd);
+void	update_hdlst(t_ms *ms, char *name);
+//void	update_hdlst(t_ms *ms, char *name, t_cmd *cmd);
+char	random_char(t_ms *ms);
+//char	random_char(t_ms *ms, t_cmd *cmd);
+char	*generate_hdname(t_ms *ms);
+//char	*generate_hdname(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_redirs.c ------------------------
-char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter);
+//char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter);
 //int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd);
+char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter);
 int	handle_less(t_ms *ms, t_redirs *redirs);
 int	handle_great(t_ms *ms, t_redirs *redirs);
 int	handle_dgreat(t_ms *ms, t_redirs *redirs);
