@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/16 15:27:14 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/16 17:36:01 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	init_home(t_ms *ms)
 		{
 			ms->home = ft_strdup(tmp->content + 5);
 			if (!ms->home)
-				free_minishell(ms, 1);// c'est verifier
+				free_minishell(ms, 1);// c'est verifie
 			return ;
 		}
 		tmp = tmp->next;
@@ -103,5 +103,4 @@ void	init_workdir(t_ms *ms, int i)
 	// dprintf(2, "ms->oldwkdir = %s\n", ms->old_wkdir);
 	// dprintf(2, "ms->wkdir = %s\n", ms->wkdir);
 	// dprintf(2, "ms->home = %s\n", ms->home);
-	ms->a++;// a enlever
 }

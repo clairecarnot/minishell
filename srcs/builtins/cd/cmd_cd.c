@@ -9,23 +9,19 @@ void	cd_alone(t_ms *ms, t_cmd *cmd)
 	if (ms->home && home_var)
 	{
 		free(home_var);
-		if (chdir(ms->home))// c'est verife
+		if (chdir(ms->home))// c'est verifie
 		{
 			perror("chdir");
 			free_cmd(cmd);
 			prefree_minishell(ms, NULL);
 		}
-		// chdir(ms->home);
-		replace_oldpwd_env(ms, cmd);
-		replace_oldpwd_exp(ms, cmd);
-		replace_pwd_env(ms, cmd);
-		replace_pwd_exp(ms, cmd);
+		replace_pwd_env_exp(ms, cmd);
 	}
 	else if (!home_var)
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 }
 
-int	cd_dash(t_ms *ms, t_cmd *cmd)
+void	cd_dash(t_ms *ms, t_cmd *cmd)
 {
 	t_list	*env_tmp;
 
@@ -43,20 +39,33 @@ int	cd_dash(t_ms *ms, t_cmd *cmd)
 			if (ft_strncmp(env_tmp->content, "OLDPWD", 6) == 0)
 			{
 				printf("%s\n", (char *)env_tmp->content + 7);
-				return (chdir(env_tmp->content + 7), 0);
+				if (chdir(env_tmp->content + 7))// c'est verifie
+				{
+					perror("chdir");
+					free_cmd(cmd);
+					prefree_minishell(ms, NULL);
+				}
+				replace_pwd_env_exp(ms, cmd);
+				return ;
 			}
 			env_tmp = env_tmp->next;
 		}
 		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
 	}
-	return (0);
 }
 
 void	cd_tilde(t_ms *ms, t_cmd *cmd)
 {
-	(void)cmd;
 	if (ms->home)
-		chdir(ms->home);
+	{
+		if (chdir(ms->home))
+		{
+			perror("chdir");
+			free_cmd(cmd);
+			prefree_minishell(ms, NULL);
+		}
+	}
+	replace_pwd_env_exp(ms, cmd);
 }
 
 void	cd_slash(t_ms *ms, t_cmd *cmd)
@@ -68,12 +77,7 @@ void	cd_slash(t_ms *ms, t_cmd *cmd)
 		ft_putstr_fd(": No such file or directory\n", 2);
 	}
 	else
-	{
-		replace_oldpwd_env(ms, cmd);
-		replace_oldpwd_exp(ms, cmd);
-		replace_pwd_env(ms, cmd);
-		replace_pwd_exp(ms, cmd);
-	}
+		replace_pwd_env_exp(ms, cmd);
 }
 
 int	exec_cd(t_ms *ms, t_cmd *cmd)

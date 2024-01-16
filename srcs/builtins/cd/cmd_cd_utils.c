@@ -61,9 +61,13 @@ void	cd_else(t_ms *ms, t_cmd *cmd)
 		nosuchfile_cd(cmd->args[1]);
 	else
 	{	
-		tmp_dir = ft_strjoin(ms->wkdir, "/");// a proteger
-		dir = ft_strjoin(tmp_dir, cmd->args[1]);// a proteger
+		tmp_dir = ft_strjoin(ms->wkdir, "/");
+		if (!tmp_dir)
+			preprefree_minishell(ms, cmd);
+		dir = ft_strjoin(tmp_dir, cmd->args[1]);
 		free(tmp_dir);
+		if (!dir)
+			preprefree_minishell(ms, cmd);
 		if (chdir(dir) != 0)
 		{
 			free(dir);
@@ -72,10 +76,7 @@ void	cd_else(t_ms *ms, t_cmd *cmd)
 		else
 		{
 			free(dir);
-			replace_oldpwd_env(ms, cmd);
-			replace_oldpwd_exp(ms, cmd);
-			replace_pwd_env(ms, cmd);
-			replace_pwd_exp(ms, cmd);
+			replace_pwd_env_exp(ms, cmd);
 		}
 	}
 }

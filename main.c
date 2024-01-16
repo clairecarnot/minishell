@@ -157,11 +157,10 @@ t_ms	*init_ms(char **env)
 		free_minishell(minishell, 1);
 	minishell->i = 0;//index lexer pour norme
 	minishell->j = 0;//lexer pour norme
-	minishell->a = 0;//temporaire pour test malloc
 	return (minishell);
 }
 
-char	*display_prompt()
+char	*display_prompt(t_ms *ms)
 {
 	// dprintf(2, "display prompt\n");
 	char	*line;
@@ -178,7 +177,7 @@ char	*display_prompt()
 	// 	free(line2);
 	// }
 	if (!line)
-		return (NULL);
+		free_minishell(ms, 1);
 	add_history(line);
 	// dprintf(2, "end display prompt\n");
 	return (line);
@@ -309,7 +308,7 @@ int	main(int argc, char **argv, char **env)
 		preprompt_signals();
 		// dprintf(2, "ms->wkdir = %s\n", minishell->wkdir);
 		// dprintf(2, "ms->oldwkdir = %s\n", minishell->old_wkdir);
-		minishell->line = display_prompt();
+		minishell->line = display_prompt(minishell);
 		if (!minishell->line)
 			return (free_minishell(minishell, 0), 0);//verifier protec
 		if (g_exit_code == 2)
