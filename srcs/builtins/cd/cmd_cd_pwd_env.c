@@ -51,6 +51,7 @@ void	replace_oldpwd_env(t_ms *ms, t_cmd *cmd)
 		}
 		env_tmp = env_tmp->next;
 	}
+	free(content);
 }
 
 void	replace_pwd_env(t_ms *ms, t_cmd *cmd)

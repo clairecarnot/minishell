@@ -55,6 +55,7 @@ void	replace_oldpwd_exp(t_ms *ms, t_cmd *cmd)
 		}
 		exp_tmp = exp_tmp->next;
 	}
+	free(content_qt);
 }
 
 char	*add_qvar_pwd(t_ms *ms, t_cmd* cmd, char *content, int i)

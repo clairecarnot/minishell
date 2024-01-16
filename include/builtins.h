@@ -92,9 +92,17 @@ int	exec_pwd(t_ms *ms, t_cmd *cmd);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx cd xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_cd.c -----------------------
-int	exec_cd(t_ms *ms, t_cmd *cmd);
-char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name);
+void	cd_alone(t_ms *ms, t_cmd *cmd);
+int		cd_dash(t_ms *ms, t_cmd *cmd);
+void	cd_tilde(t_ms *ms, t_cmd *cmd);
+void	cd_slash(t_ms *ms, t_cmd *cmd);
+int		exec_cd(t_ms *ms, t_cmd *cmd);
+
+//----------------------- cmd_cd_utils.c -----------------------
 char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line);
+char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name);
+void	nosuchfile_cd(char *str);
+void	cd_else(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_cd_pwd_exp.c -----------------------
 char	*replace_oldpwd_exp2(t_ms *ms, t_cmd *cmd);

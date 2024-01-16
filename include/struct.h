@@ -133,6 +133,7 @@ typedef struct s_ms
 	t_list		*exp;
 	char		*wkdir;
 	char		*old_wkdir;
+	char		*home;
 	t_ast		*cur_node;
 	t_list		*pidlst;
 	int			exit_code;
@@ -140,6 +141,8 @@ typedef struct s_ms
 	int			in;
 	int			out;
 	t_list		*hdlst;
+
+	int			a;//test malloc
 }				t_ms;
 
 #endif

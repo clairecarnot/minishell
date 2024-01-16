@@ -152,12 +152,12 @@ t_ms	*init_ms(char **env)
 	minishell->hdlst = NULL;
 	if (init_env(minishell, env))
 		free_minishell(minishell, 1);
-	if (init_workdir(minishell, 0))
-		free_minishell(minishell, 1);
+	init_workdir(minishell, 0);
 	if (init_exp(minishell))
 		free_minishell(minishell, 1);
 	minishell->i = 0;//index lexer pour norme
 	minishell->j = 0;//lexer pour norme
+	minishell->a = 0;//temporaire pour test malloc
 	return (minishell);
 }
 
@@ -356,8 +356,7 @@ int	main(int argc, char **argv, char **env)
 				}
 			}
 		}
-		if (init_workdir(minishell, 1))
-			return (free_minishell(minishell, 0), 0);//verifier protec
+		init_workdir(minishell, 1);
 		i++;
 	}
 	free_minishell(minishell, 1);

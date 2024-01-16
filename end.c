@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/15 17:55:01 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:06:52 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,11 @@ void	free_minishell(t_ms *ms, int exit_status)
 	{
 		dprintf(2, "2\n");
 		free(ms->old_wkdir);
+	}
+	if (ms->home && exit_status != 0)
+	{
+		dprintf(2, "3\n");
+		free(ms->home);
 	}
 	if (ms->line)
 	{
