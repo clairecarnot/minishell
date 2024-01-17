@@ -17,7 +17,7 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 	hdname = generate_hdname(ms); //deja protege
 	// hdname = "name";
 	// (void)cmd;
-	//	dprintf(2, "hdname = %s\n", hdname);
+//	dprintf(2, "hdname = %s\n", hdname);
 //	fd = open(hdname, O_CREAT |  O_RDWR, 0666);
 	fd = open(hdname, O_CREAT |  O_WRONLY, 0666);
 	if (fd < 0)

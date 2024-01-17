@@ -132,18 +132,18 @@ a la ligne suivante) ne pas les free)
 void	free_minishell(t_ms *ms, int exit_status)
 {
 	int	exit_code;
-	// t_list		*hdtmp;
+	t_list		*hdtmp;
 
 	exit_code = ms->exit_code;
 	close_if(&ms->in);
 	close_if(&ms->out);
-	// hdtmp = ms->hdlst;
-	// while (hdtmp)
-	// {
-	// 	if (hdtmp->content)
-	// 		unlink(hdtmp->content);
-	// 	hdtmp = hdtmp->next;
-	// }
+	hdtmp = ms->hdlst;
+	while (hdtmp && isatty(0) && isatty(1))
+	{
+	 	if (hdtmp->content)
+	 		unlink(hdtmp->content);
+	 	hdtmp = hdtmp->next;
+	}
 	if (ms->pidlst)
 		ft_intlstfree(&ms->pidlst);
 	if (ms->root)

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/16 12:18:06 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/17 10:26:16 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	free_exit(t_ms *ms)
 	close_if(&ms->in);
 	close_if(&ms->out);
 	hdtmp = ms->hdlst;
-	while (hdtmp)
+	while (hdtmp && isatty(0) && isatty(1))
 	{
 		if (hdtmp->content)
 			unlink(hdtmp->content);

@@ -50,6 +50,7 @@ int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 {
 //	dprintf(2, "exec cmdppipe\n");
+//	dprintf(2, "tty = %d\n", isatty(0));
 	t_cmd	*cmd;
 	char	**env;
 	int	exit_code;

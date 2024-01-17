@@ -61,19 +61,22 @@ char	*generate_hdname(t_ms *ms)
 	char	*name; // +1 pour le caractère de fin de chaîne
 
 	i = 0;
-	name = ft_calloc(11, sizeof(char));
+	name = ft_calloc(11 + 6, sizeof(char));
 	if (!name)
 	{
 //		free_cmd(cmd);
 		free_minishell(ms, 1);// a verifier
 		return (NULL);
 	}
+	ft_strlcpy(name, "/tmp/.", 7);
+//	dprintf(2, "%s\n", name);
+//	dprintf(2, "%zu\n", ft_strlen(name));
 	while (i < 10)
 	{
-		name[i] = (random_char(ms) + '0') % 26 + 97;
+		name[6 + i] = (random_char(ms) + '0') % 26 + 97;
 		i++;
 	}
-	name[i] = '\0';
+	name[6 + i] = '\0';
 	update_hdlst(ms, name);
     return (name);
 }
