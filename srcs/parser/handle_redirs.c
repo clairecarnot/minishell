@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/08 13:58:48 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:36:43 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 		ms->exit_code = 255;
 		return (free(d), NULL);
 	}
+	d->dol = NULL;
 	d->next_redir = NULL;
 	// if (d->type == CMD)
 	// 	dprintf(2, "CMD \n");
@@ -163,6 +164,8 @@ t_redirs	*redirs_new(t_ms *ms, t_token *token, int type)
 
 t_redirs	*handle_red(t_ms *ms, t_ast *new_ast)
 {
+//	dprintf(2, "REDIR\n");
+//	dprintf(2, "%s\n", tok_to_str(ms->cur_tok));
 	t_redirs	*new_redir;
 
 	new_redir = NULL;
@@ -171,6 +174,8 @@ t_redirs	*handle_red(t_ms *ms, t_ast *new_ast)
 	new_redir = redirs_new(ms, ms->cur_tok->next_token, ms->cur_tok->type);
 	if (!new_redir)
 		return (NULL);
+	if (ms->cur_tok->next_token->dol)
+		ft_doladd_back(&new_redir->dol, ms->cur_tok->next_token->dol);
 	redirs_add_back(&new_ast->redirs, new_redir);
 	eat_token(ms, ms->cur_tok->type);
 	eat_token(ms, ms->cur_tok->type);

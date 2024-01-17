@@ -64,6 +64,7 @@ typedef struct s_redirs
 	t_node_type		type;
 	char			*filename;
 	struct s_redirs	*next_redir;
+	t_dol		*dol;
 }		t_redirs;
 
 struct	s_ast

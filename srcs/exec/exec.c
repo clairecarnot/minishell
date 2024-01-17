@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/15 17:33:17 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/17 16:27:33 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ int	open_heredocs(t_ms *ms, t_ast *node)
 			if (!tmp->filename)
 				return (1);
 		}
+//		if (tmp->type == GREAT || tmp->type == DGREAT)
+//		{
+//			if (create_outfiles(ms, tmp) == 1)
+//				return (1);
+//		}
 		tmp = tmp->next_redir;
 	}
 	if (open_heredocs(ms, node->right) == 1)

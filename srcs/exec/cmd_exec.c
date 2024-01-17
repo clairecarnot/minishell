@@ -29,8 +29,6 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 
 	if (node->dol)
 	{
-		if (!node->dol->d)
-			dprintf(2, "dol->d n'existe pas\n");
 		tmp_d = node->dol->d;
 		tmp_c = node->dol->c;
 	}
@@ -93,6 +91,8 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 //		cmd->args = &cmd->args[i];
 	//	dprintf(2, "arg[0] exists\n");
 	//	dprintf(2, "%s\n", cmd->args[0]);
+	if (node->redirs)
+		cmd_redirs(ms, node, cmd);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);
 	else
@@ -107,11 +107,9 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		if (build_path(cmd) == 1)
 			return (255);
 	}
-	if (node->redirs)
-		cmd_redirs(ms, node, cmd);
 //		if (cmd_redirs(ms, node, cmd) == 1)
 //			return (free_cmd(cmd), NULL); // A CHECKER
-	// dprintf(2, "return cmd\n");
+//	dprintf(2, "return cmd\n");
 	return (0);
 }
 

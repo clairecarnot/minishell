@@ -1,8 +1,23 @@
 #include "../../include/exec.h"
 #include "../../include/signals.h"
 
-//int	handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd)
-//char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter)
+/*
+int	create_outfiles(t_ms *ms, t_redirs *redirs)
+{
+	int	fd;
+
+	if (access(redirs->filename, F_OK) == -1)
+		fd = open(redirs->filename, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	else
+		fd = open(redirs->filename, O_CREAT | O_RDWR | O_TRUNC, 0666);
+	if (fd < 0)
+	{
+		ms->exit_code = 1;
+		return (1);
+	}
+	return (0);
+}*/
+
 char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 {
 	int	nb_line;
@@ -68,6 +83,7 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 			break ;
 		}
 //		dprintf(2, "line = %s\n", line);
+		redirs->filename = expand_redir(ms, redirs->filename); // REPRENDRE ICI
 		ft_putstr_fd(line, fd); //?
 		ft_putstr_fd("\n", fd);
 		free(line);
@@ -92,9 +108,21 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 
 int	handle_less(t_ms *ms, t_redirs *redirs)
 {
-//	dprintf(2, "handle less \n");
 	int	fd;
+	t_list	*rtmp_d;
+	t_list	*rtmp_c;
 
+	if (redirs->dol)
+	{
+		rtmp_d = redirs->dol->d;
+		rtmp_c = redirs->dol->c;
+	}
+	if (redirs->type == LESS && redirs->dol)
+	{
+		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
+		redirs->dol->d = rtmp_d;
+		redirs->dol->c = rtmp_c;
+	}
 	if (access(redirs->filename, F_OK) != -1)
 	{
 //		dprintf(2, "access1\n");
@@ -139,7 +167,20 @@ int	handle_great(t_ms *ms, t_redirs *redirs)
 {
 //	dprintf(2, "handle great \n");
 	int	fd;
+	t_list	*rtmp_d;
+	t_list	*rtmp_c;
 
+	if (redirs->dol)
+	{
+		rtmp_d = redirs->dol->d;
+		rtmp_c = redirs->dol->c;
+	}
+	if (redirs->type == LESS && redirs->dol)
+	{
+		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
+		redirs->dol->d = rtmp_d;
+		redirs->dol->c = rtmp_c;
+	}
 	/*
 	if (access(redirs->filename, F_OK) != -1)
 	{
@@ -176,7 +217,7 @@ int	handle_great(t_ms *ms, t_redirs *redirs)
 		return (1);
 	}
 	close_if(&fd);// a proteger
-	// dprintf(2, "fin handle great\n");
+//	dprintf(2, "fin handle great\n");
 	// dprintf(2, "%d\n", STDIN_FILENO);
 	return (0);
 }
@@ -184,8 +225,24 @@ int	handle_great(t_ms *ms, t_redirs *redirs)
 int	handle_dgreat(t_ms *ms, t_redirs *redirs)
 {
 	int	fd;
+	t_list	*rtmp_d;                                             
+	t_list	*rtmp_c;
 
-	fd = open(redirs->filename, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	if (redirs->dol)
+	{
+		rtmp_d = redirs->dol->d;
+		rtmp_c = redirs->dol->c;
+	}
+	if (redirs->type == LESS && redirs->dol)
+	{
+		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
+		redirs->dol->d = rtmp_d;
+		redirs->dol->c = rtmp_c;
+	}
+	if (access(redirs->filename, F_OK) == -1)
+		fd = open(redirs->filename, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	else
+		fd = open(redirs->filename, O_CREAT | O_RDWR | O_APPEND, 0666);
 	if (fd < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -210,6 +267,7 @@ int	handle_dgreat(t_ms *ms, t_redirs *redirs)
 
 int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 {
+	// dprintf(2, "cmd redirs\n");
 	t_redirs	*tmp;
 
 	cmd->redir = 1;

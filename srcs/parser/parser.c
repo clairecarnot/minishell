@@ -172,6 +172,7 @@ t_ast	*expr(t_ms *ms)
 
 int	parse(t_ms *ms)
 {
+//	dprintf(2, "parse\n");
 	if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
 		return (1);
 	ms->root = expr(ms);
@@ -186,5 +187,6 @@ int	parse(t_ms *ms)
 	}
 	if (!ms->root)
 		return (-1);
+//	dprintf(2, "parse end\n");
 	return (1);
 }

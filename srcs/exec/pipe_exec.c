@@ -3,6 +3,7 @@
 
 t_list	*ft_lstnew_int(int pid)//pid veut dire pid ou int du dol
 {
+//	dprintf(2, "lst new int\n");
 	t_list	*d;
 
 	d = malloc(sizeof(t_list));

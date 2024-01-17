@@ -85,8 +85,10 @@ int	count_dol_chars_out(t_ms *ms, int i)
 
 int	update_lstdol(t_dol **dol, t_list *d, t_list *c)
 {
+//	dprintf(2, "update lst dol\n");
 	if (!(*dol) && d && c)
 	{
+//		dprintf(2, "calloc\n");
 		*dol = ft_calloc(1, sizeof(t_dol));
 		if (!(*dol))
 			return (1);
@@ -141,6 +143,7 @@ void	update_lstdol_in(t_ms *ms, int qtype, int i, t_dol **dol)
 
 int	update_lstdol_out(t_ms *ms, int i, int j, t_dol **dol)
 {
+//	dprintf(2, "lst dol out\n");
 	t_list	*d;
 	t_list	*c;
 
@@ -171,5 +174,6 @@ int	update_lstdol_out(t_ms *ms, int i, int j, t_dol **dol)
 		if (update_lstdol(dol, d, c) == 1)
 			(ft_lstfree(&d), ft_lstfree(&c), prefree_minishell(ms, NULL));
 	}
+//	dprintf(2, "sortie lst dol out\n");
 	return (0);
 }

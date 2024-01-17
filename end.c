@@ -75,6 +75,8 @@ void	redirs_free(t_redirs **lst)
 			tmp = ptr->next_redir;
 			if (ptr->filename)
 				free(ptr->filename);
+			if (ptr->dol)
+				dol_free(&ptr->dol);
 			free(ptr);
 			ptr = tmp;
 		}
@@ -98,6 +100,8 @@ void	dol_free(t_dol **dol)
 
 void	free_root_ast(t_ast *root)
 {
+//	t_redirs	*tmp;
+
 //	dprintf(1, "seg1\n");
 //	dprintf(2, "root exists2\n");
 	if (!root)
@@ -114,7 +118,16 @@ void	free_root_ast(t_ast *root)
 	// dprintf(1, "seg5\n");
 //	root->args = NULL;
 	if (root->redirs)
+	{
+//		tmp = root->redirs;
+//		while (tmp)
+//		{
+//			if (tmp->dol)
+//				dol_free(&tmp->dol);
+//			tmp = tmp->next_redir;
+//		}
 		redirs_free(&root->redirs);
+	}
 	if (root->dol)
 		dol_free(&root->dol);
 	// dprintf(1, "seg6\n");

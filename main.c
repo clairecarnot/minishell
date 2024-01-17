@@ -83,7 +83,7 @@ void	print_redirs(t_redirs *args_enter)//temporaire
 	args = args_enter;
 	while (args)
 	{
-		printf("redirs = %s\n", (char *)args->filename);
+		printf("redirs filename = %s\n", (char *)args->filename);
 		args = args->next_redir;
 	}
 }
@@ -96,10 +96,8 @@ void	print_lst(t_list *args_enter)//temporaire
 	args = args_enter;
 	while (args)
 	{
-//		printf("args content = %s\n", (char *)args->content);
-		// printf("%s\n", (char *)args->content);
-		// dprintf(2, "%d\n", *((pid_t *)args->content));
-		dprintf(2, "%d\n", args->n);
+//		dprintf(2, "args content = %s\n", (char *)args->content);
+		dprintf(2, "int = %d\n", args->n);
 		// dprintf(2, "%d\n", i);
 		i++;
 		args = args->next;
@@ -111,20 +109,28 @@ void	visit_node(t_ast *root)//temporaire
 	if (!root)
 		return ;
 	visit_node(root->left);
-	/*
-	printf("node type : %s subshell : %d\n", node_to_str(root), root->subsh);
+	dprintf(2, "node type : %s subshell : %d\n", node_to_str(root), root->subsh);
+	dprintf(2, "ARGS\n");
 	if (root->args)
 		print_lst(root->args);
+	dprintf(2, "REDIRS\n");
 	if (root->redirs)
 		print_redirs(root->redirs);
-		*/
+	dprintf(2, "ARGS DOLS\n");
 	if (root->dol)
 	{
 		print_lst(root->dol->d);
 		print_lst(root->dol->c);
 	}
-	else
-		dprintf(2, "pas de dol\n");
+	dprintf(2, "REDIRS DOLS\n");
+	if (root->redirs)
+	{
+		if (root->redirs->dol)
+		{
+			print_lst(root->redirs->dol->d);
+			print_lst(root->redirs->dol->c);
+		}
+	}
 	visit_node(root->right);
 //	printf("exiting node %s\n", node_to_str(root));
 }
@@ -332,7 +338,7 @@ int	main(int argc, char **argv, char **env)
 			{
 				if (!minishell->lexer)
 					return (free_minishell(minishell, 1), 1);
-				//print_token_lst(minishell->lexer->token_lst);
+//				print_token_lst(minishell->lexer->token_lst);
 				minishell->cur_tok = minishell->lexer->token_lst;
 				if (parse(minishell) == -1)
 				{
@@ -347,7 +353,7 @@ int	main(int argc, char **argv, char **env)
 				else
 				{
 					// print_tree(minishell->root, 0);
-					//visit_node(minishell->root);
+//					visit_node(minishell->root);
 					//exec_env(minishell);
 					//exec_export(minishell, minishell->root);
 					pre_exec(minishell);
