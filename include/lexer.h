@@ -27,7 +27,7 @@ void	print_lst(t_list *args_enter);
 void	print_redirs(t_redirs *args_enter);
 void	visit_node(t_ast *root);
 t_ms	*init_ms(char **env);
-char	*display_prompt();
+char	*display_prompt(t_ms *ms);
 
 //----------------------- end.c ------------------------
 void	ft_intlstfree(t_list **lst);

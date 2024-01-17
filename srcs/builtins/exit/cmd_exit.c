@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/08 17:52:47 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:18:06 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ void	free_exit(t_ms *ms)
 		free(ms->wkdir);
 	if (ms->old_wkdir)
 		free(ms->old_wkdir);
+	if (ms->home)
+		free(ms->home);
 	if (ms->line)
 		free(ms->line);
 	if (ms->hdlst)

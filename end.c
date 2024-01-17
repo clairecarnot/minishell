@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   end.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/02 14:51:11 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/15 15:35:16 by ccarnot          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "./include/lexer.h"
 #include "./include/parser.h"
 #include "./include/struct.h"
@@ -144,18 +132,18 @@ a la ligne suivante) ne pas les free)
 void	free_minishell(t_ms *ms, int exit_status)
 {
 	int	exit_code;
-	t_list		*hdtmp;
+	// t_list		*hdtmp;
 
 	exit_code = ms->exit_code;
 	close_if(&ms->in);
 	close_if(&ms->out);
-	hdtmp = ms->hdlst;
-	while (hdtmp)
-	{
-		if (hdtmp->content)
-			unlink(hdtmp->content);
-		hdtmp = hdtmp->next;
-	}
+	// hdtmp = ms->hdlst;
+	// while (hdtmp)
+	// {
+	// 	if (hdtmp->content)
+	// 		unlink(hdtmp->content);
+	// 	hdtmp = hdtmp->next;
+	// }
 	if (ms->pidlst)
 		ft_intlstfree(&ms->pidlst);
 	if (ms->root)
@@ -174,9 +162,20 @@ void	free_minishell(t_ms *ms, int exit_status)
 	if (ms->exp && exit_status != 0)
 		ft_lstfree(&ms->exp);
 	if (ms->wkdir && exit_status != 0)
+	{
+		dprintf(2, "1\n");
 		free(ms->wkdir);
+	}
 	if (ms->old_wkdir && exit_status != 0)
+	{
+		dprintf(2, "2\n");
 		free(ms->old_wkdir);
+	}
+	if (ms->home && exit_status != 0)
+	{
+		dprintf(2, "3\n");
+		free(ms->home);
+	}
 	if (ms->line)
 	{
 		free(ms->line);

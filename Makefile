@@ -23,7 +23,9 @@ srcs/builtins/export/cmd_export_join_env.c  srcs/builtins/export/cmd_export_join
 srcs/builtins/unset/cmd_unset.c \
 srcs/builtins/exit/cmd_exit.c srcs/builtins/exit/cmd_exit_utils.c \
 srcs/builtins/echo/cmd_echo.c srcs/builtins/pwd/cmd_pwd.c \
-srcs/builtins/cd/cmd_cd.c
+srcs/builtins/cd/cmd_cd.c srcs/builtins/cd/cmd_cd_utils.c \
+srcs/builtins/cd/cmd_cd_pwd_env.c srcs/builtins/cd/cmd_cd_pwd_exp.c 
+
 
 OBJS = $(SRCS:.c=.o)
 

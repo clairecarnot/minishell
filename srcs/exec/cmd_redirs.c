@@ -5,12 +5,14 @@
 //char	*handle_dless(t_ms *ms, t_redirs *redirs, t_cmd *cmd, char *limiter)
 char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 {
+	int	nb_line;
 	int	fd;
 	char *line;
 	char	*hdname;
 	int		limlen;
 	int		linelen;
 
+	nb_line = 0;
 	limlen = ft_strlen(redirs->filename);
 	hdname = generate_hdname(ms); //deja protege
 	// hdname = "name";
@@ -42,12 +44,17 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 		}
 		if (!line)
 		{
-			perror("minishell: readline");
-			ms->exit_code = 1;
+			// perror("minishell: readline");
+			ms->exit_code = 0;
 			close_if(&fd);
 			//unlink("/tmp/here_doc");
+			ft_putstr_fd("minishell: warning: here-document at line ", 2);
+			ft_putnbr_fd(nb_line, 2);
+			ft_putstr_fd(" delimited by end-of-file (wanted `lim')\n", 2);
+			//ajouter les lignes lues precedemment
+			//+ ne pas afficher le message minishell: lim: No such file or directory
+			unlink("/tmp/here_doc");
 			return (NULL);
-			//return (1);
 		}
 		// dprintf(2, "lim = %s\n", redirs->filename);
 		//		dprintf(2, "line0 = %s\n", line);
@@ -64,6 +71,7 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 		ft_putstr_fd(line, fd); //?
 		ft_putstr_fd("\n", fd);
 		free(line);
+		nb_line++;
 	}
 	ft_putstr_fd("\0", fd);
 	/*

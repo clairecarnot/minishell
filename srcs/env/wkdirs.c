@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wkdirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/11/20 17:13:46 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/16 17:36:01 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int	is_var_in_env(t_list *env, char *var)
 	return (0);
 }
 
-int	init_oldwkdir(t_ms *ms)
+void	init_oldwkdir(t_ms *ms, int i)
 {
 	t_list	*tmp;
 
 	tmp = ms->env;
-	if (is_var_in_env(ms->env, "OLDPWD"))
+	if (i == 0)
 	{
 		while (tmp)
 		{
@@ -44,7 +44,7 @@ int	init_oldwkdir(t_ms *ms)
 			{
 				ms->old_wkdir = ft_strdup(tmp->content + 7);
 				if (!ms->old_wkdir)
-					return (free(ms->wkdir), 1);
+					prefree_minishell(ms, NULL);// c'est verifie
 			}
 			tmp = tmp->next;
 		}
@@ -53,9 +53,27 @@ int	init_oldwkdir(t_ms *ms)
 	{
 		ms->old_wkdir = ft_strdup(ms->wkdir);
 		if (!ms->old_wkdir)
-			return (free(ms->wkdir), 1);
+			prefree_minishell(ms, NULL);// c'est verifie
 	}
-	return (0);
+}
+
+void	init_home(t_ms *ms)
+{
+	t_list	*tmp;
+
+	tmp = ms->env;
+	while (tmp)
+	{
+		if (ft_strncmp("HOME", tmp->content, 4) == 0)
+		{
+			ms->home = ft_strdup(tmp->content + 5);
+			if (!ms->home)
+				free_minishell(ms, 1);// c'est verifie
+			return ;
+		}
+		tmp = tmp->next;
+	}
+	ms->home = NULL;
 }
 
 /*
@@ -64,14 +82,25 @@ int	init_oldwkdir(t_ms *ms)
  * Calls init_oldworkdir (for norminette purpose)
  */
 
-int	init_workdir(t_ms *ms)
+void	init_workdir(t_ms *ms, int i)
 {
 	char	buffer[PATH_MAX];
 	char	*wd;
-
+	
+	if (ms->wkdir)
+		free(ms->old_wkdir);
+	init_oldwkdir(ms, i);
 	wd = getcwd(buffer, PATH_MAX);
-	ms->wkdir = ft_strdup(wd);
-	if (!ms->wkdir)
-		return (1);
-	return (init_oldwkdir(ms));
+	if (wd)
+	{
+		free(ms->wkdir);
+		ms->wkdir = ft_strdup(wd);
+		if (!ms->wkdir)
+			prefree_minishell(ms, NULL);// c'est verifie
+	}
+	if (i == 0)
+		init_home(ms);
+	// dprintf(2, "ms->oldwkdir = %s\n", ms->old_wkdir);
+	// dprintf(2, "ms->wkdir = %s\n", ms->wkdir);
+	// dprintf(2, "ms->home = %s\n", ms->home);
 }

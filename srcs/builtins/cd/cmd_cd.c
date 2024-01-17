@@ -1,209 +1,104 @@
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-char	*replace_oldpwd_env2(t_ms *ms, t_cmd *cmd)
+void	cd_alone(t_ms *ms, t_cmd *cmd)
 {
-	char	*content_tmp;
-	t_list	*env_tmp;
+	char	*home_var;
 
-	env_tmp = ms->env;
-	while (env_tmp)
+	home_var = getvar_env(ms, cmd, "HOME");
+	if (ms->home && home_var)
 	{
-		if (ft_strncmp(env_tmp->content, "PWD", 3) == 0)
+		free(home_var);
+		if (chdir(ms->home))// c'est verifie
 		{
-			content_tmp = ft_strdup(env_tmp->content + 4);
-			if (!content_tmp)// a verifier
-			{
-				free_cmd(cmd);
-				ms->exit_code = 255;
-				free_minishell(ms, 1);
-			}
-			return (content_tmp);
-		}
-		env_tmp = env_tmp->next;
-	}
-	return (NULL);
-}
-
-void	replace_oldpwd_env(t_ms *ms, t_cmd *cmd)
-{
-	char	*content_tmp;
-	char	*content;
-	t_list	*env_tmp;
-
-	env_tmp = ms->env;
-	content_tmp = replace_oldpwd_env2(ms, cmd);
-	content = ft_strjoin("OLDPWD=", content_tmp);
-	if (!content)
-	{
-		free(content_tmp);
-		free_cmd(cmd);
-		ms->exit_code = 255;
-		free_minishell(ms, 1);
-	}
-	// while (env_tmp)
-	// {
-	// 	if (ft_strncmp(env_tmp->content, "PWD", 3) == 0)
-	// 	{
-	// 		content_tmp = ft_strdup(env_tmp->content + 4);
-	// 		if (!content_tmp)// a verifier
-	// 		{
-	// 			free_cmd(cmd);
-	// 			ms->exit_code = 255;
-	// 			free_minishell(ms, 1);
-	// 		}
-	// 		content = ft_strjoin("OLDPWD=", content_tmp);
-	// 		if (!content)
-	// 		{
-	// 			free(content_tmp);
-	// 			free_cmd(cmd);
-	// 			ms->exit_code = 255;
-	// 			free_minishell(ms, 1);
-	// 		}
-	// 		free(content_tmp);
-	// 	}
-	// 	env_tmp = env_tmp->next;
-	// }
-	// env_tmp = ms->env;
-	while (env_tmp)
-	{
-		if (ft_strncmp(env_tmp->content, "OLDPWD", 6) == 0)
-		{
-			free(env_tmp->content);
-			env_tmp->content = content;
-			return;
-		}
-		env_tmp = env_tmp->next;
-	}
-}
-
-void	replace_pwd_env(t_ms *ms, t_cmd *cmd)
-{
-	char	path[1024];
-	char	*content;
-	t_list	*env_tmp;
-
-	env_tmp = ms->env;
-	if (getcwd(path, sizeof(path)) != NULL)
-	{
-		content = ft_strjoin("PWD=", path);
-		if (!content)// a verifier
-		{
+			perror("chdir");
 			free_cmd(cmd);
-			ms->exit_code = 255;
-			free_minishell(ms, 1);
+			prefree_minishell(ms, NULL);
 		}
+		replace_pwd_env_exp(ms, cmd);
+	}
+	else if (!home_var)
+		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+}
+
+void	cd_dash(t_ms *ms, t_cmd *cmd)
+{
+	t_list	*env_tmp;
+
+	env_tmp = ms->env;
+	if (cmd->args[1][1])
+	{
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(cmd->args[1], 2);
+		ft_putstr_fd(": invalid option\n", 2);
+	}
+	else
+	{
 		while (env_tmp)
 		{
-			if (ft_strncmp(env_tmp->content, "PWD", 3) == 0)
+			if (ft_strncmp(env_tmp->content, "OLDPWD", 6) == 0)
 			{
-				free(env_tmp->content);
-				env_tmp->content = content;
+				printf("%s\n", (char *)env_tmp->content + 7);
+				if (chdir(env_tmp->content + 7))// c'est verifie
+				{
+					perror("chdir");
+					free_cmd(cmd);
+					prefree_minishell(ms, NULL);
+				}
+				replace_pwd_env_exp(ms, cmd);
 				return ;
 			}
 			env_tmp = env_tmp->next;
 		}
+		ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
 	}
 }
 
-char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line)
+void	cd_tilde(t_ms *ms, t_cmd *cmd)
 {
-	int		i;
-	int		j;
-	int		size;
-	char	*dir;
-
-	i = 0;
-	j = 0;
-	size = 0;
-	while (var_line[i] && var_line[i] != '=')
-		i++;
-	i++;
-	while (var_line[i + size])
-		size++;
-	dir = malloc(sizeof(char) * (size + 1));// c'est verifie
-	if (!dir)
+	if (ms->home)
 	{
-		free_cmd(cmd);
-		ms->exit_code = 255;
-		free_minishell(ms, 1);
+		if (chdir(ms->home))
+		{
+			perror("chdir");
+			free_cmd(cmd);
+			prefree_minishell(ms, NULL);
+		}
 	}
-	while (var_line[i])
-		dir[j++] = var_line[i++];
-	dir[j] = '\0';
-	return (dir);
+	replace_pwd_env_exp(ms, cmd);
 }
 
-char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name)
+void	cd_slash(t_ms *ms, t_cmd *cmd)
 {
-	t_list *env_tmp;
-
-	env_tmp = ms->env;
-	while (env_tmp)
+	if (chdir(cmd->args[1]) != 0)
 	{
-		if (ft_strncmp(env_tmp->content, var_name, ft_strlen(var_name)) == 0)
-			return(get_dir(ms, cmd, env_tmp->content));// a verife si ca marche
-		env_tmp = env_tmp->next;
+		ft_putstr_fd("minishell: cd: ", 2);
+		ft_putstr_fd(cmd->args[1], 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 	}
-	return (NULL);
+	else
+		replace_pwd_env_exp(ms, cmd);
 }
 
 int	exec_cd(t_ms *ms, t_cmd *cmd)
 {
-	char	*tmp_dir;
-	char	*tmp_dir2;
-	char	*dir;
-
-	if (cmd->args && cmd->args[1] && cmd->args[2])// cd avec deux args --> erreur
+	if (cmd->args && cmd->args[1] && cmd->args[2])
 	{
 		ms->exit_code = 1;
 		return (ft_putstr_fd("minishell: cd: too many arguments\n", 2), 1);
 	}
-	if (cmd->args && !cmd->args[1])// cd alone --> doit aller dans HOME
+	if (cmd->args && !cmd->args[1])
+		cd_alone(ms, cmd);
+	if (cmd->args && cmd->args[1])
 	{
-		dir = getvar_env(ms, cmd, "HOME");
-		chdir(dir);
-		return (free(dir), 1);
-	}
-	if (cmd->args && cmd->args[1])// cd chemin
-	{
-		if (cmd->args[1][0] != '/')
-		{
-			tmp_dir = getvar_env(ms, cmd, "PWD");
-			tmp_dir2 = ft_strjoin(tmp_dir, "/");
-			dir = ft_strjoin(tmp_dir2, cmd->args[1]);
-			free(tmp_dir2);
-			free(tmp_dir);
-			if (chdir(dir) != 0)
-			{
-				free(dir);
-				ft_putstr_fd("bash: cd: ", 2);
-				ft_putstr_fd(cmd->args[1], 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-			}
-			else
-			{
-				free(dir);
-				replace_oldpwd_env(ms, cmd);
-				replace_pwd_env(ms, cmd);
-			}
-			return (1);
-		}
-		else
-		{
-			if (chdir(cmd->args[1]) != 0)
-			{
-				ft_putstr_fd("bash: cd: ", 2);
-				ft_putstr_fd(cmd->args[1], 2);
-				ft_putstr_fd(": No such file or directory\n", 2);
-			}
-			else
-			{
-				replace_oldpwd_env(ms, cmd);
-				replace_pwd_env(ms, cmd);
-			}
-			return (1);
-		}
+		if (cmd->args[1][0] == '-')
+			cd_dash(ms, cmd);
+		else if (cmd->args[1][0] == '~' && !cmd->args[1][1])
+			cd_tilde(ms, cmd);
+		else if (cmd->args[1][0] == '/')
+			cd_slash(ms, cmd);
+		else if (cmd->args[1][0] != '/')
+			cd_else(ms, cmd);
 	}
 	return (0);
 }
