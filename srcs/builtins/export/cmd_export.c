@@ -60,6 +60,30 @@ void	print_lst_exp(t_list *exp)
 	}
 }
 
+// void	replace_underscore_exp(t_ms *ms, t_cmd *cmd)// a enlever
+// {
+// 	char	*new_content;
+// 	t_list	*tmp_exp;
+
+// 	tmp_exp = ms->exp;
+// 	while (tmp_exp)
+// 	{
+// 		if (ft_strncmp("_=\"/", tmp_exp->content, 10) == 0)
+// 		{
+// 			free(tmp_exp->content);
+// 			new_content = ft_strdup("_=/usr/bin/export");
+// 			if (!tmp_exp->content)// a verifier
+// 			{
+// 				free_cmd(cmd);
+// 				free_minishell(ms, 1);
+// 			}
+// 			free(tmp_exp->content);
+// 			tmp_exp->content = new_content;
+// 		}
+// 		tmp_exp = tmp_exp->next;
+// 	}
+// }
+
 /*
 cmd export : si export n'est suivi de rien d'autre -> on print la list exp
 sinon s'il n'y a pas d'erreur dans l'ecriture des variables, on les ajoute aux listes exp et env
@@ -73,6 +97,7 @@ int	exec_export(t_ms *ms, t_cmd *cmd)
 		return (print_lst_exp(ms->exp), 0);
 	else
 	{
+		// replace_underscore_exp(ms, cmd);
 		while (cmd->args[i])
 		{
 			// dprintf(2, "exp_arg->content: %s\n", (char*)exp_arg->content);

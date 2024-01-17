@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_path.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/12 15:48:47 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/17 14:38:42 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,27 @@ void	abs_rel_path(t_cmd *cmd)
 	cmd->builtin = NOBUILT;
 }
 
-char	**get_bin_paths(char **env)
+char	*get_bin_path_underscore(char **env)
 {
+	int		i;
+	char	*env_path;
+
+	i = 0;
+	while(env && env[i])
+	{
+		if (ft_strncmp("_", env[i], 1) == 0)
+		{
+			env_path = ft_strdup("/usr/bin/");//a proteger
+			return (env_path);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char	**get_bin_paths(t_ms *ms, char **env)
+{
+	(void)ms;
 	int		i;
 	char	*env_path;
 	char	**binaries;
@@ -33,16 +52,16 @@ char	**get_bin_paths(char **env)
 	{
 		if (ft_strncmp("PATH", env[i], 4) == 0)
 		{
-			env_path = ft_strdup(env[i] + 5);
+			env_path = ft_strdup(env[i] + 5);// a proteger?
 			break ;
 		}
 		i++;
 	}
 	if (!env_path)
-		return (NULL);
+		env_path = get_bin_path_underscore(env);
 	binaries = ft_split(env_path, ':');
 	if (!binaries)
-		return (free(env_path), NULL);
+		return (free(env_path), NULL);// a proteger autrement
 	free(env_path);
 	return (binaries);
 }

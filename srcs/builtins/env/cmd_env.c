@@ -29,11 +29,35 @@ void	print_lst_env(t_list *env)
 	}
 }
 
+void	replace_var_underscore_env(t_ms *ms, t_cmd *cmd)
+{
+	char	*new_content;
+	t_list	*tmp;
+
+	tmp = ms->env;
+	while (tmp)
+	{
+		if (ft_strncmp("_=/usr/bin", tmp->content, 10) == 0)
+		{
+			new_content = ft_strdup("_=/usr/bin/env");
+			if (!new_content)// a verifier
+			{
+				free_cmd(cmd);
+				free_minishell(ms, 1);
+			}
+			free(tmp->content);
+			tmp->content = new_content;
+		}
+		tmp = tmp->next;
+	}
+}
+
 /*
 La commande env liste les variables environnment 
 */
 int	exec_env(t_ms *ms, t_cmd *cmd)
 {
+	replace_var_underscore_env(ms, cmd);
 	if (!cmd->args[1])
 		return (print_lst_env(ms->env), 0);
 	else

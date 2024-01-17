@@ -288,6 +288,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		//get_next_line()
 		//si arg envoye = minishell ( ./minishell | ./minishell ) ( bash | bash )
+		dprintf(2, "exit\n");
 			exit(0);
 		//sinon (echo "echo coucou" | ./minishell) ( echo "echo coucou" | bash )
 		//lexer, parser, exec mais pas dans une boucle surtout
@@ -305,7 +306,7 @@ int	main(int argc, char **argv, char **env)
 		return (1);
 	while (1)
 	{
-//		dprintf(2, "nvelle boucle\n");
+		// dprintf(2, "nvelle boucle\n");
 		preprompt_signals();
 		// dprintf(2, "ms->wkdir = %s\n", minishell->wkdir);
 		// dprintf(2, "ms->oldwkdir = %s\n", minishell->old_wkdir);

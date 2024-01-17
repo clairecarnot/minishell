@@ -1,7 +1,7 @@
 #include "../../include/exec.h"
 #include "../../include/signals.h"
 
-t_cmd	*init_cmd(char **env)
+t_cmd	*init_cmd(t_ms *ms, char **env)
 {
 	t_cmd	*cmd;
 
@@ -9,9 +9,9 @@ t_cmd	*init_cmd(char **env)
 	if (!cmd)
 		return (free_tab(env), NULL);
 	cmd->env = env;
-	cmd->bin_paths = get_bin_paths(env);
-	if (!cmd->bin_paths)
-		return (free_cmd(cmd), NULL);
+	cmd->bin_paths = get_bin_paths(ms, env);//bin_paths peut etre NULL
+	// if (!cmd->bin_paths)
+	// 	return (free_cmd(cmd), NULL);
 	cmd->abs_or_rel = 0;
 	cmd->valid_path = 0;
 	cmd->redir = 0;
@@ -209,6 +209,34 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	return (0);
 }
 
+void	replace_var_underscore(t_ms *ms, t_cmd *cmd)
+{
+	char	*new_content;
+	t_list	*tmp;
+
+	tmp = ms->env;
+	while (tmp)
+	{
+		if (ft_strncmp("_=/usr/bin", tmp->content, 10) == 0)
+		{
+			if (cmd->args[0] && cmd->args[0][0] == '/')
+				new_content = ft_strjoin("_=", cmd->args[0]);
+			else if (cmd->args[0] && cmd->args[0][0] != '/')
+				new_content = ft_strjoin("_=/usr/bin/", cmd->args[0]);
+			// printf("--> %s\n", cmd->args[0]);
+			// printf("----> %s\n", new_content);
+			if (!new_content)// a verifier
+			{
+				free_cmd(cmd);
+				free_minishell(ms, 1);
+			}
+			free(tmp->content);
+			tmp->content = new_content;
+		}
+		tmp = tmp->next;
+	}
+}
+
 int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
@@ -220,7 +248,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	env = lst_to_tab(ms->env);
 	if (!env)
 		return (ms->exit_code = 255, 1);
-	cmd = init_cmd(env);
+	cmd = init_cmd(ms, env);
 	if (!cmd)
 		return (ms->exit_code = 255, 1); //env deja free, si 1 => badmalloc : free ms
 	exit_code = node_to_cmd(ms, node, cmd);
@@ -241,5 +269,8 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	else
 		exit_code = do_cmd(cmd, ms, env);
 	tmp = ms->pidlst;
+	replace_var_underscore(ms, cmd);
 	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }
+
+
