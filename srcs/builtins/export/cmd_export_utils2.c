@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:43:45 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/04 14:10:24 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:29:27 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,12 @@ int	slen_equal(char *content)
 	int	i;
 
 	i = 0;
-	while (content[i] && (content[i] != '=' && content[i] != '+'))// a verifier si marche bien
+	while (content[i] && (content[i] != '=' && content[i] != '+'))
 		i++;
-	// dprintf(2, "i = %d\n", i);
 	return (i);
 }
 
-int	find_plus(char *s)
+int	find_p(char *s)
 {
 	int	i;
 
@@ -50,7 +49,7 @@ int	find_plus(char *s)
 	return (0);
 }
 
-char	*ft_strdup_noplus2(t_ms *ms, char *s)
+char	*ft_strdup_noplus2(t_ms *ms, t_cmd *cmd, char *s)
 {
 	int		i;
 	int		j;
@@ -58,12 +57,9 @@ char	*ft_strdup_noplus2(t_ms *ms, char *s)
 
 	i = 0;
 	j = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(s) - 1 + 1));// c'est verifie
+	dest = malloc(sizeof(char) * (ft_strlen(s) - 1 + 1));// c'est verifie 1
 	if (!dest)
-	{
-		ms->exit_code = 255;
-		free_minishell(ms, 1);
-	}
+		prefree_minishell_cmd(ms, cmd);
 	while (s[i])
 	{
 		if (s[i] != '+')
@@ -75,22 +71,19 @@ char	*ft_strdup_noplus2(t_ms *ms, char *s)
 	return (dest);
 }
 
-char	*ft_strdup_noplus(t_ms *ms, char *s)
+char	*ft_strdup_noplus(t_ms *ms, t_cmd *cmd, char *s)
 {
 	char	*dest;
 	int		i;
 
 	i = 0;
-	if (find_plus(s) == 1)
-		dest = ft_strdup_noplus2(ms, s);
+	if (find_p(s) == 1)
+		dest = ft_strdup_noplus2(ms, cmd, s);
 	else
 	{
-		dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie
+		dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie 1
 		if (!dest)
-		{
-			ms->exit_code = 255;
-			free_minishell(ms, 1);
-		}
+			prefree_minishell_cmd(ms, cmd);
 		while (s[i])
 		{
 			dest[i] = s[i];

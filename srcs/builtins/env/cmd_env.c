@@ -4,15 +4,18 @@
 /*
 Ajouter a la liste env, a la fin
 */
-void add_to_env(t_ms *ms, char *content)
+void add_to_env(t_ms *ms, t_cmd *cmd, char *content)
 {
 	char	*cpy_content;
 	t_list	*new;
 
-	cpy_content = ft_strdup_noplus(ms, content);// a reverifier
-	new = ft_lstnew(cpy_content);// c'est protege
+	cpy_content = ft_strdup_noplus(ms, cmd, content);// c'est verifie 1
+	new = ft_lstnew(cpy_content);// c'est verifie 1
 	if (!new)
+	{
+		free_cmd(cmd);
 		prefree_minishell(ms, cpy_content);
+	}
 	ft_lstadd_back(&ms->env, new);
 }
 
@@ -40,7 +43,7 @@ void	replace_var_underscore_env(t_ms *ms, t_cmd *cmd)
 		if (ft_strncmp("_=/usr/bin", tmp->content, 10) == 0)
 		{
 			new_content = ft_strdup("_=/usr/bin/env");
-			if (!new_content)// a verifier
+			if (!new_content)// c'est protege
 			{
 				free_cmd(cmd);
 				free_minishell(ms, 1);

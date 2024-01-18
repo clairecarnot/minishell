@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/17 14:21:38 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/18 11:24:30 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,9 @@ int	exec_cmd(t_ast *node, t_ms *ms);
 
 //----------------------- cmd_path.c ------------------------
 void	abs_rel_path(t_cmd *cmd);
-char	**get_bin_paths(t_ms *ms, char **env);
+char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path, char **env);
+void	free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path);
+char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd);
 int	build_path(t_cmd *cmd);
 
 //----------------------- cmd_utils.c ------------------------

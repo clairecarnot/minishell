@@ -157,6 +157,7 @@ t_ms	*init_ms(char **env)
 		free_minishell(minishell, 1);
 	minishell->i = 0;//index lexer pour norme
 	minishell->j = 0;//lexer pour norme
+	minishell->a = 0;
 	return (minishell);
 }
 
@@ -359,6 +360,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		init_workdir(minishell, 1);
 		i++;
+		minishell->a++;
 	}
 	free_minishell(minishell, 1);
 	return (0);

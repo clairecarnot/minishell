@@ -7,11 +7,12 @@ t_cmd	*init_cmd(t_ms *ms, char **env)
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
-		return (free_tab(env), NULL);
+	{
+		free_tab(env);
+		free_minishell(ms , 255);
+	}
 	cmd->env = env;
-	cmd->bin_paths = get_bin_paths(ms, env);//bin_paths peut etre NULL
-	// if (!cmd->bin_paths)
-	// 	return (free_cmd(cmd), NULL);
+	cmd->bin_paths = get_bin_paths(ms, env, cmd);// c'est verifie
 	cmd->abs_or_rel = 0;
 	cmd->valid_path = 0;
 	cmd->redir = 0;
@@ -223,9 +224,7 @@ void	replace_var_underscore(t_ms *ms, t_cmd *cmd)
 				new_content = ft_strjoin("_=", cmd->args[0]);
 			else if (cmd->args[0] && cmd->args[0][0] != '/')
 				new_content = ft_strjoin("_=/usr/bin/", cmd->args[0]);
-			// printf("--> %s\n", cmd->args[0]);
-			// printf("----> %s\n", new_content);
-			if (!new_content)// a verifier
+			if (!new_content)// c'est verifie mais reouvre le programme pour afficher l'exec.. /?/
 			{
 				free_cmd(cmd);
 				free_minishell(ms, 1);
@@ -247,8 +246,8 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	exit_code = 0;
 	env = lst_to_tab(ms->env);
 	if (!env)
-		return (ms->exit_code = 255, 1);
-	cmd = init_cmd(ms, env);
+		return (ms->exit_code = 255, 1);// a verifie
+	cmd = init_cmd(ms, env);// c'est verifie
 	if (!cmd)
 		return (ms->exit_code = 255, 1); //env deja free, si 1 => badmalloc : free ms
 	exit_code = node_to_cmd(ms, node, cmd);

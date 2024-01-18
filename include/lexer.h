@@ -30,6 +30,7 @@ t_ms	*init_ms(char **env);
 char	*display_prompt(t_ms *ms);
 
 //----------------------- end.c ------------------------
+void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd);
 void	ft_intlstfree(t_list **lst);
 void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);

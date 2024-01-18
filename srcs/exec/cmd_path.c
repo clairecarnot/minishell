@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/17 14:38:42 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/18 11:05:47 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,35 @@ void	abs_rel_path(t_cmd *cmd)
 	cmd->builtin = NOBUILT;
 }
 
-char	*get_bin_path_underscore(char **env)
+char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path, char **env)
 {
 	int		i;
-	char	*env_path;
+	char	*env_p;
 
 	i = 0;
 	while(env && env[i])
 	{
 		if (ft_strncmp("_", env[i], 1) == 0)
 		{
-			env_path = ft_strdup("/usr/bin/");//a proteger
-			return (env_path);
+			env_p = ft_strdup("/usr/bin/");// c'est verifie
+			if (!env_p)
+				free_path_cmd_ms(ms, cmd, env_path);
+			return (env_p);
 		}
 		i++;
 	}
 	return (NULL);
 }
 
-char	**get_bin_paths(t_ms *ms, char **env)
+void	free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path)
 {
-	(void)ms;
+	free(env_path);
+	free_cmd(cmd);
+	free_minishell(ms, 255);
+}
+
+char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd)
+{
 	int		i;
 	char	*env_path;
 	char	**binaries;
@@ -52,16 +60,18 @@ char	**get_bin_paths(t_ms *ms, char **env)
 	{
 		if (ft_strncmp("PATH", env[i], 4) == 0)
 		{
-			env_path = ft_strdup(env[i] + 5);// a proteger?
+			env_path = ft_strdup(env[i] + 5);// c'est verifie
+			if (!env_path)
+				free_path_cmd_ms(ms, cmd, env_path);
 			break ;
 		}
 		i++;
 	}
 	if (!env_path)
-		env_path = get_bin_path_underscore(env);
-	binaries = ft_split(env_path, ':');
+		env_path = get_bin_path_underscore(ms, cmd, env_path, env);
+	binaries = ft_split(env_path, ':');	
 	if (!binaries)
-		return (free(env_path), NULL);// a proteger autrement
+		free_path_cmd_ms(ms, cmd, env_path);// c'est verifie
 	free(env_path);
 	return (binaries);
 }
