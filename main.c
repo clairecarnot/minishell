@@ -163,6 +163,7 @@ t_ms	*init_ms(char **env)
 		free_minishell(minishell, 1);
 	minishell->i = 0;//index lexer pour norme
 	minishell->j = 0;//lexer pour norme
+	minishell->a = 0;
 	return (minishell);
 }
 
@@ -358,7 +359,7 @@ int	main(int argc, char **argv, char **env)
 		return (1);
 	while (1)
 	{
-//		dprintf(2, "nvelle boucle\n");
+		// dprintf(2, "nvelle boucle\n");
 		preprompt_signals();
 		// dprintf(2, "ms->wkdir = %s\n", minishell->wkdir);
 		// dprintf(2, "ms->oldwkdir = %s\n", minishell->old_wkdir);
@@ -411,6 +412,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		init_workdir(minishell, 1);
 		i++;
+		minishell->a++;
 	}
 	free_minishell(minishell, 1);
 	return (0);

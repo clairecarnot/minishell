@@ -142,6 +142,8 @@ typedef struct s_ms
 	int			in;
 	int			out;
 	t_list		*hdlst;
+
+	int	a;//test malloc
 }				t_ms;
 
 #endif

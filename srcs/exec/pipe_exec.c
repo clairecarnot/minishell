@@ -63,7 +63,7 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 	env = lst_to_tab(ms->env);
 	if (!env)
 		free_minishell(ms, 255);
-	cmd = init_cmd(env);
+	cmd = init_cmd(ms, env);
 	if (!cmd)
 		free_minishell(ms, 255); //env deja free, si 1 => badmalloc : free ms
 	exit_code = node_to_cmd(ms, node, cmd);

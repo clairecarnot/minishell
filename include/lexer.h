@@ -31,6 +31,7 @@ char	*display_prompt(t_ms *ms);
 int	non_interactive_mode(t_ms *minishell, char **env);
 
 //----------------------- end.c ------------------------
+void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd);
 void	ft_intlstfree(t_list **lst);
 void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);

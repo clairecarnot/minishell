@@ -6,14 +6,14 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:34 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/04 14:09:31 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:44:04 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-char	*dup_after_equal(t_ms *ms, char *s, int i)
+char	*dup_after_equal(t_ms *ms, t_cmd *cmd, char *s, int i)
 {
 	char	*dest;
 	int		j;
@@ -23,12 +23,9 @@ char	*dup_after_equal(t_ms *ms, char *s, int i)
 	i++;
 	if(s[i] == '\0')
 		return (NULL);
-	dest = malloc(sizeof(char) * (ft_strlen(s) - (slen_equal(s) - 2) + 1));// c'est verifie
+	dest = malloc(sizeof(char) * (ft_strlen(s) - (slen_equal(s) - 2) + 1));// c'est verifie 1
 	if (!dest)
-	{
-		ms->exit_code = 255;
-		free_minishell(ms, 1);
-	}
+		prefree_minishell_cmd(ms, cmd);
 	i = 0;
 	j = 0;
 	while (s[i] && s[i] != '+')
@@ -39,18 +36,20 @@ char	*dup_after_equal(t_ms *ms, char *s, int i)
 	dest[j] = '\0';
 	return (dest);
 }
-char	*ft_sjoin(t_ms *ms, char *s1, char *s2, int i)
+
+char	*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd)
 {
 	char	*dest;
+	int		i;
 	int		j;
 
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);
+	i = -1;
+	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);// c'est verifie 1
 	if (!dest)
 	{
 		if (s2)
 			free(s2);
-		ms->exit_code = 255;
-		free_minishell(ms, 1);
+		prefree_minishell_cmd(ms, cmd);
 	}
 	while (s1[++i])
 		dest[i] = s1[i];
@@ -67,18 +66,21 @@ char	*ft_sjoin(t_ms *ms, char *s1, char *s2, int i)
 	return (dest);
 }
 
-t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct)
+t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd)
 {
 	t_list *new;
 	
 	free(cpy_ct);
-	new = ft_lstnew(join_ct);// c'est protege
+	new = ft_lstnew(join_ct);// c'est verifie 1
 	if (!new)
-		prefree_minishell(ms, join_ct);
+	{
+		free(join_ct);
+		prefree_minishell_cmd(ms, cmd);
+	}
 	return (new);
 }
 
-void	join_in_env(t_ms *ms, char *content)
+void	join_in_env(t_ms *ms, t_cmd *cmd, char *content)
 {
 	char	*cpy_ct;
 	char	*join_ct;
@@ -86,15 +88,15 @@ void	join_in_env(t_ms *ms, char *content)
 	t_list	*env_tmp2;
 	t_list	*new;
 
-	cpy_ct = dup_after_equal(ms, content, 0);// c'est protege
+	cpy_ct = dup_after_equal(ms, cmd, content, 0);// c'est verifie 1
 	env_tmp = ms->env;
 	env_tmp2 = ms->env;
 	while (env_tmp)
 	{
 		if (ft_strncmp(env_tmp->content, content, slen_equal(content)) == 0)
 		{
-			join_ct = ft_sjoin(ms, env_tmp->content, cpy_ct, -1);// c'est protege
-			new = join_in_env2(ms, cpy_ct, join_ct);
+			join_ct = ft_sjoin(ms, env_tmp->content, cpy_ct, cmd);
+			new = join_in_env2(ms, cpy_ct, join_ct, cmd);
 			new->next = env_tmp->next;
 			free(env_tmp->content);
 			free(env_tmp);

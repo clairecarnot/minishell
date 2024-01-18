@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/04 14:09:37 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:01:23 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,14 @@ char	*ft_sdup(t_ms *ms, char *s)
 /*
 Remplace dans la liste exp, le contenu d'une variable deja existante
 */
-void	replace_in_exp(t_ms *ms, char *content)
+void	replace_in_exp(t_ms *ms, t_cmd *cmd, char *content)
 {
 	t_list	*exp_tmp;
 	t_list	*exp_tmp2;
 	t_list	*new;
 	char	*cpy_content;
 
+	(void)cmd;
 	exp_tmp = ms->exp;
 	exp_tmp2 = ms->exp;
 	cpy_content = add_qvar(ms, content, 0, 0 /* ou 1 s'il faut free content*/);
@@ -63,13 +64,14 @@ void	replace_in_exp(t_ms *ms, char *content)
 	}
 }
 
-void	replace_in_env(t_ms *ms, char *content)
+void	replace_in_env(t_ms *ms, t_cmd *cmd, char *content)
 {
 	char	*cpy_content;
 	t_list	*env_tmp;
 	t_list	*env_tmp2;
 	t_list	*new;
 
+	(void)cmd;
 	cpy_content = ft_sdup(ms, content);// c'est protege
 	env_tmp = ms->env;
 	env_tmp2 = ms->env;

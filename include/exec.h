@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.h                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/18 12:38:55 by ccarnot          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef EXEC_H
 # define EXEC_H
@@ -40,7 +29,7 @@ int	handle_dgreat(t_ms *ms, t_redirs *redirs);
 int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd);
 
 //----------------------- cmd_exec.c ------------------------
-t_cmd	*init_cmd(char **env);
+t_cmd	*init_cmd(t_ms *ms, char **env);
 int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd);
 int	exec_builtin(t_ms *ms, t_cmd *cmd);
 int	do_cmd(t_cmd *cmd, t_ms *ms, char **env);
@@ -48,7 +37,9 @@ int	exec_cmd(t_ast *node, t_ms *ms);
 
 //----------------------- cmd_path.c ------------------------
 void	abs_rel_path(t_cmd *cmd);
-char	**get_bin_paths(char **env);
+char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path, char **env);
+void	free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path);
+char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd);
 int	build_path(t_cmd *cmd);
 
 //----------------------- cmd_utils.c ------------------------

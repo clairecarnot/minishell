@@ -10,7 +10,8 @@
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx export xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_export.c -----------------------
-int		add_variable(t_ms *ms, char *content);
+void	add_variable2(t_ms *ms, t_cmd *cmd, char *ct);
+void	add_variable(t_ms *ms, t_cmd *cmd, char *content);
 void	print_lst_exp(t_list *exp);
 int		exec_export(t_ms *ms, t_cmd *cmd);
 
@@ -24,9 +25,9 @@ void	add_qvar_lst(t_ms *ms, t_list *exp);
 //----------------------- cmd_export_utils2.c -----------------------
 int		ft_slen(char *s);
 int		slen_equal(char *content);
-int		find_plus(char *s);
-char	*ft_strdup_noplus2(t_ms *ms, char *s);
-char	*ft_strdup_noplus(t_ms *ms, char *s);
+int		find_p(char *s);
+char	*ft_strdup_noplus2(t_ms *ms, t_cmd *cmd, char *s);
+char	*ft_strdup_noplus(t_ms *ms, t_cmd *cmd, char *s);
 
 //----------------------- cmd_export_utils3.c -----------------------
 int		var_exists_exp(t_ms *ms, char *content);
@@ -34,29 +35,29 @@ int		var_exists_env(t_ms *ms, char *content);
 void	prefree_minishell(t_ms *ms, char *str);
 
 //----------------------- cmd_export_replace.c -----------------------
-void	replace_in_exp(t_ms *ms, char *content);
-void	replace_in_env(t_ms *ms, char *content);
+void	replace_in_exp(t_ms *ms, t_cmd *cmd, char *content);
+void	replace_in_env(t_ms *ms, t_cmd *cmd, char *content);
 
 //----------------------- cmd_export_join_env.c -----------------------
-char	*dup_after_equal(t_ms *ms, char *s, int i);
-char	*ft_sjoin(t_ms *ms, char *s1, char *s2, int i);
-t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct);
-void	join_in_env(t_ms *ms, char *content);
+char	*dup_after_equal(t_ms *ms, t_cmd *cmd, char *s, int i);
+char	*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd);
+t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd);
+void	join_in_env(t_ms *ms, t_cmd *cmd, char *content);
 
 //----------------------- cmd_export_join_exp.c -----------------------
 char	*sjoin_noequal(t_ms *ms, char *s1, char *s2, int i);
 char	*sjoin_wquote(t_ms *ms, char *s1, char *s2, int i);
-t_list	*join_in_exp3(t_ms *ms, char *cpy_ct, char *join_ct);
-char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct);
-void	join_in_exp(t_ms *ms, char *content);
+t_list	*join_in_exp3(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd);
+char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct, t_cmd *cmd);
+void	join_in_exp(t_ms *ms, t_cmd *cmd, char *content);
 
 //----------------------- cmd_export_add.c -----------------------
 void	add_to_exp3(t_ms *ms, t_list *new, t_list *prev);
 void	add_to_exp2(t_list *new, t_list *prev, t_list **cur);
-void	add_to_exp(t_ms *ms, char *content);
+void	add_to_exp(t_ms *ms, t_cmd *cmd, char *content);
 
 //----------------------- cmd_env.c -----------------------
-void	add_to_env(t_ms *ms, char *content);
+void	add_to_env(t_ms *ms, t_cmd *cmd, char *content);
 void	print_lst_env(t_list *env);
 int		exec_env(t_ms *ms, t_cmd *cmd);
 

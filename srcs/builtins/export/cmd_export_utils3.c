@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:21:55 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/04 14:15:29 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/18 12:19:24 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,5 @@ void	prefree_minishell(t_ms *ms, char *str)
 	if (str)
 		free (str);
 	ms->exit_code = 255;
-	free_minishell(ms, 1);
+	free_minishell(ms, 255);
 }

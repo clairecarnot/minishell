@@ -34,9 +34,9 @@ t_builtin_type	builtin_type_is(char *builtin)
 
 char	**lst_to_tab(t_list *lst)
 {
+	int		i;
 	char	**args;
 	t_list	*tmp;
-	int		i;
 
 	i = 0;
 	tmp = lst;

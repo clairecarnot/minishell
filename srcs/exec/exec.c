@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exec.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/06 17:13:01 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/17 16:27:33 by ccarnot          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../include/exec.h"
 #include "../../include/signals.h"
 
@@ -68,7 +56,7 @@ int	execute(t_ast *node, t_ms *ms) //return exit_code?
 		return (0);
 	if (node->type == CMD)
 	{
-		if (exec_cmd(node, ms) == 0)
+		if (exec_cmd(node, ms) == 0)//ici si malloc fail --> free exit
 			return (0);
 	}
 	if (node->type == AND_IF)

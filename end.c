@@ -2,6 +2,13 @@
 #include "./include/parser.h"
 #include "./include/struct.h"
 
+void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd)
+{
+	ms->exit_code = 255;
+	free_cmd(cmd);
+	free_minishell(ms, 255);
+}
+
 void	ft_intlstfree(t_list **lst)
 {
 	t_list	*ptr;
