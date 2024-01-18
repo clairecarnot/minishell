@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/18 11:05:47 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:04:37 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ void	abs_rel_path(t_cmd *cmd)
 	cmd->abs_or_rel = 1;
 	if (access(cmd->args[0], F_OK | X_OK) == 0)
 		cmd->valid_path = 1;
-	//dprintf(2, "ok\n");
 	cmd->builtin = NOBUILT;
 }
 
-char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path, char **env)
+char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
+		char **env)
 {
 	int		i;
 	char	*env_p;
 
 	i = 0;
-	while(env && env[i])
+	while (env && env[i])
 	{
 		if (ft_strncmp("_", env[i], 1) == 0)
 		{
@@ -69,7 +69,7 @@ char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd)
 	}
 	if (!env_path)
 		env_path = get_bin_path_underscore(ms, cmd, env_path, env);
-	binaries = ft_split(env_path, ':');	
+	binaries = ft_split(env_path, ':');
 	if (!binaries)
 		free_path_cmd_ms(ms, cmd, env_path);// c'est verifie
 	free(env_path);
@@ -78,7 +78,6 @@ char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd)
 
 int	build_path(t_cmd *cmd)
 {
-//	dprintf(2, "args[0] = %s\n", cmd->args[0]);
 	char	*path;
 	int		i;
 

@@ -12,18 +12,12 @@ int	open_heredocs(t_ms *ms, t_ast *node)
 		return (1);
 	while (tmp)
 	{
-//		dprintf(2, "ici\n");
 		if (tmp->type == DLESS)
 		{
 			tmp->filename = handle_dless(ms, tmp, tmp->filename);
 			if (!tmp->filename)
 				return (1);
 		}
-//		if (tmp->type == GREAT || tmp->type == DGREAT)
-//		{
-//			if (create_outfiles(ms, tmp) == 1)
-//				return (1);
-//		}
 		tmp = tmp->next_redir;
 	}
 	if (open_heredocs(ms, node->right) == 1)

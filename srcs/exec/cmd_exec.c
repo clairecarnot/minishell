@@ -9,7 +9,7 @@ t_cmd	*init_cmd(t_ms *ms, char **env)
 	if (!cmd)
 	{
 		free_tab(env);
-		free_minishell(ms , 255);
+		free_minishell(ms, 255);
 	}
 	cmd->env = env;
 	cmd->bin_paths = get_bin_paths(ms, env, cmd);// c'est verifie
@@ -27,7 +27,9 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 	t_list	*tmp_d;
 	t_list	*tmp_c;
 	char	**tmp;
+	int		i;
 
+	i = 0;
 	if (node->redirs)
 		cmd_redirs(ms, node, cmd);
 	if (node->dol)
@@ -49,31 +51,17 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		node->dol->d = tmp_d;
 		node->dol->c = tmp_c;
 	}
-	int	i;
-	i = 0;
-	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0 && !ms->flag_q)
+	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0
+		&& !ms->flag_q)
 	{
-//		dprintf(2, "cur args[i] = %s\n", cmd->args[i]);
 		free(cmd->args[i]);
 		cmd->args[i] = NULL;
 		i++;
-//		if (!cmd->args[i])
-//		{
-//			dprintf(2, "sortie boucle\n");
-//			cmd->args = NULL;
-//			break ;
-//		}
-//		cmd->args = &cmd->args[i];
-//	if (!cmd->args || !cmd->args[0])
 	}
 	if (!cmd->args[i] || !ft_strlen(cmd->args[i]))
 	{
 		if (!ms->flag_q)
 			*cmd->args = NULL;
-//		free(cmd->args);
-//		cmd->args = NULL;
-//		if (cmd->args && !cmd->args[0])
-//			cmd->args = NULL;
 		return (0);
 	}
 	if (i > 0)
@@ -90,10 +78,6 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		free(cmd->args);
 		cmd->args = tmp;
 	}
-//	else
-//		cmd->args = &cmd->args[i];
-	//	dprintf(2, "arg[0] exists\n");
-	//	dprintf(2, "%s\n", cmd->args[0]);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);
 	else
@@ -104,13 +88,9 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 			cmd->valid_path = 1;
 			return (0);
 		}
-//		cmd->bin_paths = get_bin_paths(env);
 		if (build_path(cmd) == 1)
 			return (255);
 	}
-//		if (cmd_redirs(ms, node, cmd) == 1)
-//			return (free_cmd(cmd), NULL); // A CHECKER
-//	dprintf(2, "return cmd\n");
 	return (0);
 }
 
@@ -140,7 +120,6 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 
 	if (!cmd->valid_path)
 	{
-//		dprintf(2, "no valid path\n");
 		if (!cmd->args || !cmd->args[0] || !ft_strlen(cmd->args[0]))
 		{
 			if (ms->flag_q == 1)
@@ -148,10 +127,12 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 			ms->flag_q--;
 			return (0);
 		}
-		if (cmd->abs_or_rel) //printf mais sur sortie d'erreur ?
-			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": No such file or directory\n", 2));
+		if (cmd->abs_or_rel)
+			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
+				ft_putstr_fd(": No such file or directory\n", 2));
 		else
-			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2), ft_putstr_fd(": command not found\n", 2));
+			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
+				ft_putstr_fd(": command not found\n", 2));
 		ms->exit_code = 127;
 		return (1);
 	}
@@ -163,39 +144,16 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	}
 	else if (pid == 0)
 	{
-//		int j = 0;
-//		while (cmd->args[j])
-//		{
-//			dprintf(2, "%s\n", cmd->args[j]);
-//			j++;
-//		}
-		//		dprintf(2, "%s\n", cmd->args[0]);
 		child_signals();
 		close_if(&ms->in);
 		close_if(&ms->out);
-//		dprintf(1, "avant execve\n");
-		/*
-		while (1)
-		{
-			char *line;
-			line = get_next_line(0, 0);
-			dprintf(2, "line = %s\n", line);
-			if (!line)
-				break ;
-		}
-		*/
 		execve(cmd->args[0], cmd->args, env);
 		dprintf(2, "execve fails\n");
 		(free_cmd(cmd), free_minishell(ms, errno)); // on exit ms, code err?
 	}
 	else
 	{
-//		dprintf(2, "pid2 = %d\n", pid);
-		//signal(SIGINT, SIG_IGN);
-//		signal(SIGINT, SIG_IGN);
 		ms_signals();
-		// preprompt_signals();
-		//postprompt_signals();
 		ms->flag_q--;
 		new_pid = ft_lstnew_int(pid);
 		if (!new_pid)
@@ -222,7 +180,7 @@ void	replace_var_underscore(t_ms *ms, t_cmd *cmd)
 				new_content = ft_strjoin("_=", cmd->args[0]);
 			else if (cmd->args[0] && cmd->args[0][0] != '/')
 				new_content = ft_strjoin("_=/usr/bin/", cmd->args[0]);
-			if (!new_content)// c'est verifie mais reouvre le programme pour afficher l'exec.. /?/
+			if (!new_content) // c'est verifie mais reouvre le programme pour afficher l'exec.. /?/
 			{
 				free_cmd(cmd);
 				free_minishell(ms, 1);
@@ -239,7 +197,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	t_cmd	*cmd;
 	char	**env;
 	t_list	*tmp;
-	int	exit_code;
+	int		exit_code;
 
 	exit_code = 0;
 	env = lst_to_tab(ms->env);

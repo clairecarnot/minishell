@@ -11,8 +11,7 @@ void	update_hdlst(t_ms *ms, char *name)
 		if (!ms->hdlst)
 		{
 			free(name);
-//			free_cmd(cmd);
-			free_minishell(ms, 1);
+			free_minishell(ms, 255);// a verifier
 		}
 	}
 	new = ft_lstnew(name);
@@ -20,57 +19,46 @@ void	update_hdlst(t_ms *ms, char *name)
 	{
 		free(name);
 		ft_lstfree(&ms->hdlst);
-//		free_cmd(cmd);
-		free_minishell(ms, 1);		
+		free_minishell(ms, 255);// a verifier
 	}
 	ft_lstadd_back(&ms->hdlst, new);
 }
 
 char	random_char(t_ms *ms)
 {
-    int		fd;
-    char	c;
+	char	c;
+	int		fd;
 	int		buf;
 
-    fd = open("/dev/urandom", O_RDONLY);
+	fd = open("/dev/urandom", O_RDONLY);
 	if (fd == -1)
 	{
-        perror("Error opening /dev/urandom");
-//        free_cmd(cmd);
-        free_minishell(ms, 1);// a verifier
-    }
-    buf = read(fd, &c, sizeof(c));
-    if (buf != sizeof(c))
+		perror("Error opening /dev/urandom");
+		free_minishell(ms, 1);// a verifier
+	}
+	buf = read(fd, &c, sizeof(c));
+	if (buf != sizeof(c))
 	{
-        perror("Error reading from /dev/urandom");
-        close(fd);
-//		free_cmd(cmd);
-        free_minishell(ms, 1);// a verifier
-    }
-    close(fd);
+		perror("Error reading from /dev/urandom");
+		close_if(&fd);
+		free_minishell(ms, 1);// a verifier
+	}
+	close_if(&fd);
 	if (c < 0)
 		return (-c);
-	// dprintf(2, "c = %d\n", c);
-    return (c);
+	return (c);
 }
-
 
 char	*generate_hdname(t_ms *ms)
 {
-    int		i;
-	char	*name; // +1 pour le caractère de fin de chaîne
+	int		i;
+	char	*name;
 
 	i = 0;
 	name = ft_calloc(11 + 6, sizeof(char));
 	if (!name)
-	{
-//		free_cmd(cmd);
-		free_minishell(ms, 1);// a verifier
-		return (NULL);
-	}
+		free_minishell(ms, 255);// a verifier
 	ft_strlcpy(name, "/tmp/.", 7);
-//	dprintf(2, "%s\n", name);
-//	dprintf(2, "%zu\n", ft_strlen(name));
 	while (i < 10)
 	{
 		name[6 + i] = (random_char(ms) + '0') % 26 + 97;
@@ -78,5 +66,5 @@ char	*generate_hdname(t_ms *ms)
 	}
 	name[6 + i] = '\0';
 	update_hdlst(ms, name);
-    return (name);
+	return (name);
 }
