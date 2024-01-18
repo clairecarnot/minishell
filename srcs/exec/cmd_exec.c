@@ -27,6 +27,8 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 	t_list	*tmp_c;
 	char	**tmp;
 
+	if (node->redirs)
+		cmd_redirs(ms, node, cmd);
 	if (node->dol)
 	{
 		tmp_d = node->dol->d;
@@ -91,8 +93,6 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 //		cmd->args = &cmd->args[i];
 	//	dprintf(2, "arg[0] exists\n");
 	//	dprintf(2, "%s\n", cmd->args[0]);
-	if (node->redirs)
-		cmd_redirs(ms, node, cmd);
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);
 	else
