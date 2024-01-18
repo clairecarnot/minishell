@@ -83,7 +83,7 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 			break ;
 		}
 //		dprintf(2, "line = %s\n", line);
-		redirs->filename = expand_redir(ms, redirs->filename); // REPRENDRE ICI
+		line = expand_hdoc(ms, line);
 		ft_putstr_fd(line, fd); //?
 		ft_putstr_fd("\n", fd);
 		free(line);

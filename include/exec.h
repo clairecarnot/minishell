@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/17 16:27:09 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/18 10:00:27 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,12 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol);
 //----------------------- expand_redirs.c ------------------------
 void	r_update_expand_pos(int data[5], int *j, t_dol **dol);
 char	*expand_redir(t_ms *ms, char *arg, t_dol *dol);
+
+//----------------------- expand_redirs.c ------------------------
+char	*hd_keep_one_dol_only(t_ms *ms, char *arg, int i);
+int	hd_dol_standalone(char *arg);
+char	*hd_expand_dol(t_ms *ms, char *arg, int data[5]);
+void	hd_update_expand_pos(int data[5], int *j);
+char	*expand_hdoc(t_ms *ms, char *arg);
 
 #endif
