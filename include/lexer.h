@@ -28,6 +28,7 @@ void	print_redirs(t_redirs *args_enter);
 void	visit_node(t_ast *root);
 t_ms	*init_ms(char **env);
 char	*display_prompt(t_ms *ms);
+int	non_interactive_mode(t_ms *minishell, char **env);
 
 //----------------------- end.c ------------------------
 void	ft_intlstfree(t_list **lst);

@@ -266,6 +266,59 @@ void	print_tree(t_ast *root, int space)
 // 	return (new);
 // }
 
+int	non_interactive_mode(t_ms *minishell, char **env)
+{
+	char	*line;
+
+	line = get_next_line(STDIN_FILENO, 0);
+	if (!line)
+		(get_next_line(0, 1), exit(0));
+	line[ft_strlen(line) - 1] = '\0';
+	minishell = init_ms(env);
+	if (!minishell)
+		exit(1);
+//	dprintf(2, "%s\n", line);
+	minishell->line = line;
+	if (!check_error_prelexer(minishell->line))
+	{
+		if (*minishell->line == '\"' || *minishell->line == '\'')
+			minishell->flag_q = 1;
+		if (!lexer(minishell, minishell->line))// if no error
+		{
+			if (!minishell->lexer)
+				return (free_minishell(minishell, 1), 1);
+			//print_token_lst(minishell->lexer->token_lst);
+			minishell->cur_tok = minishell->lexer->token_lst;
+			if (parse(minishell) == -1)
+			{
+				if (minishell->exit_code == 255)
+				{
+					ft_putstr_fd("minishell: malloc error\n", 2);
+					get_next_line(0, 1);
+					free_minishell(minishell, 255);
+				}
+				else if (minishell->exit_code == 2)
+				{
+					get_next_line(0, 1);
+					free_minishell(minishell, 2);
+				}
+			}
+			else
+			{
+				// print_tree(minishell->root, 0);
+				//					visit_node(minishell->root);
+				//exec_env(minishell);
+				//exec_export(minishell, minishell->root);
+				pre_exec(minishell);
+				//					dprintf(2, "after exec\n");
+				get_next_line(0, 1);
+				free_exit(minishell);
+				exit(0);
+			}
+		}
+	}
+	(get_next_line(0, 1), exit(1));
+}
 
 /*
  * note {a}
@@ -290,16 +343,10 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	i = 0;
+	minishell = NULL;
 	if (!isatty(0)) //pour ./minishell | ./minishell (SIGPIPE - note {a})
-	{
-		//get_next_line()
-		//si arg envoye = minishell ( ./minishell | ./minishell ) ( bash | bash )
-			exit(0);
-		//sinon (echo "echo coucou" | ./minishell) ( echo "echo coucou" | bash )
-		//lexer, parser, exec mais pas dans une boucle surtout
-		//exit(0);
-	}
-	else
+		non_interactive_mode(minishell, env);
+	if (isatty(0))
 	{
 		fd = open("/dev/stdin", O_RDWR); //A PROTEGER
 		dup2(fd, STDOUT_FILENO); //A PROTEGER
@@ -344,8 +391,8 @@ int	main(int argc, char **argv, char **env)
 				{
 					if (minishell->exit_code == 255)
 					{
-						printf("minishell: malloc error\n");
-						free_minishell(minishell, 1);
+						ft_putstr_fd("minishell: malloc error\n", 2);
+						free_minishell(minishell, 255);
 					}
 					else if (minishell->exit_code == 2)
 						free_minishell(minishell, 0);

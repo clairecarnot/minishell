@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:31:46 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/18 10:00:27 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/18 12:38:55 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5]);
 int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol);
 
 //----------------------- expand_redirs.c ------------------------
+char	*get_varvalue_redir(t_ms *ms, char *arg, int i, int j);
+char	*expand_dol_redir(t_ms *ms, char *arg, int data[5], t_dol **dol);
 void	r_update_expand_pos(int data[5], int *j, t_dol **dol);
 char	*expand_redir(t_ms *ms, char *arg, t_dol *dol);
 
