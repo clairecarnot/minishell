@@ -223,6 +223,7 @@ char	*repl_dol(char *arg, char *var, int i, int j)
 	char	*new_arg;
 	int		k;
 
+	//var = expand_wil();
 	k = -1;
 	new_arg = NULL;
 	new_arg = ft_calloc(ft_strlen(arg) - (j - i)
@@ -560,7 +561,7 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 							return (1);
 //						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
 						if (contains_spc(cmd->args[i], j, data))
-							cmd->args = redefine_args(cmd, i, j, data);
+							cmd->args = redefine_args(cmd, i, j, data);// peut etre utile pour ajout d'arg  
 						if (!cmd->args)
 							return (1);
 //						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);

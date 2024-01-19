@@ -22,6 +22,22 @@ void	ft_doladd_back(t_dol **dol, t_dol *new)
 	}
 }
 
+void	ft_wiladd_back(t_wil **wil, t_wil *new)
+{
+	t_list	*ptr_w;
+
+	if (*wil == NULL)
+		*wil = new;
+	else
+	{
+		ptr_w = (*wil)->w;
+		while (ptr_w->next)
+			ptr_w = ptr_w->next;
+		ptr_w->next = new->w;
+		free(new);
+	}
+}
+
 /*
  * add_cmd_args:
  * Cree une nouvelle structure t_list qui a pour content la valeur de la commande ou de l'argument qu'on ajoute a la liste d'arguments de l'AST
@@ -58,6 +74,8 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 	ft_lstadd_back(&new_ast->args, new_arg);
 	if (ms->cur_tok->dol)
 		ft_doladd_back(&new_ast->dol, ms->cur_tok->dol);
+	if (ms->cur_tok->wil)
+		ft_wiladd_back(&new_ast->wil, ms->cur_tok->wil);	
 	eat_token(ms, T_WORD);
 	return (new_ast->args);
 }

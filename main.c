@@ -131,6 +131,14 @@ void	visit_node(t_ast *root)//temporaire
 			print_lst(root->redirs->dol->c);
 		}
 	}
+	dprintf(2, "WILDS\n");
+	if (root->wil)
+	{
+		if (root->wil)
+		{
+			print_lst(root->wil->w);
+		}
+	}
 	visit_node(root->right);
 //	printf("exiting node %s\n", node_to_str(root));
 }
@@ -163,7 +171,7 @@ t_ms	*init_ms(char **env)
 		free_minishell(minishell, 1);
 	minishell->i = 0;//index lexer pour norme
 	minishell->j = 0;//lexer pour norme
-	minishell->a = 0;
+	minishell->a = 0;//a enlever
 	return (minishell);
 }
 
@@ -401,7 +409,7 @@ int	main(int argc, char **argv, char **env)
 				else
 				{
 					// print_tree(minishell->root, 0);
-//					visit_node(minishell->root);
+					// visit_node(minishell->root);
 					//exec_env(minishell);
 					//exec_export(minishell, minishell->root);
 					pre_exec(minishell);

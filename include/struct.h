@@ -6,11 +6,22 @@
 
 extern int	g_exit_code;
 
+typedef struct s_wil
+{
+	t_list		*w;// expand de * = 1, non expand = 0
+}	t_wil;
+
 typedef struct s_dol
 {
 	t_list			*d;// expand du $ = 1, non expand = 0
 	t_list			*c;
 }		t_dol;
+
+typedef struct	s_dw
+{
+	t_dol	*dol;
+	t_wil	*wil;
+}	t_dw;
 
 typedef enum e_builtin_type
 {
@@ -79,6 +90,7 @@ struct	s_ast
 	t_ast		*parent;
 //	t_list		*dol;
 	t_dol		*dol;
+	t_wil		*wil;
 };
 
 typedef enum e_type
@@ -103,6 +115,7 @@ typedef struct s_token
 	char			*value;
 	struct s_token	*next_token;
 	size_t			tok_nb;
+	t_wil		*wil;
 	t_dol		*dol; // expand du $ = 1, non expand = 0
 	//t_list			*dol;// expand du $ = 1, non expand = 0
 }		t_token;
