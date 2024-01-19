@@ -11,10 +11,12 @@ int	else_qtype(int qtype)
 
 int	switch_qtype(t_ms *ms, int i, int qtype)
 {
-	if (qstate(ms->nb_q) == 0 && ms->lexer->src[ms->lexer->cur_pos + i] == qtype && \
+	//peut etre ms->lexer->src[ms->lexer->cur_pos + i] != qtype (pour que ce cas marche "$USER"$USER'$USER')
+	if (qstate(ms->nb_q) == 0 /*&& ms->lexer->src[ms->lexer->cur_pos + i] == qtype*/ && \
 	(ms->lexer->src[ms->lexer->cur_pos + i + 1] && \
 	ms->lexer->src[ms->lexer->cur_pos + i + 1] == else_qtype(qtype)))
 		qtype = else_qtype(qtype);
+	// dprintf(2, "qqq-> %d\n", qtype);
 	return (qtype);
 }
 
@@ -35,6 +37,7 @@ int	case_w_dol(t_ms *ms, int qtype, char **value)
 		}
 		ms->i += ms->j;
 		qtype = ms->lexer->src[ms->lexer->cur_pos + ms->i];
+		// dprintf(2, "qtype ===> %d\n", qtype);//temp
 		ms->nb_q++;
 		// dprintf(2, "i = %d, qtype = %d, nb_q = %d\n", ms->i, qtype, ms->nb_q);
 		// dprintf(2, "1j = %d\n", ms->j);

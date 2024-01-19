@@ -105,6 +105,18 @@ void	dol_free(t_dol **dol)
 	}
 }
 
+void	wil_free(t_wil **wil)
+{
+	if (wil)
+	{
+		if ((*wil)->w)
+			ft_lstfree(&(*wil)->w);
+		if (*wil)
+			free(*wil);
+		*wil = NULL;
+	}
+}
+
 void	free_root_ast(t_ast *root)
 {
 //	t_redirs	*tmp;
@@ -137,6 +149,8 @@ void	free_root_ast(t_ast *root)
 	}
 	if (root->dol)
 		dol_free(&root->dol);
+	if (root->wil)
+		wil_free(&root->wil);
 	// dprintf(1, "seg6\n");
 //	root->redirs = NULL;
 	free(root);

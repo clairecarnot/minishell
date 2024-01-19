@@ -26,10 +26,17 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 {
 	t_list	*tmp_d;
 	t_list	*tmp_c;
+	// t_list	*tmp_w;
 	char	**tmp;
 	int		i;
 
 	i = 0;
+
+	// t_dw	*dw;
+
+	// dw = ft_calloc;
+	// dw->dol = ;
+	// dw->wil = ;
 	if (node->redirs)
 		cmd_redirs(ms, node, cmd);
 	if (node->dol)
@@ -77,6 +84,10 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		}
 		free(cmd->args);
 		cmd->args = tmp;
+	}	
+	if (node->wil)
+	{
+
 	}
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);
