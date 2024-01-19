@@ -50,7 +50,6 @@ char    *ft_strjoin_slash(char const *s1, char const *s2);
 char	**tab_cpy(t_ms *ms, char **tab);
 
 //----------------------- cmd_utils2.c ------------------------
-int	tab_size(char **tab);
 char	**resize_tab(char **tab, int i);
 //int	post_expand_adj(t_ms *ms, char **args, char **tmp);
 char	**post_expand_adj(t_ms *ms, char **args, char **tmp);
@@ -67,29 +66,43 @@ void	free_tab(char **tab);
 void	free_cmd(t_cmd *cmd);
 int	close_if(int *fd);
 
-//----------------------- expand.c ------------------------
-char	*ft_trimvar_first(char *value);
-char	*get_varvalue_first(t_ms *ms, char *arg, int i, int j);
-char	*expand_dol_first(t_ms *ms, char *arg, int data[5], t_dol **dol);
+//----------------------- EXPAND FILES ------------------------
 
-int	is_same_len(char *s1, char *s2);
-char	*ft_getenv(t_ms *ms, char *var);
-char	*exp_exitcode(t_ms *ms);
-int	isset(char c, char const *set);
 char	*trim_beg(char const *s1, char const *set);
 int	count_consec_spc(char *value);
 char	*ft_trimvar(char *value);
+char	*ft_getenv(t_ms *ms, char *var);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
+
 char	*skip_dol(char *arg, int i, int j, int data[5]);
 char	*repl_dol(char *arg, char *var, int i, int j);
 char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol);
+int	dol_standalone_return(char c);
 int	dol_standalone(char *arg, t_dol **dol);
-char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol);
-void	init_data(int data[5]);
-void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol);
+
+int	is_same_len(char *s1, char *s2);
+int	isset(char c, char const *set);
 int	contains_spc(char *arg, int j, int data[5]);
+char	**redefine_args_bis(t_cmd *cmd, char *d[2], char **new_args, int i);
 char	**redefine_args(t_cmd *cmd, int i, int j, int data[5]);
+int	args_redef(t_cmd *cmd, int i, int j, int data[5]);
+char	*exp_exitcode(t_ms *ms);
+
+//----------------------- expand.c ------------------------
+void	init_data(int data[5]);
+char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol);
+void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol);
 int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol);
+
+int	find_cur_dol(char *arg, int data[5]);
+int	delimitate_var(char *arg, int i, t_dol **dol);
+void	free_if(char *str);
+int	tab_size(char **tab);
+
+//----------------------- expand_first.c ------------------------
+char	*ft_trimvar_first(char *value);
+char	*get_varvalue_first(t_ms *ms, char *arg, int i, int j);
+char	*expfirst(t_ms *ms, char *arg, int data[5], t_dol **dol);
 
 //----------------------- expand_redirs.c ------------------------
 char	*get_varvalue_redir(t_ms *ms, char *arg, int i, int j);
@@ -97,7 +110,7 @@ char	*expand_dol_redir(t_ms *ms, char *arg, int data[5], t_dol **dol);
 void	r_update_expand_pos(int data[5], int *j, t_dol **dol);
 char	*expand_redir(t_ms *ms, char *arg, t_dol *dol);
 
-//----------------------- expand_redirs.c ------------------------
+//----------------------- expand_hdoc.c ------------------------
 char	*hd_keep_one_dol_only(t_ms *ms, char *arg, int i);
 int	hd_dol_standalone(char *arg);
 char	*hd_expand_dol(t_ms *ms, char *arg, int data[5]);

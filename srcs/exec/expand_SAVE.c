@@ -291,66 +291,74 @@ int	dol_standalone(char *arg, t_dol **dol)
 	return (0);
 }
 
-int	find_cur_dol(char *arg, int data[5])
+char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol)
 {
-	int	i;
-	int	dol_nb;
+//	dprintf(2, "expand dol1\n");
+//	dprintf(2, "arg = %s\n", arg);
+//	dprintf(2, "dol_nb =  %d\n", data[0]);
+	int		i;
+	int		j;
+	char	*exp_arg;
+	char	*var;
+	int		dol_nb;
 
-	i = 0;
 	dol_nb = data[0];
+	exp_arg = NULL;
+	var = NULL;
+	i = 0;
 	while (arg[i] && (arg[i] != '$' || (arg[i] == '$' && dol_nb > 0)))
 	{
 		if (arg[i] == '$')
 			dol_nb--;
 		i++;
 	}
-	return (i);
-}
-
-int	delimitate_var(char *arg, int i, t_dol **dol)
-{
-	int	j;
-
+//	dprintf(2, "i = %d\n", i);
+//	dprintf(2, "expand dol2\n");
+//	dprintf(2, "%c\n", arg[i]);
+	if (!arg[i] || !arg[i + 1] || dol_standalone(&arg[i + 1], dol))
+//	{
+//		dprintf(2, "ici\n");
+		return (arg);
+//	}
+//	dprintf(2, "%s\n", arg);
+//	dprintf(2, "arg[%d] = %c\n", i, arg[i]);
+	if (arg[i + 1] == '$')
+		arg = keep_one_dol_only(ms, arg, i, dol);
+//	dprintf(2, "expand dol2 - 2\n");
+	if (!arg)
+		return (NULL);
+//	dprintf(2, "arg[%d] = %c\n", i, arg[i]);
+//	dprintf(2, "expand dol3\n");
+//	dprintf(2, "%s\n", arg);
 	j = i + 1;
 	while (arg[j] && arg[j] != '$' && arg[j] != '\"' && arg[j] != '\''
 		&& (*dol)->c->n--)
 		j++;
-	return (j);
-}
-
-void	free_if(char *str)
-{
-	if (str)
-		free(str);
-}
-
-char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol)
-{
-	int		i;
-	int		j;
-	char	*exp_arg;
-	char	*var;
-
-	i = find_cur_dol(arg, data);
-	if (!arg[i] || !arg[i + 1] || dol_standalone(&arg[i + 1], dol))
-		return (arg);
-	if (arg[i + 1] == '$')
-		arg = keep_one_dol_only(ms, arg, i, dol);
-	if (!arg)
-		return (NULL);
-	j = delimitate_var(arg, i, dol);
 	var = get_varvalue(ms, arg, i, j);
+//	dprintf(2, "var = %s\n", var);
 	if (!var && ms->exit_code == 255)
 		return (free(arg), NULL);
 	else if (!var)
 		exp_arg = skip_dol(arg, i, j, data);
 	else
 		exp_arg = repl_dol(arg, var, i, j);
+//	dprintf(2, "expand dol4\n");
+//	dprintf(2, "%s\n", exp_arg);
 	if (!exp_arg)
-		return (ms->exit_code = 255, free_if(var), free(arg), NULL);
+	{
+		ms->exit_code = 255;
+		if (var)
+			free(var);
+		return (free(arg), NULL);
+	}
 	if (var)
+	{
 		data[2] += ft_strlen(var);
-	return (data[0] -= 1, free_if(var), free(arg), exp_arg);
+		free(var);
+	}
+	data[0] -= 1;
+//	dprintf(2, "exp_arg = %s\n", exp_arg);
+	return (free(arg), exp_arg);
 }
 
 void	init_data(int data[5])
@@ -402,32 +410,54 @@ int	contains_spc(char *arg, int j, int data[5])
 	return (0);
 }
 
-int	tab_size(char **tab)
+char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 {
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-char	**redefine_args_bis(t_cmd *cmd, char *d[2], char **new_args, int i)
-{
+//	dprintf(2, "i arg = %d\n", i);
+//	dprintf(2, "j arg = %d\n", j);
+//	dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
+//	dprintf(2, "cmd->args[i][j] = %c\n", cmd->args[i][j]);
+	char	**new_args;
+	char	*beg;
+	char	*end;
 	int		size;
 	int		k;
 
-	size = tab_size(cmd->args);
+	size = 0;
+	beg = NULL;
+	end = NULL;
+	while (cmd->args[i][j] && cmd->args[i][j] != ' ')
+		j++;
+	if (j == 0)
+		return (cmd->args); //A CHECKER
+//	dprintf(2, "i arg 2 = %d\n", i);
+//	dprintf(2, "j arg 2 = %d\n", j);
+	beg = ft_calloc(j + 2, sizeof(char));
+	if (!beg)
+		return (NULL);
+	ft_strlcpy(beg, cmd->args[i], j + 1);
+//	dprintf(2, "beg = %s\n", beg);
+//	dprintf(2, "end = %s\n", &cmd->args[i][j + 1]);
+//	dprintf(2, "size end = %lu\n", ft_strlen(&cmd->args[i][j + 1]) + 1);
+	end = ft_calloc(ft_strlen(&cmd->args[i][j + 1]) + 1, sizeof(char));
+	if (!end)
+		return (free(beg), NULL);
+	ft_strlcpy(end, &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1]) + 1);
+//	dprintf(2, "end = %s\n", end);
+	while (cmd->args[size])
+		size++;
+	new_args = ft_calloc(size + 2, sizeof(char *));
+	if (!new_args)
+		return (free(beg), free(end), NULL);
 	k = 0;
 	while (k < i)
 	{
 		new_args[k] = ft_strdup(cmd->args[k]);
 		if (!new_args[k])
-			return (free_tab(new_args), free(d[0]), free(d[1]), NULL);
+			return (free_tab(new_args), free(beg), free(end), NULL);
 		k++;
 	}
-	new_args[k++] = d[0];
-	new_args[k++] = d[1];
+	new_args[k++] = beg;
+	new_args[k++] = end;
 	while (k < size)
 	{
 		new_args[k] = ft_strdup(cmd->args[k - 1]);
@@ -436,63 +466,29 @@ char	**redefine_args_bis(t_cmd *cmd, char *d[2], char **new_args, int i)
 		k++;
 	}
 	new_args[k] = NULL;
-	return (new_args);
-}
-
-char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
-{
-	char	**new_args;
-	char	*d[2];
-	int		size;
-
-	size = tab_size(cmd->args);
-	while (cmd->args[i][j] && cmd->args[i][j] != ' ')
-		j++;
-	if (j == 0)
-		return (cmd->args);
-	d[0] = ft_calloc(j + 2, sizeof(char));
-	if (!d[0])
-		return (NULL);
-	ft_strlcpy(d[0], cmd->args[i], j + 1);
-	d[1] = ft_calloc(ft_strlen(&cmd->args[i][j + 1]) + 1, sizeof(char));
-	if (!d[1])
-		return (free(d[0]), NULL);
-	ft_strlcpy(d[1], &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1]) + 1);
-	new_args = ft_calloc(size + 2, sizeof(char *));
-	if (!new_args)
-		return (free(d[0]), free(d[1]), NULL);
-	new_args = redefine_args_bis(cmd, d, new_args, i);
 	data[3] = 1;
+//	data[4] = ft_strlen(cmd->args[i]) - (data[2] - ft_strlen(new_args[i]));
+//	dprintf(2, "data[2] = %d\n", data[2]);
+//	dprintf(2, "new_args[i] = %s\n", new_args[i]);
+//	dprintf(2, "len new args[i] = %zu\n", ft_strlen(new_args[i]));
+//	dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
+//	dprintf(2, "len cmd args[i] = %zu\n", ft_strlen(cmd->args[i]));
 	data[4] = data[2] - (ft_strlen(new_args[i]) - (j - 1));
 	return (free_tab(cmd->args), new_args);
 }
-
-int	args_redef(t_cmd *cmd, int i, int j, int data[5])
-{
-	if (!cmd->args[i])
-		return (1);
-	if (i == 0 && contains_spc(cmd->args[i], j, data))
-		cmd->args = redefine_args(cmd, i, j, data);
-	if (!cmd->args)
-		return (1);
-	return (0);
-}
-
-/*
-data[0] = dol_count
-data[1] = 1 means a dol has been skipped and we need to go back from 1 char 
- in the loop (j -= 1)
-data[2] = x means a $ has been replaced and we move from x chars since they are
-not to be analyzed in the loop
-data[3] = 1 means the list of args has been redefined
-data[4] = x gives the new start of j, after the list of args has been redefined
-*/
 
 int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 {
 	int	i;
 	int	j;
 	int	data[5];
+	//data[0] = dol_count
+	//data[1] = 1 means a dol has been skipped and we need to go back from 1 char 
+	// in the loop (j -= 1)
+	//data[2] = x means a $ has been replaced and we move from x chars since they are
+	//not to be analyzed in the loop
+	//data[3] = 1 means the list of args has been redefined
+	//data[4] = x gives the new start of j, after the list of args has been redefined
 
 	i = -1;
 	if (!cmd->args)
@@ -501,22 +497,47 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 	{
 		j = -1;
 		init_data(data);
+//		dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
 		while (cmd->args[i][++j])
 		{
+//			dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
+//			dprintf(2, "cmd->args[i][j] = %c\n", cmd->args[i][j]);
+//			dprintf(2, "dol->d->n = %d\n", dol->d->n);
 			if (cmd->args[i][j] == '$')
 			{
+//				if (!dol->d)
+//					dprintf(2, "dol->d n'existe pas\n");
 				if (dol->d->n)
 				{
+//					dprintf(2, "args[i] = %s\n", args[i]);
+//					dprintf(2, "args[i][j] = %c\n", args[i][j]);
+//					dprintf(2, "dol->d->n = %d\n", dol->d->n);
 					if (i == 0)
-						cmd->args[i] = expfirst(ms, cmd->args[i], data, &dol);
+					{
+						cmd->args[i] = expand_dol_first(ms, cmd->args[i], data, &dol);
+						if (!cmd->args[i])
+							return (1);
+//						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
+						if (contains_spc(cmd->args[i], j, data))
+							cmd->args = redefine_args(cmd, i, j, data);// peut etre utile pour ajout d'arg  
+						if (!cmd->args)
+							return (1);
+//						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
+					}
 					else
+					{
 						cmd->args[i] = expand_dol(ms, cmd->args[i], data, &dol);
-					if (args_redef(cmd, i, j, data) == 1)
-						return (ms->exit_code = 255, 255);
+						if (!cmd->args[i])
+							return (1);
+//						dprintf(2, "cmd->args[0] = %s\n", cmd->args[0]);
+					}
 				}
 				update_expand_pos(data, &i, &j, &dol);
+//				dprintf(2, "i = %d\n", i);
+//				dprintf(2, "j = %d\n", j);
 			}
 		}
 	}
+//	dprintf(2, "return 0\n");
 	return (0);
 }

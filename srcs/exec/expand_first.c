@@ -73,7 +73,7 @@ char	*get_varvalue_first(t_ms *ms, char *arg, int i, int j)
 	return (free(value), free(var), new_var);
 }
 
-char	*expand_dol_first(t_ms *ms, char *arg, int data[5], t_dol **dol)
+char	*expfirst(t_ms *ms, char *arg, int data[5], t_dol **dol)
 {
 //	dprintf(2, "expand dol first\n");
 //	dprintf(2, "expand dol1\n");
