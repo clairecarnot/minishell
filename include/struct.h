@@ -155,6 +155,8 @@ typedef struct s_ms
 	int			in;
 	int			out;
 	t_list		*hdlst;
+	int			i_w;//index wildcard
+
 
 	int	a;//test malloc
 }				t_ms;

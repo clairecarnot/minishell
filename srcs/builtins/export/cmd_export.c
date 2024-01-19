@@ -96,7 +96,7 @@ int	exec_export(t_ms *ms, t_cmd *cmd)
 	{
 		while (cmd->args[i])
 		{
-			if (!error_exp_spaces(cmd->args[i]) && !error_exp(cmd->args[i]))
+			if (!error_exp_spaces(cmd->args[i]) && !error_exp(cmd->args[i]))// ajouter une fonction qui met erreur en cas de * dans le contenu de la variable
 				add_variable(ms, cmd, cmd->args[i]);
 			i++;
 		}

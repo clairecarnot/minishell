@@ -18,6 +18,7 @@
 # include <sys/ioctl.h>
 # include <errno.h>
 # include <limits.h>
+# include <dirent.h>
 
 //----------------------- main.c ------------------------
 char	*tok_to_str(t_token *token);

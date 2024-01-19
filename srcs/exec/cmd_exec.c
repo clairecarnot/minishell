@@ -87,7 +87,7 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 	}	
 	if (node->wil)
 	{
-
+		cmd_wildcard(ms, cmd, node->wil);
 	}
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);

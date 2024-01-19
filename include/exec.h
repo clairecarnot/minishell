@@ -104,4 +104,7 @@ char	*hd_expand_dol(t_ms *ms, char *arg, int data[5]);
 void	hd_update_expand_pos(int data[5], int *j);
 char	*expand_hdoc(t_ms *ms, char *arg);
 
+//----------------------- wildcards.c ------------------------
+int	cmd_wildcard(t_ms *ms ,t_cmd* cmd, t_wil *wil);
+
 #endif
