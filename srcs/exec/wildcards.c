@@ -26,104 +26,44 @@ int	same_as_wildcard(char *d_name, char *arg, int *flag)
 	return (0);
 }
 
-int	len_dchar(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-		i++;
-	return (i);
-}
-
-char	**add_todoublechar2(char **new_arg, char *d_name)
-{
-	int		i;
-	char	**tmp_new_arg;
-
-	i = 0;
-	tmp_new_arg = ft_calloc((sizeof(char *)), len_dchar(new_arg) + 1);
-	if (!tmp_new_arg)
-		return (NULL);//a verifier
-	while (i < len_dchar(new_arg))
-	{
-		tmp_new_arg[i] = ft_strdup(new_arg[i]);//a verifier
-		if (!tmp_new_arg)
-		{
-			free_tab(tmp_new_arg);
-			return (NULL);
-		}
-		i++;
-	}
-	tmp_new_arg[i++] = ft_strdup(d_name);// a verifier
-	if (!tmp_new_arg)
-	{
-		free_tab(tmp_new_arg);
-		return (NULL);
-	}
-	tmp_new_arg[i] = 0;
-	return (tmp_new_arg);
-}
-
-char	**add_todoublechar(char	**new_arg, char *d_name)
-{
-	if (!new_arg)
-	{
-		new_arg = ft_calloc(sizeof(char *), 2);// a proteger
-		if (!new_arg)
-			return (NULL);// a verifier
-		new_arg[0] = ft_strdup(d_name);
-		if (!new_arg[0])
-			return (NULL);//a verifier
-		new_arg[1] = 0;
-		return (new_arg);
-	}
-	else
-		return (add_todoublechar2(new_arg, d_name));
-
-}
-
 char	**wildcards_2(DIR *d, struct dirent *file, char *arg, int *w)
 {
-	// char	*new_arg;
-	// char	**split_arg;
-	char	**d_args;
+	char	*new_arg;
+	char	**split_arg;
 
-	d_args = NULL;
+	new_arg = NULL;
 	while (file != NULL)
 	{
-		dprintf(2, "d_name = %s\n", file->d_name);
-		dprintf(2, "arg = %s\n", arg);
+		// dprintf(2, "d_name = %s\n", file->d_name);
+		// dprintf(2, "arg = %s\n", arg);
 		if (same_as_wildcard(file->d_name, arg, w) == 1)
 		{
-			dprintf(2, "d_name same = %s\n", file->d_name);
+			// dprintf(2, "d_name same = %s\n", file->d_name);
 			// if (!(file->d_name[0] == '.') || /*(ft_strcmp("ls", w->cmd_0) == 0 && is_flag_a(w->cmd_1) == 0 && file->d_type != 4) ||*/ (arg[0] == '.' && (arg[1] == '*')))
 			// {
-				// if (!new_arg)
-				// {
-				// 	new_arg = ft_strdup(file->d_name);
-				// 	//a proteger
-				// }
-				// else
-				// {
-				// 	new_arg = ft_strjoin(new_arg, "\v");
-				// 	//a proteger + free
-				// 	new_arg = ft_strjoin(new_arg, file->d_name);
-				// 	//a proteger + free
-				// }
+				if (!new_arg)
+				{
+					new_arg = ft_strdup(file->d_name);
+					//a proteger
+				}
+				else
+				{
+					new_arg = ft_strjoin(new_arg, "\v");
+					//a proteger + free
+					new_arg = ft_strjoin(new_arg, file->d_name);
+					//a proteger + free
+				}
 			// }
-			d_args = add_todoublechar(d_args, file->d_name);// a verifier
 		}
 		file = readdir(d);
 	}
-	// if (new_arg)
-	// {
-	// 	split_arg = ft_split(new_arg, '\v');// a proteger
-	// 	return (split_arg);
-	// }
-	if (d_args)
-		return (d_args);
-	return (NULL);
+	if (new_arg)
+	{
+		split_arg = ft_split(new_arg, '\v');// a proteger
+		return (split_arg);
+	}
+	//new_arg = ft_calloc(sizeof(char *), 4)//on pourrait retourner ca a la place de
+	return (NULL);// attention aux retour de NULL possibles en cas de malloc fail
 }
 
 int	wildcards_init(DIR **d, struct dirent **file)
@@ -166,7 +106,15 @@ int	*lst_to_int_tab(t_list *lst)
 	return (tab);
 }
 
+int	len_dchar(char **tab)
+{
+	int	i;
 
+	i = 0;
+	while (tab[i])
+		i++;
+	return (i);
+}
 
 char	**make_new_args(char **args, char **ad, int w_i)
 {
@@ -210,17 +158,17 @@ void	print_added_args(char **a)// temporaire
 	}
 }
 
-void	print_tab_char(int *tab)//temp
-{
-	int i = 0;
+// void	print_tab_char(int *tab)//temp
+// {
+// 	int i = 0;
 
-	dprintf(2, "print int tab\n");
-	while (i < 5)
-	{
-		dprintf(2, "tab = %d\n", tab[i]);
-		i++;
-	}
-}
+// 	dprintf(2, "print int tab\n");
+// 	while (i < 5)
+// 	{
+// 		dprintf(2, "tab = %d\n", tab[i]);
+// 		i++;
+// 	}
+// }
 
 int	*lstint_to_tab(t_list *lst)
 {
@@ -249,14 +197,13 @@ char	**wildcards(t_ms *ms, char **args, t_wildcard *wildc)
 	int				*tab_w;
 	char 			**added_args;
 	char			**new_args;
-
-	// dprintf(2, "ici1\n");
-	// tab_w = lst_to_int_tab(wildc->wil->w);// a proteger
 	
 	if (wildcards_init(&d, &file) != 0)
 		return (args);//a verifier
 	// print_lst(wildc->wil->w);
 	tab_w = lstint_to_tab(wildc->wil->w);
+	if (!tab_w)
+		return (NULL);// a verifier
 	// print_tab_char(tab_w);
 	added_args = wildcards_2(d, file, args[wildc->i], tab_w);
 	if (added_args)
@@ -266,16 +213,15 @@ char	**wildcards(t_ms *ms, char **args, t_wildcard *wildc)
 		// print_added_args(added_args);
 
 		new_args = make_new_args(args, added_args, wildc->i);// a verifier	
-		print_added_args(new_args);
+		// print_added_args(new_args);
 		wildc->i = wildc->i + len_dchar(added_args) - 1;
-		dprintf(2, "wildc->i = %d\n", wildc->i);
+		// dprintf(2, "wildc->i = %d\n", wildc->i);
 		return (new_args);
 	}
 	closedir(d);
 	free(tab_w);
 	// wildc->i = something();
 	return (args);
-	
 }
 
 // int	has_asterisk(char *str)
@@ -299,7 +245,6 @@ void	advance_in_lst(t_list **lst, int size)
 	i = 0;
 	while (*lst && (i < size))
 	{
-		// dprintf(2, "i = %d\n", i);
 		*lst = (*lst)->next;
 		i++;
 	}
@@ -309,11 +254,11 @@ int	cmd_wildcard(t_ms *ms , t_cmd *cmd, t_wil *wil)
 {
 	int	i;
 	int	size;
-
 	t_wildcard	*wildc;
 	
 	wildc = ft_calloc(sizeof(t_wildcard), 1);//peut etre
-	//a proteger
+	if (!wildc)// a verifier
+		return (NULL);
 	i = 0;
 	size = 0;
 	wildc->wil = wil;
@@ -322,11 +267,13 @@ int	cmd_wildcard(t_ms *ms , t_cmd *cmd, t_wil *wil)
 	{
 		wildc->i = i;
 		size = ft_strlen(cmd->args[i]);
-		// dprintf(2, "size = %d\n", size);
-		print_lst(wildc->wil->w);
 		cmd->args = wildcards(ms, cmd->args, wildc);
+		if (!cmd->args)// a verifier
+		{
+			free(wildc);
+			return (NULL);
+		}
 		advance_in_lst(&wildc->wil->w, size);
-
 		i = wildc->i;
 		i++;
 	}
