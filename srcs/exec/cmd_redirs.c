@@ -127,7 +127,7 @@ int	handle_great(t_ms *ms, t_redirs *redirs)
 		rtmp_d = redirs->dol->d;
 		rtmp_c = redirs->dol->c;
 	}
-	if (redirs->type == LESS && redirs->dol)
+	if (redirs->type == GREAT && redirs->dol)
 	{
 		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
 		redirs->dol->d = rtmp_d;
@@ -185,7 +185,7 @@ int	handle_dgreat(t_ms *ms, t_redirs *redirs)
 		rtmp_d = redirs->dol->d;
 		rtmp_c = redirs->dol->c;
 	}
-	if (redirs->type == LESS && redirs->dol)
+	if (redirs->type == DGREAT && redirs->dol)
 	{
 		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
 		redirs->dol->d = rtmp_d;

@@ -403,7 +403,7 @@ char	*expand_hdoc(t_ms *ms, char *arg)
 	if (!arg)
 		return (NULL);
 	j = -1;
-	init_data(data);
+	init_data(data, &j);
 	while (arg[++j])
 	{
 		if (arg[j] == '$')

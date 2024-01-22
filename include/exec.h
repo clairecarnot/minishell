@@ -68,36 +68,42 @@ int	close_if(int *fd);
 
 //----------------------- EXPAND FILES ------------------------
 
-char	*trim_beg(char const *s1, char const *set);
-int	count_consec_spc(char *value);
-char	*ft_trimvar(char *value);
+//----------------------- expand_getvar.c ------------------------
 char	*ft_getenv(t_ms *ms, char *var);
+char	*exp_exitcode(t_ms *ms);
+char	*trim_beg(char const *s1, char const *set);
+char	*ft_trimvar(char *value);
 char	*get_varvalue(t_ms *ms, char *arg, int i, int j);
 
+//----------------------- expand_utils1.c ------------------------
+int	is_same_len(char *s1, char *s2);
+int	isset(char c, char const *set);
+int	count_consec_spc(char *value);
+int	find_cur_dol(char *arg, int data[5]);
+
+//----------------------- expand_utils2.c ------------------------
+int	delimitate_var(char *arg, int i, t_dol **dol);
+void	free_if(char *str);
+int	tab_size(char **tab);
+int	contains_spc(char *arg, int j, int data[5]);
+
+//----------------------- expand_do_dols.c ------------------------
 char	*skip_dol(char *arg, int i, int j, int data[5]);
 char	*repl_dol(char *arg, char *var, int i, int j);
 char	*keep_one_dol_only(t_ms *ms, char *arg, int i, t_dol **dol);
 int	dol_standalone_return(char c);
 int	dol_standalone(char *arg, t_dol **dol);
 
-int	is_same_len(char *s1, char *s2);
-int	isset(char c, char const *set);
-int	contains_spc(char *arg, int j, int data[5]);
+//----------------------- expand_redef_args.c ------------------------
 char	**redefine_args_bis(t_cmd *cmd, char *d[2], char **new_args, int i);
 char	**redefine_args(t_cmd *cmd, int i, int j, int data[5]);
 int	args_redef(t_cmd *cmd, int i, int j, int data[5]);
-char	*exp_exitcode(t_ms *ms);
 
 //----------------------- expand.c ------------------------
-void	init_data(int data[5]);
 char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol);
+int	init_data(int data[5], int *j);
 void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol);
 int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol);
-
-int	find_cur_dol(char *arg, int data[5]);
-int	delimitate_var(char *arg, int i, t_dol **dol);
-void	free_if(char *str);
-int	tab_size(char **tab);
 
 //----------------------- expand_first.c ------------------------
 char	*ft_trimvar_first(char *value);
