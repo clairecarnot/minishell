@@ -67,6 +67,8 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 	if (!cmd)
 		free_minishell(ms, 255); //env deja free, si 1 => badmalloc : free ms
 	exit_code = node_to_cmd(ms, node, cmd);
+	if (ms->exit_code == 255)
+		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		(free_cmd(cmd), free_minishell(ms, exit_code));
 	if (cmd->redir && !cmd->valid_redir)

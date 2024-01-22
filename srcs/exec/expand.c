@@ -93,7 +93,7 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 					else
 						cmd->args[i] = expand_dol(ms, cmd->args[i], data, &dol);
 					if (args_redef(cmd, i, j, data) == 1)
-						return (ms->exit_code = 255, 255);
+						return (ms->exit_code = 255, 1);
 				}
 				update_expand_pos(data, &i, &j, &dol);
 			}

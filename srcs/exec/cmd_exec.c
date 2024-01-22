@@ -26,19 +26,15 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 {
 	t_list	*tmp_d;
 	t_list	*tmp_c;
-	// t_list	*tmp_w;
 	char	**tmp;
 	int		i;
 
 	i = 0;
-
-	// t_dw	*dw;
-
-	// dw = ft_calloc;
-	// dw->dol = ;
-	// dw->wil = ;
 	if (node->redirs)
-		cmd_redirs(ms, node, cmd);
+	{
+		if (cmd_redirs(ms, node, cmd) == 1)
+			return (1);
+	}
 	if (node->dol)
 	{
 		tmp_d = node->dol->d;
@@ -49,7 +45,7 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		return (255);
 	if (node->dol)
 	{
-		if (cmd_expand(ms, cmd, node->dol) == 1)
+		if (cmd_expand(ms, cmd, node->dol) == 1) //1 means bad malloc, one ne free qu'APRES 
 		{
 			node->dol->d = tmp_d;
 			node->dol->c = tmp_c;
@@ -218,6 +214,8 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	if (!cmd)
 		return (ms->exit_code = 255, 1); //env deja free, si 1 => badmalloc : free ms
 	exit_code = node_to_cmd(ms, node, cmd);
+	if (ms->exit_code == 255)
+		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		return (ms->exit_code = exit_code, free_cmd(cmd), 1);
 	if (cmd->redir && !cmd->valid_redir)

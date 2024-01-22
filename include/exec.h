@@ -91,6 +91,7 @@ int				dol_standalone_return(char c);
 int				dol_standalone(char *arg, t_dol **dol);
 
 //----------------------- expand_redef_args.c ------------------------
+void			redefine_datapos(char **new_args, int i, int j, int data[5]);
 char			**redefine_args_bis(t_cmd *cmd, char *d[2], char **new_args,
 					int i);
 char			**redefine_args(t_cmd *cmd, int i, int j, int data[5]);

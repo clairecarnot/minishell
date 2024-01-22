@@ -48,6 +48,8 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 			&& ((int) ft_strlen(line) == limlen))
 			break ;
 		line = expand_hdoc(ms, line);
+		if (ms->exit_code == 255)
+			(free_if(line), close_if(&fd), free_minishell(ms, 255));
 		(ft_putstr_fd(line, fd), ft_putstr_fd("\n", fd), free(line));
 		nb_line++;
 	}
@@ -74,23 +76,15 @@ int	handle_less(t_ms *ms, t_redirs *redirs)
 		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
 		redirs->dol->d = rtmp_d;
 		redirs->dol->c = rtmp_c;
+		if (ms->exit_code == 255)
+			return (1);
+//			free_minishell(ms, 255);
 	}
 	if (access(redirs->filename, F_OK) != -1)
 	{
-//		dprintf(2, "access1\n");
 		if (access(redirs->filename, R_OK) == -1)
-		{
-//			dprintf(2, "access2\n");
-//			dprintf(2, "can't be opened in read mode\n");
-//			fd = open(redirs->filename,  O_RDONLY, 0666);
-//			close_if(&fd);
 			return (1);
-		}
 	}
-//	while (access(redirs->filename, F_OK) != -1 && access(redirs->filename, R_OK) == -1)
-//		sleep(1);
-//	fd = open(redirs->filename,  O_RDONLY, S_IRUSR);
-//	fd = open(redirs->filename,  O_RDWR, 0666);
 	fd = open(redirs->filename,  O_RDONLY, 0666);
 	if (fd < 0)
 	{
@@ -101,8 +95,6 @@ int	handle_less(t_ms *ms, t_redirs *redirs)
 		ms->exit_code = 1;
 		return (1);
 	}
-//	dprintf(2, "open less succeded \n");
-	// dprintf(2, "%d\n", fd);
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("minishell: dup2 failed");
@@ -110,8 +102,6 @@ int	handle_less(t_ms *ms, t_redirs *redirs)
 		return (1);
 	}
 	close_if(&fd);// a proteger
-	// dprintf(2, "fin handle less\n");
-	// dprintf(2, "%d\n", STDIN_FILENO);
 	return (0);
 }
 
@@ -132,6 +122,9 @@ int	handle_great(t_ms *ms, t_redirs *redirs)
 		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
 		redirs->dol->d = rtmp_d;
 		redirs->dol->c = rtmp_c;
+		if (ms->exit_code == 255)
+			return (1);
+//			free_minishell(ms, 255);
 	}
 	/*
 	if (access(redirs->filename, F_OK) != -1)
@@ -190,6 +183,9 @@ int	handle_dgreat(t_ms *ms, t_redirs *redirs)
 		redirs->filename = expand_redir(ms, redirs->filename, redirs->dol);
 		redirs->dol->d = rtmp_d;
 		redirs->dol->c = rtmp_c;
+		if (ms->exit_code == 255)
+			return (1);
+//			free_minishell(ms, 255);
 	}
 	if (access(redirs->filename, F_OK) == -1)
 		fd = open(redirs->filename, O_CREAT | O_WRONLY | O_APPEND, 0666);
@@ -219,23 +215,9 @@ int	handle_dgreat(t_ms *ms, t_redirs *redirs)
 
 int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 {
-	// dprintf(2, "cmd redirs\n");
 	t_redirs	*tmp;
 
 	cmd->redir = 1;
-	/*
-	tmp = node->redirs;
-	while (tmp)
-	{
-		if (tmp->type == DLESS)
-		{
-			tmp->filename = handle_dless(ms, tmp, cmd, tmp->filename);
-			if (!tmp->filename)
-				return (1);
-		}
-		tmp = tmp->next_redir;
-	}
-	*/
 	tmp = node->redirs;
 	while (tmp)
 	{
@@ -243,30 +225,24 @@ int	cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd)
 		{
 			if (handle_less(ms, tmp) == 1)
 				return (cmd->invalid_io = tmp->filename, 1);
-//				return (1);
 		}
 		else if (tmp->type == GREAT)
 		{
 			if (handle_great(ms, tmp) == 1)
 				return (cmd->invalid_io = tmp->filename, 1);
-//				return (1);
 		}
 		else if (tmp->type == DGREAT)
 		{
 			if (handle_dgreat(ms, tmp) == 1)
 				return (cmd->invalid_io = tmp->filename, 1);
-//				return (1);
 		}
 		else if (tmp->type == DLESS)
 		{
 			if (handle_less(ms, tmp) == 1)
-//			if (handle_dless(ms, tmp, cmd) == 1)
 				return (cmd->invalid_io = tmp->filename, 1);
-//				return (1);
 		}
 		tmp = tmp->next_redir;
 	}
 	cmd->valid_redir = 1;
-	// dprintf(2, "fin cmd_redir\n");
 	return (0);
 }
