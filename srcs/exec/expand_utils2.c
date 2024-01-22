@@ -11,6 +11,16 @@ int	delimitate_var(char *arg, int i, t_dol **dol)
 	return (j);
 }
 
+int	hd_delimitate_var(char *arg, int i)
+{
+	int	j;
+
+	j = i + 1;
+	while (arg[j] && arg[j] != '$' && arg[j] != '\"' && arg[j] != '\'')
+		j++;
+	return (j);
+}
+
 void	free_if(char *str)
 {
 	if (str)
