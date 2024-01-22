@@ -13,7 +13,7 @@ int				pre_exec(t_ms *ms);
 
 //----------------------- cmd_hdoc.c ------------------------
 void			update_hdlst(t_ms *ms, char *name);
-char			random_char(t_ms *ms);
+char			random_char(t_ms *ms, char *name);
 char			*generate_hdname(t_ms *ms);
 
 //----------------------- cmd_redirs.c ------------------------

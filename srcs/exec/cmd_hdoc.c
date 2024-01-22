@@ -11,7 +11,7 @@ void	update_hdlst(t_ms *ms, char *name)
 		if (!ms->hdlst)
 		{
 			free(name);
-			free_minishell(ms, 255);// a verifier
+			free_minishell(ms, 255);
 		}
 	}
 	new = ft_lstnew(name);
@@ -19,12 +19,12 @@ void	update_hdlst(t_ms *ms, char *name)
 	{
 		free(name);
 		ft_lstfree(&ms->hdlst);
-		free_minishell(ms, 255);// a verifier
+		free_minishell(ms, 255);
 	}
 	ft_lstadd_back(&ms->hdlst, new);
 }
 
-char	random_char(t_ms *ms)
+char	random_char(t_ms *ms, char *name)
 {
 	char	c;
 	int		fd;
@@ -34,14 +34,16 @@ char	random_char(t_ms *ms)
 	if (fd == -1)
 	{
 		perror("Error opening /dev/urandom");
-		free_minishell(ms, 1);// a verifier
+		free(name);
+		free_minishell(ms, 1);
 	}
 	buf = read(fd, &c, sizeof(c));
 	if (buf != sizeof(c))
 	{
 		perror("Error reading from /dev/urandom");
 		close_if(&fd);
-		free_minishell(ms, 1);// a verifier
+		free(name);
+		free_minishell(ms, 1);
 	}
 	close_if(&fd);
 	if (c < 0)
@@ -57,11 +59,11 @@ char	*generate_hdname(t_ms *ms)
 	i = 0;
 	name = ft_calloc(11 + 6, sizeof(char));
 	if (!name)
-		free_minishell(ms, 255);// a verifier
+		free_minishell(ms, 255);
 	ft_strlcpy(name, "/tmp/.", 7);
 	while (i < 10)
 	{
-		name[6 + i] = (random_char(ms) + '0') % 26 + 97;
+		name[6 + i] = (random_char(ms, name) + '0') % 26 + 97;
 		i++;
 	}
 	name[6 + i] = '\0';
