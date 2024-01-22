@@ -1,72 +1,73 @@
 #include "../../include/exec.h"
 #include "../../include/signals.h"
 
-void	update_hdlst(t_ms *ms, char *name)
+int	hdoc_ctrl_d(t_ms *ms, int fd, int nb_line) // A VOIR AVEC MAELLE
 {
-	t_list	*new;
-
-	if (!ms->hdlst)
-	{
-		ms->hdlst = ft_calloc(1, sizeof(t_list));
-		if (!ms->hdlst)
-		{
-			free(name);
-			free_minishell(ms, 255);
-		}
-	}
-	new = ft_lstnew(name);
-	if (!new)
-	{
-		free(name);
-		ft_lstfree(&ms->hdlst);
-		free_minishell(ms, 255);
-	}
-	ft_lstadd_back(&ms->hdlst, new);
+	ms->exit_code = 0;
+	ft_putstr_fd("minishell: warning: here-document at line ", 2);
+	ft_putnbr_fd(nb_line, 2);
+	ft_putstr_fd(" delimited by end-of-file (wanted `lim')\n", 2);
+	//ajouter les lignes lues precedemment
+	//+ ne pas afficher minishell: lim: No such file or directory
+	return (close_if(&fd), 1); //check error code
 }
 
-char	random_char(t_ms *ms, char *name)
+int	hdoc_sigint(int fd)
 {
-	char	c;
+	if (open("/dev/stdout", O_RDONLY) == -1)
+		return (close_if(&fd), perror("open stdout failed"), 1);
+	return (close_if(&fd), 0);
+}
+
+int	hdoc_create(t_ms *ms, int fd, char *filename, int limlen)
+{
+	char	*line;
+	int		nb_line;
+
+	nb_line = 0;
+	while (1)
+	{
+		line = readline("> ");
+		if (g_exit_code == 2)
+			return (free_if(line), hdoc_sigint(fd));
+		if (!line) //A VOIR AVEC MAELLE
+			return (free_if(line), hdoc_ctrl_d(ms, fd, nb_line));
+		if (ft_strncmp(line, filename, limlen) == 0
+			&& ((int) ft_strlen(line) == limlen))
+			break ;
+		line = expand_hdoc(ms, line);
+		if (ms->exit_code == 255)
+			return (free_if(line), close_if(&fd), 255);
+		(ft_putstr_fd(line, fd), ft_putstr_fd("\n", fd), free(line));
+		nb_line++;
+	}
+	return (free(line), ft_putstr_fd("\0", fd), close_if(&fd), 0);
+}
+
+char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
+{
+	char	*hdname;
 	int		fd;
-	int		buf;
+	int		limlen;
+	int		exit_code;
 
-	fd = open("/dev/urandom", O_RDONLY);
-	if (fd == -1)
-	{
-		perror("Error opening /dev/urandom");
-		free(name);
-		free_minishell(ms, 1);
-	}
-	buf = read(fd, &c, sizeof(c));
-	if (buf != sizeof(c))
-	{
-		perror("Error reading from /dev/urandom");
-		close_if(&fd);
-		free(name);
-		free_minishell(ms, 1);
-	}
-	close_if(&fd);
-	if (c < 0)
-		return (-c);
-	return (c);
-}
-
-char	*generate_hdname(t_ms *ms)
-{
-	int		i;
-	char	*name;
-
-	i = 0;
-	name = ft_calloc(11 + 6, sizeof(char));
-	if (!name)
-		free_minishell(ms, 255);
-	ft_strlcpy(name, "/tmp/.", 7);
-	while (i < 10)
-	{
-		name[6 + i] = (random_char(ms, name) + '0') % 26 + 97;
-		i++;
-	}
-	name[6 + i] = '\0';
-	update_hdlst(ms, name);
-	return (name);
+	exit_code = 0;
+	limlen = ft_strlen(redirs->filename);
+	hdname = generate_hdname(ms); //deja protege
+	fd = open(hdname, O_CREAT | O_WRONLY, 0666);
+	if (fd < 0)
+		return (perror("minishell: heredoc"), ms->exit_code = 1,
+			free(limiter), NULL);
+	if (dup2(ms->in, STDIN_FILENO) == -1)
+		return (perror("dup2 failed"), ms->exit_code = 1, close_if(&fd),
+			free(limiter), NULL);
+	hd_signals();
+	exit_code = hdoc_create(ms, fd, redirs->filename, limlen);
+	if (g_exit_code == 2 && exit_code == 0)
+		return (free(limiter), NULL);
+	else if ((g_exit_code == 2 && exit_code == 1) || exit_code == 255)
+		(free_minishell(ms, exit_code));
+//		(free(limiter), free_minishell(ms, exit_code));
+	(preprompt_signals(), free(limiter));
+	return (ft_strdup(hdname));
 }

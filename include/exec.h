@@ -11,13 +11,19 @@ int				exec_orif(t_ast *node, t_ms *ms);
 int				execute(t_ast *node, t_ms *ms);
 int				pre_exec(t_ms *ms);
 
-//----------------------- cmd_hdoc.c ------------------------
+//----------------------- cmd_hdname.c ------------------------
 void			update_hdlst(t_ms *ms, char *name);
 char			random_char(t_ms *ms, char *name);
 char			*generate_hdname(t_ms *ms);
 
-//----------------------- cmd_redirs.c ------------------------
+//----------------------- cmd_hdoc.c ------------------------
+int				hdoc_ctrl_d(t_ms *ms, int fd, int nb_line);
+int				hdoc_sigint(int fd);
+int				hdoc_create(t_ms *ms, int fd, char *filename, int limlen);
 char			*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter);
+
+//----------------------- cmd_redirs.c ------------------------
+void			print_msg_redir(char *invalid_io);
 int				handle_less(t_ms *ms, t_redirs *redirs);
 int				handle_great(t_ms *ms, t_redirs *redirs);
 int				handle_dgreat(t_ms *ms, t_redirs *redirs);
@@ -38,7 +44,7 @@ void			free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path);
 char			**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd);
 int				build_path(t_cmd *cmd);
 
-//----------------------- cmd_utils.c ------------------------
+//----------------------- cmd_utils1.c ------------------------
 int				equals(char *s1, char *s2);
 t_builtin_type	builtin_type_is(char *builtin);
 char			**lst_to_tab(t_list *lst);
@@ -46,8 +52,9 @@ char			*ft_strjoin_slash(char const *s1, char const *s2);
 char			**tab_cpy(t_ms *ms, char **tab);
 
 //----------------------- cmd_utils2.c ------------------------
-char			**resize_tab(char **tab, int i);
-char			**post_expand_adj(t_ms *ms, char **args, char **tmp);
+void			save_ptrs(t_list **s1, t_list **s2, t_list **t1, t_list **t2);
+//char			**resize_tab(char **tab, int i);
+//char			**post_expand_adj(t_ms *ms, char **args, char **tmp);
 
 //----------------------- pipe_exec.c ------------------------
 t_list			*ft_lstnew_int(int pid);
