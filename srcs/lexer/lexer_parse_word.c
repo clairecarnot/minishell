@@ -116,16 +116,16 @@ void	update_lstwil_in(t_ms *ms, int qtype, int i, t_wil **wil)
 //	ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 1) &&
 		(ms->lexer->src[ms->lexer->cur_pos + i] != qtype))
 	{
-		if (ms->lexer->src[ms->lexer->cur_pos + i] == '*')
-		{
-			w = ft_lstnew_int(0);
+		// if (ms->lexer->src[ms->lexer->cur_pos + i] == '*')
+		// {
+			w = ft_lstnew_int(1);
 			if (!w) // a verifier
 				(ft_lstfree(&w), prefree_minishell(ms, NULL));
 			// {
 			// 	ms->exit_code = 134;
 			// 	free_minishell(ms, 1);
 			// }
-		}
+		// }
 		//ft_lstadd_back(dol, new);
 		if (update_lstwil(wil, w) == 1)
 			(ft_lstfree(&w), prefree_minishell(ms, NULL));
@@ -146,13 +146,19 @@ int	update_lstwil_out(t_ms *ms, int i, int j, t_wil **wil)
 	{
 		if (ms->lexer->src[ms->lexer->cur_pos + i] == '*')
 		{
-			w = ft_lstnew_int(1);
+			w = ft_lstnew_int(0);
 			if (!w)// a verifier
 				(ft_lstfree(&w), prefree_minishell(ms, NULL));
 //			{
 //				ms->exit_code = 134;
 //				free_minishell(ms, 1);
 //			}
+		}
+		else
+		{
+			w = ft_lstnew_int(1);
+			if (!w)// a verifier
+				(ft_lstfree(&w), prefree_minishell(ms, NULL));			
 		}
 //		ft_lstadd_back(dol, new);
 		if (update_lstwil(wil, w) == 1)

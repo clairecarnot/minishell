@@ -132,6 +132,15 @@ typedef struct s_lexer
 	size_t	tok_count;//nb de token final
 }		t_lexer;
 
+typedef	struct s_wildcard
+{
+	int		i;//index qui nous indique ou onn se trouve dans notre tableau d'arg
+	//s'il faut faire copie et ajout, il faudra le faire a partir de i et 
+	//remplacer i par i + nb de cases ajoutees
+	t_wil	*wil;
+
+}	t_wildcard;
+
 typedef struct s_ms
 {
 	int			i;//index lexer
