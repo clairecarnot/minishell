@@ -203,7 +203,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	char	**env;
-	t_list	*tmp;
+//	t_list	*tmp;
 	int		exit_code;
 
 	exit_code = 0;
@@ -232,7 +232,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
-	tmp = ms->pidlst;
+//	tmp = ms->pidlst;
 	replace_var_underscore(ms, cmd);
 	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }

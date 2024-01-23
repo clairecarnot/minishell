@@ -199,8 +199,8 @@ t_token	*parse_quotes_word(t_ms *ms, int qtype, char *value)
 
 	// dol = NULL;
 	dw = init_dw(ms);
-	// while (ms->lexer->src[ms->lexer->cur_pos + ms->i] && (qstate(ms->nb_q) == \
-	// 1 || (qstate(ms->nb_q) == 0 && ft_ischar(ms->lexer->src[ms->lexer->cur_pos \
+	// while (ms->lexer->src[ms->lexer->cur_pos + ms->i] && (qstate(ms->nb_q) ==
+	// 1 || (qstate(ms->nb_q) == 0 && ft_ischar(ms->lexer->src[ms->lexer->cur_pos
 	// + ms->i], 0) && !ft_isand(ms->lexer->src, ms->lexer->cur_pos + ms->i))))
 	// dprintf(2, "qtype --> %d\n", qtype);
 	while (big_while(ms))
