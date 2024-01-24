@@ -17,46 +17,38 @@ t_cmd	*init_cmd(t_ms *ms, char **env)
 	cmd->valid_path = 0;
 	cmd->redir = 0;
 	cmd->valid_redir = 0;
+	cmd->is_dir = 0;
 	cmd->invalid_io = NULL;
 	cmd->args = NULL;
 	return (cmd);
 }
 
-int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
+int	redef_cmdargs_bis(t_ms *ms, t_cmd *cmd, int i)
 {
-	t_list	*tmp_d;
-	t_list	*tmp_c;
-	t_list	*tmp_w;
 	char	**tmp;
+
+	tmp = tab_cpy(ms, &cmd->args[i]);
+	if (!tmp)
+	{
+		ms->exit_code = 255;
+		return (255);
+	}
+	while (cmd->args[i])
+	{
+		free(cmd->args[i]);
+		cmd->args[i] = NULL;
+		i++;
+	}
+	free(cmd->args);
+	cmd->args = tmp;
+	return (0);
+}
+
+int	redef_cmdargs(t_ms *ms, t_cmd *cmd)
+{
 	int		i;
 
 	i = 0;
-	if (node->redirs)
-	{
-		if (cmd_redirs(ms, node, cmd) == 1)
-			return (1);
-	}
-	if (node->dol)
-	{
-		tmp_d = node->dol->d;
-		tmp_c = node->dol->c;
-	}
-	if (node->wil)
-		tmp_w = node->wil->w;
-	cmd->args = lst_to_tab(node->args);
-	if (!cmd->args)
-		return (255);
-	if (node->dol)
-	{
-		if (cmd_expand(ms, cmd, node->dol) == 1) //1 means bad malloc, one ne free qu'APRES 
-		{
-			node->dol->d = tmp_d;
-			node->dol->c = tmp_c;
-			return (255);
-		}
-		node->dol->d = tmp_d;
-		node->dol->c = tmp_c;
-	}
 	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0
 		&& !ms->flag_q)
 	{
@@ -71,19 +63,12 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		return (0);
 	}
 	if (i > 0)
-	{
-		tmp = tab_cpy(ms, &cmd->args[i]);
-		if (!tmp)
-			return (255);
-		while (cmd->args[i])
-		{
-			free(cmd->args[i]);
-			cmd->args[i] = NULL;
-			i++;
-		}
-		free(cmd->args);
-		cmd->args = tmp;
-	}	
+		return (redef_cmdargs_bis(ms, cmd, i));
+	return (0);
+}
+
+int	node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w)
+{
 	if (node->wil)
 	{
 		if (cmd_wildcard(cmd, node->wil) == 1)
@@ -96,7 +81,7 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		node->wil->w = tmp_w;
 	}
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
-		abs_rel_path(cmd);
+		return (abs_rel_path(ms, cmd));
 	else
 	{
 		cmd->builtin = builtin_type_is(cmd->args[0]);
@@ -109,6 +94,35 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 			return (255);
 	}
 	return (0);
+}
+
+int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
+{
+	t_list	*tmp_d;
+	t_list	*tmp_c;
+	t_list	*tmp_w;
+
+	if (node->redirs && cmd_redirs(ms, node, cmd))
+		return (1);
+	if (node->dol)
+		save_ptrs(&node->dol->d, &node->dol->c, &tmp_d, &tmp_c);
+	if (node->wil)
+		tmp_w = node->wil->w;
+	cmd->args = lst_to_tab(node->args);
+	if (!cmd->args)
+		return (255);
+	if (node->dol)
+	{
+		if (cmd_expand(ms, cmd, node->dol) == 1) //1 = bad malloc
+		{
+			save_ptrs(&tmp_d, &tmp_c, &node->dol->d, &node->dol->c);
+			return (255);
+		}
+		save_ptrs(&tmp_d, &tmp_c, &node->dol->d, &node->dol->c);
+	}
+	if (redef_cmdargs(ms, cmd) == 1)
+		return (255);
+	return (node_to_cmd_bis(ms, node, cmd, tmp_w));
 }
 
 int	exec_builtin(t_ms *ms, t_cmd *cmd)
@@ -135,7 +149,7 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 	int		pid;
 	t_list	*new_pid;
 
-	if (!cmd->valid_path)
+	if (!cmd->valid_path || cmd->is_dir)
 	{
 		if (!cmd->args || !cmd->args[0] || !ft_strlen(cmd->args[0]))
 		{
@@ -144,7 +158,10 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 			ms->flag_q--;
 			return (0);
 		}
-		if (cmd->abs_or_rel)
+		if (cmd->is_dir)
+			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
+				ft_putstr_fd(": Is a directory\n", 2));
+		else if (cmd->abs_or_rel)
 			(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
 				ft_putstr_fd(": No such file or directory\n", 2));
 		else
@@ -221,31 +238,18 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		return (ms->exit_code = 255, 1);// a verifie
 	cmd = init_cmd(ms, env);// c'est verifie
 	if (!cmd)
-		return (ms->exit_code = 255, 1); //env deja free, si 1 => badmalloc : free ms
+		return (ms->exit_code = 255, 1);
 	exit_code = node_to_cmd(ms, node, cmd);
 	if (ms->exit_code == 255)
 		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		return (ms->exit_code = exit_code, free_cmd(cmd), 1);
 	if (cmd->redir && !cmd->valid_redir)
-	{
-//		ft_putstr_fd("minishell: ", 2);
-//		ft_putstr_fd(cmd->invalid_io, 2);
-//		ft_putstr_fd(": No such file or directory\n", 2);
-//		ft_putstr_fd(": ", 2);
-//		ft_putstr_fd(strerror(errno), 2);
-//		ft_putstr_fd("\n", 2);
 		return (free_cmd(cmd), 1);
-	}
 	if (cmd->builtin != NOBUILT)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
-//	dprintf(2, "after do cmd\n");
-//	tmp = ms->pidlst;
 	replace_var_underscore(ms, cmd);
-//	dprintf(2, "after var underscore\n");
 	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }
-
-

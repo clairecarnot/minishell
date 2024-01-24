@@ -6,18 +6,30 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/18 16:04:37 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/24 14:36:37 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/exec.h"
 
-void	abs_rel_path(t_cmd *cmd)
+int	abs_rel_path(t_ms *ms, t_cmd *cmd)
 {
+	char	*dir;
+
 	cmd->abs_or_rel = 1;
 	if (access(cmd->args[0], F_OK | X_OK) == 0)
 		cmd->valid_path = 1;
 	cmd->builtin = NOBUILT;
+	dir = ft_slash_addback(cmd->args[0]);
+	if (!dir)
+	{
+		ms->exit_code = 255;
+		return (255);
+	}
+	if (access(dir, F_OK | X_OK) == 0)
+		cmd->is_dir = 1;
+	free(dir);
+	return (0);
 }
 
 char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
@@ -89,7 +101,7 @@ int	build_path(t_cmd *cmd)
 			return (1);
 		if (access(path, F_OK | X_OK) == 0)
 		{
-			free(cmd->args[0]);
+			(free(cmd->args[0]));
 			cmd->args[0] = path;
 			cmd->valid_path = 1;
 			return (0);

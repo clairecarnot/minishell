@@ -46,6 +46,7 @@ typedef struct s_cmd
 	int	valid_path;
 	int	redir;
 	int	valid_redir;
+	int	is_dir;
 	char	*invalid_io;
 }		t_cmd;
 

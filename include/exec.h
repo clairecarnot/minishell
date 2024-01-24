@@ -31,13 +31,16 @@ int				cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd);
 
 //----------------------- cmd_exec.c ------------------------
 t_cmd			*init_cmd(t_ms *ms, char **env);
+int				redef_cmdargs_bis(t_ms *ms, t_cmd *cmd, int i);
+int				redef_cmdargs(t_ms *ms, t_cmd *cmd);
+int				node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w);
 int				node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd);
 int				exec_builtin(t_ms *ms, t_cmd *cmd);
 int				do_cmd(t_cmd *cmd, t_ms *ms, char **env);
 int				exec_cmd(t_ast *node, t_ms *ms);
 
 //----------------------- cmd_path.c ------------------------
-void			abs_rel_path(t_cmd *cmd);
+int				abs_rel_path(t_ms *ms, t_cmd *cmd);
 char			*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
 					char **env);
 void			free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path);
@@ -49,12 +52,11 @@ int				equals(char *s1, char *s2);
 t_builtin_type	builtin_type_is(char *builtin);
 char			**lst_to_tab(t_list *lst);
 char			*ft_strjoin_slash(char const *s1, char const *s2);
-char			**tab_cpy(t_ms *ms, char **tab);
+char			*ft_slash_addback(char const *s1);
 
 //----------------------- cmd_utils2.c ------------------------
 void			save_ptrs(t_list **s1, t_list **s2, t_list **t1, t_list **t2);
-//char			**resize_tab(char **tab, int i);
-//char			**post_expand_adj(t_ms *ms, char **args, char **tmp);
+char			**tab_cpy(t_ms *ms, char **tab);
 
 //----------------------- pipe_exec.c ------------------------
 t_list			*ft_lstnew_int(int pid);

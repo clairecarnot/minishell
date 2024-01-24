@@ -86,29 +86,24 @@ char	*ft_strjoin_slash(char const *s1, char const *s2)
 	return (dest);
 }
 
-char	**tab_cpy(t_ms *ms, char **tab)
+char	*ft_slash_addback(char const *s1)
 {
+	char	*dest;
 	int		i;
-	int		size;
-	char	**cpy;
 
-	size = 0;
-	while (tab[size])
-		size++;
-	cpy = ft_calloc(size + 1, sizeof(char *));
-	if (!cpy)
-	{
-		ms->exit_code = 134;
-		return (NULL);
-	}
+	if (!s1)
+		return (0x0);
+	dest = malloc(sizeof(char) * ft_strlen(s1) + 2);
+	if (!dest)
+		return (0x0);
 	i = 0;
-	while (i < size)
+	while (((char *)s1)[i])
 	{
-		cpy[i] = ft_strdup(tab[i]);
-		if (!cpy[i])
-			return (free_tab(cpy), NULL);
+		dest[i] = s1[i];
 		i++;
 	}
-	cpy[i] = NULL;
-	return (cpy);
+	dest[i] = '/';
+	i++;
+	dest[i] = '\0';
+	return (dest);
 }
