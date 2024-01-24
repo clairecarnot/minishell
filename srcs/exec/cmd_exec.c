@@ -74,13 +74,13 @@ int	node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w)
 		if (cmd_wildcard(cmd, node->wil) == 1)
 		{
 			node->wil->w = tmp_w;
-			free_cmd(cmd);
-			prefree_minishell(ms, NULL);
-			// return (255);// a verifier
+			// free_cmd(cmd);
+			// prefree_minishell(ms, NULL);
+			return (ms->exit_code = 255, 255);
 		}
 		node->wil->w = tmp_w;
 	}
-	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
+	if (cmd->args && cmd->args[0] && (cmd->args[0][0] == '/' || cmd->args[0][0] == '.'))
 		return (abs_rel_path(ms, cmd));
 	else
 	{

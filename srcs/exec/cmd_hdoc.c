@@ -1,21 +1,12 @@
 #include "../../include/exec.h"
 #include "../../include/signals.h"
 
-int	hdoc_ctrl_d(t_ms *ms, int fd, int nb_line) // A VOIR AVEC MAELLE
+void	hdoc_ctrl_d(t_ms *ms, int nb_line)
 {
 	ms->exit_code = 0;
 	ft_putstr_fd("minishell: warning: here-document at line ", 2);
 	ft_putnbr_fd(nb_line, 2);
 	ft_putstr_fd(" delimited by end-of-file (wanted `lim')\n", 2);
-	//ajouter les lignes lues precedemment
-	//+ ne pas afficher minishell: lim: No such file or directory
-	(void)fd;
-	// if (ms->line)
-	// {
-	// 	free(ms->line);
-	// 	ms->line = NULL;
-	// }
-	return (/*close_if(&fd),*/ 3); //check error code
 }
 
 int	hdoc_sigint(int fd)
@@ -36,12 +27,11 @@ int	hdoc_create(t_ms *ms, int fd, char *filename, int limlen)
 		line = readline("> ");
 		if (g_exit_code == 2)
 			return (free_if(line), hdoc_sigint(fd));
-		if (!line) //A VOIR AVEC MAELLE
+		if (!line)
 		{
-			hdoc_ctrl_d(ms, fd, nb_line);
+			hdoc_ctrl_d(ms, nb_line);
 			break ;
 		}
-			//return (free_if(line), hdoc_ctrl_d(ms, fd, nb_line));
 		if (ft_strncmp(line, filename, limlen) == 0
 			&& ((int) ft_strlen(line) == limlen))
 			break ;

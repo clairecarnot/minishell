@@ -18,7 +18,7 @@ char			random_char(t_ms *ms, char *name);
 char			*generate_hdname(t_ms *ms);
 
 //----------------------- cmd_hdoc.c ------------------------
-int				hdoc_ctrl_d(t_ms *ms, int fd, int nb_line);
+void			hdoc_ctrl_d(t_ms *ms, int nb_line);
 int				hdoc_sigint(int fd);
 int				hdoc_create(t_ms *ms, int fd, char *filename, int limlen);
 char			*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter);

@@ -199,7 +199,7 @@ char	*display_prompt(t_ms *ms)
 	return (line);
 }
 
-void	print_tree(t_ast *root, int space)
+void	print_tree(t_ast *root, int space)//temporaire
 {
 	int i;
 
@@ -220,61 +220,6 @@ void	print_tree(t_ast *root, int space)
 
 	print_tree(root->left, space);
 }
-
-// char	*ft_sjoin_char(t_ms *ms, char *s1, char s2)
-// {
-// 	char	*dest;
-// 	int		i;
-
-// 	i = 0;
-// 	if (ms)
-// 	dest = malloc(sizeof(char) * ft_slen(s1) + 1 + 1);// a proteger
-// 	if (s1)
-// 	{
-// 		while (s1[i])
-// 		{
-// 			dest[i] = s1[i];
-// 			i++;
-// 		}
-// 	}
-// 	if (s2)
-// 		dest[i] = s2;
-// 	dest[i + 1] = '\0';
-// 	return (dest);
-// }
-
-// int	count_dolq(char *line, int i)
-// {
-// 	int	dol;
-
-// 	dol = 0;
-// 	while(line[i + dol] && line[i + dol] == '$')
-// 		dol++;
-// 	if (line[i + dol] && (line[i + dol] == '\'' || line[i + dol] == '\"'))
-// 		return (dol);
-// 	return (0);
-// }
-
-// char	*remove_dolq(t_ms *ms)
-// {
-// 	int		i;
-// 	int		nb_dol;
-// 	char	*new;
-
-// 	i = 0;
-// 	new = NULL;
-// 	while (ms->line[i])
-// 	{
-// 		nb_dol = 0;
-// 		if (ms->line[i] == '$')
-// 			nb_dol = count_dolq(ms->line, i);
-// 		if (nb_dol)
-// 			i += nb_dol;
-// 		new = ft_sjoin_char(ms, new, ms->line[i]);
-// 		i++;
-// 	}
-// 	return (new);
-// }
 
 int	non_interactive_mode(t_ms *minishell, char **env)
 {
@@ -416,9 +361,9 @@ int	main(int argc, char **argv, char **env)
 					//exec_env(minishell);
 					//exec_export(minishell, minishell->root);
 					pre_exec(minishell);
-					dprintf(2, "after exec\n");
+					// dprintf(2, "after exec\n");
 					free_minishell(minishell, 0);
-					dprintf(2, "after free minishell\n");
+					// dprintf(2, "after free minishell\n");
 				}
 			}
 		}

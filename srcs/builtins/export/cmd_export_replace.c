@@ -6,21 +6,23 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/18 12:01:23 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/24 18:21:33 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-char	*ft_sdup(t_ms *ms, char *s)
+char	*ft_sdup(t_ms *ms, t_cmd *cmd, char *s)
 {
 	char	*dest;
 	int		i;
 
+	(void)cmd;
 	dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est protege
 	if (!dest)//verifier que ft_strlen ne crash pas quand s est null
 	{
+		free_cmd(cmd);
 		ms->exit_code = 255;
 		free_minishell(ms, 1);
 	}
@@ -72,7 +74,7 @@ void	replace_in_env(t_ms *ms, t_cmd *cmd, char *content)
 	t_list	*new;
 
 	(void)cmd;
-	cpy_content = ft_sdup(ms, content);// c'est protege
+	cpy_content = ft_sdup(ms, cmd, content);// c'est protege
 	env_tmp = ms->env;
 	env_tmp2 = ms->env;
 	new = ft_lstnew(cpy_content);

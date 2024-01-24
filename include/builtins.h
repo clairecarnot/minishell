@@ -46,8 +46,8 @@ t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd);
 void	join_in_env(t_ms *ms, t_cmd *cmd, char *content);
 
 //----------------------- cmd_export_join_exp.c -----------------------
-char	*sjoin_noequal(t_ms *ms, char *s1, char *s2, int i);
-char	*sjoin_wquote(t_ms *ms, char *s1, char *s2, int i);
+char	*sjoin_noequal(char *s1, char *s2, int i);
+char	*sjoin_wquote(char *s1, char *s2, int i);
 t_list	*join_in_exp3(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd);
 char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct, t_cmd *cmd);
 void	join_in_exp(t_ms *ms, t_cmd *cmd, char *content);
@@ -85,12 +85,12 @@ void	exit_msg(t_ms *ms, char *cmd, char *details, char *error);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx echo xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_echo.c -----------------------
-int	handle_echo_n(t_ms *ms, char **args, int *newline, int *after_n);
-int	exec_echo(t_ms *ms, t_cmd *cmd);
+int		handle_echo_n(t_ms *ms, char **args, int *newline, int *after_n);
+int		exec_echo(t_ms *ms, t_cmd *cmd);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx pwd xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_pwd.c -----------------------
-int	exec_pwd(t_ms *ms, t_cmd *cmd);
+int		exec_pwd(t_ms *ms, t_cmd *cmd);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxx cd xxxxxxxxxxxxxxxxxxxxxxxxxx
 //----------------------- cmd_cd.c -----------------------

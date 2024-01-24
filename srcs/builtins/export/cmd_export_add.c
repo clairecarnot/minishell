@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:03:19 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/18 12:09:18 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/24 16:37:26 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ void	add_to_exp(t_ms *ms, t_cmd *cmd, char *content)
 	t_list	*prev;
 	t_list	*new;
 
-	(void)cmd;
 	cpy = ft_strdup_noplus(ms, cmd, content);// c'est verifie
 	cpy_content = add_qvar(ms, cpy, 0, 1);// c'est verifie
 	add_to_exp0(content, cpy);

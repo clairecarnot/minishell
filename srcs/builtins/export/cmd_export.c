@@ -42,45 +42,6 @@ void	add_variable(t_ms *ms, t_cmd *cmd, char *content)
 	add_variable2(ms, cmd, content);
 }
 
-/*
-print la liste t_list *exp en ecrivant export avant chaque ligne
-*/
-void	print_lst_exp(t_list *exp)
-{
-	t_list	*lst;
-
-	lst = exp;
-	while (lst)
-	{
-		printf("export %s\n", (char *)lst->content);
-		lst = lst->next;
-	}
-}
-
-// void	replace_underscore_exp(t_ms *ms, t_cmd *cmd)// a enlever
-// {
-// 	char	*new_content;
-// 	t_list	*tmp_exp;
-
-// 	tmp_exp = ms->exp;
-// 	while (tmp_exp)
-// 	{
-// 		if (ft_strncmp("_=\"/", tmp_exp->content, 10) == 0)
-// 		{
-// 			free(tmp_exp->content);
-// 			new_content = ft_strdup("_=/usr/bin/export");
-// 			if (!tmp_exp->content)// a verifier
-// 			{
-// 				free_cmd(cmd);
-// 				free_minishell(ms, 1);
-// 			}
-// 			free(tmp_exp->content);
-// 			tmp_exp->content = new_content;
-// 		}
-// 		tmp_exp = tmp_exp->next;
-// 	}
-// }
-
 int	asterisk_in_varct(char *content)
 {
 	int	i;
@@ -99,6 +60,21 @@ int	asterisk_in_varct(char *content)
 		}
 	}
 	return (0);
+}
+
+/*
+print la liste t_list *exp en ecrivant export avant chaque ligne
+*/
+void	print_lst_exp(t_list *exp)
+{
+	t_list	*lst;
+
+	lst = exp;
+	while (lst)
+	{
+		printf("export %s\n", (char *)lst->content);
+		lst = lst->next;
+	}
 }
 
 /*
