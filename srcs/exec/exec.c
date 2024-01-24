@@ -86,6 +86,8 @@ int	pre_exec(t_ms *ms)
 		return (1);
 //	dprintf(2, "after heredocs\n");
 	exit_code = execute(ms->root, ms);
+	dup2(ms->in, STDIN_FILENO);
+	dup2(ms->out, STDOUT_FILENO);
 	if (exit_code)
 		return (1);
 	// dprintf(2, "after exec, before waitpid\n");
@@ -126,8 +128,8 @@ int	pre_exec(t_ms *ms)
 			print = 0;
 		}
 	}
-	dup2(ms->in, STDIN_FILENO);
-	dup2(ms->out, STDOUT_FILENO);
+//	dup2(ms->in, STDIN_FILENO);
+//	dup2(ms->out, STDOUT_FILENO);
 	// dprintf(2, "after exec, after waitpid\n");
 	return (exit_code);
 }

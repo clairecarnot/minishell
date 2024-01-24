@@ -109,6 +109,7 @@ int	update_lstwil(t_wil **wil, t_list *w)
 
 void	update_lstwil_in(t_ms *ms, int qtype, int i, t_wil **wil)
 {
+	//dprintf(2, "lst wil in\n");
 	t_list	*w;
 
 	w = NULL;
@@ -134,7 +135,7 @@ void	update_lstwil_in(t_ms *ms, int qtype, int i, t_wil **wil)
 
 int	update_lstwil_out(t_ms *ms, int i, int j, t_wil **wil)
 {
-//	dprintf(2, "lst dol out\n");
+	//dprintf(2, "lst wil out\n");
 	t_list	*w;
 
 	w = NULL;

@@ -213,7 +213,6 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	char	**env;
-//	t_list	*tmp;
 	int		exit_code;
 
 	exit_code = 0;
@@ -230,20 +229,22 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		return (ms->exit_code = exit_code, free_cmd(cmd), 1);
 	if (cmd->redir && !cmd->valid_redir)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(cmd->invalid_io, 2);
+//		ft_putstr_fd("minishell: ", 2);
+//		ft_putstr_fd(cmd->invalid_io, 2);
 //		ft_putstr_fd(": No such file or directory\n", 2);
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd("\n", 2);
+//		ft_putstr_fd(": ", 2);
+//		ft_putstr_fd(strerror(errno), 2);
+//		ft_putstr_fd("\n", 2);
 		return (free_cmd(cmd), 1);
 	}
 	if (cmd->builtin != NOBUILT)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
+//	dprintf(2, "after do cmd\n");
 //	tmp = ms->pidlst;
 	replace_var_underscore(ms, cmd);
+//	dprintf(2, "after var underscore\n");
 	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }
 

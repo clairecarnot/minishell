@@ -368,11 +368,13 @@ int	main(int argc, char **argv, char **env)
 		return (1);
 	while (1)
 	{
-		// dprintf(2, "nvelle boucle\n");
+//		dprintf(2, "nvelle boucle\n");
 		preprompt_signals();
+//		dprintf(2, "after signals\n");
 		// dprintf(2, "ms->wkdir = %s\n", minishell->wkdir);
 		// dprintf(2, "ms->oldwkdir = %s\n", minishell->old_wkdir);
 		minishell->line = display_prompt(minishell);
+//		dprintf(2, "after display prompt\n");
 		if (!minishell->line)
 			return (free_minishell(minishell, 0), 0);//verifier protec
 		if (g_exit_code == 2)
