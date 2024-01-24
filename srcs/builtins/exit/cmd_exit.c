@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/17 10:26:16 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/24 15:37:32 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ void	free_exit(t_ms *ms)
 	if (ms->home)
 		free(ms->home);
 	if (ms->line)
+	{
 		free(ms->line);
+		ms->line = NULL;
+	}
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
 	if (ms)

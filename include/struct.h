@@ -143,11 +143,6 @@ typedef	struct s_wildcard
 	int		*tab_w;
 	char	**added_args;
 	char	**new_args;
-	// char	*new_arg;
-	char	*tmp_arg;
-	// char	*new_arg2;
-	char	**split_arg;
-	char	join[2];
 	int		j;//index dans wildcards_2
 	t_wil	*wil;
 

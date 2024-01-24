@@ -16,6 +16,7 @@ void	print_lst_exp(t_list *exp);
 int		exec_export(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_export_utils.c -----------------------
+int		message_error_exp_1(char *content);
 int		error_exp(char *content);
 int		error_exp_spaces(char *content);
 int		has_equal(char *content);

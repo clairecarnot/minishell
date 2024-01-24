@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/02 10:20:17 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/17 16:36:43 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/24 10:39:52 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,8 @@ t_redirs	*handle_red(t_ms *ms, t_ast *new_ast)
 		return (NULL);
 	if (ms->cur_tok->next_token->dol)
 		ft_doladd_back(&new_redir->dol, ms->cur_tok->next_token->dol);
+	if (ms->cur_tok->next_token->wil)
+		ft_wiladd_back(&new_ast->wil, ms->cur_tok->next_token->wil);
 	redirs_add_back(&new_ast->redirs, new_redir);
 	eat_token(ms, ms->cur_tok->type);
 	eat_token(ms, ms->cur_tok->type);

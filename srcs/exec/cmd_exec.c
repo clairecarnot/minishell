@@ -188,6 +188,7 @@ void	replace_var_underscore(t_ms *ms, t_cmd *cmd)
 	char	*new_content;
 	t_list	*tmp;
 
+	new_content = NULL;
 	tmp = ms->env;
 	while (tmp)
 	{
@@ -197,7 +198,9 @@ void	replace_var_underscore(t_ms *ms, t_cmd *cmd)
 				new_content = ft_strjoin("_=", cmd->args[0]);
 			else if (cmd->args[0] && cmd->args[0][0] != '/')
 				new_content = ft_strjoin("_=/usr/bin/", cmd->args[0]);
-			if (!new_content) // c'est verifie mais reouvre le programme pour afficher l'exec.. /?/
+			else if (!cmd->args || !cmd->args[0])
+				new_content = ft_strdup("_=/usr/bin/");
+			if (!new_content)
 			{
 				free_cmd(cmd);
 				free_minishell(ms, 1);
