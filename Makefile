@@ -13,7 +13,8 @@ srcs/parser/parser.c srcs/parser/parser_utils.c \
 srcs/parser/handle_cmds.c srcs/parser/handle_redirs.c \
 srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c \
 srcs/signals/signals.c \
-srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_path.c \
+srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_exec_bis.c \
+srcs/exec/cmd_path.c \
 srcs/exec/wildcards.c srcs/exec/wildcards2.c \
 srcs/exec/wildcards_free.c srcs/exec/wildcards_utils.c\
 srcs/exec/cmd_utils1.c srcs/exec/cmd_utils2.c srcs/exec/pipe_exec.c \

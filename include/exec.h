@@ -31,14 +31,18 @@ int				handle_dgreat(t_ms *ms, t_redirs *redirs);
 int				cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd);
 
 //----------------------- cmd_exec.c ------------------------
-t_cmd			*init_cmd(t_ms *ms, char **env);
-int				redef_cmdargs_bis(t_ms *ms, t_cmd *cmd, int i);
-int				redef_cmdargs(t_ms *ms, t_cmd *cmd);
 int				node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w);
 int				node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd);
 int				exec_builtin(t_ms *ms, t_cmd *cmd);
 int				do_cmd(t_cmd *cmd, t_ms *ms, char **env);
 int				exec_cmd(t_ast *node, t_ms *ms);
+
+//----------------------- cmd_exec_bis.c ------------------------
+t_cmd			*init_cmd(t_ms *ms, char **env);
+int				redef_cmdargs_bis(t_ms *ms, t_cmd *cmd, int i);
+int				redef_cmdargs(t_ms *ms, t_cmd *cmd);
+int				msg_do_cmd(t_ms *ms, t_cmd *cmd);
+void			replace_var_underscore(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_path.c ------------------------
 int				abs_rel_path(t_ms *ms, t_cmd *cmd);

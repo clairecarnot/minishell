@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/24 14:36:37 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/24 18:55:25 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
 	i = 0;
 	while (env && env[i])
 	{
-		if (ft_strncmp("_", env[i], 1) == 0)
+		if (ft_strncmp("_", env[i], 1) == 0) //A quoi ca sert?
 		{
 			env_p = ft_strdup("/usr/bin/");// c'est verifie
 			if (!env_p)
@@ -55,7 +55,7 @@ char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
 
 void	free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path)
 {
-	free(env_path);
+	free_if(env_path); //ajout IF
 	free_cmd(cmd);
 	free_minishell(ms, 255);
 }

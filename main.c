@@ -416,9 +416,9 @@ int	main(int argc, char **argv, char **env)
 					//exec_env(minishell);
 					//exec_export(minishell, minishell->root);
 					pre_exec(minishell);
-					dprintf(2, "after exec\n");
+//					dprintf(2, "after exec\n");
 					free_minishell(minishell, 0);
-					dprintf(2, "after free minishell\n");
+//					dprintf(2, "after free minishell\n");
 				}
 			}
 		}
