@@ -30,7 +30,8 @@ int	handle_less(t_ms *ms, t_redirs *redirs)
 	if (fd < 0)
 		return (ms->exit_code = 1, print_msg_redir(redirs->filename), 1);
 	if (dup2(fd, STDIN_FILENO) == -1)
-		return (perror("minishell: dup2 failed"), ms->exit_code = 1, 1);
+		return (close_if(&fd), perror("minishell: dup2 failed"),
+			ms->exit_code = 1, 1);
 	return (close_if(&fd), 0);
 }
 
@@ -54,7 +55,8 @@ int	handle_great(t_ms *ms, t_redirs *redirs)
 	if (fd < 0)
 		return (ms->exit_code = 1, print_msg_redir(redirs->filename), 1);
 	if (dup2(fd, STDOUT_FILENO) == -1)
-		return (perror("minishell: dup2 failed"), ms->exit_code = 1, 1);
+		return (close_if(&fd), perror("minishell: dup2 failed"),
+			ms->exit_code = 1, 1);
 	return (close_if(&fd), 0);
 }
 
@@ -78,7 +80,8 @@ int	handle_dgreat(t_ms *ms, t_redirs *redirs)
 	if (fd < 0)
 		return (ms->exit_code = 1, print_msg_redir(redirs->filename), 1);
 	if (dup2(fd, STDOUT_FILENO) == -1)
-		return (perror("minishell: dup2 failed"), ms->exit_code = 1, 1);
+		return (close_if(&fd), perror("minishell: dup2 failed"),
+			ms->exit_code = 1, 1);
 	return (close_if(&fd), 0);
 }
 
