@@ -137,6 +137,18 @@ typedef	struct s_wildcard
 	int		i;//index qui nous indique ou onn se trouve dans notre tableau d'arg
 	//s'il faut faire copie et ajout, il faudra le faire a partir de i et 
 	//remplacer i par i + nb de cases ajoutees
+	int		size;//taille de l'arg preedent qui doit etre avancee plus tard dans la lst wil
+	int		index;//index normal qui incremente
+	char	**tmp_args;
+	int		*tab_w;
+	char	**added_args;
+	char	**new_args;
+	// char	*new_arg;
+	char	*tmp_arg;
+	// char	*new_arg2;
+	char	**split_arg;
+	char	join[2];
+	int		j;//index dans wildcards_2
 	t_wil	*wil;
 
 }	t_wildcard;

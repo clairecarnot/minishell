@@ -26,6 +26,7 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 {
 	t_list	*tmp_d;
 	t_list	*tmp_c;
+	t_list	*tmp_w;
 	char	**tmp;
 	int		i;
 
@@ -37,6 +38,8 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		tmp_d = node->dol->d;
 		tmp_c = node->dol->c;
 	}
+	if (node->wil)
+		tmp_w = node->wil->w;
 	cmd->args = lst_to_tab(node->args);
 	if (!cmd->args)
 		return (255);
@@ -80,11 +83,14 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 	}	
 	if (node->wil)
 	{
-		if (cmd_wildcard(ms, cmd, node->wil) == 1)
+		if (cmd_wildcard(cmd, node->wil) == 1)
 		{
-			
-			return (255);// a verifier
+			node->wil->w = tmp_w;
+			free_cmd(cmd);
+			prefree_minishell(ms, NULL);
+			// return (255);// a verifier
 		}
+		node->wil->w = tmp_w;
 	}
 	if (cmd->args[0][0] == '/' || cmd->args[0][0] == '.')
 		abs_rel_path(cmd);

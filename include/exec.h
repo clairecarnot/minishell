@@ -105,6 +105,14 @@ void	hd_update_expand_pos(int data[5], int *j);
 char	*expand_hdoc(t_ms *ms, char *arg);
 
 //----------------------- wildcards.c ------------------------
-int	cmd_wildcard(t_ms *ms ,t_cmd* cmd, t_wil *wil);
+int	cmd_wildcard(t_cmd* cmd, t_wil *wil);
+
+
+//----------------------- wildcards_utils.c ------------------------
+int		*lstint_to_tab(t_list *lst);
+int		has_asterisk(char *str);
+void	advance_in_lst(t_list **lst, int size);
+int		len_dchar(char **tab);
+int		cmd_wildcard_free(t_wildcard *wildc);
 
 #endif
