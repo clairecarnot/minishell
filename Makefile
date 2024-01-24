@@ -14,10 +14,12 @@ srcs/parser/handle_cmds.c srcs/parser/handle_redirs.c \
 srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c \
 srcs/signals/signals.c \
 srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_path.c \
-srcs/exec/cmd_utils.c srcs/exec/pipe_exec.c srcs/exec/expand.c srcs/exec/expand_first.c \
-srcs/exec/expand_redirs.c srcs/exec/expand_hdoc.c \
-srcs/exec/cmd_redirs.c srcs/exec/cmd_hdoc.c \
 srcs/exec/wildcards.c srcs/exec/wildcards_utils.c\
+srcs/exec/cmd_utils1.c srcs/exec/cmd_utils2.c srcs/exec/pipe_exec.c \
+srcs/exec/cmd_redirs.c srcs/exec/cmd_hdoc.c srcs/exec/cmd_hdname.c \
+srcs/exec/expand.c srcs/exec/expand_do_dols.c srcs/exec/expand_first.c \
+srcs/exec/expand_getvar.c srcs/exec/expand_hdoc.c srcs/exec/expand_redef_args.c \
+srcs/exec/expand_redirs.c srcs/exec/expand_utils1.c srcs/exec/expand_utils2.c \
 srcs/builtins/export/cmd_export.c srcs/builtins/export/cmd_export_utils.c \
 srcs/builtins/export/cmd_export_utils2.c srcs/builtins/export/cmd_export_utils3.c srcs/builtins/env/cmd_env.c \
 srcs/builtins/export/cmd_export_add.c srcs/builtins/export/cmd_export_replace.c \

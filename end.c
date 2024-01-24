@@ -196,25 +196,13 @@ void	free_minishell(t_ms *ms, int exit_status)
 	if (ms->exp && exit_status != 0)
 		ft_lstfree(&ms->exp);
 	if (ms->wkdir && exit_status != 0)
-	{
-		dprintf(2, "1\n");
 		free(ms->wkdir);
-	}
 	if (ms->old_wkdir && exit_status != 0)
-	{
-		dprintf(2, "2\n");
 		free(ms->old_wkdir);
-	}
 	if (ms->home && exit_status != 0)
-	{
-		dprintf(2, "3\n");
 		free(ms->home);
-	}
 	if (ms->line)
-	{
-		free(ms->line);
 		ms->line = NULL;
-	}
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
 	if (ms && exit_status != 0)

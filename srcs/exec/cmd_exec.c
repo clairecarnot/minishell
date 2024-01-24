@@ -32,7 +32,10 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 
 	i = 0;
 	if (node->redirs)
-		cmd_redirs(ms, node, cmd);
+	{
+		if (cmd_redirs(ms, node, cmd) == 1)
+			return (1);
+	}
 	if (node->dol)
 	{
 		tmp_d = node->dol->d;
@@ -45,7 +48,7 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		return (255);
 	if (node->dol)
 	{
-		if (cmd_expand(ms, cmd, node->dol) == 1)
+		if (cmd_expand(ms, cmd, node->dol) == 1) //1 means bad malloc, one ne free qu'APRES 
 		{
 			node->dol->d = tmp_d;
 			node->dol->c = tmp_c;
@@ -210,7 +213,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 {
 	t_cmd	*cmd;
 	char	**env;
-	t_list	*tmp;
+//	t_list	*tmp;
 	int		exit_code;
 
 	exit_code = 0;
@@ -221,6 +224,8 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	if (!cmd)
 		return (ms->exit_code = 255, 1); //env deja free, si 1 => badmalloc : free ms
 	exit_code = node_to_cmd(ms, node, cmd);
+	if (ms->exit_code == 255)
+		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		return (ms->exit_code = exit_code, free_cmd(cmd), 1);
 	if (cmd->redir && !cmd->valid_redir)
@@ -237,7 +242,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
-	tmp = ms->pidlst;
+//	tmp = ms->pidlst;
 	replace_var_underscore(ms, cmd);
 	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }

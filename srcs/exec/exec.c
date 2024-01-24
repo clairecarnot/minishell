@@ -82,7 +82,7 @@ int	pre_exec(t_ms *ms)
 	print = 1;
 	ms->in = dup(STDIN_FILENO); //A PROTEGER?
 	ms->out = dup(STDOUT_FILENO);//A PROTEGER?
-	if (open_heredocs(ms, ms->root))
+	if (open_heredocs(ms, ms->root) == 1)
 		return (1);
 //	dprintf(2, "after heredocs\n");
 	exit_code = execute(ms->root, ms);

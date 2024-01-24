@@ -109,9 +109,9 @@ char	**wildcards_2(DIR *d, struct dirent *file, char **args, t_wildcard *wildc)
 		if (same_as_wildcard(file->d_name, args[wildc->i], wildc->tab_w) == 1)
 		{
 			// dprintf(2, "d_name same = %s\n", file->d_name);
-			if (file->d_name[0] != '.' || (ft_strncmp("ls", args[0], 3) == 0 \
-			&& ft_strncmp("-a", args[1], 3) == 0 && file->d_type != 4) \
-			|| (args[wildc->i][0] == '.' && (args[wildc->i][1] == '*')))
+			// if (file->d_name[0] != '.' || (ft_strncmp("ls", args[0], 3) == 0 \
+			// && ft_strncmp("-a", args[1], 3) == 0 && file->d_type != 4) \
+			// || (args[wildc->i][0] == '.' && (args[wildc->i][1] == '*')))
 				if (i == 0)
 				{
 					new_arg = ft_strdup(file->d_name);

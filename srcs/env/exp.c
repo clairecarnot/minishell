@@ -79,11 +79,11 @@ void	init_exp_noenv(t_ms *ms)
 	char	*content;
 	char	*var;
 	t_list	*new_lst;
-	t_list	*tmp;
-	t_list	*tmp2;
+//	t_list	*tmp;
+//	t_list	*tmp2;
 
-	tmp = ms->exp;
-	tmp2 = ms->exp;
+//	tmp = ms->exp;
+//	tmp2 = ms->exp;
 	var = getvar_env(ms, NULL,"OLDPWD");
 	if (!var)// si on est dans le cas env -i
 	{
