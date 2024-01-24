@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 09:44:50 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/05/15 18:08:04 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/23 17:29:28 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ static int	ft_nstr(char const *s, char c)
 
 	n = 0;
 	i = 0;
-	while (s[i] == c && s[i])
+	while (s[i] && s[i] == c)
 		i++;
 	while (s[i])
 	{
 		if (s[i] != c)
 			n++;
-		while (s[i] != c && s[i])
+		while (s[i] && s[i] != c && s[i])
 			i++;
 		if (s[i])
 			i++;
