@@ -75,7 +75,7 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 	if (ms->cur_tok->dol)
 		ft_doladd_back(&new_ast->dol, ms->cur_tok->dol);
 	if (ms->cur_tok->wil)
-		ft_wiladd_back(&new_ast->wil, ms->cur_tok->wil);	
+		ft_wiladd_back(&new_ast->wil, ms->cur_tok->wil);
 	eat_token(ms, T_WORD);
 	return (new_ast->args);
 }

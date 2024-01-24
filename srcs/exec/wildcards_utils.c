@@ -4,12 +4,12 @@ int	*lstint_to_tab(t_list *lst)
 {
 	int				i;
 	int				*tab_w;
-	t_list 			*tmp;
+	t_list			*tmp;
 
 	i = 0;
 	tmp = lst;
 	tab_w = ft_calloc(ft_lstsize(tmp), sizeof(int));
-	if (!tab_w)// a verifier 
+	if (!tab_w) // c'est verifie
 		return (NULL);
 	while (tmp)
 	{
@@ -36,7 +36,7 @@ int	has_asterisk(char *str)
 
 void	advance_in_lst(t_list **lst, int size)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (*lst && (i < size))
@@ -59,10 +59,20 @@ int	len_dchar(char **tab)
 	return (i);
 }
 
-int	cmd_wildcard_free(t_wildcard *wildc)
+char	**copy_args(char **str)
 {
-	if (wildc->tmp_args)
-		free_tab(wildc->tmp_args);
-	return (free(wildc), 1);
-}
+	int		i;
+	char	**new_str;
 
+	i = 0;
+	new_str = ft_calloc(sizeof(char *), len_dchar(str) + 1);
+	if (!new_str) //c'est verifie
+		return (NULL);
+	while (str[i])
+	{
+		new_str[i] = ft_strdup(str[i]);
+		i++;
+	}
+	new_str[i] = 0;
+	return (new_str);
+}

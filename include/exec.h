@@ -4,6 +4,7 @@
 # include "lexer.h"
 # include "struct.h"
 # include "builtins.h"
+# include <dirent.h>
 
 //----------------------- exec.c ------------------------
 int				exec_andif(t_ast *node, t_ms *ms);
@@ -132,14 +133,28 @@ void			hd_update_expand_pos(int data[5], int *j);
 char			*expand_hdoc(t_ms *ms, char *arg);
 
 //----------------------- wildcards.c ------------------------
-int	cmd_wildcard(t_cmd* cmd, t_wil *wil);
+char			**cpy_end_args(char **new, char **args, int k, int i);
+char			**make_new_args(char **args, char **ad, int w_i, int i);
+char			**wildcards(char **args, t_wildcard *wildc);
+t_wildcard		*init_wildc(t_wil *wil);
+int				cmd_wildcard(t_cmd *cmd, t_wil *wil);
 
+//----------------------- wildcards2.c ------------------------
+int				same_as_wildcard(char *d_name, char *arg, int *flag);
+char			**wldc2_split(char *new_arg);
+char			*wldc2_join(char *d_name, char *new_arg);
+char			*wildc2_dup_join(char *d_name, t_wildcard *wc, char *new_arg);
+char			**wildcards_2(DIR *d, struct dirent *file, char **args, t_wildcard *wildc);
 
 //----------------------- wildcards_utils.c ------------------------
-int		*lstint_to_tab(t_list *lst);
-int		has_asterisk(char *str);
-void	advance_in_lst(t_list **lst, int size);
-int		len_dchar(char **tab);
-int		cmd_wildcard_free(t_wildcard *wildc);
+int				*lstint_to_tab(t_list *lst);
+int				has_asterisk(char *str);
+void			advance_in_lst(t_list **lst, int size);
+int				len_dchar(char **tab);
+char			**copy_args(char **str);
+
+//----------------------- wildcards_free.c ------------------------
+int				cmd_wildcard_free(t_wildcard *wildc);
+int				wildcards_init(DIR **d, struct dirent **file);
 
 #endif

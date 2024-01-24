@@ -9,7 +9,13 @@ int	hdoc_ctrl_d(t_ms *ms, int fd, int nb_line) // A VOIR AVEC MAELLE
 	ft_putstr_fd(" delimited by end-of-file (wanted `lim')\n", 2);
 	//ajouter les lignes lues precedemment
 	//+ ne pas afficher minishell: lim: No such file or directory
-	return (close_if(&fd), 1); //check error code
+	(void)fd;
+	// if (ms->line)
+	// {
+	// 	free(ms->line);
+	// 	ms->line = NULL;
+	// }
+	return (/*close_if(&fd),*/ 3); //check error code
 }
 
 int	hdoc_sigint(int fd)
@@ -31,7 +37,11 @@ int	hdoc_create(t_ms *ms, int fd, char *filename, int limlen)
 		if (g_exit_code == 2)
 			return (free_if(line), hdoc_sigint(fd));
 		if (!line) //A VOIR AVEC MAELLE
-			return (free_if(line), hdoc_ctrl_d(ms, fd, nb_line));
+		{
+			hdoc_ctrl_d(ms, fd, nb_line);
+			break ;
+		}
+			//return (free_if(line), hdoc_ctrl_d(ms, fd, nb_line));
 		if (ft_strncmp(line, filename, limlen) == 0
 			&& ((int) ft_strlen(line) == limlen))
 			break ;

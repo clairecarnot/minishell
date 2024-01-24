@@ -202,7 +202,10 @@ void	free_minishell(t_ms *ms, int exit_status)
 	if (ms->home && exit_status != 0)
 		free(ms->home);
 	if (ms->line)
+	{
+		free(ms->line);
 		ms->line = NULL;
+	}
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
 	if (ms && exit_status != 0)
