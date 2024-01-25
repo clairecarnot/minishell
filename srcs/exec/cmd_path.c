@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/24 18:55:25 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/25 09:56:30 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
 	i = 0;
 	while (env && env[i])
 	{
-		if (ft_strncmp("_", env[i], 1) == 0) //A quoi ca sert?
+		if (ft_strncmp("_", env[i], 1) == 0)
 		{
-			env_p = ft_strdup("/usr/bin/");// c'est verifie
+			env_p = ft_strdup("/usr/bin/");
 			if (!env_p)
 				free_path_cmd_ms(ms, cmd, env_path);
 			return (env_p);
@@ -55,7 +55,7 @@ char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
 
 void	free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path)
 {
-	free_if(env_path); //ajout IF
+	free_if(env_path);
 	free_cmd(cmd);
 	free_minishell(ms, 255);
 }
@@ -72,7 +72,7 @@ char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd)
 	{
 		if (ft_strncmp("PATH", env[i], 4) == 0)
 		{
-			env_path = ft_strdup(env[i] + 5);// c'est verifie
+			env_path = ft_strdup(env[i] + 5);
 			if (!env_path)
 				free_path_cmd_ms(ms, cmd, env_path);
 			break ;
@@ -83,12 +83,12 @@ char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd)
 		env_path = get_bin_path_underscore(ms, cmd, env_path, env);
 	binaries = ft_split(env_path, ':');
 	if (!binaries)
-		free_path_cmd_ms(ms, cmd, env_path);// c'est verifie
+		free_path_cmd_ms(ms, cmd, env_path);
 	free(env_path);
 	return (binaries);
 }
 
-int	build_path(t_cmd *cmd)
+int	build_path(t_ms *ms, t_cmd *cmd)
 {
 	char	*path;
 	int		i;
@@ -98,7 +98,7 @@ int	build_path(t_cmd *cmd)
 	{
 		path = ft_strjoin_slash(cmd->bin_paths[i], cmd->args[0]);
 		if (!path)
-			return (1);
+			(free_cmd(cmd), free_minishell(ms, 255));
 		if (access(path, F_OK | X_OK) == 0)
 		{
 			(free(cmd->args[0]));

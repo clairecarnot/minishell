@@ -12,7 +12,7 @@ t_cmd	*init_cmd(t_ms *ms, char **env)
 		free_minishell(ms, 255);
 	}
 	cmd->env = env;
-	cmd->bin_paths = get_bin_paths(ms, env, cmd);// c'est verifie
+	cmd->bin_paths = get_bin_paths(ms, env, cmd);
 	cmd->abs_or_rel = 0;
 	cmd->valid_path = 0;
 	cmd->redir = 0;
@@ -30,8 +30,14 @@ int	redef_cmdargs_bis(t_ms *ms, t_cmd *cmd, int i)
 	tmp = tab_cpy(ms, &cmd->args[i]);
 	if (!tmp)
 	{
+		while (cmd->args[i])
+		{
+			free(cmd->args[i]);
+			cmd->args[i] = NULL;
+			i++;
+		}
 		ms->exit_code = 255;
-		return (255);
+		return (1);
 	}
 	while (cmd->args[i])
 	{
@@ -60,7 +66,7 @@ int	redef_cmdargs(t_ms *ms, t_cmd *cmd)
 	{
 		if (!ms->flag_q)
 			*cmd->args = NULL;
-		return (0);
+		return (2);
 	}
 	if (i > 0)
 		return (redef_cmdargs_bis(ms, cmd, i));

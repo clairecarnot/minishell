@@ -6,7 +6,7 @@ int	equals(char *s1, char *s2)
 		return (0);
 	if (ft_strlen(s1) != ft_strlen(s2))
 		return (0);
-	if (ft_strncmp(s1, s2, ft_strlen(s1)) == 0) //options ?
+	if (ft_strncmp(s1, s2, ft_strlen(s1)) == 0)
 		return (1);
 	return (0);
 }
@@ -15,8 +15,6 @@ t_builtin_type	builtin_type_is(char *builtin)
 {
 	if (equals(builtin, "echo"))
 		return (ECHO);
-	// if (equals(builtin, "cd"))
-	// 	return (ECHO);
 	if (equals(builtin, "cd"))
 		return (CD);
 	if (equals(builtin, "pwd"))

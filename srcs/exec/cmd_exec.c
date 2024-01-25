@@ -23,10 +23,8 @@ int	node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w)
 			cmd->valid_path = 1;
 			return (0);
 		}
-		if (build_path(cmd) == 1)
-			return (255);
+		return (build_path(ms, cmd));
 	}
-	return (0);
 }
 
 int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
@@ -43,7 +41,7 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		tmp_w = node->wil->w;
 	cmd->args = lst_to_tab(node->args);
 	if (!cmd->args)
-		return (255);
+		return (ms->exit_code = 255, 255);
 	if (node->dol)
 	{
 		if (cmd_expand(ms, cmd, node->dol) == 1)
@@ -53,8 +51,8 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		}
 		save_ptrs(&tmp_d, &tmp_c, &node->dol->d, &node->dol->c);
 	}
-	if (redef_cmdargs(ms, cmd) == 1)
-		return (255);
+	if (redef_cmdargs(ms, cmd) != 0)
+		return (1);
 	return (node_to_cmd_bis(ms, node, cmd, tmp_w));
 }
 
@@ -115,16 +113,14 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	env = lst_to_tab(ms->env);
 	if (!env)
 		free_minishell(ms, 255);
-	cmd = init_cmd(ms, env);// c'est verifie
-	//if (!cmd
-		//return (ms->exit_code = 255, 1); DEJA PROTEGE
+	cmd = init_cmd(ms, env);
 	exit_code = node_to_cmd(ms, node, cmd);
 	if (ms->exit_code == 255)
 		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		return (ms->exit_code = exit_code, free_cmd(cmd), 1);
 	if (cmd->redir && !cmd->valid_redir)
-		return (free_cmd(cmd), 1);
+		return (free_cmd(cmd), ms->exit_code);
 	if (cmd->builtin != NOBUILT)
 		exit_code = exec_builtin(ms, cmd);
 	else

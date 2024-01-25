@@ -50,7 +50,7 @@ char			*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
 					char **env);
 void			free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path);
 char			**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd);
-int				build_path(t_cmd *cmd);
+int				build_path(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_utils1.c ------------------------
 int				equals(char *s1, char *s2);
