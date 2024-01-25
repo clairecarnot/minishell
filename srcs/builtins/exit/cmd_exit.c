@@ -6,29 +6,36 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/24 15:37:32 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:55:17 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-int	count_args(char **args)
+void	free_exit_bis(t_ms *ms)
 {
-	int	i;
-
-	i = 0;
-	if (!args)
-		return (0);
-	while (args[i])
-		i++;
-	return (i);
+	if (ms->wkdir)
+		free(ms->wkdir);
+	if (ms->old_wkdir)
+		free(ms->old_wkdir);
+	if (ms->home)
+		free(ms->home);
+	if (ms->line)
+	{
+		free(ms->line);
+		ms->line = NULL;
+	}
+	if (ms->hdlst)
+		ft_lstfree(&ms->hdlst);
+	if (ms)
+		free(ms);
 }
 
 void	free_exit(t_ms *ms)
 {
 	t_list		*hdtmp;
-	
+
 	close_if(&ms->in);
 	close_if(&ms->out);
 	hdtmp = ms->hdlst;
@@ -51,21 +58,7 @@ void	free_exit(t_ms *ms)
 		ft_lstfree(&ms->env);
 	if (ms->exp)
 		ft_lstfree(&ms->exp);
-	if (ms->wkdir)
-		free(ms->wkdir);
-	if (ms->old_wkdir)
-		free(ms->old_wkdir);
-	if (ms->home)
-		free(ms->home);
-	if (ms->line)
-	{
-		free(ms->line);
-		ms->line = NULL;
-	}
-	if (ms->hdlst)
-		ft_lstfree(&ms->hdlst);
-	if (ms)
-		free(ms);
+	free_exit_bis(ms);
 }
 
 long long	atoll_exit(char *args, int *error)
@@ -118,14 +111,14 @@ int	exec_exit(t_ms *ms, t_cmd *cmd)
 	error = 0;
 	if (isatty(0) == 1 && isatty(1) == 1)
 		ft_putstr_fd("exit\n", 1);
-	if (count_args(cmd->args) == 1)
+	if (tab_size(cmd->args) == 1)
 		exit_code = ms->exit_code;
 	else
 	{
 		exit_code = get_exit_code(cmd->args[1], &error);
 		if (exit_code == 2 && error == 1)
 			exit_msg(ms, "exit", cmd->args[1], "numeric argument required\n");
-		else if (count_args(cmd->args) > 2)
+		else if (tab_size(cmd->args) > 2)
 			return (exit_msg(ms, "exit", NULL, "too many arguments\n"), 1);
 	}
 	free_cmd(cmd);

@@ -78,7 +78,7 @@ int		exec_unset(t_ms *ms, t_cmd *cmd);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx exit xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //------------------------------ cmd_exit.c -----------------------------
-int		count_args(char **args);
+void	free_exit_bis(t_ms *ms);
 void	free_exit(t_ms *ms);
 long long	atoll_exit(char *args, int *error);
 int		get_exit_code(char *args, int *error);
@@ -88,7 +88,6 @@ int		exec_exit(t_ms *ms, t_cmd *cmd);
 bool	is_whitespace(char c);
 bool	is_toobig(unsigned long long n, int sign, int *error);
 bool	is_notnumeric(char *args, int *error);
-char	*join_strs(t_ms *ms, char *s1, char *s2);
 void	exit_msg(t_ms *ms, char *cmd, char *details, char *error);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx echo xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx

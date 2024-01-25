@@ -53,7 +53,7 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 
 	exit_code = 0;
 	limlen = ft_strlen(redirs->filename);
-	hdname = generate_hdname(ms); //deja protege
+	hdname = generate_hdname(ms);
 	fd = open(hdname, O_CREAT | O_WRONLY, 0666);
 	if (fd < 0)
 		return (perror("minishell: heredoc"), ms->exit_code = 1,
@@ -67,7 +67,6 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 		return (free(limiter), NULL);
 	else if ((g_exit_code == 2 && exit_code == 1) || exit_code == 255)
 		(free_minishell(ms, exit_code));
-//		(free(limiter), free_minishell(ms, exit_code));
 	(preprompt_signals(), free(limiter));
 	return (ft_strdup(hdname));
 }

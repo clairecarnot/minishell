@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/04 14:09:17 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 18:11:45 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,54 +54,16 @@ bool	is_notnumeric(char *args, int *error)
 	return (false);
 }
 
-char	*join_strs(t_ms *ms, char *s1, char *s2)
-{
-	char	*dest;
-	int		i;
-	int		j;
-
-	if (!s1 || !s2)
-		return (NULL);
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_strlen(s2) + 3);
-	if (!dest)
-	{
-		free(s1);
-		ms->exit_code = 255;
-		return (NULL);
-	}
-	i = -1;
-	while (s1[++i])
-		dest[i] = s1[i];
-	dest[i++] = ':';
-	dest[i++] = ' ';
-	j = -1;
-	while (s2[++j])
-		dest[i + j] = s2[j];
-	dest[i + j] = '\0';
-	free(s1);
-	return (dest);
-}
-
 void	exit_msg(t_ms *ms, char *cmd, char *details, char *error)
 {
-	char	*msg;
-
-	msg = ft_strdup("minishell: ");
-	if (!msg)
-		free_minishell(ms, 1);
-	msg = join_strs(ms, msg, cmd);
-	if (!msg)
-		free_minishell(ms, 1);
+	(void)ms;
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
 	if (details)
 	{
-		msg = join_strs(ms, msg, details);
-		if (!msg)
-			free_minishell(ms, 1);
+		ft_putstr_fd(details, 2);
+		ft_putstr_fd(": ", 2);
 	}
-	msg = join_strs(ms, msg, error);
-	if (!msg)
-		free_minishell(ms, 1);
-	ft_putstr_fd(msg, 2);
-	free(msg);
-	msg = NULL;
+	ft_putstr_fd(error, 2);
 }
