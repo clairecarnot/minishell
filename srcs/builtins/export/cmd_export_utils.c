@@ -6,7 +6,7 @@ Error if the content is empty ou est un special char
 Check that the 1rst character of the variable name is a letter (upper or lower)
 Check that there's not a special character in the entire name (before the '=')
 */
-int	error_exp(char *content)
+int	error_exp(t_ms *ms, char *content)
 {
 	int	i;
 
@@ -15,21 +15,19 @@ int	error_exp(char *content)
 		return (ft_putstr_fd("minishell: export: `': \
 not a valid identifier\n", 2), 1);
 	if (content[0] && content[0] == '-' && content[1])
-		return (message_error_exp_2(content));
+		return (message_error_exp_2(ms, content));
 	if (content[0] && (content[0] < 'A' || (content[0] > 'Z' && \
 	content[0] < 'a') || \
 	content[0] > 'z') && content[0] != '_' && content[0] != '!')
-		return (message_error_exp_1(content));
+		return (message_error_exp_1(ms, content));
 	while (content[++i] && content[i] != '=')
 	{
-		if (content[i] == '!')
-			return (message_error_exp_3(content, i));
 		if (((content[i] < '0' || (content[i] > '9' && \
 		content[i] < 'A') || (content[i] > 'Z' && content[i] < 'a') || \
 		content[i] > 'z') && content[i] != '_' && content[i] != '+') || \
 		(content[i] == '+' && content[i + 1] && \
 		content[i + 1] != '=') || (content[i] == '+' && !content[i + 1]))
-			return (message_error_exp_1(content));
+			return (message_error_exp_1(ms, content));
 	}
 	return (0);
 }
@@ -37,7 +35,7 @@ not a valid identifier\n", 2), 1);
 /*
 Check si le character avant '=' est un ' '
 */
-int	error_exp_spaces(char *content)
+int	error_exp_spaces(t_ms *ms, char *content)
 {
 	int	i;
 
@@ -49,6 +47,8 @@ int	error_exp_spaces(char *content)
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(content, 2);
 		ft_putstr_fd("': not a valid identifier\n", 2);
+		ms->exit_code = 1;
+		return (1);
 	}
 	return (0);
 }

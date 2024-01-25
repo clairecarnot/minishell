@@ -42,7 +42,7 @@ void	add_variable(t_ms *ms, t_cmd *cmd, char *content)
 	add_variable2(ms, cmd, content);
 }
 
-int	asterisk_in_varct(char *content)
+int	asterisk_in_varct(t_ms *ms, char *content)
 {
 	int	i;
 
@@ -54,7 +54,7 @@ int	asterisk_in_varct(char *content)
 		while (content[i])
 		{
 			if (content[i] == '*')
-				return (message_error_exp_1(content));
+				return (message_error_exp_1(ms, content));
 			i++;
 		}
 	}
@@ -92,11 +92,14 @@ int	exec_export(t_ms *ms, t_cmd *cmd)
 	{
 		while (cmd->args[i])
 		{
-			if (!error_exp_spaces(cmd->args[i]) && !error_exp(cmd->args[i]) && \
-			!asterisk_in_varct(cmd->args[i]))
+			if (!error_exp_spaces(ms, cmd->args[i]) && \
+			!error_exp(ms, cmd->args[i]) && \
+			!asterisk_in_varct(ms, cmd->args[i]))
 				add_variable(ms, cmd, cmd->args[i]);
 			i++;
 		}
 	}
+	if (ms->exit_code != 0)
+		return (ms->exit_code);
 	return (0);
 }

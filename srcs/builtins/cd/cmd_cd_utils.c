@@ -19,9 +19,10 @@ char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line)
 	dir = malloc(sizeof(char) * (size + 1));// c'est verifie
 	if (!dir)
 	{
-		free_cmd(cmd);
+		if (cmd)
+			free_cmd(cmd);
 		ms->exit_code = 255;
-		free_minishell(ms, 1);
+		free_minishell(ms, 255);
 	}
 	while (var_line[i])
 		dir[j++] = var_line[i++];
@@ -45,20 +46,21 @@ char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name)
 	return (NULL);
 }
 
-void	nosuchfile_cd(char *str)
+int	nosuchfile_cd(char *str)
 {
 	ft_putstr_fd("minishell: cd : ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
+	return (1);
 }
 
-void	cd_else(t_ms *ms, t_cmd *cmd)
+int	cd_else(t_ms *ms, t_cmd *cmd)
 {
 	char	*tmp_dir;
 	char	*dir;
 
 	if (!ms->wkdir)
-		nosuchfile_cd(cmd->args[1]);
+		return (nosuchfile_cd(cmd->args[1]));
 	else
 	{	
 		tmp_dir = ft_strjoin(ms->wkdir, "/");
@@ -71,12 +73,12 @@ void	cd_else(t_ms *ms, t_cmd *cmd)
 		if (chdir(dir) != 0)
 		{
 			free(dir);
-			nosuchfile_cd(cmd->args[1]);
+			return (nosuchfile_cd(cmd->args[1]));
 		}
 		else
 		{
 			free(dir);
-			replace_pwd_env_exp(ms, cmd);
+			return (replace_pwd_env_exp(ms, cmd), 0);
 		}
 	}
 }

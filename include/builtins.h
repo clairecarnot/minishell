@@ -12,12 +12,13 @@
 //-------------------------- cmd_export.c --------------------------
 void	add_variable2(t_ms *ms, t_cmd *cmd, char *ct);
 void	add_variable(t_ms *ms, t_cmd *cmd, char *content);
+int		asterisk_in_varct(t_ms *ms, char *content);
 void	print_lst_exp(t_list *exp);
 int		exec_export(t_ms *ms, t_cmd *cmd);
 
 //----------------------- cmd_export_utils.c -----------------------
-int		error_exp(char *content);
-int		error_exp_spaces(char *content);
+int		error_exp(t_ms *ms, char *content);
+int		error_exp_spaces(t_ms *ms, char *content);
 int		has_equal(char *content);
 char	*add_qvar(char *content, int i);
 void	add_qvar_lst(t_ms *ms, t_list *exp);
@@ -35,9 +36,8 @@ int		var_exists_env(t_ms *ms, char *content);
 void	prefree_minishell(t_ms *ms, char *str);
 
 //----------------------- cmd_export_utils4.c -----------------------
-int		message_error_exp_1(char *content);
-int		message_error_exp_2(char *content);
-int		message_error_exp_3(char *content, int i);
+int		message_error_exp_1(t_ms *ms, char *content);
+int		message_error_exp_2(t_ms *ms, char *content);
 
 //----------------------- cmd_export_replace.c -----------------------
 char	*ft_sdup(t_ms *ms, t_cmd *cmd, char *s);
@@ -101,17 +101,17 @@ int		exec_pwd(t_ms *ms, t_cmd *cmd);
 
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx cd xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //-------------------------------- cmd_cd.c -----------------------------
-void	cd_alone(t_ms *ms, t_cmd *cmd);
-void	cd_dash(t_ms *ms, t_cmd *cmd);
-void	cd_tilde(t_ms *ms, t_cmd *cmd);
-void	cd_slash(t_ms *ms, t_cmd *cmd);
+int		cd_alone(t_ms *ms, t_cmd *cmd);
+int		cd_dash(t_ms *ms, t_cmd *cmd);
+int		cd_tilde(t_ms *ms, t_cmd *cmd);
+int		cd_slash(t_ms *ms, t_cmd *cmd);
 int		exec_cd(t_ms *ms, t_cmd *cmd);
 
 //----------------------------- cmd_cd_utils.c --------------------------
 char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line);
 char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name);
-void	nosuchfile_cd(char *str);
-void	cd_else(t_ms *ms, t_cmd *cmd);
+int		nosuchfile_cd(char *str);
+int		cd_else(t_ms *ms, t_cmd *cmd);
 
 //----------------------------- cmd_cd_pwd_exp.c -------------------------
 void	replace_oldpwd_exp(t_ms *ms, t_cmd *cmd);

@@ -4,7 +4,7 @@
 /*
 Ajouter a la liste env, a la fin
 */
-void add_to_env(t_ms *ms, t_cmd *cmd, char *content)
+void	add_to_env(t_ms *ms, t_cmd *cmd, char *content)
 {
 	char	*cpy_content;
 	t_list	*new;
@@ -69,6 +69,6 @@ int	exec_env(t_ms *ms, t_cmd *cmd)
 		ft_putstr_fd(cmd->args[1], 2);
 		ft_putstr_fd("’: No such file or directory\n", 2);
 		ms->exit_code = 127;
-		return (0);
+		return (127);
 	}
 }
