@@ -9,11 +9,12 @@ void	cd_alone(t_ms *ms, t_cmd *cmd)
 	if (ms->home && home_var)
 	{
 		free(home_var);
-		if (chdir(ms->home))// c'est verifie
+		if (chdir(ms->home)) //c'est verifie
 		{
 			perror("chdir");
 			free_cmd(cmd);
-			prefree_minishell(ms, NULL);
+			ms->exit_code = errno;
+			free_minishell(ms, errno);
 		}
 		replace_pwd_env_exp(ms, cmd);
 	}
@@ -27,11 +28,8 @@ void	cd_dash(t_ms *ms, t_cmd *cmd)
 
 	env_tmp = ms->env;
 	if (cmd->args[1][1])
-	{
-		ft_putstr_fd("minishell: cd: ", 2);
-		ft_putstr_fd(cmd->args[1], 2);
-		ft_putstr_fd(": invalid option\n", 2);
-	}
+		(ft_putstr_fd("minishell: cd: ", 2), ft_putstr_fd \
+		(cmd->args[1], 2), ft_putstr_fd(": invalid option\n", 2));
 	else
 	{
 		while (env_tmp)
@@ -42,8 +40,7 @@ void	cd_dash(t_ms *ms, t_cmd *cmd)
 				if (chdir(env_tmp->content + 7))// c'est verifie
 				{
 					perror("chdir");
-					free_cmd(cmd);
-					prefree_minishell(ms, NULL);
+					(free_cmd(cmd), prefree_minishell(ms, NULL));
 				}
 				replace_pwd_env_exp(ms, cmd);
 				return ;

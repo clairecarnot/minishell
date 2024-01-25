@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:34 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/18 12:44:04 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:47:44 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ char	*dup_after_equal(t_ms *ms, t_cmd *cmd, char *s, int i)
 	while (s[i] && s[i] != '=')
 		i++;
 	i++;
-	if(s[i] == '\0')
+	if (s[i] == '\0')
 		return (NULL);
-	dest = malloc(sizeof(char) * (ft_strlen(s) - (slen_equal(s) - 2) + 1));// c'est verifie 1
+	dest = malloc(sizeof(char) * (ft_strlen(s) - (slen_equal(s) - 2) + 1));//verifie 2
 	if (!dest)
 		prefree_minishell_cmd(ms, cmd);
 	i = 0;
@@ -44,7 +44,7 @@ char	*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd)
 	int		j;
 
 	i = -1;
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);// c'est verifie 1
+	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);// c'est verifie 2
 	if (!dest)
 	{
 		if (s2)
@@ -68,10 +68,10 @@ char	*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd)
 
 t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd)
 {
-	t_list *new;
-	
+	t_list	*new;
+
 	free(cpy_ct);
-	new = ft_lstnew(join_ct);// c'est verifie 1
+	new = ft_lstnew(join_ct);// c'est verifie 2
 	if (!new)
 	{
 		free(join_ct);

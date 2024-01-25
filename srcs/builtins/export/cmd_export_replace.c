@@ -6,21 +6,22 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/18 12:01:23 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:45:47 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-char	*ft_sdup(t_ms *ms, char *s)
+char	*ft_sdup(t_ms *ms, t_cmd *cmd, char *s)
 {
 	char	*dest;
 	int		i;
 
-	dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est protege
-	if (!dest)//verifier que ft_strlen ne crash pas quand s est null
+	dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie 2
+	if (!dest)
 	{
+		free_cmd(cmd);
 		ms->exit_code = 255;
 		free_minishell(ms, 1);
 	}
@@ -42,20 +43,22 @@ void	replace_in_exp(t_ms *ms, t_cmd *cmd, char *content)
 	t_list	*exp_tmp;
 	t_list	*exp_tmp2;
 	t_list	*new;
-	char	*cpy_content;
+	char	*cpy_ct;
 
-	(void)cmd;
 	exp_tmp = ms->exp;
 	exp_tmp2 = ms->exp;
-	cpy_content = add_qvar(ms, content, 0, 0 /* ou 1 s'il faut free content*/);
-	new = ft_lstnew(cpy_content);// a proteger
+	cpy_ct = add_qvar(content, 0);
+	if (!cpy_ct)
+		(free_cmd(cmd), prefree_minishell(ms, NULL));// c'est verifie 2
+	new = ft_lstnew(cpy_ct);// c'est verifie 2
+	if (!new)
+		(free_cmd(cmd), prefree_minishell(ms, cpy_ct));
 	while (exp_tmp)
 	{
-		if (ft_strncmp(exp_tmp->content, cpy_content, slen_equal(cpy_content)) == 0)
+		if (ft_strncmp(exp_tmp->content, cpy_ct, slen_equal(cpy_ct)) == 0)
 		{
 			new->next = exp_tmp->next;
-			free(exp_tmp->content);
-			free(exp_tmp);
+			(free(exp_tmp->content), free(exp_tmp));
 			exp_tmp2->next = new;
 			return ;
 		}
@@ -64,24 +67,23 @@ void	replace_in_exp(t_ms *ms, t_cmd *cmd, char *content)
 	}
 }
 
-void	replace_in_env(t_ms *ms, t_cmd *cmd, char *content)
+void	replace_in_env(t_ms *ms, t_cmd *cmd, char *ct)
 {
 	char	*cpy_content;
 	t_list	*env_tmp;
 	t_list	*env_tmp2;
 	t_list	*new;
 
-	(void)cmd;
-	cpy_content = ft_sdup(ms, content);// c'est protege
+	cpy_content = ft_sdup(ms, cmd, ct);// c'est protege 2
 	env_tmp = ms->env;
 	env_tmp2 = ms->env;
 	new = ft_lstnew(cpy_content);
 	if (!new)
-		prefree_minishell(ms, cpy_content);
+		(free_cmd(cmd), prefree_minishell(ms, cpy_content));// c'est verifie 2
 	while (env_tmp)
 	{
-		if (ft_strncmp(env_tmp->content, content, slen_equal(content)) == 0 &&\
-		ft_strncmp(env_tmp->content, content, slen_equal(env_tmp->content)) == 0)
+		if (ft_strncmp(env_tmp->content, ct, slen_equal(ct)) == 0 && \
+		ft_strncmp(env_tmp->content, ct, slen_equal(env_tmp->content)) == 0)
 		{
 			new->next = env_tmp->next;
 			free(env_tmp->content);

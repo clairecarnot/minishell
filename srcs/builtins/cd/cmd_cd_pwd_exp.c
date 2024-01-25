@@ -8,7 +8,7 @@ void	replace_oldpwd_exp(t_ms *ms, t_cmd *cmd)
 	t_list	*exp_tmp;
 
 	exp_tmp = ms->exp;
-	content = ft_strjoin("OLDPWD=", ms->wkdir);
+	content = ft_strjoin("OLDPWD=", ms->wkdir); //c'est verifie
 	if (!content)
 	{
 		free_cmd(cmd);
@@ -23,20 +23,20 @@ void	replace_oldpwd_exp(t_ms *ms, t_cmd *cmd)
 		{
 			free(exp_tmp->content);
 			exp_tmp->content = content_qt;
-			return;
+			return ;
 		}
 		exp_tmp = exp_tmp->next;
 	}
 	free(content_qt);
 }
 
-char	*add_qvar_pwd(t_ms *ms, t_cmd* cmd, char *content, int i)
+char	*add_qvar_pwd(t_ms *ms, t_cmd *cmd, char *content, int i)
 {
 	int		j;
 	char	*content_qt;
 
 	j = 0;
-	content_qt = malloc((ft_strlen(content) + 3) * sizeof(char));
+	content_qt = malloc((ft_strlen(content) + 3) * sizeof(char)); //c'est verifie
 	if (!content_qt)
 	{
 		free(content);
@@ -53,7 +53,7 @@ char	*add_qvar_pwd(t_ms *ms, t_cmd* cmd, char *content, int i)
 		content_qt[j++] = content[i++];
 	content_qt[j++] = '\"';
 	content_qt[j] = '\0';
-	return (content_qt);	
+	return (content_qt);
 }
 
 void	preprefree_minishell(t_ms *ms, t_cmd *cmd)
@@ -64,17 +64,17 @@ void	preprefree_minishell(t_ms *ms, t_cmd *cmd)
 
 void	replace_pwd_exp(t_ms *ms, t_cmd *cmd)
 {
-	char	path[1024];
 	char	*content;
+	char	path[1024];
 	char	*content_qt;
 	t_list	*exp_tmp;
 
 	exp_tmp = ms->exp;
 	if (getcwd(path, sizeof(path)) != NULL)
 	{
-		content = ft_strjoin("PWD=", path);
-		if (!content)// a verifier
-			preprefree_minishell(ms, cmd);
+		content = ft_strjoin("PWD=", path); //c'est verifie
+		if (!content)
+			(free_cmd(cmd), prefree_minishell(ms, NULL));
 		content_qt = add_qvar_pwd(ms, cmd, content, 0);
 		free(content);
 		while (exp_tmp)
@@ -85,7 +85,7 @@ void	replace_pwd_exp(t_ms *ms, t_cmd *cmd)
 				exp_tmp->content = content_qt;
 				return ;
 			}
-			exp_tmp = exp_tmp->next;		
+			exp_tmp = exp_tmp->next;
 		}
 		free(content_qt);
 	}
@@ -96,5 +96,5 @@ void	replace_pwd_env_exp(t_ms *ms, t_cmd *cmd)
 	replace_oldpwd_env(ms, cmd);
 	replace_oldpwd_exp(ms, cmd);
 	replace_pwd_env(ms, cmd);
-	replace_pwd_exp(ms, cmd);	
+	replace_pwd_exp(ms, cmd);
 }

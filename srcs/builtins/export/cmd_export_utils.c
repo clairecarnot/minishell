@@ -1,30 +1,6 @@
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-int	message_error_exp_1(char *content)
-{
-	ft_putstr_fd("minishell: export: `", 2);
-	ft_putstr_fd(content, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	return (1);
-}
-
-int	message_error_exp_2(char *content)
-{
-	ft_putstr_fd("minishell: export: ", 2);
-	ft_putchar_fd(content[0], 2);
-	ft_putchar_fd(content[1], 2);
-	ft_putstr_fd(": invalid option\n", 2);
-	return (1);
-}
-
-int	message_error_exp_3(char *content, int i)
-{
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(content + i, 2);
-	return (ft_putstr_fd(": event not found\n", 2), 1);
-}
-
 /*
 Error if the content is empty ou est un special char
 Check that the 1rst character of the variable name is a letter (upper or lower)
@@ -98,22 +74,18 @@ int	has_equal(char *content)
 /*
 Ajoute les quotes autour du contenu de la variable pour l'ajout a exp
 */
-char	*add_qvar(t_ms *ms, char *content, int i, int u)
+char	*add_qvar(char *content, int i)
 {
 	int		j;
 	char	*cpy_content;
 
 	j = 0;
+	cpy_content = NULL;
 	if (!has_equal(content))
 		return (content);
 	cpy_content = malloc(ft_strlen(content) + 3 * sizeof(char));
 	if (!cpy_content)
-	{
-		if (content && u == 1)
-			free(content);
-		ms->exit_code = 255;
-		free_minishell(ms, 1);
-	}
+		return (NULL);
 	while (content[i] && content[i] != '=')
 		cpy_content[j++] = content[i++];
 	i++;
@@ -128,14 +100,19 @@ char	*add_qvar(t_ms *ms, char *content, int i, int u)
 
 void	add_qvar_lst(t_ms *ms, t_list *exp)
 {
-	t_list	*tmp_exp;
 	char	*tmp_content;
+	t_list	*tmp_exp;
 
 	tmp_exp = exp;
 	while (tmp_exp)
 	{
 		tmp_content = tmp_exp->content;
-		tmp_exp->content = add_qvar(ms, tmp_content, 0, 0);
+		tmp_exp->content = add_qvar(tmp_content, 0);// c'est verifie
+		if (!tmp_exp->content)
+		{	
+			free(tmp_content);
+			prefree_minishell(ms, NULL);
+		}
 		free(tmp_content);
 		tmp_exp = tmp_exp->next;
 	}

@@ -31,14 +31,14 @@ char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line)
 
 char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name)
 {
-	t_list *env_tmp;
+	t_list	*env_tmp;
 
 	env_tmp = ms->env;
 	while (env_tmp)
 	{
 		if (ft_strncmp(env_tmp->content, var_name, ft_strlen(var_name)) == 0)
 		{
-			return(get_dir(ms, cmd, env_tmp->content));// a verife si ca marche
+			return (get_dir(ms, cmd, env_tmp->content));//a verife si ca marche
 		}
 		env_tmp = env_tmp->next;
 	}

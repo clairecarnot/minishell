@@ -6,22 +6,21 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:45:56 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/18 14:03:17 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 12:01:46 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
 #include "../libft/libft.h"
 
-char	*sjoin_noequal(t_ms *ms, char *s1, char *s2, int i)
+char	*sjoin_noequal(char *s1, char *s2, int i)
 {
 	char	*dest;
 	int		j;
 
-	(void)ms;//ici
 	if (!s1 && !s2)
 		return (NULL);
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1 + 3);// + 3 pour les quotes et le egale
+	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1 + 3);// c'est verifie 2
 	if (!dest)
 		return (NULL);
 	while (s1[++i])
@@ -42,19 +41,16 @@ char	*sjoin_noequal(t_ms *ms, char *s1, char *s2, int i)
 	return (dest);
 }
 
-char	*sjoin_wquote(t_ms *ms, char *s1, char *s2, int i)
+char	*sjoin_wquote(char *s1, char *s2, int i)
 {
 	char	*dest;
 	int		j;
 
 	if (!s1 && !s2)
 		return (NULL);
-	// dest = NULL;
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);// a verifie
+	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);// c'est verifie 2
 	if (!dest)
 		return (NULL);
-	(void)ms;
-		// prefree_minishell(ms, s2);
 	while (i < (int)(ft_strlen(s1) - 1))
 	{
 		dest[i] = s1[i];
@@ -78,24 +74,29 @@ t_list	*join_in_exp3(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd)
 {
 	t_list	*new;
 
-	(void)cmd;
 	free(cpy_ct);
-	new = ft_lstnew(join_ct);// c'est protege
+	new = ft_lstnew(join_ct);// c'est verifie 2
 	if (!new)
+	{
+		free_cmd(cmd);
 		prefree_minishell(ms, join_ct);
+	}
 	return (new);
 }
 
 char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct, t_cmd *cmd)
 {
 	char	*join_ct;
-	
+
 	if (has_equal(exp_tmp->content))
-		join_ct = sjoin_wquote(ms, exp_tmp->content, cpy_ct, 0);// c'est protege
+		join_ct = sjoin_wquote(exp_tmp->content, cpy_ct, 0);// c'est protege 2
 	else
-		join_ct = sjoin_noequal(ms, exp_tmp->content, cpy_ct, -1);// c'est protege	
+		join_ct = sjoin_noequal(exp_tmp->content, cpy_ct, -1);// c'est protege 2
 	if (!join_ct)
+	{
+		free(cpy_ct);
 		prefree_minishell_cmd(ms, cmd);
+	}
 	return (join_ct);
 }
 
@@ -107,7 +108,7 @@ void	join_in_exp(t_ms *ms, t_cmd *cmd, char *content)
 	t_list	*exp_tmp2;
 	t_list	*new;
 
-	cpy_ct = dup_after_equal(ms, cmd, content, 0);// c'est protege
+	cpy_ct = dup_after_equal(ms, cmd, content, 0);// c'est protege 2
 	exp_tmp = ms->exp;
 	exp_tmp2 = ms->exp;
 	while (exp_tmp)
