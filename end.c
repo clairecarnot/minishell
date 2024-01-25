@@ -47,6 +47,42 @@ void	ft_lstfree(t_list **lst)
 	}
 }
 
+void	wil_free(t_wil **wil)
+{
+	if (wil)
+	{
+		if ((*wil)->w)
+			ft_lstfree(&(*wil)->w);
+		if (*wil)
+			free(*wil);
+		*wil = NULL;
+	}
+}
+
+void	token_lst_free_wil(t_token **lst)
+{
+	t_token	*ptr;
+	t_token	*tmp;
+
+	if (lst)
+	{
+		ptr = *lst;
+		while (ptr)
+		{
+			tmp = ptr->next_token;
+			// if (ptr->type == T_WORD || ptr->type == T_NEWLINE)
+			// 	free(ptr->value);
+//			if (ptr->dol)
+				// dol_free(&(ptr->dol));
+			// if (ptr->wil)
+			// 	wil_free(&(ptr->wil));
+			// free(ptr);
+			ptr = tmp;
+		}
+		// *lst = NULL;
+	}
+}
+
 void	token_lst_free(t_token **lst)
 {
 	t_token	*ptr;
@@ -61,7 +97,9 @@ void	token_lst_free(t_token **lst)
 			if (ptr->type == T_WORD || ptr->type == T_NEWLINE)
 				free(ptr->value);
 //			if (ptr->dol)
-//				dol_free(&(ptr->dol));
+				// dol_free(&(ptr->dol));
+			// if (ptr->wil)
+			// 	wil_free(&(ptr->wil));
 			free(ptr);
 			ptr = tmp;
 		}
@@ -105,17 +143,7 @@ void	dol_free(t_dol **dol)
 	}
 }
 
-void	wil_free(t_wil **wil)
-{
-	if (wil)
-	{
-		if ((*wil)->w)
-			ft_lstfree(&(*wil)->w);
-		if (*wil)
-			free(*wil);
-		*wil = NULL;
-	}
-}
+
 
 void	free_root_ast(t_ast *root)
 {
@@ -185,9 +213,13 @@ void	free_minishell(t_ms *ms, int exit_status)
 		free_root_ast(ms->root);
 		ms->root = NULL;
 	}
+	// if (ms->lexer && exit_status == 255)
+	// {
+	// 	token_lst_free_wil(&ms->lexer->token_lst);
+	// }
 	if (ms->lexer)
 	{
-		token_lst_free(&ms->lexer->token_lst);
+		token_lst_free(&ms->lexer->token_lst);		
 		free(ms->lexer);
 		ms->lexer = NULL;
 	}

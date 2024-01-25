@@ -157,6 +157,7 @@ int	update_lstwil_out(t_ms *ms, int i, int j, t_wil **wil)
 		}
 		else
 		{
+			dprintf(2, "char -> flag 1 for wil list = %c\n", ms->lexer->src[ms->lexer->cur_pos + i]);
 			w = ft_lstnew_int(1);
 			if (!w)// a verifier
 				(ft_lstfree(&w), prefree_minishell(ms, NULL));			

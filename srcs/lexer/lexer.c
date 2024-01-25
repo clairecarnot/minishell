@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2023/12/14 12:16:34 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:06:58 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ t_token	*lexer_next_token_2(t_ms *minishell, t_lexer *lexer)
 		qtype = first_quote(minishell->lexer);
 		minishell->nb_q = 2;
 		return (parse_quotes_word(minishell, qtype, NULL));
-		// return (parse_word(minishell, lexer, 0));
 	}
 	return (NULL);
 }
@@ -76,8 +75,6 @@ t_token	*lexer_next_token(t_ms *minishell, t_lexer *lexer)
 	else if (lexer->src[lexer->cur_pos] == '>' && peek_next(lexer) == '>')
 		return (advntimes(lexer, 2), \
 		init_token(minishell, ">>", T_DGREAT));
-	// else if (lexer->src[lexer->cur_pos] == '\n')//a verifier car ne marche pas
-	// 	return (advance(lexer), init_token(minishell, "\n", T_NEWLINE));
 	else if (lexer->src[lexer->cur_pos] == '|')
 		return (advance(lexer), init_token(minishell, "|", T_PIPE));
 	else
@@ -105,7 +102,7 @@ int	lexer(t_ms *minishell, char *s)
 {
 	minishell->lexer = init_lexer(s);
 	if (!minishell->lexer)
-		free_minishell(minishell, 1);
+		free_minishell(minishell, 255);
 	while (s[minishell->lexer->cur_pos])
 	{
 		minishell->lexer->cur_c = s[minishell->lexer->cur_pos];

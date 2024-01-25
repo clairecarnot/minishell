@@ -5,7 +5,6 @@ int	exec_pwd(t_ms *ms, t_cmd *cmd)
 {
 	char	path[1024];
 
-	(void)ms;
 	(void)cmd;
 	if (getcwd(path, sizeof(path)) != NULL)
 		printf("%s\n", path);
@@ -14,7 +13,7 @@ int	exec_pwd(t_ms *ms, t_cmd *cmd)
 		ms->exit_code = 1;
 		ft_putstr_fd("pwd: error retrieving current directory: \
 getcwd: cannot access parent directories: No such file or directory\n", 2);
-		return (1);// a voir que faire lorsque builtin retourne 1 cas d'erreur
+		return (1);
 	}
 	ms->exit_code = 0;
 	return (0);
