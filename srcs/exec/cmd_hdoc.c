@@ -81,3 +81,27 @@ char	*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter)
 	(preprompt_signals(), free(limiter));
 	return (ft_strdup(hdname));
 }
+
+int	open_heredocs(t_ms *ms, t_ast *node)
+{
+	t_redirs	*tmp;
+
+	if (!node)
+		return (0);
+	tmp = node->redirs;
+	if (open_heredocs(ms, node->left) == 1)
+		return (1);
+	while (tmp)
+	{
+		if (tmp->type == DLESS)
+		{
+			tmp->filename = handle_dless(ms, tmp, tmp->filename);
+			if (!tmp->filename)
+				return (1);
+		}
+		tmp = tmp->next_redir;
+	}
+	if (open_heredocs(ms, node->right) == 1)
+		return (1);
+	return (0);
+}

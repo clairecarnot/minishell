@@ -22,6 +22,7 @@ int				hdoc_ctrl_d(t_ms *ms, int fd, int nb_line);
 int				hdoc_sigint(int fd);
 int				hdoc_create(t_ms *ms, int fd, char *filename, int limlen);
 char			*handle_dless(t_ms *ms, t_redirs *redirs, char *limiter);
+int				open_heredocs(t_ms *ms, t_ast *node);
 
 //----------------------- cmd_redirs.c ------------------------
 void			print_msg_redir(char *invalid_io);
