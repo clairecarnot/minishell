@@ -118,7 +118,7 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	if (ms->exit_code == 255)
 		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
-		return (ms->exit_code = exit_code, free_cmd(cmd), 1);
+		return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 	if (cmd->redir && !cmd->valid_redir)
 		return (free_cmd(cmd), ms->exit_code);
 	if (cmd->builtin != NOBUILT)

@@ -72,17 +72,17 @@ int	pre_exec(t_ms *ms)
 
 	ms->in = dup(STDIN_FILENO);
 	if (ms->in == -1)
-		return (perror("dup failed"), errno);
+		return (perror("dup failed"), ms->exit_code = errno);
 	ms->out = dup(STDOUT_FILENO);
 	if (ms->out == -1)
-		return (perror("dup failed"), errno);
+		return (perror("dup failed"), ms->exit_code = errno);
 	if (open_heredocs(ms, ms->root) == 1)
 		return (ms->exit_code);
 	exit_code = execute(ms->root, ms);
 	if (dup2(ms->in, STDIN_FILENO) == -1)
-		return (perror("dup failed"), errno);
+		return (perror("dup2 failed"), ms->exit_code = errno);
 	if (dup2(ms->out, STDOUT_FILENO) == -1)
-		return (perror("dup failed"), errno);
+		return (perror("dup2 failed"), ms->exit_code = errno);
 	if (exit_code)
 		return (exit_code);
 	wait_loop(ms);
