@@ -94,33 +94,31 @@ int	pipe_middle_cmd(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 	t_list	*new_pid;
 
 	if (pipe(fd) == -1)
-		(perror("pipe failed"), free_minishell(ms, errno));
+		return (perror("pipe failed"), errno);
 	pid = fork();
 	if (pid == -1)
-		(perror("fork failed"), free_minishell(ms, errno));
-	if (pid == -1)
-		free_minishell(ms, 1); //A VERIF
+		return (perror("fork failed"), ms->exit_code = errno);
 	else if (pid == 0)
 	{
 		child_signals();
-		dup2(fd[1], STDOUT_FILENO); //a proteger
-		close_if(&fd[0]);
-		close_if(&fd[1]);
-		if (exec_cmdpipe(ms, node, tmp_fd))
-			return (1); //A VERIF
+		if (dup2(fd[1], STDOUT_FILENO) == -1)
+			(perror("dup2 failed"), free_minishell(ms, errno));
+		(close_if(&fd[0]), close_if(&fd[1]));
+		return (exec_cmdpipe(ms, node, tmp_fd));
 	}
 	else
 	{
-		ms_signals();
-		close_if(&fd[1]);
-		close_if(&tmp_fd);
-		tmp_fd = dup(fd[0]); //
-		close_if(&fd[0]); //
+		(ms_signals(), close_if(&fd[1]), close_if(&tmp_fd));
+		tmp_fd = dup(fd[0]);
+		if (tmp_fd == -1)
+			return (perror("dup failed"), ms->exit_code = errno);
+		close_if(&fd[0]);
 		new_pid = ft_lstnew_int(pid);
 		if (!new_pid)
 			return (1); //A PROTEGER
 		ft_lstadd_back(&ms->pidlst, new_pid);
 	}
+	return (0);
 }
 
 int	pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
@@ -132,26 +130,32 @@ int	pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd)
 	}
 	else if (node->type == CMD && node->parent->right == node && node->parent
 		&& node->parent->type == PIPE && (!node->parent->parent
-			|| node->parent->parent->type != PIPE)) // end cmd
+			|| node->parent->parent->type != PIPE))
 	{
 		return (pipe_end_cmd(ms, node, tmp_fd));
 	}
-	else if (node->type == CMD)// middle cmd
+	else if (node->type == CMD)
 	{
-		return (pipe_middle(ms, node, tmp_fd, fd));
+		return (pipe_middle_cmd(ms, node, tmp_fd, fd));
 	}
 	return (0);
 }
 
 int	exec_pipeline(t_ast *node, t_ms *ms)
 {
-    int tmp_fd;
-    int fd[2];
+	int	tmp_fd;
+	int	fd[2];
+	int	exit_code;
 
+	exit_code = 0;
 	fd[0] = -1;
 	fd[1] = -1;
-	tmp_fd = dup(STDIN_FILENO); //a proteger
-	pipex(ms, node, tmp_fd, fd);
+	tmp_fd = dup(STDIN_FILENO);
+	if (tmp_fd == -1)
+		return (perror("dup failed"), ms->exit_code = errno);
+	exit_code = pipex(ms, node, tmp_fd, fd);
+//	if (ms->exit_code == 255)
+//		free_minishell(ms, 255);
 	close_if(&tmp_fd);
-	return (0);
+	return (ms->exit_code = exit_code);
 }

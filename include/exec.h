@@ -68,6 +68,8 @@ char			**tab_cpy(t_ms *ms, char **tab);
 t_list			*ft_lstnew_int(int pid);
 int				do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env);
 int				exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd);
+int				pipe_end_cmd(t_ms *ms, t_ast *node, int tmp_fd);
+int				pipe_middle_cmd(t_ms *ms, t_ast *node, int tmp_fd, int *fd);
 int				pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd);
 int				exec_pipeline(t_ast *node, t_ms *ms);
 
