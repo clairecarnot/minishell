@@ -9,8 +9,8 @@ void add_to_env(t_ms *ms, t_cmd *cmd, char *content)
 	char	*cpy_content;
 	t_list	*new;
 
-	cpy_content = ft_strdup_noplus(ms, cmd, content);// c'est verifie 1
-	new = ft_lstnew(cpy_content);// c'est verifie 1
+	cpy_content = ft_strdup_noplus(ms, cmd, content);// c'est verifie 2
+	new = ft_lstnew(cpy_content);// c'est verifie 2
 	if (!new)
 	{
 		free_cmd(cmd);
@@ -43,7 +43,7 @@ void	replace_var_underscore_env(t_ms *ms, t_cmd *cmd)
 		if (ft_strncmp("_=/usr/bin", tmp->content, 10) == 0)
 		{
 			new_content = ft_strdup("_=/usr/bin/env");
-			if (!new_content)// c'est protege
+			if (!new_content)// c'est verifie 2
 			{
 				free_cmd(cmd);
 				free_minishell(ms, 1);
@@ -68,6 +68,7 @@ int	exec_env(t_ms *ms, t_cmd *cmd)
 		ft_putstr_fd("env: ‘", 2);
 		ft_putstr_fd(cmd->args[1], 2);
 		ft_putstr_fd("’: No such file or directory\n", 2);
+		ms->exit_code = 127;
 		return (0);
 	}
 }

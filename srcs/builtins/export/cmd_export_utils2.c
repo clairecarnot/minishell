@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/05 16:43:45 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/24 16:39:15 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 10:50:39 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_strdup_noplus2(t_ms *ms, t_cmd *cmd, char *s)
 
 	i = 0;
 	j = 0;
-	dest = malloc(sizeof(char) * (ft_strlen(s) - 1 + 1));// c'est verifie 1
+	dest = malloc(sizeof(char) * (ft_strlen(s) - 1 + 1));// c'est verifie 2
 	if (!dest)
 		prefree_minishell_cmd(ms, cmd);
 	while (s[i])
@@ -81,7 +81,7 @@ char	*ft_strdup_noplus(t_ms *ms, t_cmd *cmd, char *s)
 		dest = ft_strdup_noplus2(ms, cmd, s);
 	else
 	{
-		dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie 1
+		dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie 2
 		if (!dest)
 			prefree_minishell_cmd(ms, cmd);
 		while (s[i])

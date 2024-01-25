@@ -40,7 +40,8 @@ int	handle_echo_n(t_ms *ms, char **args, int *newline, int *after_n)
  *	'after_n' = x indicates the number of '-n' arguments to pass before reaching
  * the first word to be printed; a space is printed between non-empty words
  *
- * Both 'newline' and 'after_n' params are updated thanks to the handle_echo_n function
+ * Both 'newline' and 'after_n' params are updated thanks to the handle_echo_n 
+ * function
  */
 
 int	exec_echo(t_ms *ms, t_cmd *cmd)

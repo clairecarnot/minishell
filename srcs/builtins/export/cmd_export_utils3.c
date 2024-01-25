@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 11:21:55 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/24 16:31:05 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/25 11:43:37 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	var_exists_exp(t_ms *ms, char *content)
 	while (exp_tmp)
 	{
 		if (ft_strncmp(exp_tmp->content, content, size) == 0 && \
-		ft_strncmp(exp_tmp->content, content, slen_equal(exp_tmp->content)) == 0)
+		ft_strncmp(exp_tmp->content, content, \
+		slen_equal(exp_tmp->content)) == 0)
 		{
 			return (1);
 		}
@@ -46,7 +47,8 @@ int	var_exists_env(t_ms *ms, char *content)
 	while (env_tmp)
 	{
 		if (ft_strncmp(env_tmp->content, content, size) == 0 && \
-		ft_strncmp(env_tmp->content, content, slen_equal(env_tmp->content)) == 0)
+		ft_strncmp(env_tmp->content, content, \
+		slen_equal(env_tmp->content)) == 0)
 			return (1);
 		env_tmp = env_tmp->next;
 	}
