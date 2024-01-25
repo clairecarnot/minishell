@@ -63,15 +63,19 @@ char			*ft_slash_addback(char const *s1);
 //----------------------- cmd_utils2.c ------------------------
 void			save_ptrs(t_list **s1, t_list **s2, t_list **t1, t_list **t2);
 char			**tab_cpy(t_ms *ms, char **tab);
+t_list			*ft_lstnew_int(int pid);
 
 //----------------------- pipe_exec.c ------------------------
-t_list			*ft_lstnew_int(int pid);
-int				do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env);
-int				exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd);
 int				pipe_end_cmd(t_ms *ms, t_ast *node, int tmp_fd);
+int				parent_middle(t_ms *ms, int tmp_fd, int *fd, pid_t pid);
 int				pipe_middle_cmd(t_ms *ms, t_ast *node, int tmp_fd, int *fd);
 int				pipex(t_ms *ms, t_ast *node, int tmp_fd, int *fd);
 int				exec_pipeline(t_ast *node, t_ms *ms);
+
+//----------------------- pipe_exec_bis.c ------------------------
+int				do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env);
+int				exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd);
+void			kill_loop(t_ms *ms);
 
 //----------------------- clear_exec.c ------------------------
 void			free_tab(char **tab);

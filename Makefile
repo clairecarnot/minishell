@@ -17,7 +17,7 @@ srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_exec_
 srcs/exec/cmd_path.c \
 srcs/exec/wildcards.c srcs/exec/wildcards2.c \
 srcs/exec/wildcards_free.c srcs/exec/wildcards_utils.c\
-srcs/exec/cmd_utils1.c srcs/exec/cmd_utils2.c srcs/exec/pipe_exec.c \
+srcs/exec/cmd_utils1.c srcs/exec/cmd_utils2.c srcs/exec/pipe_exec.c srcs/exec/pipe_exec_bis.c\
 srcs/exec/cmd_redirs.c srcs/exec/cmd_hdoc.c srcs/exec/cmd_hdname.c \
 srcs/exec/expand.c srcs/exec/expand_do_dols.c srcs/exec/expand_first.c \
 srcs/exec/expand_getvar.c srcs/exec/expand_hdoc.c srcs/exec/expand_redef_args.c \

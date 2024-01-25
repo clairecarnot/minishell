@@ -97,7 +97,8 @@ int	do_cmd(t_cmd *cmd, t_ms *ms, char **env)
 		ms->flag_q--;
 		new_pid = ft_lstnew_int(pid);
 		if (!new_pid)
-			return (ms->exit_code = 255, 255);
+			return (kill_loop(ms), kill(pid, SIGKILL),
+				ms->exit_code = 255, 255);
 		ft_lstadd_back(&ms->pidlst, new_pid);
 	}
 	return (0);
@@ -125,6 +126,8 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		exit_code = exec_builtin(ms, cmd);
 	else
 		exit_code = do_cmd(cmd, ms, env);
+	if (ms->exit_code == 255)
+		(free_cmd(cmd), free_minishell(ms, 255));
 	replace_var_underscore(ms, cmd);
 	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }

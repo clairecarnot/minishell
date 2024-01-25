@@ -33,3 +33,16 @@ char	**tab_cpy(t_ms *ms, char **tab)
 	cpy[i] = NULL;
 	return (cpy);
 }
+
+t_list	*ft_lstnew_int(int pid)
+{
+	t_list	*d;
+
+	d = malloc(sizeof(t_list));
+	if (!d)
+		return (0x0);
+	d->content = NULL;
+	d->n = pid;
+	d->next = 0x0;
+	return (d);
+}
