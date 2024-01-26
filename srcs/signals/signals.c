@@ -64,6 +64,13 @@ void	child_sigpipe(int signal)
 	}
 }
 
+void	child_signals_bis(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	signal(SIGPIPE, child_sigpipe);
+}
+
 /*
  * child_signals
  * Called in a child children just after a fork, to reset the signals
@@ -74,7 +81,6 @@ void	child_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	signal(SIGPIPE, child_sigpipe);
 }
 
 /*

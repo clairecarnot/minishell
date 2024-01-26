@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/25 09:56:30 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/26 18:18:09 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	abs_rel_path(t_ms *ms, t_cmd *cmd)
 	if (access(cmd->args[0], F_OK | X_OK) == 0)
 		cmd->valid_path = 1;
 	cmd->builtin = NOBUILT;
+	dir = NULL;
 	dir = ft_slash_addback(cmd->args[0]);
 	if (!dir)
 	{

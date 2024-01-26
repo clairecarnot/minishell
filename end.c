@@ -94,7 +94,8 @@ void	token_lst_free(t_token **lst)
 		while (ptr)
 		{
 			tmp = ptr->next_token;
-			if (ptr->type == T_WORD || ptr->type == T_NEWLINE)
+//			if (ptr->value && ft_strlen(ptr->value))
+			if (ptr->type == T_WORD)
 				free(ptr->value);
 //			if (ptr->dol)
 //				dol_free(&(ptr->dol));

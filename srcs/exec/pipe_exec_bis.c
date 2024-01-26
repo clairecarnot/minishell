@@ -24,6 +24,7 @@ int	exec_cmdpipe_bis(t_ms *ms, char **env, t_cmd *cmd)
 	trash->ms = ms;
 	trash->cmd = cmd;
 	go_garbage(0, trash);
+	child_signals_bis();
 	if (cmd->builtin != NOBUILT)
 		exit_code = exec_builtin(ms, cmd);
 	else
