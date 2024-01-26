@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:30:06 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/25 18:36:34 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/26 09:24:57 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 	// if (minishell->a > 3)
 	// 	token = NULL;
 	// else
-	token = ft_calloc(1, sizeof(t_token));
-	// token = NULL;
+//	token = ft_calloc(1, sizeof(t_token));
+	token = NULL;
 	if (!token)
 	{
 		// if (value)

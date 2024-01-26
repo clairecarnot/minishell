@@ -96,10 +96,10 @@ void	token_lst_free(t_token **lst)
 			tmp = ptr->next_token;
 			if (ptr->type == T_WORD || ptr->type == T_NEWLINE)
 				free(ptr->value);
-//			if (ptr->dol)
-				// dol_free(&(ptr->dol));
-			// if (ptr->wil)
-			// 	wil_free(&(ptr->wil));
+			if (ptr->dol)
+				dol_free(&(ptr->dol));
+			if (ptr->wil)
+			 	wil_free(&(ptr->wil));
 			free(ptr);
 			ptr = tmp;
 		}
