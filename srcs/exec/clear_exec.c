@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:41 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/24 18:22:16 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/26 17:03:31 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,22 @@ int	close_if(int *fd)
 		*fd = -1;
 	}
 	return (0);
+}
+
+void	go_garbage(int i, t_trash *trash)
+{
+	static t_ms	*ms;
+	static t_cmd	*cmd;
+
+	if (i == 0)
+	{
+		ms = trash->ms;
+		cmd = trash->cmd;
+		free(trash);
+	}
+	else
+	{
+		free_cmd(cmd);
+		free_minishell(ms, 1);
+	}
 }

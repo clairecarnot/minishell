@@ -12,6 +12,26 @@ int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 	return (0);
 }
 
+int	exec_cmdpipe_bis(t_ms *ms, char **env, t_cmd *cmd)
+{
+	t_trash	*trash;
+	int		exit_code;
+
+	exit_code = 0;
+	trash = ft_calloc(1, sizeof(t_trash));
+	if (!trash)
+		(free_cmd(cmd), free_minishell(ms, 255));
+	trash->ms = ms;
+	trash->cmd = cmd;
+	go_garbage(0, trash);
+	if (cmd->builtin != NOBUILT)
+		exit_code = exec_builtin(ms, cmd);
+	else
+		exit_code = do_cmdpipe(cmd, ms, env);
+	(free_cmd(cmd), free_exit(ms), exit(exit_code));
+	return (0);
+}
+
 /*
  * exec_cmdpipe:
  * Being in this function means that we are in a child
@@ -40,12 +60,7 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 		(free_cmd(cmd), free_minishell(ms, exit_code));
 	if (cmd->redir && !cmd->valid_redir)
 		(free_cmd(cmd), free_exit(ms), exit(ms->exit_code));
-	if (cmd->builtin != NOBUILT)
-		exit_code = exec_builtin(ms, cmd);
-	else
-		exit_code = do_cmdpipe(cmd, ms, env);
-	(free_cmd(cmd), free_exit(ms), exit(exit_code));
-	return (0);
+	return (exec_cmdpipe_bis(ms, env, cmd));
 }
 
 void	kill_loop(t_ms *ms)

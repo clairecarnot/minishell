@@ -178,4 +178,10 @@ typedef struct s_ms
 	int	a;//test malloc
 }				t_ms;
 
+typedef struct s_trash
+{
+	t_ms	*ms;
+	t_cmd	*cmd;
+}				t_trash;
+
 #endif

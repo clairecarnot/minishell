@@ -54,6 +54,16 @@ void	preprompt_signals(void)
 	signal(SIGINT, signal_newprompt);
 }
 
+
+void	child_sigpipe(int signal)
+{
+	if (signal == SIGPIPE)
+	{
+		go_garbage(1, NULL);
+		exit(0);
+	}
+}
+
 /*
  * child_signals
  * Called in a child children just after a fork, to reset the signals
@@ -64,6 +74,7 @@ void	child_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+	signal(SIGPIPE, child_sigpipe);
 }
 
 /*

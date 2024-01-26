@@ -74,6 +74,7 @@ int				exec_pipeline(t_ast *node, t_ms *ms);
 
 //----------------------- pipe_exec_bis.c ------------------------
 int				do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env);
+int				exec_cmdpipe_bis(t_ms *ms, char **env, t_cmd *cmd);
 int				exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd);
 void			kill_loop(t_ms *ms);
 
@@ -81,6 +82,7 @@ void			kill_loop(t_ms *ms);
 void			free_tab(char **tab);
 void			free_cmd(t_cmd *cmd);
 int				close_if(int *fd);
+void			go_garbage(int i, t_trash *trash);
 
 //----------------------- EXPAND FILES ------------------------
 
