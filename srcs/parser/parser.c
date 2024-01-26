@@ -9,9 +9,15 @@
 t_ast	*new_node(t_ms *ms, t_node_type type)
 {
 	t_ast	*new_ast;
+	// static int	i;
 
-	new_ast = NULL;
+
+	// new_ast = NULL;
+	// if (i == 2)
+	// 	new_ast = NULL;
+	// else
 	new_ast = ft_calloc(1, sizeof(t_ast));
+		
 	if (!new_ast)
 	{
 		ms->exit_code = 255;
@@ -33,6 +39,7 @@ t_ast	*new_node(t_ms *ms, t_node_type type)
 //	ft_doladd_back(&new_ast->dol, ms->cur_tok->dol);
 	new_ast->pipe = NULL;
 	new_ast->parent = NULL;
+	// i++;
 	return (new_ast);
 }
 

@@ -22,8 +22,9 @@ int		parse(t_ms *ms);
 
 //----------------------- handle_cmds.c ------------------
 // t_ast		*handle_cmd(t_ms *ms);
-void	ft_doladd_back(t_dol **dol, t_dol *new);
-void	ft_wiladd_back(t_wil **wil, t_wil *new);
+t_list	*lst_dup_int(t_list *lst_tocpy);
+int	ft_doladd_back(t_ms *ms, t_dol **dol, t_dol *new);
+int	ft_wiladd_back(t_ms *ms, t_wil **wil, t_wil *new);
 t_list		*add_cmd_args(t_ms *ms, t_ast *new_ast);
 
 //----------------------- handle_ops.c -------------------

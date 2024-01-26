@@ -294,6 +294,7 @@ int	main(int argc, char **argv, char **env)
 	t_ms	*minishell;
 	int	fd;
 	int	i;
+	t_token	*tmp;
 
 	(void)argc;
 	(void)argv;
@@ -343,9 +344,15 @@ int	main(int argc, char **argv, char **env)
 				if (!minishell->lexer)
 					return (free_minishell(minishell, 1), 1);
 //				print_token_lst(minishell->lexer->token_lst);
-				minishell->cur_tok = minishell->lexer->token_lst;
+//				minishell->cur_tok = minishell->lexer->token_lst;
+				tmp = minishell->cur_tok;
+				t_dol *tmp_dol = minishell->cur_tok->dol;
+				t_wil *tmp_wil = minishell->cur_tok->wil;
 				if (parse(minishell) == -1)
 				{
+					minishell->cur_tok = tmp;
+					minishell->cur_tok->dol = tmp_dol;
+					minishell->cur_tok->wil = tmp_wil;
 					if (minishell->exit_code == 255)
 					{
 						ft_putstr_fd("minishell: malloc error\n", 2);
@@ -356,6 +363,9 @@ int	main(int argc, char **argv, char **env)
 				}
 				else
 				{
+					minishell->cur_tok = tmp;
+					minishell->cur_tok->dol = tmp_dol;
+					minishell->cur_tok->wil = tmp_wil;
 					// print_tree(minishell->root, 0);
 					// visit_node(minishell->root);
 					//exec_env(minishell);

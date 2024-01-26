@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/25 17:06:58 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/26 11:30:31 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,17 +100,23 @@ void	token_add_back(t_token **lst, t_token *new)
 
 int	lexer(t_ms *minishell, char *s)
 {
+	
 	minishell->lexer = init_lexer(s);
 	if (!minishell->lexer)
 		free_minishell(minishell, 255);
+	minishell->cur_tok = NULL;
 	while (s[minishell->lexer->cur_pos])
 	{
+		
 		minishell->lexer->cur_c = s[minishell->lexer->cur_pos];
 		token_add_back(&minishell->lexer->token_lst, \
 		lexer_next_token(minishell, minishell->lexer));
+		minishell->cur_tok = minishell->lexer->token_lst;
 	}
+	
 	token_add_back(&minishell->lexer->token_lst, \
 	init_token(minishell, "\0", T_EOF));
+	
 	if (error_in_lexer(minishell) != 0)
 		return (1);
 	return (0);

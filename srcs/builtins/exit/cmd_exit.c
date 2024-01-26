@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/25 17:55:17 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/26 13:58:58 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	free_exit(t_ms *ms)
 	}
 	if (ms->pidlst)
 		ft_intlstfree(&ms->pidlst);
+	// if (!ms->root)
+	free_wil_dol(ms);
 	if (ms->root)
 		free_root_ast(ms->root);
 	if (ms->lexer)

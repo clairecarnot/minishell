@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:30:06 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/26 09:24:57 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/26 14:05:30 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,14 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 {
 	t_token	*token;
 
+	// static int i;
 	// dprintf(2, "ms->a = %d\n", minishell->a);
 	// minishell->a++;
-	// if (minishell->a > 3)
+	// if (i > 0)
 	// 	token = NULL;
 	// else
-//	token = ft_calloc(1, sizeof(t_token));
-	token = NULL;
+	token = ft_calloc(1, sizeof(t_token));
+	// token = NULL;
 	if (!token)
 	{
 		// if (value)
@@ -66,6 +67,7 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 	ms->lexer->tok_count++;
 	token->dol = NULL;
 	token->wil = NULL;
+	// i++;
 	return (token);
 }
 

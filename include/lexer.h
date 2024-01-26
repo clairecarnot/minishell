@@ -38,6 +38,7 @@ void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);
 void	redirs_free(t_redirs **lst);
 void	dol_free(t_dol **dol);
+void	free_wil_dol(t_ms *ms);
 void	free_root_ast(t_ast *root);
 void	free_minishell(t_ms *minishell, int exit_status);
 

@@ -1,11 +1,44 @@
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
 
-void	ft_doladd_back(t_dol **dol, t_dol *new)
+t_list	*lst_dup_int(t_list *lst_tocpy)
 {
+	t_list	*new;
+	t_list	*tmp;
+	t_list	*lst;
+
+	new = NULL;
+	tmp = NULL;
+	if (!lst_tocpy)
+		return (NULL);
+	lst = lst_tocpy;
+	while (lst)
+	{
+		tmp = ft_lstnew_int(lst->n);
+		if (!tmp)
+			return (ft_lstfree(&new), NULL);
+		ft_lstadd_back(&new, tmp);
+		lst = lst->next;
+	}
+	return (new);
+}
+
+int	ft_doladd_back(t_ms *ms, t_dol **dol, t_dol *tok_dol)
+{
+	t_dol	*new;
 	t_list	*ptr_c;
 	t_list	*ptr_d;
 
+	new = ft_calloc(1, sizeof(t_dol));
+	if (!new)
+		return (ms->exit_code = 255, 1);
+	
+	new->d = lst_dup_int(tok_dol->d);
+	if (!new->d)
+		return (free(new), ms->exit_code = 255, 1);
+	new->c = lst_dup_int(tok_dol->c);
+	if (!new->c)
+		return (free(new), ft_lstfree(&new->d), ms->exit_code = 255, 1);	
 	if (*dol == NULL)
 		*dol = new;
 	else
@@ -20,12 +53,20 @@ void	ft_doladd_back(t_dol **dol, t_dol *new)
 		ptr_c->next = new->c;
 		free(new);
 	}
+	return (0);
 }
 
-void	ft_wiladd_back(t_wil **wil, t_wil *new)
+int	ft_wiladd_back(t_ms *ms, t_wil **wil, t_wil *tok_wil)
 {
+	t_wil	*new;
 	t_list	*ptr_w;
 
+	new = ft_calloc(1, sizeof(t_wil));
+	if (!new)
+		return (ms->exit_code = 255, 1);
+	new->w = lst_dup_int(tok_wil->w);
+	if (!new->w)
+		return (free(new), ms->exit_code = 255, 1);
 	if (*wil == NULL)
 		*wil = new;
 	else
@@ -36,6 +77,7 @@ void	ft_wiladd_back(t_wil **wil, t_wil *new)
 		ptr_w->next = new->w;
 		free(new);
 	}
+	return (0);
 }
 
 /*
@@ -60,7 +102,7 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 		cmd = ft_strdup(ms->cur_tok->value);
 		if (!cmd)
 		{
-			g_exit_code = 255;
+			g_exit_code = 255;//g_exit_code a changer
 			return (NULL);
 		}
 	}
@@ -73,9 +115,15 @@ t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 	// new_arg->n = ms->cur_tok->dol;
 	ft_lstadd_back(&new_ast->args, new_arg);
 	if (ms->cur_tok->dol)
-		ft_doladd_back(&new_ast->dol, ms->cur_tok->dol);
+	{
+		if (ft_doladd_back(ms, &new_ast->dol, ms->cur_tok->dol))
+			return (g_exit_code = 255, free(cmd), NULL);//g_exit_code a changer		
+	}
 	if (ms->cur_tok->wil)
-		ft_wiladd_back(&new_ast->wil, ms->cur_tok->wil);
+	{
+		if (ft_wiladd_back(ms, &new_ast->wil, ms->cur_tok->wil))
+			return (g_exit_code = 255, free(cmd), NULL);//g_exit_code a changer
+	}
 	eat_token(ms, T_WORD);
 	return (new_ast->args);
 }

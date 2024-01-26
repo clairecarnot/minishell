@@ -96,10 +96,10 @@ void	token_lst_free(t_token **lst)
 			tmp = ptr->next_token;
 			if (ptr->type == T_WORD || ptr->type == T_NEWLINE)
 				free(ptr->value);
-			if (ptr->dol)
-				dol_free(&(ptr->dol));
-			if (ptr->wil)
-			 	wil_free(&(ptr->wil));
+//			if (ptr->dol)
+//				dol_free(&(ptr->dol));
+//			if (ptr->wil)
+//			 	wil_free(&(ptr->wil));
 			free(ptr);
 			ptr = tmp;
 		}
@@ -120,8 +120,8 @@ void	redirs_free(t_redirs **lst)
 			tmp = ptr->next_redir;
 			if (ptr->filename)
 				free(ptr->filename);
-			if (ptr->dol)
-				dol_free(&ptr->dol);
+//			if (ptr->dol)
+//				dol_free(&ptr->dol);
 			free(ptr);
 			ptr = tmp;
 		}
@@ -185,6 +185,25 @@ void	free_root_ast(t_ast *root)
 	// dprintf(1, "seg7\n");
 	root = NULL;
 }
+
+void    free_wil_dol(t_ms *ms) 
+{     
+     dprintf(2, "free dol\n");
+        t_token *tmp;          
+      
+        tmp = ms->cur_tok;     
+        while (tmp)         
+        {
+                if (tmp->dol)  
+                        dol_free(&tmp->dol);            
+             if (tmp->wil)  
+                     wil_free(&tmp->wil);
+                tmp = tmp->next_token;          
+        }
+        // if (ms->cur_tok->wil)
+        //         wil_free(&ms->cur_tok->wil);
+}
+
 /*
 peut-etre a changer: dans les conditions if exit_status != 0 
 (en cas d'erreur free certaines choses si non erreur(= passage
@@ -208,6 +227,12 @@ void	free_minishell(t_ms *ms, int exit_status)
 	}
 	if (ms->pidlst)
 		ft_intlstfree(&ms->pidlst);
+	// if (!ms->root)// if (exit_status != 0)
+	// {
+	// dprintf(2, "!ms->root free dol\n");
+	// free_wil_dol(ms);
+	// }
+	free_wil_dol(ms);
 	if (ms->root)
 	{
 		free_root_ast(ms->root);
