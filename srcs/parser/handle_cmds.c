@@ -1,25 +1,19 @@
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
 
-t_list	*lst_dup_int(t_list *lst_tocpy)
+t_dol	*dup_tokdol(t_ms *ms, t_dol *tok_dol)
 {
-	t_list	*new;
-	t_list	*tmp;
-	t_list	*lst;
+	t_dol	*new;
 
-	new = NULL;
-	tmp = NULL;
-	if (!lst_tocpy)
-		return (NULL);
-	lst = lst_tocpy;
-	while (lst)
-	{
-		tmp = ft_lstnew_int(lst->n);
-		if (!tmp)
-			return (ft_lstfree(&new), NULL);
-		ft_lstadd_back(&new, tmp);
-		lst = lst->next;
-	}
+	new = ft_calloc(1, sizeof(t_dol));
+	if (!new)
+		return (ms->exit_code = 255, NULL);
+	new->d = lst_dup_int(tok_dol->d);
+	if (!new->d)
+		return (free(new), ms->exit_code = 255, NULL);
+	new->c = lst_dup_int(tok_dol->c);
+	if (!new->c)
+		return (free(new), ft_lstfree(&new->d), ms->exit_code = 255, NULL);
 	return (new);
 }
 
@@ -29,16 +23,9 @@ int	ft_doladd_back(t_ms *ms, t_dol **dol, t_dol *tok_dol)
 	t_list	*ptr_c;
 	t_list	*ptr_d;
 
-	new = ft_calloc(1, sizeof(t_dol));
+	new = dup_tokdol(ms, tok_dol);
 	if (!new)
 		return (ms->exit_code = 255, 1);
-	
-	new->d = lst_dup_int(tok_dol->d);
-	if (!new->d)
-		return (free(new), ms->exit_code = 255, 1);
-	new->c = lst_dup_int(tok_dol->c);
-	if (!new->c)
-		return (free(new), ft_lstfree(&new->d), ms->exit_code = 255, 1);	
 	if (*dol == NULL)
 		*dol = new;
 	else
@@ -82,84 +69,36 @@ int	ft_wiladd_back(t_ms *ms, t_wil **wil, t_wil *tok_wil)
 
 /*
  * add_cmd_args:
- * Cree une nouvelle structure t_list qui a pour content la valeur de la commande ou de l'argument qu'on ajoute a la liste d'arguments de l'AST
+ * Cree une nouvelle structure t_list qui a pour content la
+ *  valeur de la commande ou de l'argument qu'on ajoute a la 
+ *  liste d'arguments de l'AST
  */
 
 t_list	*add_cmd_args(t_ms *ms, t_ast *new_ast)
 {
-//	dprintf(2, "add cmd args\n");
-//	dprintf(2, "value = %s\n", ms->cur_tok->value);
 	char	*cmd;
 	t_list	*new_arg;
 
 	cmd = NULL;
-	new_arg = NULL;
-	if (!ms->cur_tok->value)// une commande peut avoir comme valeur NULL dans ce cas: """"""
-		cmd = NULL;
-		// cmd = ft_calloc(1, sizeof(char));
-	else
+	if (ms->cur_tok->value)
 	{
 		cmd = ft_strdup(ms->cur_tok->value);
 		if (!cmd)
-		{
-			g_exit_code = 255;//g_exit_code a changer
-			return (NULL);
-		}
+			return (ms->exit_code = 255, NULL);
 	}
 	new_arg = ft_lstnew(cmd);
 	if (!new_arg)
-	{
-		g_exit_code = 255;
-		return (free(cmd), NULL);
-	}
-	// new_arg->n = ms->cur_tok->dol;
+		return (free_if(cmd), ms->exit_code = 255, NULL);
 	ft_lstadd_back(&new_ast->args, new_arg);
 	if (ms->cur_tok->dol)
 	{
 		if (ft_doladd_back(ms, &new_ast->dol, ms->cur_tok->dol))
-			return (g_exit_code = 255, free(cmd), NULL);//g_exit_code a changer		
+			return (ms->exit_code = 255, NULL);
 	}
 	if (ms->cur_tok->wil)
 	{
 		if (ft_wiladd_back(ms, &new_ast->wil, ms->cur_tok->wil))
-			return (g_exit_code = 255, free(cmd), NULL);//g_exit_code a changer
+			return (ms->exit_code = 255, NULL);
 	}
-	eat_token(ms, T_WORD);
-	return (new_ast->args);
+	return (eat_token(ms, T_WORD), new_ast->args);
 }
-
-/*
- * handle_cmd
- * Si le token actuel est une parenthese => redirige vers la fonction handle_par
- * Sinon cree une structure AST de type commande
- * On cree les arguments de cet AST a travers une boucle qui continue tant que les tokens sont des words:
- * 	si word = redirection, le token suivant = le nom du fichier de redirection est ajoute en argument de la liste t_redirs
- * 	si word simple, on ajoute ce word a la t_list des arguments de la commande
- */
-
-// t_ast	*handle_cmd(t_ms *ms)
-// {
-// 	t_ast	*new_ast;
-
-// 	if (ms->cur_tok->type == T_LPAR)
-// 		return (handle_par(ms));
-// 	new_ast = new_node(ms, token_to_node(ms->cur_tok->type));
-// 	if (!new_ast)
-// 		return (NULL);
-// 	while (ms->cur_tok && ms->cur_tok->type != T_PIPE
-// 		&& ms->cur_tok->type != T_AND_IF && ms->cur_tok->type != T_OR_IF
-// 		&& ms->cur_tok->type != T_EOF && ms->cur_tok->type != T_RPAR)
-// 	{
-// 		if (is_redir(ms->cur_tok->type))
-// 		{
-// 			if (!handle_red(ms, new_ast))
-// 				return (free_root_ast(new_ast), NULL);
-// 		}
-// 		else
-// 		{
-// 			if (!add_cmd_args(ms, new_ast))
-// 				return (free_root_ast(new_ast), NULL);
-// 		}
-// 	}
-// 	return (new_ast);
-// }

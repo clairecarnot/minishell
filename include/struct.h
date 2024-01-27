@@ -3,7 +3,7 @@
 
 # include "../libft/libft.h"
 
-extern int	g_exit_code;
+//extern int	g_exit_code;
 
 typedef struct s_wil
 {

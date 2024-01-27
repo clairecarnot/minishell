@@ -1,97 +1,32 @@
 #include "../../include/lexer.h"
 #include "../../include/parser.h"
 
-/*
- * new_node:
- * Cree et initialise une structure AST du type indique
- */
-
-t_ast	*new_node(t_ms *ms, t_node_type type)
-{
-	t_ast	*new_ast;
-	// static int	i;
-
-
-	// new_ast = NULL;
-	// if (i == 2)
-	// 	new_ast = NULL;
-	// else
-	new_ast = ft_calloc(1, sizeof(t_ast));
-		
-	if (!new_ast)
-	{
-		ms->exit_code = 255;
-		return (NULL);
-	}
-	new_ast->type = type;
-	new_ast->right = NULL;
-	new_ast->left = NULL;
-	new_ast->args = NULL;
-	new_ast->subsh = 0;
-	new_ast->redirs = NULL;
-	new_ast->dol = NULL;
-	new_ast->wil = NULL;
-//	new_ast->dol = ms->cur_tok->dol;
-//	if (new_ast->dol)
-//		print_lst(new_ast->dol->d);
-//	if (new_ast->dol)
-//		print_lst(new_ast->dol->c);
-//	ft_doladd_back(&new_ast->dol, ms->cur_tok->dol);
-	new_ast->pipe = NULL;
-	new_ast->parent = NULL;
-	// i++;
-	return (new_ast);
-}
-
-int	is_redirect(t_ms *ms, t_token *cur_tok)
-{
-	if (!cur_tok || (cur_tok->type < T_LESS || cur_tok->type > T_DGREAT))
-		return (0);
-	if (!cur_tok->next_token || cur_tok->next_token->type == T_EOF)
-	{
-		cur_tok->next_token->type = T_NEWLINE;
-		return (0);
-	}
-	else if (cur_tok->next_token->type != T_WORD)
-	{
-		eat_token(ms, cur_tok->type);
-		return (0);
-	}
-	return (1);
-}
-
 t_ast	*factor(t_ms *ms)
 {
 	t_ast	*node;
 
-	node = NULL;
-	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD && !is_redirect(ms, ms->cur_tok)))
+	if (!ms->cur_tok || (ms->cur_tok->type != T_WORD
+			&& !is_redirect(ms, ms->cur_tok)))
 	{
 		if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
 			ms->cur_tok->type = T_NEWLINE;
 		return (NULL);
 	}
 	node = new_node(ms, CMD);
-	if (!node)
-		return (NULL);
-	while (ms->cur_tok && ms->cur_tok->type != T_EOF && (ms->cur_tok->type == T_WORD || is_redirect(ms, ms->cur_tok)))
+	while (node && ms->cur_tok && ms->cur_tok->type != T_EOF
+		&& (ms->cur_tok->type == T_WORD || is_redirect(ms, ms->cur_tok)))
 	{
-//		dprintf(2, "dans la boucle\n");
 		if (ms->cur_tok && ms->cur_tok->type == T_WORD)
 		{
 			if (!add_cmd_args(ms, node))
 				return (free_root_ast(node), NULL);
 		}
-//		dprintf(2, "apres args\n");
 		while (is_redirect(ms, ms->cur_tok))
 		{
 			if (!handle_red(ms, node))
 				return (free_root_ast(node), NULL);
 		}
-//		dprintf(2, "apres redirs\n");
 	}
-//	dprintf(2, "%s\n", tok_to_str(ms->cur_tok));
-//	dprintf(2, "return node\n");
 	return (node);
 }
 
@@ -99,14 +34,12 @@ t_ast	*handle_par(t_ms *ms)
 {
 	t_ast	*node;
 
-	// dprintf(2, "parenthese G\n");
 	node = NULL;
 	eat_token(ms, T_LPAR);
 	node = expr(ms);
 	if (!node)
 		return (NULL);
 	eat_token(ms, T_RPAR);
-	// dprintf(2, "parenthese D\n");
 	return (node);
 }
 
@@ -115,21 +48,13 @@ t_ast	*term(t_ms *ms)
 	t_ast	*node;
 	t_ast	*middle_node;
 
-	// dprintf(2, "term\n");
-	node = NULL;
 	middle_node = NULL;
 	if (ms->cur_tok && ms->cur_tok->type == T_LPAR)
-	{
 		node = handle_par(ms);
-		if (!node)
-			return (NULL);
-	}
 	else if (ms->cur_tok)
 	{
 		node = factor(ms);
-		if (!node)
-			return (NULL);
-		while (ms->cur_tok && ms->cur_tok->type == T_PIPE)
+		while (node && ms->cur_tok && ms->cur_tok->type == T_PIPE)
 		{
 			middle_node = new_node(ms, PIPE);
 			if (!middle_node)
@@ -137,10 +62,7 @@ t_ast	*term(t_ms *ms)
 			eat_token(ms, T_PIPE);
 			middle_node->right = factor(ms);
 			if (!middle_node->right)
-			{
-//				dprintf(2, "pb right\n");
 				return (free(middle_node), free_root_ast(node), NULL);
-			}
 			middle_node->right->parent = middle_node;
 			middle_node->left = node;
 			node->parent = middle_node;
@@ -155,7 +77,6 @@ t_ast	*expr(t_ms *ms)
 	t_ast	*node;
 	t_ast	*middle_node;
 
-	// dprintf(2, "expr\n");
 	node = NULL;
 	middle_node = NULL;
 	node = term(ms);
@@ -180,21 +101,24 @@ t_ast	*expr(t_ms *ms)
 
 int	parse(t_ms *ms)
 {
-//	dprintf(2, "parse\n");
 	if (!ms->cur_tok || ms->cur_tok->type == T_EOF)
 		return (1);
 	ms->root = expr(ms);
 	if (ms->cur_tok->type != T_EOF && ms->exit_code != 255)
 	{
 		if (ms->cur_tok->type == T_NEWLINE)
-			printf("minishell: syntax error near unexpected token `newline'\n");
+			ft_putstr_fd("minishell: syntax error near \
+				unexpected token `newline'\n", 2);
 		else
-			printf("minishell: syntax error near unexpected token `%s'\n", ms->cur_tok->value);
+		{
+			ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+			ft_putstr_fd(ms->cur_tok->value, 2);
+			ft_putstr_fd("'\n", 2);
+		}
 		ms->exit_code = 2;
 		return (-1);
 	}
 	if (!ms->root)
 		return (-1);
-//	dprintf(2, "parse end\n");
 	return (1);
 }
