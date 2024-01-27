@@ -25,15 +25,15 @@
 # include "signals.h"
 
 //----------------------- main.c ------------------------
-char	*tok_to_str(t_token *token);
-char	*node_to_str(t_ast *node);
-void	print_token_lst(t_token *token);
-void	print_lst(t_list *args_enter);
-void	print_redirs(t_redirs *args_enter);
-void	visit_node(t_ast *root);
+t_ms	*init_ms_bis(t_ms *minishell, char **env);
 t_ms	*init_ms(char **env);
 char	*display_prompt(t_ms *ms);
+void	main_bis(t_ms *minishell);
+
+//----------------------- non_interactive.c ------------------------
+void	non_interactive_mode_bis(t_ms *minishell);
 int	non_interactive_mode(t_ms *minishell, char **env);
+void	ft_isatty(t_ms *minishell, char **env);
 
 //----------------------- end.c ------------------------
 void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd);
@@ -45,5 +45,14 @@ void	dol_free(t_dol **dol);
 void	free_wil_dol(t_ms *ms);
 void	free_root_ast(t_ast *root);
 void	free_minishell(t_ms *minishell, int exit_status);
+
+//----------------------- debug.c ------------------------
+char	*tok_to_str(t_token *token);
+char	*node_to_str(t_ast *node);
+void	print_token_lst(t_token *token);
+void	print_redirs(t_redirs *args_enter);
+void	print_lst(t_list *args_enter);
+void	visit_node(t_ast *root);
+void	print_tree(t_ast *root, int space);
 
 #endif

@@ -5,7 +5,7 @@ CFLAGS = -g3 -Wall -Wextra -Werror
 
 INCL = -I./libft -I./include
 
-SRCS = main.c end.c \
+SRCS = main.c end.c non_interactive.c debug.c \
 srcs/lexer/lexer.c srcs/lexer/lexer_init.c srcs/lexer/lexer_utils.c \
 srcs/lexer/lexer_utils2.c srcs/lexer/lexer_error.c srcs/lexer/prelexer_error.c \
 srcs/lexer/lexer_parse_word.c srcs/lexer/lexer_parse_word2.c srcs/lexer/lexer_error_redir.c \
