@@ -1,10 +1,7 @@
 #ifndef PARSER_H
 # define PARSER_H
 
-# include "lexer.h"
-# include "parser.h"
-# include "struct.h"
-# include "builtins.h"
+# include "general.h"
 
 //----------------------- old_parser.c -----------------------
 // void		parse(t_ms *ms);

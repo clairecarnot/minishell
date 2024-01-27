@@ -13,8 +13,7 @@
 #ifndef ENV_H
 # define ENV_H
 
-# include "lexer.h"
-# include "struct.h"
+# include "general.h"
 
 //----------------------- env.c ------------------------
 char	*replace_shlvl(char *old, char *new);

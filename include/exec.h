@@ -1,10 +1,7 @@
 #ifndef EXEC_H
 # define EXEC_H
 
-# include "lexer.h"
-# include "struct.h"
-# include "builtins.h"
-# include <dirent.h>
+# include "general.h"
 
 //----------------------- exec.c ------------------------
 int				exec_andif(t_ast *node, t_ms *ms);

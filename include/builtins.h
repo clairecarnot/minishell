@@ -1,12 +1,7 @@
 #ifndef BUILT_INS_H
 # define BUILT_INS_H
 
-# include "lexer.h"
-# include "parser.h"
-# include "struct.h"
-# include "builtins.h"
-# include "exec.h"
-# include <stdbool.h>
+# include "general.h"
 
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxx export xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 //-------------------------- cmd_export.c --------------------------

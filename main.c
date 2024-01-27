@@ -1,10 +1,4 @@
-#include "./include/lexer.h"
-#include "./include/parser.h"
-#include "./include/struct.h"
-#include "./include/env.h"
-#include "./include/signals.h"
-#include "./include/exec.h"
-#include "./include/builtins.h"
+#include "./include/general.h"
 
 char	*tok_to_str(t_token *token)//temporaire
 {

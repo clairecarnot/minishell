@@ -1,6 +1,4 @@
-#include "./include/lexer.h"
-#include "./include/parser.h"
-#include "./include/struct.h"
+#include "./include/general.h"
 
 void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd)
 {

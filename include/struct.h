@@ -2,7 +2,6 @@
 # define STRUCT_H
 
 # include "../libft/libft.h"
-# include "lexer.h"
 
 extern int	g_exit_code;
 

@@ -1,10 +1,7 @@
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
-# define CMD_NOT_FOUND 127
-
-# include "lexer.h"
-# include "struct.h"
+# include "general.h"
 
 //----------------------- signals.c ------------------------
 void	sig_hdoc(int signal);
