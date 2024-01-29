@@ -30,7 +30,7 @@ a ete enlever && ms->lexer->src[ms->lexer->cur_pos + i] == qtype
 */
 int	switch_qtype(t_ms *ms, int i, int qtype)
 {
-	if (qstate(ms->nb_q) == 0  && \
+	if (qstate(ms->nb_q) == 0 && \
 	(ms->lexer->src[ms->lexer->cur_pos + i + 1] && \
 	ms->lexer->src[ms->lexer->cur_pos + i + 1] == else_qtype(qtype)))
 		qtype = else_qtype(qtype);

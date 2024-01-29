@@ -5,7 +5,7 @@ int	update_lstdol(t_dol **dol, t_list *d, t_list *c)
 {
 	if (!(*dol) && d && c)
 	{
-		*dol = ft_calloc(1, sizeof(t_dol));// c'est verifie 1
+		*dol = ft_calloc(1, sizeof(t_dol));
 		if (!(*dol))
 			return (1);
 		(*dol)->d = NULL;
@@ -53,18 +53,18 @@ void	update_lstdol_in(t_ms *ms, int qtype, int i, t_dw *dw)
 		{
 			d = ft_lstnew_int(0);
 			c = ft_lstnew_int(0);
-			if (!d || !c) // c'est verifie 1
+			if (!d || !c)
 				free_update_lstdol(ms, dw, d, c);
 		}
 		else if (ms->lexer->src[ms->lexer->cur_pos + i] == '$' && qtype == '\"')
 		{
 			d = ft_lstnew_int(1);
 			c = ft_lstnew_int(count_dol_chars_in(ms, i + 1));
-			if (!d || !c) // c'est verifie 1
+			if (!d || !c)
 				free_update_lstdol(ms, dw, d, c);
 		}
 		if (update_lstdol(&dw->dol, d, c) == 1)
-			free_update_lstdol(ms, dw, d, c);// c'est verfie 1
+			free_update_lstdol(ms, dw, d, c);
 	}
 }
 
@@ -89,10 +89,10 @@ int	update_lstdol_out(t_ms *ms, int i, int j, t_dw *dw)
 			d = ft_lstnew_int(1);
 			c = ft_lstnew_int(count_dol_chars_out(ms, i + 1));
 			if (!d || !c)
-				free_update_lstdol(ms, dw, d, c);// c'est verifie 1	
+				free_update_lstdol(ms, dw, d, c);
 		}
 		if (update_lstdol(&dw->dol, d, c) == 1)
-			free_update_lstdol(ms, dw, d, c);// c'est verifie 1
+			free_update_lstdol(ms, dw, d, c);
 	}
 	return (0);
 }

@@ -16,7 +16,7 @@ void	quote_state_close(t_ms *ms, int i, t_dw *dw)
 		{
 			ms->value = ft_calloc(2, sizeof(char));
 			if (!ms->value)
-				free_quote_state(ms, dw);// c'est verifie 1
+				free_quote_state(ms, dw);
 			ft_strlcpy(ms->value, &ms->lexer->src[ms->lexer->cur_pos + i], 2);
 		}
 		else if (ms->value)
@@ -24,10 +24,9 @@ void	quote_state_close(t_ms *ms, int i, t_dw *dw)
 			ms->value = quotes_strjoin(ms->value, \
 			&ms->lexer->src[ms->lexer->cur_pos + i], 1);
 			if (!ms->value)
-				free_quote_state(ms, dw);// c'est verifie 1
+				free_quote_state(ms, dw);
 		}
 	}
-	// return (value);
 }
 
 /*
@@ -47,7 +46,7 @@ void	quote_state_open(t_ms *ms, int qtype, int i, t_dw *dw)
 		{
 			ms->value = ft_calloc(2, sizeof(char));
 			if (!ms->value)
-				free_quote_state(ms, dw);// c'est verifie 1
+				free_quote_state(ms, dw);
 			ft_strlcpy(ms->value, &ms->lexer->src[ms->lexer->cur_pos + i], 2);
 		}
 		else if (ms->value)
@@ -55,7 +54,7 @@ void	quote_state_open(t_ms *ms, int qtype, int i, t_dw *dw)
 			ms->value = quotes_strjoin(ms->value, \
 			&ms->lexer->src[ms->lexer->cur_pos + i], 1);
 			if (!ms->value)
-				free_quote_state(ms, dw);// c'est verfie 1
+				free_quote_state(ms, dw);
 		}
 	}
 }
@@ -67,12 +66,12 @@ int	case_value_null(t_ms *ms, t_dw *dw)
 	i = 0;
 	ms->value = ft_calloc(1, sizeof(char));
 	if (!ms->value)
-		free_quote_state(ms, dw);//c'est verifie 1
+		free_quote_state(ms, dw);
 	i = quote_size(ms);
 	return (i);
 }
 
-int big_while(t_ms *ms)
+int	big_while(t_ms *ms)
 {
 	if (ms->lexer->src[ms->lexer->cur_pos + ms->i] && (qstate(ms->nb_q) == \
 	1 || (qstate(ms->nb_q) == 0 && ft_ischar(ms->lexer->src[ms->lexer->cur_pos \
@@ -117,5 +116,5 @@ t_token	*parse_quotes_word(t_ms *ms, int qtype)
 	}
 	if (!ms->value && qstate(ms->nb_q) == 0)
 		ms->i = case_value_null(ms, dw);
-	return (advntimes(ms->lexer, ms->i), init_tokwdol(ms, ms->value, T_WORD, dw));
+	return (advntimes(ms->lexer, ms->i), init_tokwdol(ms, T_WORD, dw));
 }

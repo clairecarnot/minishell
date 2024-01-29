@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/18 14:11:45 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:31:02 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,10 @@ int	update_shlvl(t_ms *ms)
 			lvl = ft_atoi(tmp->content + 6) + 1;
 			newlvl = ft_itoa(lvl);
 			if (!newlvl)
-				return (1);
+				return (1);// c'est verifie
 			tmp->content = replace_shlvl(tmp->content, newlvl);
 			if (!tmp->content)
-				return (1);
+				return (free(newlvl), 1);//c'est verifie
 			return (0);
 		}
 		tmp = tmp->next;
@@ -93,7 +93,9 @@ void	add_pwd(t_ms *ms)
 	char	*wd;
 	t_list	*new_var1;
 
+	// dprintf(2, "pwd\n");
 	wd = getcwd(path, sizeof(path));
+	// wd = NULL;
 	if (!wd)// a verifier
 		free_minishell(ms, 1);
 	pwd = ft_strjoin("PWD=", wd);
@@ -108,34 +110,94 @@ void	add_pwd(t_ms *ms)
 	ft_lstadd_back(&ms->env, new_var1);
 }
 
-void	init_env_noenv(t_ms *ms)
+void	add_shlvl(t_ms *ms)
 {
 	char	*shlvl;
-	char	*underscore;
 	t_list	*new_var2;
-	t_list	*new_var3;
 
-	add_pwd(ms);
 	shlvl = ft_strdup("SHLVL=0");
-	if (!shlvl)// a verifier
-		free_minishell(ms, 1);
+	if (!shlvl)// c'est verifie
+		free_minishell(ms, 255);
 	new_var2 = ft_lstnew(shlvl);
-	if (!new_var2)// a verifier
+	if (!new_var2)// c'est verifie
 	{
 		free(shlvl);
 		free_minishell(ms, 1);
 	}
-	ft_lstadd_back(&ms->env, new_var2);
+	ft_lstadd_back(&ms->env, new_var2);	
+}
+
+void	add_underscore(t_ms *ms)
+{
+	char	*underscore;
+	t_list	*new_var3;
+
+	// dprintf(2, "underscore\n");
 	underscore = ft_strdup("_=/usr/bin/");
-	if (!underscore)// a verifier
+	if (!underscore)// c'est verifie
 		free_minishell(ms, 1);
 	new_var3 = ft_lstnew(underscore);
-	if (!new_var3)// a verifier
+	if (!new_var3)// c'est verifie
 	{
 		free(underscore);
 		free_minishell(ms, 1);
 	}
 	ft_lstadd_back(&ms->env, new_var3);
+}
+
+// void	init_env_noenv(t_ms *ms)// a enlever
+// {
+// 	char	*shlvl;
+// 	char	*underscore;
+// 	t_list	*new_var2;
+// 	t_list	*new_var3;
+
+// 	add_pwd(ms);
+// 	shlvl = ft_strdup("SHLVL=0");
+// 	// shlvl = NULL;
+// 	if (!shlvl)// c'est verifie
+// 		free_minishell(ms, 255);
+// 	new_var2 = ft_lstnew(shlvl);
+// 	if (!new_var2)// a verifier
+// 	{
+// 		free(shlvl);
+// 		free_minishell(ms, 1);
+// 	}
+// 	ft_lstadd_back(&ms->env, new_var2);
+// 	underscore = ft_strdup("_=/usr/bin/");
+// 	if (!underscore)// a verifier
+// 		free_minishell(ms, 1);
+// 	new_var3 = ft_lstnew(underscore);
+// 	if (!new_var3)// a verifier
+// 	{
+// 		free(underscore);
+// 		free_minishell(ms, 1);
+// 	}
+// 	ft_lstadd_back(&ms->env, new_var3);
+// }
+
+int	find_in_lst(t_list *env, char *var)
+{
+	t_list	*tmp_env;
+
+	tmp_env = env;
+	while (tmp_env)
+	{
+		if (!ft_strncmp(tmp_env->content, var, ft_strlen(var)))
+			return (1);
+		tmp_env = tmp_env->next;
+	}
+	return (0);
+}
+
+void	check_noenv(t_ms *ms)
+{
+	if (!find_in_lst(ms->env, "PWD="))
+		add_pwd(ms);
+	if (!find_in_lst(ms->env, "SHLVL="))
+		add_shlvl(ms);
+	if (!find_in_lst(ms->env, "_="))
+		add_underscore(ms);
 }
 
 /*
@@ -153,22 +215,18 @@ int	init_env(t_ms *ms, char **env)
 	i = 0;
 	content = NULL;
 	ms->env = NULL;
-	if (!env[0] || !env[10])
-		init_env_noenv(ms);
-	else
+	while (env && env[i])
 	{
-		while (env && env[i])
-		{
-			content = ft_strdup(env[i]);
-			if (!content)
-				return (ft_lstfree(&ms->env), 1);
-			new_var = ft_lstnew(content);
-			if (!new_var)
-				return (free(content), ft_lstfree(&ms->env), 1);
-			ft_lstadd_back(&ms->env, new_var);
-			i++;
-		}
+		content = ft_strdup(env[i]);
+		if (!content)
+			return (ft_lstfree(&ms->env), 1);// c'est verifie
+		new_var = ft_lstnew(content);
+		if (!new_var)
+			return (free(content), ft_lstfree(&ms->env), 1);// c'est verifie
+		ft_lstadd_back(&ms->env, new_var);
+		i++;
 	}
+	check_noenv(ms);
 	if (update_shlvl(ms))
 		return (ft_lstfree(&ms->env), 1);
 	return (0);

@@ -16,7 +16,7 @@ srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c \
 srcs/signals/parent_sig.c srcs/signals/child_hd_sig.c \
 srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_exec_bis.c \
 srcs/exec/cmd_path.c \
-srcs/exec/wildcards.c srcs/exec/wildcards2.c \
+srcs/exec/wildcards.c srcs/exec/wildcards2.c srcs/exec/wildcards_init.c\
 srcs/exec/wildcards_free.c srcs/exec/wildcards_utils.c\
 srcs/exec/cmd_utils1.c srcs/exec/cmd_utils2.c srcs/exec/pipe_exec.c srcs/exec/pipe_exec_bis.c\
 srcs/exec/cmd_redirs.c srcs/exec/cmd_hdoc.c srcs/exec/cmd_hdname.c \

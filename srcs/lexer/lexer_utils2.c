@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:45:41 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/29 12:26:27 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:55:47 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	free_quote_state(t_ms *ms, t_dw *dw)
 		free(dw->wil);
 	if (dw)
 		free(dw);
-	(free(ms->value), prefree_minishell(ms, NULL));	
+	(free(ms->value), prefree_minishell(ms, NULL));
 }
 
 /*
