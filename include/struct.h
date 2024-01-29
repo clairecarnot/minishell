@@ -172,7 +172,7 @@ typedef struct s_ms
 	int			out;
 	t_list		*hdlst;
 	int			i_w;//index wildcard
-
+	char		*value;
 
 	int	a;//test malloc
 }				t_ms;

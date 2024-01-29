@@ -6,12 +6,29 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 15:45:41 by mapoirie          #+#    #+#             */
-/*   Updated: 2023/12/14 14:05:22 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:26:27 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/lexer.h"
 #include "../libft/libft.h"
+
+void	free_quote_state(t_ms *ms, t_dw *dw)
+{
+	if (dw && dw->wil && dw->wil->w)
+		ft_lstfree(&dw->wil->w);
+	if (dw && dw->dol && dw->dol->d)
+		ft_lstfree(&dw->dol->d);
+	if (dw && dw->dol && dw->dol->c)
+		ft_lstfree(&dw->dol->c);
+	if (dw && dw->dol)
+		free(dw->dol);
+	if (dw && dw->wil)
+		free(dw->wil);
+	if (dw)
+		free(dw);
+	(free(ms->value), prefree_minishell(ms, NULL));	
+}
 
 /*
 Renseigne sur le nb de quotes presents a la suite, lorqu'on parse une value

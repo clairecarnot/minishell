@@ -18,28 +18,38 @@ char	peek_next(t_lexer *lexer);
 int		ft_ischar(int c, int quotes);
 
 //--------------------- lexer_utils2.c ----------------------
+void	free_quote_state(t_ms *ms, t_dw *dw);
 int		quote_size(t_ms *ms);
 int		ft_isand(char *src, int cur_posi);
 size_t	ft_strlen_lex(const char *s);
 char	*quotes_strjoin(char *s1, char *s2, int size);
 
 //--------------------- lexer_parse_word.c ----------------------
-int		qstate(int i);
-char	*quote_state_close(t_ms *ms, int i, char *value);
-char	*quote_state_open(t_ms *ms, int qtype, int i, char *value);
-int		case_value_null(t_ms *ms, char **value);
-t_token	*parse_quotes_word(t_ms *ms, int qtype, char *value);
+void	quote_state_close(t_ms *ms, int i, t_dw *dw);
+void	quote_state_open(t_ms *ms, int qtype, int i, t_dw *dw);
+int		case_value_null(t_ms *ms, t_dw *dw);
+int 	big_while(t_ms *ms);
+t_token	*parse_quotes_word(t_ms *ms, int qtype);
 
 //--------------------- lexer_parse_word2.c ----------------------
+int		qstate(int i);
 int		else_qtype(int qtype);
 int		switch_qtype(t_ms *ms, int i, int qtype);
-int		case_w_dol(t_ms *ms, int qtype, char **value);
-void		update_lstdol_in(t_ms *ms, int qtype, int i, t_dol **dol);
-int		update_lstdol_out(t_ms *ms, int i, int j, t_dol **dol);
+int		count_dol_chars_in(t_ms *ms, int i);
+int		count_dol_chars_out(t_ms *ms, int i);
 
-int	count_dol_chars_in(t_ms *ms, int i);
-int	count_dol_chars_out(t_ms *ms, int i);
-int	update_lstdol(t_dol **dol, t_list *new_d, t_list *new_c);
+//--------------------- lexer_parse_word_wil.c ----------------------
+int		update_lstwil(t_wil **wil, t_list *w);
+void	update_lstwil_in(t_ms *ms, int qtype, int i, t_dw *dw);
+int		update_lstwil_out(t_ms *ms, int i, t_dw *dw);
+t_dw	*init_dw(t_ms *ms);
+
+//--------------------- lexer_parse_word_dol.c ----------------------
+int		update_lstdol(t_dol **dol, t_list *new_d, t_list *new_c);
+void	update_lstdol_in(t_ms *ms, int qtype, int i, t_dw *dw);
+int		update_lstdol_out(t_ms *ms, int i, int j, t_dw *dw);
+int		case_w_dol(t_ms *ms, int qtype, t_dw *dw);
+
 
 //--------------------- lexer_init.c ----------------------
 t_lexer	*init_lexer(char *s);

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:30:06 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/26 14:05:30 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:31:53 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,9 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 {
 	t_token	*token;
 
-	// static int i;
-	// dprintf(2, "ms->a = %d\n", minishell->a);
-	// minishell->a++;
-	// if (i > 0)
-	// 	token = NULL;
-	// else
-	token = ft_calloc(1, sizeof(t_token));
-	// token = NULL;
+	token = ft_calloc(1, sizeof(t_token));// c'est verifie 1
 	if (!token)
-	{
-		// if (value)
-		// 	free(value);
-		// if (ms->w_ms)
-		// {
-		// 	dprintf(2, "ici\n");
-		// 	if (ms->w_ms->w)
-		// 	{
-		// 		dprintf(2, "ici2\n");
-		// 		ft_lstfree(&ms->w_ms->w);
-		// 	}
-		// 	free(ms->w_ms);
-		// }
 		free_minishell(ms, 255);
-	}
 	token->type = type;
 	token->value = value;
 	token->next_token = NULL;
@@ -67,7 +46,6 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 	ms->lexer->tok_count++;
 	token->dol = NULL;
 	token->wil = NULL;
-	// i++;
 	return (token);
 }
 
@@ -77,11 +55,7 @@ t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_dw *dw)
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
-	{
-		if (value)
-			free(value);
-		free_minishell(minishell, 1);
-	}
+		free_quote_state(minishell, dw);// c'est verifie 1
 	token->type = type;
 	token->value = value;
 	token->next_token = NULL;
@@ -90,5 +64,6 @@ t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_dw *dw)
 	token->dol = dw->dol;
 	token->wil = dw->wil;
 	free(dw);
+	minishell->value = NULL;
 	return (token);
 }

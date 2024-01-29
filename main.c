@@ -34,7 +34,8 @@ t_ms	*init_ms(char **env)
 	minishell->i = 0;
 	minishell->j = 0;
 	minishell->i_w = 0;
-	minishell->a = 0;
+	minishell->value = NULL;
+	minishell->a = 0;//a enlever
 	return (init_ms_bis(minishell, env));
 }
 
