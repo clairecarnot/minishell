@@ -1,5 +1,4 @@
 #include "../../include/exec.h"
-#include "../../include/signals.h"
 
 int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
 {

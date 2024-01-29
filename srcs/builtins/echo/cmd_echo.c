@@ -1,5 +1,4 @@
 #include "../../../include/builtins.h"
-#include "../libft/libft.h"
 
 /*
  * handle_echo_n:

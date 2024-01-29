@@ -1,5 +1,4 @@
 #include "../../include/exec.h"
-#include "../../include/signals.h"
 
 t_cmd	*init_cmd(t_ms *ms, char **env)
 {

@@ -1,5 +1,4 @@
 #include "../../include/exec.h"
-#include "../../include/signals.h"
 
 int	pipe_end_cmd(t_ms *ms, t_ast *node, int tmp_fd)
 {

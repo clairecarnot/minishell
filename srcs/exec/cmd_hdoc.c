@@ -1,5 +1,4 @@
 #include "../../include/exec.h"
-#include "../../include/signals.h"
 
 void	hdoc_ctrl_d(t_ms *ms, int nb_line)
 {

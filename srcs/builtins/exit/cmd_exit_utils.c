@@ -6,12 +6,11 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/25 18:11:45 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/29 15:33:21 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
-#include "../libft/libft.h"
 
 bool	is_whitespace(char c)
 {

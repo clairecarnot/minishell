@@ -1,4 +1,3 @@
-#include "../../include/lexer.h"
 #include "../../include/parser.h"
 
 t_dol	*dup_tokdol(t_ms *ms, t_dol *tok_dol)

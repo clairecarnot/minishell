@@ -1,5 +1,4 @@
 #include "../../include/exec.h"
-#include "../../include/signals.h"
 
 void	print_msg_redir(char *invalid_io)
 {

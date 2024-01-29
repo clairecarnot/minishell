@@ -35,15 +35,21 @@ void	non_interactive_mode_bis(t_ms *minishell);
 int	non_interactive_mode(t_ms *minishell, char **env);
 void	ft_isatty(t_ms *minishell, char **env);
 
-//----------------------- end.c ------------------------
-void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd);
+//----------------------- end_lst.c ------------------------
 void	ft_intlstfree(t_list **lst);
 void	ft_lstfree(t_list **lst);
 void	token_lst_free(t_token **lst);
 void	redirs_free(t_redirs **lst);
+
+//----------------------- end_wildol.c ------------------------
+void	wil_free(t_wil **wil);
 void	dol_free(t_dol **dol);
 void	free_wil_dol(t_ms *ms);
+
+//----------------------- end.c ------------------------
+void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd);
 void	free_root_ast(t_ast *root);
+void	free_minishell_bis(t_ms *ms, int exit_status, int exit_code);
 void	free_minishell(t_ms *minishell, int exit_status);
 
 //----------------------- debug.c ------------------------

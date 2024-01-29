@@ -7,203 +7,24 @@ void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd)
 	free_minishell(ms, 255);
 }
 
-void	ft_intlstfree(t_list **lst)
-{
-	t_list	*ptr;
-	t_list	*tmp;
-
-	if (lst)
-	{
-		ptr = *lst;
-		while (ptr)
-		{
-			tmp = ptr->next;
-			free(ptr);
-			ptr = tmp;
-		}
-		*lst = NULL;
-	}
-}
-
-void	ft_lstfree(t_list **lst)
-{
-	t_list	*ptr;
-	t_list	*tmp;
-
-	if (lst)
-	{
-		ptr = *lst;
-		while (ptr)
-		{
-			tmp = ptr->next;
-			if (ptr->content)
-				free(ptr->content);
-			free(ptr);
-			ptr = tmp;
-		}
-		*lst = NULL;
-	}
-}
-
-void	wil_free(t_wil **wil)
-{
-	if (wil)
-	{
-		if ((*wil)->w)
-			ft_lstfree(&(*wil)->w);
-		if (*wil)
-			free(*wil);
-		*wil = NULL;
-	}
-}
-
-void	token_lst_free_wil(t_token **lst)
-{
-	t_token	*ptr;
-	t_token	*tmp;
-
-	if (lst)
-	{
-		ptr = *lst;
-		while (ptr)
-		{
-			tmp = ptr->next_token;
-			// if (ptr->type == T_WORD || ptr->type == T_NEWLINE)
-			// 	free(ptr->value);
-//			if (ptr->dol)
-				// dol_free(&(ptr->dol));
-			// if (ptr->wil)
-			// 	wil_free(&(ptr->wil));
-			// free(ptr);
-			ptr = tmp;
-		}
-		// *lst = NULL;
-	}
-}
-
-void	token_lst_free(t_token **lst)
-{
-	t_token	*ptr;
-	t_token	*tmp;
-
-	if (lst)
-	{
-		ptr = *lst;
-		while (ptr)
-		{
-			tmp = ptr->next_token;
-//			if (ptr->value && ft_strlen(ptr->value))
-			if (ptr->type == T_WORD)
-				free(ptr->value);
-//			if (ptr->dol)
-//				dol_free(&(ptr->dol));
-//			if (ptr->wil)
-//			 	wil_free(&(ptr->wil));
-			free(ptr);
-			ptr = tmp;
-		}
-		*lst = NULL;
-	}
-}
-
-void	redirs_free(t_redirs **lst)
-{
-	t_redirs	*ptr;
-	t_redirs	*tmp;
-
-	if (lst)
-	{
-		ptr = *lst;
-		while (ptr)
-		{
-			tmp = ptr->next_redir;
-			if (ptr->filename)
-				free(ptr->filename);
-			if (ptr->dol)
-				dol_free(&ptr->dol);
-			free(ptr);
-			ptr = tmp;
-		}
-		*lst = NULL;
-	}
-}
-
-void	dol_free(t_dol **dol)
-{
-	if (dol)
-	{
-		if ((*dol)->d)
-			ft_lstfree(&(*dol)->d);
-		if ((*dol)->c)
-			ft_lstfree(&(*dol)->c);
-		if (*dol)
-			free(*dol);
-		*dol = NULL;
-	}
-}
-
-
-
 void	free_root_ast(t_ast *root)
 {
-//	t_redirs	*tmp;
-
-//	dprintf(1, "seg1\n");
-//	dprintf(2, "root exists2\n");
 	if (!root)
 		return ;
-	// dprintf(1, "seg2\n");
 	if (root->left)
 		free_root_ast(root->left);
-	// dprintf(1, "seg3\n");
 	if (root->right)
 		free_root_ast(root->right);
-	// dprintf(1, "seg4\n");
 	if (root->type == CMD)
 		ft_lstfree(&root->args);
-	// dprintf(1, "seg5\n");
-//	root->args = NULL;
 	if (root->redirs)
-	{
-//		tmp = root->redirs;
-//		while (tmp)
-//		{
-//			if (tmp->dol)
-//				dol_free(&tmp->dol);
-//			tmp = tmp->next_redir;
-//		}
 		redirs_free(&root->redirs);
-	}
 	if (root->dol)
 		dol_free(&root->dol);
 	if (root->wil)
 		wil_free(&root->wil);
-	// dprintf(1, "seg6\n");
-//	root->redirs = NULL;
 	free(root);
-	// dprintf(1, "seg7\n");
 	root = NULL;
-}
-
-void    free_wil_dol(t_ms *ms) 
-{
-    //  dprintf(2, "free dol\n");
-        t_token *tmp;          
-      
-        tmp = ms->cur_tok;     
-        while (tmp)         
-        {
-            if (tmp->dol)
-            {
-				// dprintf(2, "free tmp->dol\n");
-				dol_free(&tmp->dol);            
-			}
-			if (tmp->wil)  
-				wil_free(&tmp->wil);
-            tmp = tmp->next_token;          
-        }
-        // if (ms->cur_tok->wil)
-        //         wil_free(&ms->cur_tok->wil);
 }
 
 /*
@@ -212,44 +33,8 @@ peut-etre a changer: dans les conditions if exit_status != 0
 a la ligne suivante) ne pas les free)
 */
 
-void	free_minishell(t_ms *ms, int exit_status)
+void	free_minishell_bis(t_ms *ms, int exit_status, int exit_code)
 {
-	int	exit_code;
-	t_list		*hdtmp;
-
-	exit_code = ms->exit_code;
-	close_if(&ms->in);
-	close_if(&ms->out);
-	hdtmp = ms->hdlst;
-	while (hdtmp && isatty(0) && isatty(1))
-	{
-	 	if (hdtmp->content)
-	 		unlink(hdtmp->content);
-	 	hdtmp = hdtmp->next;
-	}
-	if (ms->pidlst)
-		ft_intlstfree(&ms->pidlst);
-	// if (!ms->root)// if (exit_status != 0)
-	// {
-	// dprintf(2, "!ms->root free dol\n");
-	// free_wil_dol(ms);
-	// }
-	free_wil_dol(ms);
-	if (ms->root)
-	{
-		free_root_ast(ms->root);
-		ms->root = NULL;
-	}
-	// if (ms->lexer && exit_status == 255)
-	// {
-	// 	token_lst_free_wil(&ms->lexer->token_lst);
-	// }
-	if (ms->lexer)
-	{
-		token_lst_free(&ms->lexer->token_lst);		
-		free(ms->lexer);
-		ms->lexer = NULL;
-	}
 	if (ms->env && exit_status != 0)
 		ft_lstfree(&ms->env);
 	if (ms->exp && exit_status != 0)
@@ -261,14 +46,39 @@ void	free_minishell(t_ms *ms, int exit_status)
 	if (ms->home && exit_status != 0)
 		free(ms->home);
 	if (ms->line)
-	{
 		free(ms->line);
-		ms->line = NULL;
-	}
+	ms->line = NULL;
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
 	if (ms && exit_status != 0)
 		free(ms);
 	if (exit_status != 0)
 		exit(exit_code);
+}
+
+void	free_minishell(t_ms *ms, int exit_status)
+{
+	int		exit_code;
+	t_list	*hdtmp;
+
+	exit_code = ms->exit_code;
+	close_if(&ms->in);
+	close_if(&ms->out);
+	hdtmp = ms->hdlst;
+	while (hdtmp && isatty(0) && isatty(1))
+	{
+		if (hdtmp->content)
+			unlink(hdtmp->content);
+		hdtmp = hdtmp->next;
+	}
+	if (ms->pidlst)
+		ft_intlstfree(&ms->pidlst);
+	free_wil_dol(ms);
+	if (ms->root)
+		free_root_ast(ms->root);
+	ms->root = NULL;
+	if (ms->lexer)
+		(token_lst_free(&ms->lexer->token_lst), free(ms->lexer));
+	ms->lexer = NULL;
+	free_minishell_bis(ms, exit_status, exit_code);
 }

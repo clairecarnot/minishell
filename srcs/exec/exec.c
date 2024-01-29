@@ -1,5 +1,4 @@
 #include "../../include/exec.h"
-#include "../../include/signals.h"
 
 int	exec_andif(t_ast *node, t_ms *ms)
 {

@@ -95,8 +95,6 @@ int	main(int argc, char **argv, char **env)
 	{
 		preprompt_signals();
 		minishell->line = display_prompt(minishell);
-		if (!minishell->line)
-			return (free_minishell(minishell, 0), 0);
 		if (g_exit_code == 2)
 		{
 			minishell->exit_code = 130;

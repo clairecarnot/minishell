@@ -1,5 +1,4 @@
 #include "../../include/exec.h"
-#include "../../include/signals.h"
 
 void	update_hdlst(t_ms *ms, char *name)
 {

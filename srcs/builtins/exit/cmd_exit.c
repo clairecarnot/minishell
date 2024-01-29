@@ -6,12 +6,11 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/26 13:58:58 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/29 18:12:08 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtins.h"
-#include "../libft/libft.h"
 
 void	free_exit_bis(t_ms *ms)
 {
@@ -22,10 +21,8 @@ void	free_exit_bis(t_ms *ms)
 	if (ms->home)
 		free(ms->home);
 	if (ms->line)
-	{
 		free(ms->line);
-		ms->line = NULL;
-	}
+	ms->line = NULL;
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
 	if (ms)
@@ -47,15 +44,13 @@ void	free_exit(t_ms *ms)
 	}
 	if (ms->pidlst)
 		ft_intlstfree(&ms->pidlst);
-	// if (!ms->root)
 	free_wil_dol(ms);
 	if (ms->root)
 		free_root_ast(ms->root);
+	ms->root = NULL;
 	if (ms->lexer)
-	{
-		token_lst_free(&ms->lexer->token_lst);
-		free(ms->lexer);
-	}
+		(token_lst_free(&ms->lexer->token_lst), free(ms->lexer));
+	ms->lexer = NULL;
 	if (ms->env)
 		ft_lstfree(&ms->env);
 	if (ms->exp)

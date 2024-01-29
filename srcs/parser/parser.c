@@ -1,4 +1,3 @@
-#include "../../include/lexer.h"
 #include "../../include/parser.h"
 
 t_ast	*factor(t_ms *ms)
