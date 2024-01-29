@@ -1,4 +1,4 @@
-#include "../../../include/builtins.h"
+#include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
 char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line)

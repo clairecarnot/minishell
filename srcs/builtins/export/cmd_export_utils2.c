@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/builtins.h"
+#include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
 int	ft_slen(char *s)

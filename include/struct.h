@@ -3,20 +3,26 @@
 
 # include "../libft/libft.h"
 
-//extern int	g_exit_code;
+/*
+ * wil : expand de * = 1, non expand = 0
+ */
 
 typedef struct s_wil
 {
-	t_list		*w;// expand de * = 1, non expand = 0
+	t_list		*w;
 }	t_wil;
+
+/*
+ * dol : expand du $ = 1, non expand = 0
+ */
 
 typedef struct s_dol
 {
-	t_list			*d;// expand du $ = 1, non expand = 0
+	t_list			*d;
 	t_list			*c;
 }		t_dol;
 
-typedef struct	s_dw
+typedef struct s_dw
 {
 	t_dol	*dol;
 	t_wil	*wil;
@@ -36,17 +42,16 @@ typedef enum e_builtin_type
 
 typedef struct s_cmd
 {
-	char	**env;
-//	char	**tmp_args;
-	char	**args;
+	char			**env;
+	char			**args;
 	t_builtin_type	builtin;
-	char	**bin_paths;
-	int	abs_or_rel;
-	int	valid_path;
-	int	redir;
-	int	valid_redir;
-	int	is_dir;
-	char	*invalid_io;
+	char			**bin_paths;
+	int				abs_or_rel;
+	int				valid_path;
+	int				redir;
+	int				valid_redir;
+	int				is_dir;
+	char			*invalid_io;
 }		t_cmd;
 
 typedef struct s_ast	t_ast;
@@ -63,19 +68,12 @@ typedef enum e_node_type
 	DGREAT,
 }			t_node_type;
 
-// typedef	struct s_redirtype
-// {
-// 	t_node_type			type;
-// 	struct s_redirtype	*next;
-// }	t_redirtype;
-
 typedef struct s_redirs
 {
-	// t_redirtype		*redirtype;
 	t_node_type		type;
 	char			*filename;
-	struct s_redirs	*next_redir;
-	t_dol		*dol;
+	struct s_redirs		*next_redir;
+	t_dol			*dol;
 }		t_redirs;
 
 struct	s_ast

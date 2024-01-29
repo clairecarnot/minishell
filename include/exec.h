@@ -29,7 +29,8 @@ int				handle_dgreat(t_ms *ms, t_redirs *redirs);
 int				cmd_redirs(t_ms *ms, t_ast *node, t_cmd *cmd);
 
 //----------------------- cmd_exec.c ------------------------
-int				node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w);
+int				node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd,
+					t_list *tmp_w);
 int				node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd);
 int				exec_builtin(t_ms *ms, t_cmd *cmd);
 int				do_cmd(t_cmd *cmd, t_ms *ms, char **env);
@@ -154,7 +155,8 @@ int				same_as_wildcard(char *d_name, char *arg, int *flag);
 char			**wldc2_split(char *new_arg);
 char			*wldc2_join(char *d_name, char *new_arg);
 char			*wildc2_dup_join(char *d_name, t_wildcard *wc, char *new_arg);
-char			**wildcards_2(DIR *d, struct dirent *file, char **args, t_wildcard *wildc);
+char			**wildcards_2(DIR *d, struct dirent *file,
+					char **args, t_wildcard *wildc);
 
 //----------------------- wildcards_utils.c ------------------------
 int				*lstint_to_tab(t_list *lst);

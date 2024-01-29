@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/builtins.h"
+#include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
 char	*sjoin_noequal(char *s1, char *s2, int i)

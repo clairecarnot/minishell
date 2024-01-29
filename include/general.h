@@ -17,7 +17,7 @@
 
 # include "../libft/libft.h"
 # include "struct.h"
-# include "builtins.h"
+# include "builtin.h"
 # include "env.h"
 # include "exec.h"
 # include "lexer.h"
@@ -32,7 +32,7 @@ void	main_bis(t_ms *minishell);
 
 //----------------------- non_interactive.c ------------------------
 void	non_interactive_mode_bis(t_ms *minishell);
-int	non_interactive_mode(t_ms *minishell, char **env);
+int		non_interactive_mode(t_ms *minishell, char **env);
 void	ft_isatty(t_ms *minishell, char **env);
 
 //----------------------- end_lst.c ------------------------

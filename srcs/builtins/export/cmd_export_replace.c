@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../include/builtins.h"
+#include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
 char	*ft_sdup(t_ms *ms, t_cmd *cmd, char *s)

@@ -1,4 +1,4 @@
-#include "../../../include/builtins.h"
+#include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
 int	cd_alone(t_ms *ms, t_cmd *cmd)

@@ -1,4 +1,4 @@
-#include "../../../include/builtins.h"
+#include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
 void	add_variable2(t_ms *ms, t_cmd *cmd, char *ct)
