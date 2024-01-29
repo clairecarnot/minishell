@@ -59,7 +59,7 @@ char	*display_prompt(t_ms *ms)
 			free(ms->home);
 		if (ms)
 			free(ms);
-		exit(0);
+		exit(ms->exit_code);
 	}
 	add_history(line);
 	return (line);

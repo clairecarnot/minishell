@@ -29,6 +29,7 @@ int	hdoc_create(t_ms *ms, int fd, char *filename, int limlen)
 		if (!line)
 		{
 			hdoc_ctrl_d(ms, nb_line);
+//			ms->exit_code = ms->previous_exit_code;
 			break ;
 		}
 		if (ft_strncmp(line, filename, limlen) == 0
