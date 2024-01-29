@@ -146,8 +146,12 @@ char			*expand_hdoc(t_ms *ms, char *arg);
 char			**cpy_end_args(char **new, char **args, int k, int i);
 char			**make_new_args(char **args, char **ad, int w_i, int i);
 char			**wildcards(char **args, t_wildcard *wildc);
-t_wildcard		*init_wildc(t_wil *wil);
+int				same_len(char **args, t_list *w);
 int				cmd_wildcard(t_cmd *cmd, t_wil *wil);
+
+//----------------------- wildcards_init.c ------------------------
+t_wildcard		*init_wildc(t_wil *wil);
+void			re_init_wildc(t_wildcard *wildc, t_cmd *cmd);
 
 //----------------------- wildcards2.c ------------------------
 int				same_as_wildcard(char *d_name, char *arg, int *flag);

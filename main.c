@@ -46,7 +46,21 @@ char	*display_prompt(t_ms *ms)
 	line = NULL;
 	line = readline("minishell$ ");
 	if (!line)
-		free_minishell(ms, 1);
+	{
+		if (ms->env)
+			ft_lstfree(&ms->env);
+		if (ms->exp)
+			ft_lstfree(&ms->exp);
+		if (ms->wkdir)
+			free(ms->wkdir);
+		if (ms->old_wkdir)
+			free(ms->old_wkdir);
+		if (ms->home)
+			free(ms->home);
+		if (ms)
+			free(ms);
+		exit(0);
+	}
 	add_history(line);
 	return (line);
 }

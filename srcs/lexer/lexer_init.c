@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:30:06 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/29 12:31:53 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/29 16:53:37 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 {
 	t_token	*token;
 
-	token = ft_calloc(1, sizeof(t_token));// c'est verifie 1
+	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
 		free_minishell(ms, 255);
 	token->type = type;
@@ -49,15 +49,15 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 	return (token);
 }
 
-t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_dw *dw)
+t_token	*init_tokwdol(t_ms *minishell, t_type type, t_dw *dw)
 {
 	t_token	*token;
 
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
-		free_quote_state(minishell, dw);// c'est verifie 1
+		free_quote_state(minishell, dw);
 	token->type = type;
-	token->value = value;
+	token->value = minishell->value;
 	token->next_token = NULL;
 	token->tok_nb = minishell->lexer->tok_count;
 	minishell->lexer->tok_count++;

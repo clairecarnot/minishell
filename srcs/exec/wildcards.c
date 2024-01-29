@@ -68,23 +68,31 @@ char	**wildcards(char **args, t_wildcard *wildc)
 	return (closedir(d), free_tab(wildc->added_args), args);//c'est verifie
 }
 
-t_wildcard	*init_wildc(t_wil *wil)
+int	same_len(char **args, t_list *w)
 {
-	t_wildcard	*wildc;
+	int		size_w;
+	int		a;
+	int		i;
+	int		j;
+	t_list	*tmp;
 
-	wildc = ft_calloc(sizeof(t_wildcard), 1);
-	if (!wildc)
-		return (NULL);
-	wildc->i = 0;
-	wildc->size = 0;
-	wildc->index = 0;
-	wildc->tmp_args = NULL;
-	wildc->wil = wil;
-	wildc->tab_w = NULL;
-	wildc->added_args = 0;
-	wildc->new_args = 0;
-	wildc->j = -1;
-	return (wildc);
+	tmp = w;
+	size_w = ft_lstsize(tmp);
+	a = 0;
+	i = 0;
+	while (args[i])
+	{
+		j = 0;
+		while (args[i][j])
+		{
+			j++;
+			a++;
+		}
+		i++;
+	}
+	if (a != size_w)
+		return (0);
+	return (1);
 }
 
 int	cmd_wildcard(t_cmd *cmd, t_wil *wil)
@@ -94,11 +102,11 @@ int	cmd_wildcard(t_cmd *cmd, t_wil *wil)
 	wildc = init_wildc(wil);
 	if (!wildc) // c'est verifie
 		return (1);
+	if (!same_len(cmd->args, wil->w))
+		return (free(wildc), 0);
 	while (cmd->args[wildc->index])
 	{
-		wildc->i = wildc->index;
-		wildc->size = ft_strlen(cmd->args[wildc->index]);
-		wildc->tmp_args = NULL;
+		re_init_wildc(wildc, cmd);
 		if (has_asterisk(cmd->args[wildc->index]))
 		{
 			wildc->tmp_args = copy_args(cmd->args);

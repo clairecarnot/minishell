@@ -55,7 +55,7 @@ int		case_w_dol(t_ms *ms, int qtype, t_dw *dw);
 t_lexer	*init_lexer(char *s);
 t_token	*init_token(t_ms *minishell, char *value, t_type type);
 // t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_dol *dol);
-t_token	*init_tokwdol(t_ms *minishell, char *value, t_type type, t_dw *dw);
+t_token	*init_tokwdol(t_ms *minishell, t_type type, t_dw *dw);
 
 //--------------------- lexer_error.c ----------------------
 int		check_par(t_ms *ms);
