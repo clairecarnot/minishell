@@ -172,6 +172,7 @@ t_ms	*init_ms(char **env)
 	minishell->i = 0;//index lexer pour norme
 	minishell->j = 0;//lexer pour norme
 	minishell->i_w = 0;
+	minishell->value = NULL;
 	minishell->a = 0;//a enlever
 	return (minishell);
 }

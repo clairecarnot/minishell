@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/01 14:34:23 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/26 11:30:31 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/29 12:37:10 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,14 @@ t_token	*lexer_next_token_2(t_ms *minishell, t_lexer *lexer)
 	else if (lexer->src[lexer->cur_pos] == '>')
 		return (advance(lexer), init_token(minishell, ">", T_GREAT));
 	else if (lexer->src[lexer->cur_pos] == '\'')
-		return (parse_quotes_word(minishell, 39, NULL));
+		return (parse_quotes_word(minishell, 39));
 	else if (lexer->src[lexer->cur_pos] == '\"')
-		return (parse_quotes_word(minishell, 34, NULL));
+		return (parse_quotes_word(minishell, 34));
 	else if (ft_ischar(lexer->src[lexer->cur_pos], 0))
 	{
 		qtype = first_quote(minishell->lexer);
 		minishell->nb_q = 2;
-		return (parse_quotes_word(minishell, qtype, NULL));
+		return (parse_quotes_word(minishell, qtype));
 	}
 	return (NULL);
 }
@@ -116,7 +116,6 @@ int	lexer(t_ms *minishell, char *s)
 	
 	token_add_back(&minishell->lexer->token_lst, \
 	init_token(minishell, "\0", T_EOF));
-	
 	if (error_in_lexer(minishell) != 0)
 		return (1);
 	return (0);

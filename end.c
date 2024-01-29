@@ -188,17 +188,20 @@ void	free_root_ast(t_ast *root)
 
 void    free_wil_dol(t_ms *ms) 
 {     
-     dprintf(2, "free dol\n");
+    //  dprintf(2, "free dol\n");
         t_token *tmp;          
       
         tmp = ms->cur_tok;     
         while (tmp)         
         {
-                if (tmp->dol)  
-                        dol_free(&tmp->dol);            
-             if (tmp->wil)  
-                     wil_free(&tmp->wil);
-                tmp = tmp->next_token;          
+            if (tmp->dol)
+            {
+				// dprintf(2, "free tmp->dol\n");
+				dol_free(&tmp->dol);            
+			}
+			if (tmp->wil)  
+				wil_free(&tmp->wil);
+            tmp = tmp->next_token;          
         }
         // if (ms->cur_tok->wil)
         //         wil_free(&ms->cur_tok->wil);
