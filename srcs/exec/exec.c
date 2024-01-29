@@ -80,11 +80,11 @@ int	pre_exec(t_ms *ms)
 		return (ms->exit_code);
 	exit_code = execute(ms->root, ms);
 	if (dup2(ms->in, STDIN_FILENO) == -1)
-		return (perror("dup2 failed"), ms->exit_code = errno);
+		return (kill_loop(ms), perror("dup2 failed"), ms->exit_code = errno);
 	if (dup2(ms->out, STDOUT_FILENO) == -1)
-		return (perror("dup2 failed"), ms->exit_code = errno);
+		return (kill_loop(ms), perror("dup2 failed"), ms->exit_code = errno);
 	if (exit_code)
-		return (exit_code);
+		return (kill_loop(ms), exit_code);
 	wait_loop(ms);
 	return (ms->exit_code);
 }

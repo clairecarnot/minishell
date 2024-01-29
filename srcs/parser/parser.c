@@ -48,7 +48,7 @@ t_ast	*term(t_ms *ms)
 	t_ast	*node;
 	t_ast	*middle_node;
 
-	middle_node = NULL;
+	node = NULL;
 	if (ms->cur_tok && ms->cur_tok->type == T_LPAR)
 		node = handle_par(ms);
 	else if (ms->cur_tok)

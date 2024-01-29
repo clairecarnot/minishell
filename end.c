@@ -119,8 +119,8 @@ void	redirs_free(t_redirs **lst)
 			tmp = ptr->next_redir;
 			if (ptr->filename)
 				free(ptr->filename);
-//			if (ptr->dol)
-//				dol_free(&ptr->dol);
+			if (ptr->dol)
+				dol_free(&ptr->dol);
 			free(ptr);
 			ptr = tmp;
 		}

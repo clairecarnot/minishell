@@ -112,7 +112,11 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 int	args_redef(t_cmd *cmd, int i, int j, int data[5])
 {
 	if (!cmd->args[i])
+	{
+		while (cmd->args[++i])
+			free(cmd->args[i]);
 		return (1);
+	}
 	if (i == 0 && contains_spc(cmd->args[i], j, data))
 		cmd->args = redefine_args(cmd, i, j, data);
 	if (!cmd->args)

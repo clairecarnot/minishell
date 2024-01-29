@@ -60,6 +60,7 @@ void	main_bis(t_ms *minishell)
 	{
 		if (!minishell->lexer)
 			free_minishell(minishell, 1);
+//		minishell->cur_tok = minishell->lexer->token_lst;
 		//print_token_lst(minishell->lexer->token_lst);
 		tmp = minishell->cur_tok;
 		if (parse(minishell) == -1)
