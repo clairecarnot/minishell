@@ -12,7 +12,7 @@ srcs/lexer/lexer_parse_word.c srcs/lexer/lexer_parse_word2.c \
 srcs/lexer/lexer_parse_word_wil.c srcs/lexer/lexer_parse_word_dol.c \
 srcs/parser/parser.c srcs/parser/parser_utils.c \
 srcs/parser/handle_cmds.c srcs/parser/handle_redirs.c \
-srcs/env/env.c srcs/env/exp.c srcs/env/wkdirs.c \
+srcs/env/env.c srcs/env/noenv.c srcs/env/exp.c srcs/env/wkdirs.c \
 srcs/signals/parent_sig.c srcs/signals/child_hd_sig.c \
 srcs/exec/exec.c srcs/exec/clear_exec.c srcs/exec/cmd_exec.c srcs/exec/cmd_exec_bis.c \
 srcs/exec/cmd_path.c \

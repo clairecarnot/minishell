@@ -1,4 +1,3 @@
-
 #include "../../include/env.h"
 
 /*
@@ -62,39 +61,23 @@ t_list	*lst_dup(t_list *lst_tocpy)
 	return (new);
 }
 
-void	ft_printlst(t_list *lst)// temporaire
-{
-	t_list *tmp;
-
-	tmp = lst;
-	while (tmp)
-	{
-		printf("%s\n", (char *)tmp->content);
-		tmp = tmp->next;
-	}
-}
-
 void	init_exp_noenv(t_ms *ms)
 {
 	char	*content;
 	char	*var;
 	t_list	*new_lst;
-//	t_list	*tmp;
-//	t_list	*tmp2;
 
-//	tmp = ms->exp;
-//	tmp2 = ms->exp;
-	var = getvar_env(ms, NULL,"OLDPWD");
-	if (!var)// si on est dans le cas env -i
+	var = getvar_env(ms, NULL, "OLDPWD");
+	if (!var)
 	{
 		content = ft_strdup("OLDPWD");
-		if (!content)// a verifier
-			free_minishell(ms, 1);
+		if (!content)
+			free_init_workdir(ms);
 		new_lst = ft_lstnew(content);
-		if (!new_lst)// a verifier
+		if (!new_lst)
 		{
 			free(content);
-			free_minishell(ms, 1);
+			free_minishell(ms, 255);
 		}
 		ft_lstadd_front(&ms->exp, new_lst);
 	}
@@ -109,7 +92,6 @@ void	init_exp_noenv(t_ms *ms)
 
 int	init_exp(t_ms *ms)
 {
-
 	t_list	*lst;
 	t_list	*suiv;
 
@@ -131,6 +113,5 @@ int	init_exp(t_ms *ms)
 	}
 	add_qvar_lst(ms, ms->exp);
 	init_exp_noenv(ms);
-	// ft_printlst(ms->exp);
 	return (0);
 }

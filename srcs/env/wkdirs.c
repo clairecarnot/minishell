@@ -6,11 +6,28 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:44:11 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/16 17:36:01 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/30 11:25:28 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/env.h"
+
+void	free_init_workdir(t_ms *ms)
+{
+	if (ms->env)
+		ft_lstfree(&ms->env);
+	if (ms->exp)
+		ft_lstfree(&ms->exp);
+	if (ms->wkdir)
+		free(ms->wkdir);
+	if (ms->old_wkdir)
+		free(ms->old_wkdir);
+	if (ms->home)
+		free(ms->home);
+	if (ms)
+		free(ms);
+	exit(1);
+}
 
 /*
  * is_var_in_env
@@ -44,7 +61,7 @@ void	init_oldwkdir(t_ms *ms, int i)
 			{
 				ms->old_wkdir = ft_strdup(tmp->content + 7);
 				if (!ms->old_wkdir)
-					prefree_minishell(ms, NULL);// c'est verifie
+					prefree_minishell(ms, NULL);
 			}
 			tmp = tmp->next;
 		}
@@ -53,7 +70,7 @@ void	init_oldwkdir(t_ms *ms, int i)
 	{
 		ms->old_wkdir = ft_strdup(ms->wkdir);
 		if (!ms->old_wkdir)
-			prefree_minishell(ms, NULL);// c'est verifie
+			free_init_workdir(ms);
 	}
 }
 
@@ -68,7 +85,7 @@ void	init_home(t_ms *ms)
 		{
 			ms->home = ft_strdup(tmp->content + 5);
 			if (!ms->home)
-				free_minishell(ms, 1);// c'est verifie
+				free_init_workdir(ms);
 			return ;
 		}
 		tmp = tmp->next;
@@ -78,15 +95,15 @@ void	init_home(t_ms *ms)
 
 /*
  * init_workdir
- * Saves /or creates the env vars PWD and OLDPWD in case they don't exist or are unset (useful for cd builtin)
+ * Saves /or creates the env vars PWD and OLDPWD in case 
+ * they don't exist or are unset (useful for cd builtin)
  * Calls init_oldworkdir (for norminette purpose)
  */
-
 void	init_workdir(t_ms *ms, int i)
 {
 	char	buffer[PATH_MAX];
 	char	*wd;
-	
+
 	if (ms->wkdir)
 		free(ms->old_wkdir);
 	init_oldwkdir(ms, i);
@@ -96,11 +113,8 @@ void	init_workdir(t_ms *ms, int i)
 		free(ms->wkdir);
 		ms->wkdir = ft_strdup(wd);
 		if (!ms->wkdir)
-			prefree_minishell(ms, NULL);// c'est verifie
+			free_init_workdir(ms);
 	}
 	if (i == 0)
 		init_home(ms);
-	// dprintf(2, "ms->oldwkdir = %s\n", ms->old_wkdir);
-	// dprintf(2, "ms->wkdir = %s\n", ms->wkdir);
-	// dprintf(2, "ms->home = %s\n", ms->home);
 }
