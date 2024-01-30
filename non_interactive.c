@@ -9,7 +9,7 @@ void	non_interactive_mode_bis(t_ms *minishell)
 	if (!lexer(minishell, minishell->line))
 	{
 		if (!minishell->lexer)
-			free_minishell(minishell, 1);
+			free_minishell(minishell, 1); //ms exit code?
 //		minishell->cur_tok = minishell->lexer->token_lst;
 		tmp = minishell->cur_tok;
 		if (parse(minishell) == -1)
@@ -25,7 +25,7 @@ void	non_interactive_mode_bis(t_ms *minishell)
 		{
 			minishell->cur_tok = tmp;
 			(pre_exec(minishell), get_next_line(0, 1));
-			(free_exit(minishell), exit(0));
+			(free_exit(minishell), exit(minishell->exit_code));
 		}
 	}
 }
@@ -40,6 +40,7 @@ int	non_interactive_mode(t_ms *minishell, char **env)
 	line[ft_strlen(line) - 1] = '\0';
 	minishell = init_ms(env);
 	minishell->line = line;
+	minishell->previous_exit_code = minishell->exit_code; //A CHECKER
 	if (!check_error_prelexer(minishell->line))
 		non_interactive_mode_bis(minishell);
 	(get_next_line(0, 1), exit(1));

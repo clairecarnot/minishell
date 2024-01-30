@@ -1,5 +1,36 @@
 #include "../../include/exec.h" 
 
+char	**exp_redef_cmdargs(t_cmd *cmd, int i, int data[5])
+{
+	char	**new_args;
+	int		size;
+	int		k;
+
+	k = 0;
+	size = tab_size(cmd->args);
+	new_args = ft_calloc(size, sizeof(char *));
+	if (!new_args)
+		return (free_tab(cmd->args), NULL);
+	while (k < i)
+	{
+		new_args[k] = ft_strdup(cmd->args[k]);
+		if (!new_args[k])
+			return (free_tab(new_args), free_tab(cmd->args), NULL);
+		k++;
+	}
+	while (cmd->args[k + 1])
+	{
+		new_args[k] = ft_strdup(cmd->args[k + 1]);
+		if (!new_args[k])
+			return (free_tab(new_args), free_tab(cmd->args), NULL);
+		k++;
+	}
+	new_args[k] = NULL;
+	data[3] = 2;
+	data[4] = ft_strlen(cmd->args[i - 1]) - 1;
+	return (free_tab(cmd->args), new_args);
+}
+
 void	redefine_datapos(char **new_args, int i, int j, int data[5])
 {
 	data[3] = 1;
@@ -119,6 +150,8 @@ int	args_redef(t_cmd *cmd, int i, int j, int data[5])
 	}
 	if (i == 0 && contains_spc(cmd->args[i], j, data))
 		cmd->args = redefine_args(cmd, i, j, data);
+	else if (i != 0 && ft_strlen(cmd->args[i]) == 0)
+		cmd->args = exp_redef_cmdargs(cmd, i, data);
 	if (!cmd->args)
 		return (1);
 	return (0);

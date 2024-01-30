@@ -51,7 +51,7 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		save_ptrs(&tmp_d, &tmp_c, &node->dol->d, &node->dol->c);
 	}
 	if (redef_cmdargs(ms, cmd) != 0)
-		return (1);
+		return (ms->exit_code);
 	return (node_to_cmd_bis(ms, node, cmd, tmp_w));
 }
 

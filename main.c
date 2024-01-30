@@ -61,7 +61,8 @@ char	*display_prompt(t_ms *ms)
 			free(ms);
 		exit(ms->exit_code);
 	}
-	add_history(line);
+	if (line[0] != '\0')
+		add_history(line);
 	return (line);
 }
 

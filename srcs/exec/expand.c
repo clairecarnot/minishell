@@ -42,10 +42,15 @@ int	init_data(int data[5], int *j)
 
 void	update_expand_pos(int data[5], int *i, int *j, t_dol **dol)
 {
-	if (data[3])
+	if (data[3] == 1)
 	{
 		*i += 1;
 		*j = data[4] - 2;
+	}
+	else if (data[3] == 2)
+	{
+		*i -= 1;
+		*j = data[4];
 	}
 	else
 	{
