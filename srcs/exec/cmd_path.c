@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/29 09:55:32 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/31 14:21:52 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,25 +33,14 @@ int	abs_rel_path(t_ms *ms, t_cmd *cmd)
 	return (0);
 }
 
-char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path,
-		char **env)
+char	*get_bin_path_underscore(t_ms *ms, t_cmd *cmd, char *env_path)
 {
-	int		i;
 	char	*env_p;
 
-	i = 0;
-	while (env && env[i])
-	{
-		if (ft_strncmp("_", env[i], 1) == 0)
-		{
-			env_p = ft_strdup("/usr/bin/");
-			if (!env_p)
-				free_path_cmd_ms(ms, cmd, env_path);
-			return (env_p);
-		}
-		i++;
-	}
-	return (NULL);
+	env_p = ft_strdup("/usr/bin/");
+	if (!env_p)
+		free_path_cmd_ms(ms, cmd, env_path);
+	return (env_p);
 }
 
 void	free_path_cmd_ms(t_ms *ms, t_cmd *cmd, char *env_path)
@@ -81,7 +70,7 @@ char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd)
 		i++;
 	}
 	if (!env_path)
-		env_path = get_bin_path_underscore(ms, cmd, env_path, env);
+		env_path = get_bin_path_underscore(ms, cmd, env_path);
 	binaries = ft_split(env_path, ':');
 	if (!binaries)
 		free_path_cmd_ms(ms, cmd, env_path);
