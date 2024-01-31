@@ -54,7 +54,9 @@ int	redef_cmdargs(t_ms *ms, t_cmd *cmd)
 	int		i;
 
 	i = 0;
-	while (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0
+	if (ms->flag_q)
+		return (1);
+	if (cmd->args && cmd->args[i] && ft_strlen(cmd->args[i]) == 0
 		&& !ms->flag_q)
 	{
 		free(cmd->args[i]);
@@ -65,7 +67,7 @@ int	redef_cmdargs(t_ms *ms, t_cmd *cmd)
 	{
 		if (!ms->flag_q)
 			*cmd->args = NULL;
-		return (2);
+		return (1);
 	}
 	if (i > 0)
 		return (redef_cmdargs_bis(ms, cmd, i));

@@ -2,7 +2,8 @@
 # define SIGNALS_H
 
 # include "general.h"
-extern int      g_exit_code;
+
+extern int	g_exit_code;
 
 //----------------------- parent_sig.c ------------------------
 void	signal_newprompt(int signal);

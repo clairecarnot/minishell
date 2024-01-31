@@ -62,8 +62,9 @@ int	exec_echo(t_ms *ms, t_cmd *cmd)
 		else
 		{
 			ft_putstr_fd(cmd->args[i], 1);
-			if (cmd->args[i + 1] && ft_strlen(cmd->args[i + 1])
-				&& (cmd->args[i - 1] && ft_strlen(cmd->args[i - 1])))
+//			if (cmd->args[i + 1] && ft_strlen(cmd->args[i + 1])
+//				&& (cmd->args[i - 1] && ft_strlen(cmd->args[i - 1])))
+			if (cmd->args[i + 1])
 				write(STDOUT_FILENO, " ", 1);
 		}
 	}

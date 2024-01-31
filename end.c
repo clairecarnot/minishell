@@ -35,6 +35,7 @@ a la ligne suivante) ne pas les free)
 
 void	free_minishell_bis(t_ms *ms, int exit_status, int exit_code)
 {
+	(void) exit_code;
 	if (ms->env && exit_status != 0)
 		ft_lstfree(&ms->env);
 	if (ms->exp && exit_status != 0)
@@ -50,10 +51,12 @@ void	free_minishell_bis(t_ms *ms, int exit_status, int exit_code)
 	ms->line = NULL;
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
+	ms->flag_q = 0;
 	if (ms && exit_status != 0)
 		free(ms);
 	if (exit_status != 0)
-		exit(exit_code);
+		exit(exit_status);
+//		exit(exit_code);
 }
 
 void	free_minishell(t_ms *ms, int exit_status)
