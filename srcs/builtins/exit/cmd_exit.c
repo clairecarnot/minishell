@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/29 19:39:39 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/01/31 09:39:03 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	free_exit_bis(t_ms *ms)
 	ms->line = NULL;
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
+	ms->flag_q = 0;
 	if (ms)
 		free(ms);
 }
