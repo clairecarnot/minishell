@@ -83,7 +83,7 @@ int	msg_do_cmd(t_ms *ms, t_cmd *cmd)
 	if (cmd->is_dir)
 	{
 		(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
-			ft_putstr_fd(": Is a directory\n", 2));
+			ft_putstr_fd(": is a directory\n", 2));
 		(free_cmd(cmd), free_minishell(ms, 126));
 	}
 	else if (cmd->abs_or_rel)

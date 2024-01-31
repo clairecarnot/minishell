@@ -1,11 +1,13 @@
 #include "../../include/exec.h"
 
-void	hdoc_ctrl_d(t_ms *ms, int nb_line)
+void	hdoc_ctrl_d(t_ms *ms, char *filename, int nb_line)
 {
 	ms->exit_code = 0;
 	ft_putstr_fd("minishell: warning: here-document at line ", 2);
 	ft_putnbr_fd(nb_line, 2);
-	ft_putstr_fd(" delimited by end-of-file (wanted `lim')\n", 2);
+	ft_putstr_fd(" delimited by end-of-file (wanted `", 2);
+	ft_putstr_fd(filename, 2);
+	ft_putstr_fd("')\n", 2);
 }
 
 int	hdoc_sigint(int fd)
@@ -28,7 +30,7 @@ int	hdoc_create(t_ms *ms, int fd, char *filename, int limlen)
 			return (free_if(line), hdoc_sigint(fd));
 		if (!line)
 		{
-			hdoc_ctrl_d(ms, nb_line);
+			hdoc_ctrl_d(ms, filename, nb_line);
 			break ;
 		}
 		if (ft_strncmp(line, filename, limlen) == 0
