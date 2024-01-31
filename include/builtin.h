@@ -42,13 +42,11 @@ void		replace_in_env(t_ms *ms, t_cmd *cmd, char *content);
 //----------------------- cmd_export_join_env.c ----------------------
 char		*dup_after_equal(t_ms *ms, t_cmd *cmd, char *s, int i);
 char		*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd);
-t_list		*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd);
 void		join_in_env(t_ms *ms, t_cmd *cmd, char *content);
 
 //----------------------- cmd_export_join_exp.c ----------------------
 char		*sjoin_noequal(char *s1, char *s2, int i);
 char		*sjoin_wquote(char *s1, char *s2, int i);
-t_list		*join_in_exp3(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd);
 char		*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct, t_cmd *cmd);
 void		join_in_exp(t_ms *ms, t_cmd *cmd, char *content);
 

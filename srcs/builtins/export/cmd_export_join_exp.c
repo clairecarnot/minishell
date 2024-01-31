@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:45:56 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/31 11:03:23 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:05:40 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,20 +70,6 @@ char	*sjoin_wquote(char *s1, char *s2, int i)
 	return (dest);
 }
 
-t_list	*join_in_exp3(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd)
-{
-	t_list	*new;
-
-	free(cpy_ct);
-	new = ft_lstnew(join_ct);// c'est verifie 2
-	if (!new)
-	{
-		free_cmd(cmd);
-		prefree_minishell(ms, join_ct);
-	}
-	return (new);
-}
-
 char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct, t_cmd *cmd)
 {
 	char	*join_ct;
@@ -105,25 +91,19 @@ void	join_in_exp(t_ms *ms, t_cmd *cmd, char *content)
 	char	*cpy_ct;
 	char	*join_ct;
 	t_list	*exp_tmp;
-	t_list	*exp_tmp2;
-	t_list	*new;
 
 	cpy_ct = dup_after_equal(ms, cmd, content, 0);// c'est protege 2
 	exp_tmp = ms->exp;
-	exp_tmp2 = ms->exp;
 	while (exp_tmp)
 	{
 		if (ft_strncmp(exp_tmp->content, content, slen_equal(content)) == 0)
 		{
 			join_ct = join_in_exp2(ms, exp_tmp, cpy_ct, cmd);
-			new = join_in_exp3(ms, cpy_ct, join_ct, cmd);
-			new->next = exp_tmp->next;
+			free(cpy_ct);
 			free(exp_tmp->content);
-			free(exp_tmp);
-			exp_tmp2->next = new;
+			exp_tmp->content = join_ct;
 			return ;
 		}
-		exp_tmp2 = exp_tmp;
 		exp_tmp = exp_tmp->next;
 	}
 }

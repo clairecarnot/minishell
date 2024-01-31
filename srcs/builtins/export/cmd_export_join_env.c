@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:34 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/25 11:47:44 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/31 16:05:44 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,44 +66,26 @@ char	*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd)
 	return (dest);
 }
 
-t_list	*join_in_env2(t_ms *ms, char *cpy_ct, char *join_ct, t_cmd *cmd)
-{
-	t_list	*new;
-
-	free(cpy_ct);
-	new = ft_lstnew(join_ct);// c'est verifie 2
-	if (!new)
-	{
-		free(join_ct);
-		prefree_minishell_cmd(ms, cmd);
-	}
-	return (new);
-}
-
+//unset _ SHLVL PWD OLDPWD LD_LIBRARY_PATH  GLIBCPP_FORCE_NEW GLIBCXX_FORCE_NEW LD_PRELOAD
+//unset GLIBCPP_FORCE_NEW GLIBCXX_FORCE_NEW LD_PRELOAD
 void	join_in_env(t_ms *ms, t_cmd *cmd, char *content)
 {
 	char	*cpy_ct;
 	char	*join_ct;
 	t_list	*env_tmp;
-	t_list	*env_tmp2;
-	t_list	*new;
 
 	cpy_ct = dup_after_equal(ms, cmd, content, 0);// c'est verifie 1
 	env_tmp = ms->env;
-	env_tmp2 = ms->env;
 	while (env_tmp)
 	{
 		if (ft_strncmp(env_tmp->content, content, slen_equal(content)) == 0)
 		{
 			join_ct = ft_sjoin(ms, env_tmp->content, cpy_ct, cmd);
-			new = join_in_env2(ms, cpy_ct, join_ct, cmd);
-			new->next = env_tmp->next;
+			free(cpy_ct);
 			free(env_tmp->content);
-			free(env_tmp);
-			env_tmp2->next = new;
+			env_tmp->content = join_ct;
 			return ;
 		}
-		env_tmp2 = env_tmp;
 		env_tmp = env_tmp->next;
 	}
 }
