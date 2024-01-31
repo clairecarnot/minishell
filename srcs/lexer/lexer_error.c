@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:46:00 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/29 12:40:20 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:16:19 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int	check_par(t_ms *ms)
 		tok_lst = tok_lst->next_token;
 	}
 	if (lpar != rpar)
-		return (printf("parenthesis error\n"), 1);
+	{
+		
+		return (ft_putstr_fd("minishell: parenthesis error\n", 2), 1);
+	}
 	return (0);
 }
 
