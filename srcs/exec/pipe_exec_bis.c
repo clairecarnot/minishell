@@ -58,8 +58,8 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		(free_cmd(cmd), free_minishell(ms, exit_code));
-	if (cmd->redir && !cmd->valid_redir)
-		(free_cmd(cmd), free_exit(ms), exit(ms->exit_code));
+//	if (cmd->redir && !cmd->valid_redir)
+//		(free_cmd(cmd), free_exit(ms), exit(ms->exit_code));
 	return (exec_cmdpipe_bis(ms, env, cmd));
 }
 

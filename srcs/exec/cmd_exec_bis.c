@@ -80,27 +80,25 @@ int	msg_do_cmd(t_ms *ms, t_cmd *cmd)
 	if (!cmd->args || !cmd->args[0] || !ft_strlen(cmd->args[0]))
 	{
 		if (ms->flag_q == 1)
+		{
 			ft_putstr_fd("minishell: : command not found\n", 2);
-		(free_cmd(cmd), free_minishell(ms, 127));
+			(free_cmd(cmd), free_minishell(ms, 127));
+		}
+		else
+			(free_cmd(cmd), free_exit(ms), exit(0));
 	}
 	if (cmd->is_dir)
-	{
-		(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
-			ft_putstr_fd(": is a directory\n", 2));
-		(free_cmd(cmd), free_minishell(ms, 126));
-	}
+		return (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
+			ft_putstr_fd(": Is a directory\n", 2), free_cmd(cmd),
+			free_minishell(ms, 126), 126);
 	else if (cmd->abs_or_rel)
-	{
-		(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
-			ft_putstr_fd(": No such file or directory\n", 2));
-		(free_cmd(cmd), free_minishell(ms, 127));
-	}
+		return (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
+			ft_putstr_fd(": No such file or directory\n", 2), free_cmd(cmd),
+			free_minishell(ms, 127), 127);
 	else
-	{
-		(ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
-			ft_putstr_fd(": command not found\n", 2));
-		(free_cmd(cmd), free_minishell(ms, 127));
-	}
+		return (ft_putstr_fd("minishell: ", 2), ft_putstr_fd(cmd->args[0], 2),
+			ft_putstr_fd(": command not found\n", 2), free_cmd(cmd),
+			free_minishell(ms, 127), 127);
 	return (0);
 }
 

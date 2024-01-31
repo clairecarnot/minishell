@@ -118,8 +118,11 @@ int	main(int argc, char **argv, char **env)
 			minishell->exit_code = 130;
 			g_exit_code = 0;
 		}
-		minishell->previous_exit_code = minishell->exit_code;
-		minishell->exit_code = 0;
+		if (minishell->line[0] != '\0')
+		{
+			minishell->previous_exit_code = minishell->exit_code;
+			minishell->exit_code = 0;
+		}
 		if (!check_error_prelexer(minishell->line))
 			main_bis(minishell);
 		init_workdir(minishell, 1);

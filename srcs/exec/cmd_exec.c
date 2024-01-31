@@ -2,6 +2,8 @@
 
 int	node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w)
 {
+	if (redef_cmdargs(ms, cmd) != 0)
+		return (ms->exit_code);
 	if (node->wil)
 	{
 		if (cmd_wildcard(cmd, node->wil) == 1)
@@ -41,6 +43,8 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 	cmd->args = lst_to_tab(node->args);
 	if (!cmd->args)
 		return (ms->exit_code = 255, 255);
+	if (cmd->args && cmd->args[0] && ft_strlen(cmd->args[0]) == 0)
+		return (0);
 	if (node->dol)
 	{
 		if (cmd_expand(ms, cmd, node->dol) == 1)
@@ -50,8 +54,6 @@ int	node_to_cmd(t_ms *ms, t_ast *node, t_cmd *cmd)
 		}
 		save_ptrs(&tmp_d, &tmp_c, &node->dol->d, &node->dol->c);
 	}
-	if (redef_cmdargs(ms, cmd) != 0)
-		return (ms->exit_code);
 	return (node_to_cmd_bis(ms, node, cmd, tmp_w));
 }
 
