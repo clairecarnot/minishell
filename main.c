@@ -42,8 +42,10 @@ t_ms	*init_ms(char **env)
 char	*display_prompt(t_ms *ms)
 {
 	char	*line;
+	int	exit_code;
 
 	line = NULL;
+	exit_code = ms->exit_code;
 	line = readline("minishell$ ");
 	if (!line)
 	{
@@ -59,7 +61,8 @@ char	*display_prompt(t_ms *ms)
 			free(ms->home);
 		if (ms)
 			free(ms);
-		exit(ms->exit_code);
+		ft_putstr_fd("exit", 1);
+		exit(exit_code);
 	}
 	if (line[0] != '\0')
 		add_history(line);
