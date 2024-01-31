@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/10 12:19:15 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/29 12:41:03 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/01/31 12:16:25 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ int	check_quotes(char *str)
 int	check_error_prelexer(char *line)
 {
 	if (check_quotes(line) != 0)
-		return (printf("quotes error\n"), 1);
+	{
+		free(line);
+		return (ft_putstr_fd("minishell: quotes error\n", 2), 1);
+	}
 	return (0);
 }
