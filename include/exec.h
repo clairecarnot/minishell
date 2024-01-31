@@ -7,6 +7,7 @@
 int				exec_andif(t_ast *node, t_ms *ms);
 int				exec_orif(t_ast *node, t_ms *ms);
 int				execute(t_ast *node, t_ms *ms);
+void			wait_loop(t_ms *ms);
 int				pre_exec(t_ms *ms);
 
 //----------------------- cmd_hdname.c ------------------------

@@ -84,6 +84,6 @@ int	pre_exec(t_ms *ms)
 		return (kill_loop(ms), perror("dup2 failed"), ms->exit_code = errno);
 	if (exit_code)
 		return (kill_loop(ms), exit_code);
-	wait_loop(ms);
+//	wait_loop(ms);
 	return (ms->exit_code);
 }

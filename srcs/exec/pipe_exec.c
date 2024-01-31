@@ -120,5 +120,11 @@ int	exec_pipeline(t_ast *node, t_ms *ms)
 	close_if(&tmp_fd);
 	close_if(&fd[0]);
 	close_if(&fd[1]);
-	return (ms->exit_code = exit_code);
+	if (exit_code == 255)
+		(kill_loop(ms), free_minishell(ms, 255));
+	if (exit_code != 0)
+		return (kill_loop(ms), exit_code);
+	wait_loop(ms);
+	return (ms->exit_code);
+//	return (ms->exit_code = exit_code);
 }
