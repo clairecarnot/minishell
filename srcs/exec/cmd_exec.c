@@ -131,8 +131,8 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		return (kill_loop(ms), free_cmd(cmd), ms->exit_code = exit_code);
-	replace_var_underscore(ms, cmd);
 	wait_loop(ms);
+	replace_var_underscore(ms, cmd);
 	return (free_cmd(cmd), ms->exit_code);
 //	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }

@@ -49,20 +49,28 @@ void	wait_loop(t_ms *ms)
 	while (tmp)
 	{
 		waitpid(tmp->n, &status, 0);
+		if (WIFSIGNALED(status) && print)
+		{
+			if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit (core dumped)\n", 2);
+			if (WTERMSIG(status) == SIGINT)
+				ft_putstr_fd("\n", 2);
+			print = 0;
+		}
 		tmp = tmp->next;
 	}
 	if (WIFEXITED(status))
 		ms->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-	{
+//	{
 		ms->exit_code = 128 + WTERMSIG(status);
-		if (print)
-		{
-			if (WTERMSIG(status) == SIGQUIT)
-				ft_putstr_fd("Quit (core dumped)\n", 2);
-			print = 0;
-		}
-	}
+//		if (print)
+//		{
+//			if (WTERMSIG(status) == SIGQUIT)
+//				ft_putstr_fd("Quit (core dumped)\n", 2);
+//			print = 0;
+//		}
+//	}
 }
 
 int	pre_exec(t_ms *ms)

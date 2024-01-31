@@ -11,8 +11,9 @@ int	g_exit_code = 0;
 
 void	postfork_ms_sig(int signal)
 {
-	if (signal == SIGINT)
-		ft_putstr_fd("\n", 2);
+	(void)signal;
+//	if (signal == SIGINT)
+//		ft_putstr_fd("\n", 2);
 }
 
 void	ms_signals(void)

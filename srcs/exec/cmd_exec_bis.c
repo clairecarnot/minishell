@@ -111,7 +111,7 @@ void	replace_var_underscore(t_ms *ms, t_cmd *cmd)
 	tmp = ms->env;
 	while (tmp)
 	{
-		if (ft_strncmp("_=/usr/bin", tmp->content, 10) == 0)
+		if (ft_strncmp("_=/", tmp->content, 3) == 0)
 		{
 			if (cmd->args[0] && cmd->args[0][0] == '/')
 				new_content = ft_strjoin("_=", cmd->args[0]);
@@ -122,7 +122,7 @@ void	replace_var_underscore(t_ms *ms, t_cmd *cmd)
 			if (!new_content)
 			{
 				free_cmd(cmd);
-				free_minishell(ms, 1);
+				free_minishell(ms, 255);
 			}
 			free(tmp->content);
 			tmp->content = new_content;
