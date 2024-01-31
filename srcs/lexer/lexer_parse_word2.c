@@ -46,7 +46,8 @@ int	count_dol_chars_in(t_ms *ms, int i)
 		&& (((ms->lexer->src[ms->lexer->cur_pos + i] >= '0' && ms->lexer->src[ms->lexer->cur_pos + i] <= '9')
 		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'A' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'Z') 
 		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'a' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'z'))
-		|| ms->lexer->src[ms->lexer->cur_pos + i] == '_')) 
+		|| ms->lexer->src[ms->lexer->cur_pos + i] == '_'
+		|| ms->lexer->src[ms->lexer->cur_pos + i] == '?')) 
 		// && ms->lexer->src[ms->lexer->cur_pos + i] != '$'
 		// && ms->lexer->src[ms->lexer->cur_pos + i] != '='
 		// && ms->lexer->src[ms->lexer->cur_pos + i] != '\"'
@@ -68,7 +69,8 @@ int	count_dol_chars_out(t_ms *ms, int i)
 		&& (((ms->lexer->src[ms->lexer->cur_pos + i] >= '0' && ms->lexer->src[ms->lexer->cur_pos + i] <= '9')
 		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'A' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'Z') 
 		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'a' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'z'))
-		|| ms->lexer->src[ms->lexer->cur_pos + i] == '_')) 
+		|| ms->lexer->src[ms->lexer->cur_pos + i] == '_'
+		|| ms->lexer->src[ms->lexer->cur_pos + i] == '?')) 
 		/*&& ms->lexer->src[ms->lexer->cur_pos + i] != '$'
 		&& ms->lexer->src[ms->lexer->cur_pos + i] != '='
 		&& ms->lexer->src[ms->lexer->cur_pos + i] != '\"'
