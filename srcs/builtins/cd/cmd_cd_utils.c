@@ -48,7 +48,7 @@ char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name)
 
 int	nosuchfile_cd(char *str)
 {
-	ft_putstr_fd("minishell: cd : ", 2);
+	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
 	return (1);

@@ -14,6 +14,7 @@ void	postfork_ms_sig(int signal)
 	(void)signal;
 //	if (signal == SIGINT)
 //		ft_putstr_fd("\n", 2);
+
 }
 
 void	ms_signals(void)
