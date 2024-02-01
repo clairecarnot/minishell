@@ -195,6 +195,7 @@ typedef struct s_ms
 	t_list		*hdlst;
 	int			i_w;
 	char		*value;
+	int			var_path;
 
 	int			a;
 }				t_ms;

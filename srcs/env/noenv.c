@@ -72,6 +72,10 @@ int	find_in_lst(t_list *env, char *var)
 
 void	check_noenv(t_ms *ms)
 {
+	if (!find_in_lst(ms->env, "PATH="))
+		ms->var_path = 0;
+	else
+		ms->var_path = 1;
 	if (!find_in_lst(ms->env, "PWD="))
 		add_pwd(ms);
 	if (!find_in_lst(ms->env, "SHLVL="))

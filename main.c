@@ -129,5 +129,6 @@ int	main(int argc, char **argv, char **env)
 //		minishell->a++;
 	}
 	free_minishell(minishell, 1);
+	
 	return (0);
 }

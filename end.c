@@ -52,6 +52,8 @@ void	free_minishell_bis(t_ms *ms, int exit_status, int exit_code)
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
 	ms->flag_q = 0;
+	if (exit_status)
+		rl_clear_history();
 	if (ms && exit_status != 0)
 		free(ms);
 	if (exit_status != 0)

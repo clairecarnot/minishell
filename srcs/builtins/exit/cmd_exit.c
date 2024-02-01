@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cmd_exit.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/02/01 12:11:55 by ccarnot          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../include/builtin.h"
 
 void	free_exit_bis(t_ms *ms)
@@ -26,6 +14,7 @@ void	free_exit_bis(t_ms *ms)
 	if (ms->hdlst)
 		ft_lstfree(&ms->hdlst);
 	ms->flag_q = 0;
+	rl_clear_history();
 	if (ms)
 		free(ms);
 }
