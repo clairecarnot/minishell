@@ -41,7 +41,7 @@ int	non_interactive_mode(t_ms *minishell, char **env)
 	minishell = init_ms(env);
 	minishell->line = line;
 	minishell->previous_exit_code = minishell->exit_code; //A CHECKER
-	if (!check_error_prelexer(minishell->line))
+	if (!check_error_prelexer(minishell))
 		non_interactive_mode_bis(minishell);
 	(get_next_line(0, 1), exit(1));
 }

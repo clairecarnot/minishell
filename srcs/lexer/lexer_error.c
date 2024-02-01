@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 10:46:00 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/31 12:16:19 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:49:57 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	check_par(t_ms *ms)
 	}
 	if (lpar != rpar)
 	{
-		
 		return (ft_putstr_fd("minishell: parenthesis error\n", 2), 1);
 	}
 	return (0);
@@ -44,6 +43,9 @@ int	check_par(t_ms *ms)
 int	error_in_lexer(t_ms *ms)
 {
 	if (check_par(ms) != 0)
+	{
+		ms->exit_code = 2;
 		return (1);
+	}
 	return (0);
 }

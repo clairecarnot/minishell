@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:03:19 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/31 10:46:17 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:24:20 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*dup_before_equal(t_ms *ms, t_cmd *cmd, char *s, t_list *new)
 	int		i;
 
 	dest = NULL;
-	dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie 2
+	dest = malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (!dest)
 		(ft_lstfree(&new), free_cmd(cmd), prefree_minishell(ms, NULL));
 	i = 0;
@@ -66,7 +66,7 @@ t_list	*add_to_exp0(char *content, char *cpy, char *cpy_ct)
 	new = NULL;
 	if (has_equal(content))
 		free(cpy);
-	new = ft_lstnew(cpy_ct);// c'est verifie 2
+	new = ft_lstnew(cpy_ct);
 	if (!new)
 		return (NULL);
 	return (new);
@@ -85,16 +85,16 @@ void	add_to_exp(t_ms *ms, t_cmd *cmd, char *content, char *cpy_ct)
 
 	cur = ms->exp;
 	prev = NULL;
-	cpy = ft_strdup_noplus(ms, cmd, content);// c'est verifie
-	cpy_ct = add_qvar(cpy, 0);// c'est verifie 2
+	cpy = ft_strdup_noplus(ms, cmd, content);
+	cpy_ct = add_qvar(cpy, 0);
 	if (!cpy_ct)
 		(free_cmd(cmd), prefree_minishell(ms, cpy));
 	new = add_to_exp0(content, cpy, cpy_ct);
 	if (!new)
-		(free_cmd(cmd), prefree_minishell(ms, cpy_ct));// c'est verifie 2
+		(free_cmd(cmd), prefree_minishell(ms, cpy_ct));
 	while (cur)
 	{
-		var_name = dup_before_equal(ms, cmd, cur->content, new);//c'est verifie 2
+		var_name = dup_before_equal(ms, cmd, cur->content, new);
 		if (ft_strncmp(var_name, content, slen_equal(content)) >= 0)
 			return (free(var_name), add_to_exp2(new, prev, &ms->exp));
 		free(var_name);

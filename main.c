@@ -123,7 +123,7 @@ int	main(int argc, char **argv, char **env)
 			minishell->previous_exit_code = minishell->exit_code;
 			minishell->exit_code = 0;
 		}
-		if (!check_error_prelexer(minishell->line))
+		if (!check_error_prelexer(minishell))
 			main_bis(minishell);
 		init_workdir(minishell, 1);
 //		minishell->a++;

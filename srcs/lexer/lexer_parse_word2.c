@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_parse_word2.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:32:26 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:37:41 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/lexer.h"
 #include "../libft/libft.h"
 
@@ -42,19 +54,17 @@ int	count_dol_chars_in(t_ms *ms, int i)
 	int	count;
 
 	count = 0;
-	if (ms->lexer->src[ms->lexer->cur_pos + i] && ms->lexer->src[ms->lexer->cur_pos + i] == '?')
+	if (ms->lexer->src[ms->lexer->cur_pos + i]
+		&& ms->lexer->src[ms->lexer->cur_pos + i] == '?')
 		return (1);
-	while (ms->lexer->src[ms->lexer->cur_pos + i]
-		&& (((ms->lexer->src[ms->lexer->cur_pos + i] >= '0' && ms->lexer->src[ms->lexer->cur_pos + i] <= '9')
-		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'A' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'Z') 
-		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'a' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'z'))
-		|| ms->lexer->src[ms->lexer->cur_pos + i] == '_'))
-		//|| ms->lexer->src[ms->lexer->cur_pos + i] == '?')) 
-		// && ms->lexer->src[ms->lexer->cur_pos + i] != '$'
-		// && ms->lexer->src[ms->lexer->cur_pos + i] != '='
-		// && ms->lexer->src[ms->lexer->cur_pos + i] != '\"'
-		// && ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0)
-		// && !ft_isand(ms->lexer->src, ms->lexer->cur_pos + i))
+	while (ms->lexer->src[ms->lexer->cur_pos + i] && \
+	(((ms->lexer->src[ms->lexer->cur_pos + i] >= '0' && \
+	ms->lexer->src[ms->lexer->cur_pos + i] <= '9') || \
+	(ms->lexer->src[ms->lexer->cur_pos + i] >= 'A' && \
+	ms->lexer->src[ms->lexer->cur_pos + i] <= 'Z') || \
+	(ms->lexer->src[ms->lexer->cur_pos + i] >= 'a' && \
+	ms->lexer->src[ms->lexer->cur_pos + i] <= 'z')) || \
+	ms->lexer->src[ms->lexer->cur_pos + i] == '_'))
 	{
 		i++;
 		count++;
@@ -67,20 +77,17 @@ int	count_dol_chars_out(t_ms *ms, int i)
 	int	count;
 
 	count = 0;
-	if (ms->lexer->src[ms->lexer->cur_pos + i] && ms->lexer->src[ms->lexer->cur_pos + i] == '?')
+	if (ms->lexer->src[ms->lexer->cur_pos + i]
+		&& ms->lexer->src[ms->lexer->cur_pos + i] == '?')
 		return (1);
-	while (ms->lexer->src[ms->lexer->cur_pos + i]
-		&& (((ms->lexer->src[ms->lexer->cur_pos + i] >= '0' && ms->lexer->src[ms->lexer->cur_pos + i] <= '9')
-		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'A' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'Z') 
-		|| (ms->lexer->src[ms->lexer->cur_pos + i] >= 'a' && ms->lexer->src[ms->lexer->cur_pos + i] <= 'z'))
-		|| ms->lexer->src[ms->lexer->cur_pos + i] == '_'))
-		/*|| ms->lexer->src[ms->lexer->cur_pos + i] == '?')) 
-		&& ms->lexer->src[ms->lexer->cur_pos + i] != '$'
-		&& ms->lexer->src[ms->lexer->cur_pos + i] != '='
-		&& ms->lexer->src[ms->lexer->cur_pos + i] != '\"'
-		&& ms->lexer->src[ms->lexer->cur_pos + i] != '\''
-		&& ft_ischar(ms->lexer->src[ms->lexer->cur_pos + i], 0)
-		&& !ft_isand(ms->lexer->src, ms->lexer->cur_pos + i))*/
+	while (ms->lexer->src[ms->lexer->cur_pos + i] && \
+	(((ms->lexer->src[ms->lexer->cur_pos + i] >= '0' && \
+	ms->lexer->src[ms->lexer->cur_pos + i] <= '9') || \
+	(ms->lexer->src[ms->lexer->cur_pos + i] >= 'A' && \
+	ms->lexer->src[ms->lexer->cur_pos + i] <= 'Z') || \
+	(ms->lexer->src[ms->lexer->cur_pos + i] >= 'a' && \
+	ms->lexer->src[ms->lexer->cur_pos + i] <= 'z')) || \
+	ms->lexer->src[ms->lexer->cur_pos + i] == '_'))
 	{
 		i++;
 		count++;

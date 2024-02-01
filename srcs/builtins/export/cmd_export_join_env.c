@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:34 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/31 16:05:44 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:25:53 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*dup_after_equal(t_ms *ms, t_cmd *cmd, char *s, int i)
 	i++;
 	if (s[i] == '\0')
 		return (NULL);
-	dest = malloc(sizeof(char) * (ft_strlen(s) - (slen_equal(s) - 2) + 1));//verifie 2
+	dest = malloc(sizeof(char) * (ft_strlen(s) - (slen_equal(s) - 2) + 1));
 	if (!dest)
 		prefree_minishell_cmd(ms, cmd);
 	i = 0;
@@ -44,7 +44,7 @@ char	*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd)
 	int		j;
 
 	i = -1;
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);// c'est verifie 2
+	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);
 	if (!dest)
 	{
 		if (s2)
@@ -66,15 +66,13 @@ char	*ft_sjoin(t_ms *ms, char *s1, char *s2, t_cmd *cmd)
 	return (dest);
 }
 
-//unset _ SHLVL PWD OLDPWD LD_LIBRARY_PATH  GLIBCPP_FORCE_NEW GLIBCXX_FORCE_NEW LD_PRELOAD
-//unset GLIBCPP_FORCE_NEW GLIBCXX_FORCE_NEW LD_PRELOAD
 void	join_in_env(t_ms *ms, t_cmd *cmd, char *content)
 {
 	char	*cpy_ct;
 	char	*join_ct;
 	t_list	*env_tmp;
 
-	cpy_ct = dup_after_equal(ms, cmd, content, 0);// c'est verifie 1
+	cpy_ct = dup_after_equal(ms, cmd, content, 0);
 	env_tmp = ms->env;
 	while (env_tmp)
 	{

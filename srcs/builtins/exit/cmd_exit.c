@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_exit.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:22:35 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:23:07 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/builtin.h"
 
 void	free_exit_bis(t_ms *ms)
@@ -101,7 +113,6 @@ int	exec_exit(t_ms *ms, t_cmd *cmd)
 	if (isatty(0) == 1 && isatty(1) == 1)
 		ft_putstr_fd("exit\n", 1);
 	if (tab_size(cmd->args) == 1)
-//		exit_code = ms->exit_code;
 		exit_code = ms->previous_exit_code;
 	else
 	{

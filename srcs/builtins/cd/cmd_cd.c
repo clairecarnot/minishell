@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_cd.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:18:01 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:18:04 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
@@ -9,7 +21,7 @@ int	cd_alone(t_ms *ms, t_cmd *cmd)
 	if (ms->home && home_var)
 	{
 		free(home_var);
-		if (chdir(ms->home)) //c'est verifie
+		if (chdir(ms->home))
 		{
 			perror("chdir");
 			free_cmd(cmd);
@@ -39,7 +51,7 @@ int	cd_dash(t_ms *ms, t_cmd *cmd)
 			if (ft_strncmp(env_tmp->content, "OLDPWD", 6) == 0)
 			{
 				printf("%s\n", (char *)env_tmp->content + 7);
-				if (chdir(env_tmp->content + 7))// c'est verifie
+				if (chdir(env_tmp->content + 7))
 				{
 					(perror("chdir"), ms->exit_code = errno);
 					(free_cmd(cmd), free_minishell(ms, errno));
@@ -95,7 +107,7 @@ int	exec_cd(t_ms *ms, t_cmd *cmd)
 	{
 		if (cmd->args[1][0] == '-')
 			return (cd_dash(ms, cmd));
-		else if (cmd->args[1][0] == '~'/* && !cmd->args[1][1]*/)
+		else if (cmd->args[1][0] == '~' && !cmd->args[1][1])
 			return (cd_tilde(ms, cmd));
 		else if (cmd->args[1][0] == '/')
 			return (cd_slash(ms, cmd));

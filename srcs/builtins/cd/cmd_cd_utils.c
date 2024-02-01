@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_cd_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:19:57 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:20:16 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
@@ -16,7 +28,7 @@ char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line)
 	i++;
 	while (var_line[i + size])
 		size++;
-	dir = malloc(sizeof(char) * (size + 1));// c'est verifie
+	dir = malloc(sizeof(char) * (size + 1));
 	if (!dir)
 	{
 		if (cmd)
@@ -39,7 +51,7 @@ char	*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name)
 	{
 		if (ft_strncmp(env_tmp->content, var_name, ft_strlen(var_name)) == 0)
 		{
-			return (get_dir(ms, cmd, env_tmp->content));//a verife si ca marche
+			return (get_dir(ms, cmd, env_tmp->content));
 		}
 		env_tmp = env_tmp->next;
 	}
@@ -75,7 +87,6 @@ int	cd_else(t_ms *ms, t_cmd *cmd)
 		{
 			free(dir);
 			return (nosuchfile_cd(cmd->args[1]));
-			return (1);
 		}
 		else
 		{

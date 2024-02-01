@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 12:05:12 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/31 16:04:16 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:25:26 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_sdup(t_ms *ms, t_cmd *cmd, char *s)
 	char	*dest;
 	int		i;
 
-	dest = malloc(sizeof(char) * ft_strlen(s) + 1);// c'est verifie 2
+	dest = malloc(sizeof(char) * ft_strlen(s) + 1);
 	if (!dest)
 	{
 		free_cmd(cmd);
@@ -46,7 +46,7 @@ void	replace_in_exp(t_ms *ms, t_cmd *cmd, char *content)
 	exp_tmp = ms->exp;
 	cpy_ct = add_qvar(content, 0);
 	if (!cpy_ct)
-		(free_cmd(cmd), prefree_minishell(ms, NULL));// c'est verifie 2
+		(free_cmd(cmd), prefree_minishell(ms, NULL));
 	while (exp_tmp)
 	{
 		if (ft_strncmp(exp_tmp->content, cpy_ct, slen_equal(cpy_ct)) == 0)
@@ -64,7 +64,7 @@ void	replace_in_env(t_ms *ms, t_cmd *cmd, char *ct)
 	char	*cpy_content;
 	t_list	*env_tmp;
 
-	cpy_content = ft_sdup(ms, cmd, ct);// c'est protege 2
+	cpy_content = ft_sdup(ms, cmd, ct);
 	env_tmp = ms->env;
 	while (env_tmp)
 	{

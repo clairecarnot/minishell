@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:22:05 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:22:06 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
@@ -9,8 +21,8 @@ void	add_to_env(t_ms *ms, t_cmd *cmd, char *content)
 	char	*cpy_content;
 	t_list	*new;
 
-	cpy_content = ft_strdup_noplus(ms, cmd, content);// c'est verifie 2
-	new = ft_lstnew(cpy_content);// c'est verifie 2
+	cpy_content = ft_strdup_noplus(ms, cmd, content);
+	new = ft_lstnew(cpy_content);
 	if (!new)
 	{
 		free_cmd(cmd);
@@ -43,7 +55,7 @@ void	replace_var_underscore_env(t_ms *ms, t_cmd *cmd)
 		if (ft_strncmp("_=/usr/bin", tmp->content, 10) == 0)
 		{
 			new_content = ft_strdup("_=/usr/bin/env");
-			if (!new_content)// c'est verifie 2
+			if (!new_content)
 			{
 				free_cmd(cmd);
 				free_minishell(ms, 1);

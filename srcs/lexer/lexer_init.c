@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/06 17:30:06 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/29 18:55:19 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/01 17:38:00 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ t_lexer	*init_lexer(char *s)
 	lexer->cur_pos = 0;
 	lexer->next_pos = 1;
 	lexer->token_lst = NULL;
-//	lexer->tok_count = 0;
 	return (lexer);
 }
 
@@ -42,8 +41,6 @@ t_token	*init_token(t_ms *ms, char *value, t_type type)
 	token->type = type;
 	token->value = value;
 	token->next_token = NULL;
-//	token->tok_nb = ms->lexer->tok_count;
-//	ms->lexer->tok_count++;
 	token->dol = NULL;
 	token->wil = NULL;
 	return (token);
@@ -59,8 +56,6 @@ t_token	*init_tokwdol(t_ms *minishell, t_type type, t_dw *dw)
 	token->type = type;
 	token->value = minishell->value;
 	token->next_token = NULL;
-//	token->tok_nb = minishell->lexer->tok_count;
-//	minishell->lexer->tok_count++;
 	token->dol = dw->dol;
 	token->wil = dw->wil;
 	free(dw);
