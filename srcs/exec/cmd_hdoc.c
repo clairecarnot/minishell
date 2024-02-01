@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_hdoc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:20:59 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:21:10 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 void	hdoc_ctrl_d(t_ms *ms, char *filename, int nb_line)
@@ -31,7 +43,6 @@ int	hdoc_create(t_ms *ms, int fd, char *filename, int limlen)
 		if (!line)
 		{
 			hdoc_ctrl_d(ms, filename, nb_line);
-//			ms->exit_code = ms->previous_exit_code;
 			break ;
 		}
 		if (ft_strncmp(line, filename, limlen) == 0

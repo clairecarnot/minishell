@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:41 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/26 17:03:31 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/01 17:27:32 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	close_if(int *fd)
 
 void	go_garbage(int i, t_trash *trash)
 {
-	static t_ms	*ms;
+	static t_ms		*ms;
 	static t_cmd	*cmd;
 
 	if (i == 0)

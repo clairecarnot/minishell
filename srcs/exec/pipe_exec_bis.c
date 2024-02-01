@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_exec_bis.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:24:21 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:24:30 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 int	do_cmdpipe(t_cmd *cmd, t_ms *ms, char **env)
@@ -58,8 +70,6 @@ int	exec_cmdpipe(t_ms *ms, t_ast *node, int tmp_fd)
 		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		(free_cmd(cmd), free_minishell(ms, exit_code));
-//	if (cmd->redir && !cmd->valid_redir)
-//		(free_cmd(cmd), free_exit(ms), exit(ms->exit_code));
 	return (exec_cmdpipe_bis(ms, env, cmd));
 }
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:33:59 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:59:27 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/general.h"
 
 t_ms	*init_ms_bis(t_ms *minishell, char **env)
@@ -35,14 +47,13 @@ t_ms	*init_ms(char **env)
 	minishell->j = 0;
 	minishell->i_w = 0;
 	minishell->value = NULL;
-	minishell->a = 0;//a enlever
 	return (init_ms_bis(minishell, env));
 }
 
 char	*display_prompt(t_ms *ms)
 {
 	char	*line;
-	int	exit_code;
+	int		exit_code;
 
 	line = NULL;
 	exit_code = ms->exit_code;
@@ -59,8 +70,7 @@ char	*display_prompt(t_ms *ms)
 			free(ms->old_wkdir);
 		if (ms->home)
 			free(ms->home);
-		if (ms)
-			free(ms);
+		free(ms);
 		ft_putstr_fd("exit\n", 1);
 		exit(exit_code);
 	}
@@ -79,8 +89,6 @@ void	main_bis(t_ms *minishell)
 	{
 		if (!minishell->lexer)
 			free_minishell(minishell, 1);
-//		minishell->cur_tok = minishell->lexer->token_lst;
-//		print_token_lst(minishell->lexer->token_lst);
 		tmp = minishell->cur_tok;
 		if (parse(minishell) == -1)
 		{
@@ -93,8 +101,6 @@ void	main_bis(t_ms *minishell)
 		else
 		{
 			minishell->cur_tok = tmp;
-			// print_tree(minishell->root, 0);
-			// visit_node(minishell->root);
 			pre_exec(minishell);
 			free_minishell(minishell, 0);
 		}
@@ -105,9 +111,8 @@ int	main(int argc, char **argv, char **env)
 {
 	t_ms	*minishell;
 
-	((void)argc, (void)argv);
 	minishell = NULL;
-	ft_isatty(minishell, env);
+	((void)argc, (void)argv, ft_isatty(minishell, env));
 	minishell = init_ms(env);
 	while (1)
 	{
@@ -126,9 +131,7 @@ int	main(int argc, char **argv, char **env)
 		if (!check_error_prelexer(minishell->line))
 			main_bis(minishell);
 		init_workdir(minishell, 1);
-//		minishell->a++;
 	}
 	free_minishell(minishell, 1);
-	
 	return (0);
 }

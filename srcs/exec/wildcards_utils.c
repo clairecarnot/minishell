@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcards_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:30:55 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:31:11 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 int	*lstint_to_tab(t_list *lst)
@@ -9,7 +21,7 @@ int	*lstint_to_tab(t_list *lst)
 	i = 0;
 	tmp = lst;
 	tab_w = ft_calloc(ft_lstsize(tmp), sizeof(int));
-	if (!tab_w) // c'est verifie
+	if (!tab_w)
 		return (NULL);
 	while (tmp)
 	{
@@ -66,7 +78,7 @@ char	**copy_args(char **str)
 
 	i = 0;
 	new_str = ft_calloc(sizeof(char *), len_dchar(str) + 1);
-	if (!new_str) //c'est verifie
+	if (!new_str)
 		return (NULL);
 	while (str[i])
 	{

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_exec.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:19:44 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:19:57 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 int	node_to_cmd_bis(t_ms *ms, t_ast *node, t_cmd *cmd, t_list *tmp_w)
@@ -121,8 +133,6 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 		(free_cmd(cmd), free_minishell(ms, 255));
 	if (exit_code != 0)
 		return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
-//	if (cmd->redir && !cmd->valid_redir)
-//		return (free_cmd(cmd), ms->exit_code);
 	if (cmd->builtin != NOBUILT)
 		exit_code = exec_builtin(ms, cmd);
 	else
@@ -134,5 +144,4 @@ int	exec_cmd(t_ast *node, t_ms *ms)
 	wait_loop(ms);
 	replace_var_underscore(ms, cmd);
 	return (free_cmd(cmd), ms->exit_code);
-//	return (ms->exit_code = exit_code, free_cmd(cmd), exit_code);
 }

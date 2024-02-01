@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcards2.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:30:11 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:30:45 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 int	same_as_wildcard(char *d_name, char *arg, int *flag)
@@ -34,15 +46,15 @@ char	**wldc2_split(char *new_arg)
 		split_arg = ft_split(new_arg, '\v');
 		free(new_arg);
 		if (!split_arg)
-			return (NULL);// c'est verifie
+			return (NULL);
 		return (split_arg);
 	}
 	split_arg = ft_calloc(sizeof(char *), 1 + 1);
 	if (!split_arg)
-		return (free(new_arg), NULL);// c'est verifie
+		return (free(new_arg), NULL);
 	split_arg[0] = ft_calloc(sizeof(char), 1 + 1);
 	if (!split_arg[0])
-		return (free(new_arg), free_tab(split_arg), NULL);// c'est verifie
+		return (free(new_arg), free_tab(split_arg), NULL);
 	split_arg[0][1] = '\0';
 	split_arg[1] = 0;
 	return (split_arg);
@@ -59,11 +71,11 @@ char	*wldc2_join(char *d_name, char *new_arg)
 	free(new_arg);
 	new_arg = NULL;
 	if (!tmp_arg)
-		return (free(new_arg), NULL);// c'est verifie 
+		return (free(new_arg), NULL);
 	new_arg2 = ft_strjoin(tmp_arg, d_name);
 	free(tmp_arg);
 	if (!new_arg2)
-		return (free(new_arg), NULL);// c'est verifie
+		return (free(new_arg), NULL);
 	return (new_arg2);
 }
 
@@ -73,13 +85,13 @@ char	*wildc2_dup_join(char *d_name, t_wildcard *wc, char *new_arg)
 	{
 		new_arg = ft_strdup(d_name);
 		if (!new_arg)
-			return (NULL);// c'est verifie
+			return (NULL);
 	}
 	else
 	{
 		new_arg = wldc2_join(d_name, new_arg);
 		if (!new_arg)
-			return (NULL); // c'est verifie
+			return (NULL);
 	}
 	wc->j++;
 	return (new_arg);

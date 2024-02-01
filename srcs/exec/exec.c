@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:19:32 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:26:33 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 int	exec_andif(t_ast *node, t_ms *ms)
@@ -62,15 +74,7 @@ void	wait_loop(t_ms *ms)
 	if (WIFEXITED(status))
 		ms->exit_code = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
-//	{
 		ms->exit_code = 128 + WTERMSIG(status);
-//		if (print)
-//		{
-//			if (WTERMSIG(status) == SIGQUIT)
-//				ft_putstr_fd("Quit (core dumped)\n", 2);
-//			print = 0;
-//		}
-//	}
 }
 
 int	pre_exec(t_ms *ms)
@@ -92,6 +96,5 @@ int	pre_exec(t_ms *ms)
 		return (kill_loop(ms), perror("dup2 failed"), ms->exit_code = errno);
 	if (exit_code)
 		return (kill_loop(ms), exit_code);
-//	wait_loop(ms);
 	return (ms->exit_code);
 }

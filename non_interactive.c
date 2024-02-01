@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   non_interactive.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:39:19 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:57:28 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/general.h"
 
 void	non_interactive_mode_bis(t_ms *minishell)
@@ -9,8 +21,7 @@ void	non_interactive_mode_bis(t_ms *minishell)
 	if (!lexer(minishell, minishell->line))
 	{
 		if (!minishell->lexer)
-			free_minishell(minishell, 1); //ms exit code?
-//		minishell->cur_tok = minishell->lexer->token_lst;
+			free_minishell(minishell, 1);
 		tmp = minishell->cur_tok;
 		if (parse(minishell) == -1)
 		{
@@ -40,7 +51,7 @@ int	non_interactive_mode(t_ms *minishell, char **env)
 	line[ft_strlen(line) - 1] = '\0';
 	minishell = init_ms(env);
 	minishell->line = line;
-	minishell->previous_exit_code = minishell->exit_code; //A CHECKER
+	minishell->previous_exit_code = minishell->exit_code;
 	if (!check_error_prelexer(minishell->line))
 		non_interactive_mode_bis(minishell);
 	(get_next_line(0, 1), exit(1));

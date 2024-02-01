@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   struct.h                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:15:45 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:37:25 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef STRUCT_H
 # define STRUCT_H
 
@@ -115,7 +127,6 @@ typedef struct s_token
 	t_type			type;
 	char			*value;
 	struct s_token	*next_token;
-//	size_t			tok_nb;
 	t_wil			*wil;
 	t_dol			*dol;
 }		t_token;
@@ -128,7 +139,6 @@ typedef struct s_lexer
 	size_t	cur_pos;
 	size_t	next_pos;
 	t_token	*token_lst;
-//	size_t	tok_count;//nb de token final A SUPPR
 }		t_lexer;
 
 /*
@@ -167,7 +177,6 @@ typedef struct s_wildcard
  * int j : lexer (norm)
  * int nb_q : lexer (norm)
  * int i_w : index wildcard
- * int a : test malloc
  */
 
 typedef struct s_ms
@@ -196,8 +205,6 @@ typedef struct s_ms
 	int			i_w;
 	char		*value;
 	int			var_path;
-
-	int			a;
 }				t_ms;
 
 typedef struct s_trash

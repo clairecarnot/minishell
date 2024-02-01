@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parent_sig.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:31:35 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:31:48 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/signals.h"
 
 int	g_exit_code = 0;
@@ -12,9 +24,6 @@ int	g_exit_code = 0;
 void	postfork_ms_sig(int signal)
 {
 	(void)signal;
-//	if (signal == SIGINT)
-//		ft_putstr_fd("\n", 2);
-
 }
 
 void	ms_signals(void)

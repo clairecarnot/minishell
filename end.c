@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   end.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:33:02 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:33:03 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./include/general.h"
 
 void	prefree_minishell_cmd(t_ms *ms, t_cmd *cmd)
@@ -58,7 +70,6 @@ void	free_minishell_bis(t_ms *ms, int exit_status, int exit_code)
 		free(ms);
 	if (exit_status != 0)
 		exit(exit_status);
-//		exit(exit_code);
 }
 
 void	free_minishell(t_ms *ms, int exit_status)

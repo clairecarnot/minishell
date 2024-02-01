@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 17:12:48 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/02/01 11:11:58 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:29:29 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,7 @@ char	**get_bin_paths(t_ms *ms, char **env, t_cmd *cmd)
 	binaries = ft_split(env_path, ':');
 	if (!binaries)
 		free_path_cmd_ms(ms, cmd, env_path);
-	free(env_path);
-	return (binaries);
+	return (free(env_path), binaries);
 }
 
 int	build_path(t_ms *ms, t_cmd *cmd)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_exec.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:29:49 by ccarnot           #+#    #+#             */
+/*   Updated: 2024/02/01 17:29:57 by ccarnot          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../include/exec.h"
 
 int	pipe_end_cmd(t_ms *ms, t_ast *node, int tmp_fd)
@@ -126,5 +138,4 @@ int	exec_pipeline(t_ast *node, t_ms *ms)
 		return (kill_loop(ms), exit_code);
 	wait_loop(ms);
 	return (ms->exit_code);
-//	return (ms->exit_code = exit_code);
 }
