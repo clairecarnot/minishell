@@ -3,12 +3,10 @@
 char	**exp_redef_cmdargs(t_cmd *cmd, int i, int data[5])
 {
 	char	**new_args;
-	int		size;
 	int		k;
 
 	k = 0;
-	size = tab_size(cmd->args);
-	new_args = ft_calloc(size, sizeof(char *));
+	new_args = ft_calloc(tab_size(cmd->args), sizeof(char *));
 	if (!new_args)
 		return (free_tab(cmd->args), NULL);
 	while (k < i)
@@ -35,6 +33,10 @@ void	redefine_datapos(char **new_args, int i, int j, int data[5])
 {
 	data[3] = 1;
 	data[4] = data[2] - (ft_strlen(new_args[i]) - (j - 1));
+	dprintf(2, "longueur var = %d\n", data[2]);
+	dprintf(2, "longueur new args = %zu\n", ft_strlen(new_args[i]));
+	dprintf(2, "j avant redef = %d\n", j);
+	dprintf(2, "data[4] = %d\n", data[4]);
 }
 
 /*
@@ -99,10 +101,10 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 {
 	char	**new_args;
 	char	*d[2];
-	int		size;
+	int		l;
 
-	size = tab_size(cmd->args);
-	while (cmd->args[i][j] && cmd->args[i][j] != ' ')
+	l = -1;
+	while (++l >= 0 && cmd->args[i][j] && cmd->args[i][j] != ' ')
 		j++;
 	if (j == 0)
 		return (cmd->args);
@@ -114,13 +116,13 @@ char	**redefine_args(t_cmd *cmd, int i, int j, int data[5])
 	if (!d[1])
 		return (free_tab(cmd->args), free(d[0]), NULL);
 	ft_strlcpy(d[1], &cmd->args[i][j + 1], ft_strlen(&cmd->args[i][j + 1]) + 1);
-	new_args = ft_calloc(size + 2, sizeof(char *));
+	new_args = ft_calloc(tab_size(cmd->args) + 2, sizeof(char *));
 	if (!new_args)
 		return (free_tab(cmd->args), free(d[0]), free(d[1]), NULL);
 	new_args = redefine_args_bis(cmd, d, new_args, i);
 	if (!new_args)
 		return (free_tab(cmd->args), NULL);
-	redefine_datapos(new_args, i, j, data);
+	redefine_datapos(new_args, i, j - l, data);
 	return (free_tab(cmd->args), new_args);
 }
 
