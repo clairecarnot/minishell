@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 10:27:31 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/01/31 09:39:03 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/01 12:11:55 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int	get_exit_code(char *args, int *error)
 {
 	long long	exit_code;
 
+	if (args && ft_strlen(args) == 0)
+		return (*error = 1, 2);
 	if (is_notnumeric(args, error))
 		return (2);
 	exit_code = atoll_exit(args, error);

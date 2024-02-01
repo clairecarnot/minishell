@@ -61,7 +61,7 @@ char	*display_prompt(t_ms *ms)
 			free(ms->home);
 		if (ms)
 			free(ms);
-		ft_putstr_fd("exit", 1);
+		ft_putstr_fd("exit\n", 1);
 		exit(exit_code);
 	}
 	if (line[0] != '\0')
