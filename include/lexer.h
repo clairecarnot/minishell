@@ -83,6 +83,6 @@ int			check_redir(t_ms *ms);
 int			check_after_lessgreat(char *line, size_t i);
 int			check_redir_beforelex(char *line);
 int			check_quotes(char *str);
-int			check_error_prelexer(char *line);
+int			check_error_prelexer(t_ms *ms);
 
 #endif

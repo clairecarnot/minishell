@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_echo.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:21:17 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:21:27 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/builtin.h"
 
 /*
@@ -62,8 +74,6 @@ int	exec_echo(t_ms *ms, t_cmd *cmd)
 		else
 		{
 			ft_putstr_fd(cmd->args[i], 1);
-//			if (cmd->args[i + 1] && ft_strlen(cmd->args[i + 1])
-//				&& (cmd->args[i - 1] && ft_strlen(cmd->args[i - 1])))
 			if (cmd->args[i + 1])
 				write(STDOUT_FILENO, " ", 1);
 		}

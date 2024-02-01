@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_cd_pwd_exp.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:20:43 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:20:45 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
@@ -8,7 +20,7 @@ void	replace_oldpwd_exp(t_ms *ms, t_cmd *cmd)
 	t_list	*exp_tmp;
 
 	exp_tmp = ms->exp;
-	content = ft_strjoin("OLDPWD=", ms->wkdir); //c'est verifie
+	content = ft_strjoin("OLDPWD=", ms->wkdir);
 	if (!content)
 	{
 		free_cmd(cmd);
@@ -36,7 +48,7 @@ char	*add_qvar_pwd(t_ms *ms, t_cmd *cmd, char *content, int i)
 	char	*content_qt;
 
 	j = 0;
-	content_qt = malloc((ft_strlen(content) + 3) * sizeof(char)); //c'est verifie
+	content_qt = malloc((ft_strlen(content) + 3) * sizeof(char));
 	if (!content_qt)
 	{
 		free(content);
@@ -72,7 +84,7 @@ void	replace_pwd_exp(t_ms *ms, t_cmd *cmd)
 	exp_tmp = ms->exp;
 	if (getcwd(path, sizeof(path)) != NULL)
 	{
-		content = ft_strjoin("PWD=", path); //c'est verifie
+		content = ft_strjoin("PWD=", path);
 		if (!content)
 			(free_cmd(cmd), prefree_minishell(ms, NULL));
 		content_qt = add_qvar_pwd(ms, cmd, content, 0);

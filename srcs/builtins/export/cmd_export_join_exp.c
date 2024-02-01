@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 16:45:56 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/01/31 16:05:40 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/01 17:26:24 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*sjoin_noequal(char *s1, char *s2, int i)
 
 	if (!s1 && !s2)
 		return (NULL);
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1 + 3);// c'est verifie 2
+	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1 + 3);
 	if (!dest)
 		return (NULL);
 	while (s1[++i])
@@ -48,7 +48,7 @@ char	*sjoin_wquote(char *s1, char *s2, int i)
 
 	if (!s1 && !s2)
 		return (NULL);
-	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);// c'est verifie 2
+	dest = malloc(sizeof(char) * ft_strlen(s1) + ft_slen(s2) + 1);
 	if (!dest)
 		return (NULL);
 	while (i < (int)(ft_strlen(s1) - 1))
@@ -75,9 +75,9 @@ char	*join_in_exp2(t_ms *ms, t_list *exp_tmp, char *cpy_ct, t_cmd *cmd)
 	char	*join_ct;
 
 	if (has_equal(exp_tmp->content))
-		join_ct = sjoin_wquote(exp_tmp->content, cpy_ct, 0);// c'est protege 2
+		join_ct = sjoin_wquote(exp_tmp->content, cpy_ct, 0);
 	else
-		join_ct = sjoin_noequal(exp_tmp->content, cpy_ct, -1);// c'est protege 2
+		join_ct = sjoin_noequal(exp_tmp->content, cpy_ct, -1);
 	if (!join_ct)
 	{
 		free(cpy_ct);
@@ -92,7 +92,7 @@ void	join_in_exp(t_ms *ms, t_cmd *cmd, char *content)
 	char	*join_ct;
 	t_list	*exp_tmp;
 
-	cpy_ct = dup_after_equal(ms, cmd, content, 0);// c'est protege 2
+	cpy_ct = dup_after_equal(ms, cmd, content, 0);
 	exp_tmp = ms->exp;
 	while (exp_tmp)
 	{

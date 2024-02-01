@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_export_utils.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/01 17:24:39 by mapoirie          #+#    #+#             */
+/*   Updated: 2024/02/01 17:24:47 by mapoirie         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../../include/builtin.h"
 #include "../libft/libft.h"
 
@@ -107,7 +119,7 @@ void	add_qvar_lst(t_ms *ms, t_list *exp)
 	while (tmp_exp)
 	{
 		tmp_content = tmp_exp->content;
-		tmp_exp->content = add_qvar(tmp_content, 0);// c'est verifie
+		tmp_exp->content = add_qvar(tmp_content, 0);
 		if (!tmp_exp->content)
 		{	
 			free(tmp_content);

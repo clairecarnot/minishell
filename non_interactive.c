@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   non_interactive.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:39:19 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/02/01 17:57:28 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/01 18:03:01 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	non_interactive_mode(t_ms *minishell, char **env)
 	minishell = init_ms(env);
 	minishell->line = line;
 	minishell->previous_exit_code = minishell->exit_code;
-	if (!check_error_prelexer(minishell->line))
+	if (!check_error_prelexer(minishell))
 		non_interactive_mode_bis(minishell);
 	(get_next_line(0, 1), exit(1));
 }
