@@ -87,12 +87,8 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 	i = -1;
 	while (cmd->args[++i] && init_data(data, &j))
 	{
-		dprintf(2, "i = %d\n", i);
-		dprintf(2, "cmd->args[i] = %s\n", cmd->args[i]);
 		while (cmd->args[i][++j])
 		{
-			dprintf(2, "j = %d\n", j);
-			dprintf(2, "cmd->args[i][j] = %c\n", cmd->args[i][j]);
 			if (cmd->args[i][j] == '$')
 			{
 				if (dol->d->n)
@@ -105,8 +101,6 @@ int	cmd_expand(t_ms *ms, t_cmd *cmd, t_dol *dol)
 						return (ms->exit_code = 255, 1);
 				}
 				update_expand_pos(data, &i, &j, &dol);
-				dprintf(2, "i redef = %d\n", i);
-				dprintf(2, "j redef = %d\n", j);
 			}
 		}
 	}
