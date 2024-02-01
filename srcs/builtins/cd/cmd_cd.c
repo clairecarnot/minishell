@@ -95,7 +95,7 @@ int	exec_cd(t_ms *ms, t_cmd *cmd)
 	{
 		if (cmd->args[1][0] == '-')
 			return (cd_dash(ms, cmd));
-		else if (cmd->args[1][0] == '~' && !cmd->args[1][1])
+		else if (cmd->args[1][0] == '~'/* && !cmd->args[1][1]*/)
 			return (cd_tilde(ms, cmd));
 		else if (cmd->args[1][0] == '/')
 			return (cd_slash(ms, cmd));
