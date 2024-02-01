@@ -50,7 +50,8 @@ int	nosuchfile_cd(char *str)
 {
 	ft_putstr_fd("minishell: cd: ", 2);
 	ft_putstr_fd(str, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
+	ft_putstr_fd(": ", 2);
+	perror("");
 	return (1);
 }
 
@@ -74,6 +75,7 @@ int	cd_else(t_ms *ms, t_cmd *cmd)
 		{
 			free(dir);
 			return (nosuchfile_cd(cmd->args[1]));
+			return (1);
 		}
 		else
 		{
