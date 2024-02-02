@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:15:16 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/02/01 17:15:17 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:31:20 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int			cd_slash(t_ms *ms, t_cmd *cmd);
 int			exec_cd(t_ms *ms, t_cmd *cmd);
 
 //----------------------------- cmd_cd_utils.c --------------------------
+void		print_cddash_error(t_ms *ms, t_list *env_tmp);
 char		*get_dir(t_ms *ms, t_cmd *cmd, char *var_line);
 char		*getvar_env(t_ms *ms, t_cmd *cmd, char *var_name);
 int			nosuchfile_cd(char *str);

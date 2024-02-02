@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:18:01 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/02/01 17:18:04 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:30:31 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ int	cd_dash(t_ms *ms, t_cmd *cmd)
 				printf("%s\n", (char *)env_tmp->content + 7);
 				if (chdir(env_tmp->content + 7))
 				{
-					(perror("chdir"), ms->exit_code = errno);
-					(free_cmd(cmd), free_minishell(ms, errno));
+					print_cddash_error(ms, env_tmp);
 				}
 				replace_pwd_env_exp(ms, cmd);
 				return (0);

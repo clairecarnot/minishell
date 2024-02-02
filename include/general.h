@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   general.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:15:27 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/02/01 17:15:29 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:56:21 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GENERAL_H
 # define GENERAL_H
 
-# include <stddef.h>
+# include <stdio.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <stdio.h>
+# include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/wait.h>

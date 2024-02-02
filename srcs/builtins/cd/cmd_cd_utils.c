@@ -6,12 +6,20 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:19:57 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/02/01 17:20:16 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:30:42 by mapoirie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../include/builtin.h"
 #include "../libft/libft.h"
+
+void	print_cddash_error(t_ms *ms, t_list *env_tmp)
+{
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(env_tmp->content + 7, 2);
+	ft_putstr_fd(": ", 2);
+	(perror(""), ms->exit_code = errno);
+}
 
 char	*get_dir(t_ms *ms, t_cmd *cmd, char *var_line)
 {
