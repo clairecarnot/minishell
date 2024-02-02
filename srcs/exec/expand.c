@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:19:05 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/02/01 17:19:06 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:44:38 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*expand_dol(t_ms *ms, char *arg, int data[5], t_dol **dol)
 	var = get_varvalue(ms, arg, i, j);
 	if (!var && ms->exit_code == 255)
 		return (free(arg), NULL);
-	else if (!var)
+	else if (!var || (var && ft_strlen(var) == 0))
 		exp_arg = skip_dol(arg, i, j, data);
 	else
 		exp_arg = repl_dol(arg, var, i, j);

@@ -6,7 +6,7 @@
 /*   By: mapoirie <mapoirie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:40:19 by mapoirie          #+#    #+#             */
-/*   Updated: 2024/02/01 17:40:20 by mapoirie         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:46:33 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_dol	*dup_tokdol(t_ms *ms, t_dol *tok_dol)
 		return (free(new), ms->exit_code = 255, NULL);
 	new->c = lst_dup_int(tok_dol->c);
 	if (!new->c)
-		return (free(new), ft_lstfree(&new->d), ms->exit_code = 255, NULL);
+		return (ft_lstfree(&new->d), free(new), ms->exit_code = 255, NULL);
 	return (new);
 }
 

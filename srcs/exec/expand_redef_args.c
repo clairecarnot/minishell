@@ -6,7 +6,7 @@
 /*   By: ccarnot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/01 17:24:09 by ccarnot           #+#    #+#             */
-/*   Updated: 2024/02/01 17:24:10 by ccarnot          ###   ########.fr       */
+/*   Updated: 2024/02/02 09:44:48 by ccarnot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,6 @@ void	redefine_datapos(char **new_args, int i, int j, int data[5])
 {
 	data[3] = 1;
 	data[4] = data[2] - (ft_strlen(new_args[i]) - (j - 1));
-	dprintf(2, "longueur var = %d\n", data[2]);
-	dprintf(2, "longueur new args = %zu\n", ft_strlen(new_args[i]));
-	dprintf(2, "j avant redef = %d\n", j);
-	dprintf(2, "data[4] = %d\n", data[4]);
 }
 
 /*
